@@ -25,8 +25,6 @@ class APICaller(object):
     self.require_auth = config.get('require_auth', False)
     self.search_api = config.get('search_api', False)
     self.use_cache = config.get('use_cache', True)
-    #self.api_key = config.get('api_key', None)
-
 
   def set_up(self, api, args, kargs):
     self.api = api
@@ -58,16 +56,16 @@ class APICaller(object):
     # replace parameters defined in the path
     for variable in path_variable_template.findall(self.path):
       name = variable.strip('{}')
-      if name == 'user' and 'user' not in self.parameters and self.api.auth:
-        # No 'user' parameter provided, fetch it from Auth instead.
-        value = self.api.auth.get_username()
-      else:
-        try:
-          value = urllib.quote(self.parameters[name])
-        except KeyError:
-          raise NameError('No parameter value found for path variable: %s' % name)
-        del self.parameters[name]
-      self.path = self.path.replace(variable, value)
+			if name == 'user' and 'user' not in self.parameters and self.api.auth:
+  	    # No 'user' parameter provided, fetch it from Auth instead.
+    	  value = self.api.auth.get_username()
+    	else:
+      	try:
+        	value = urllib.quote(self.parameters[name])
+      	except KeyError:
+        	raise NameError('No parameter value found for path variable: %s' % name)
+      del self.parameters[name]
+    	self.path = self.path.replace(variable, value)
 
 
   def execute(self):
