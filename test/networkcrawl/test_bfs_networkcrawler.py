@@ -33,14 +33,14 @@ class TestBFSNetworkCrawler(unittest.TestCase):
 
   def test_crawl(self):
     webnetwork = TestWebCaller(self.network_edges)
-    simplestore = BasicShelveStore()
-    crawler = BFSNetworkCrawler(webnetwork, simplestore, "node_info.dat",
-                                "node_connections.dat")
+    nodes_store = BasicShelveStore("node_info.dat")
+    edges_store = BasicShelveStore("edges_info.dat")
+    crawler = BFSNetworkCrawler(webnetwork, nodes_store, edges_store)
     crawler.set_seed_nodes(["11", "5"])
     crawler.crawl()
 
     self.node_info_data = shelve.open("node_info.dat")
-    self.node_connections_data = shelve.open("node_connections.dat")
+    self.node_connections_data = shelve.open("edges_info.dat")
     self.node_visit_order = list(webnetwork.get_visit_order())
 
     test_node_info = {}
@@ -49,7 +49,7 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     for i in test_visit_order:
       test_node_info.update(webnetwork.get_node_info(i))
       test_node_connections[i] = webnetwork.get_connections(i)
-    print self.node_visit_order
+    #print self.node_visit_order, self.node_info_data
     self.assertListEqual(self.node_visit_order, test_visit_order,
         "Problem in order of BFS crawl")
     self.assertDictEqual(test_node_info, dict(self.node_info_data), "Problem in BFS crawl.")

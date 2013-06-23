@@ -11,3 +11,6 @@ class GenericStore(object):
 
   def fetch(pattern, store_path):
     raise NotImplementedError
+  
+  def close(self):
+    raise NotImplementedError

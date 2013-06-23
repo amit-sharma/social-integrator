@@ -2,13 +2,11 @@ from socintpy.networkcrawl.crawler_interface import NetworkCrawlerInterface
 from socintpy.util.priority_queue import PriorityQueue
 
 class BFSNetworkCrawler(NetworkCrawlerInterface):
-  def __init__(self, network, store, node_info_storepath,
-               node_connections_storepath):
+  def __init__(self, network, nodes_store, edges_store):
     self.pqueue = PriorityQueue()
-    self.store = store
+    self.nodes_store = nodes_store
     self.network = network
-    self.node_info_storepath = node_info_storepath
-    self.node_connections_storepath = node_connections_storepath
+    self.edges_store = edges_store
     self.visited = {}
 
   def set_seed_nodes(self, seed_values):
@@ -26,10 +24,9 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
         continue
       new_node_info = self.network.get_node_info(new_node)
       # Assume dict output for all stores.
-      self.store.record(new_node_info, self.node_info_storepath)
+      self.nodes_store.record(new_node_info)
       new_node_connections = self.network.get_connections(new_node)
-      self.store.record({new_node: new_node_connections}, 
-                        self.node_connections_storepath)
+      self.edges_store.record({new_node: new_node_connections})
       # TODO also store these in a db
       for node in new_node_connections:
         if node not in self.visited:
