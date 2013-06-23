@@ -1,8 +1,8 @@
 class CallerInterface:
-	def get_user_info():
+	def get_node_info():
 		raise NotImplementedError
 
-	def get_friends():
+	def get_connections():
 		raise NotImplementedError
 
 	def get_followers():
