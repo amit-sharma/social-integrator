@@ -1,12 +1,13 @@
 from socintpy.networkcrawl.crawler_interface import NetworkCrawlerInterface
 from socintpy.util.priority_queue import PriorityQueue
+from socintpy.store.graph_buffer import GraphBuffer
+import itertools
 
 class BFSNetworkCrawler(NetworkCrawlerInterface):
-  def __init__(self, network, nodes_store, edges_store):
+  def __init__(self, network, store_type = "gml"):
     self.pqueue = PriorityQueue()
-    self.nodes_store = nodes_store
     self.network = network
-    self.edges_store = edges_store
+    self.gbuffer = GraphBuffer(self.network.label, store_type)
     self.visited = {}
 
   def set_seed_nodes(self, seed_values):
@@ -18,17 +19,23 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
       #self.visited[node] = False
       
   def crawl(self):
+    node_counter = itertools.count()
+    edge_counter = itertools.count()
     while not self.pqueue.is_empty():
       new_node = self.pqueue.pop()
       if new_node in self.visited:
         continue
       new_node_info = self.network.get_node_info(new_node)
       # Assume dict output for all stores.
-      self.nodes_store.record(new_node_info)
-      new_node_connections = self.network.get_connections(new_node)
-      self.edges_store.record({new_node: new_node_connections})
-      # TODO also store these in a db
-      for node in new_node_connections:
+      new_node_info['id'] = next(node_counter)
+      self.gbuffer.store_node({str(new_node_info['id']): new_node_info})
+      new_node_edges_info = self.network.get_edges_info(new_node)
+      for edge_info in new_node_edges_info:
+        edge_info['id'] = next(edge_counter)
+        self.gbuffer.store_edge({str(edge_info['id']): edge_info})
+      
+      for edge_info in new_node_edges_info:
+        node = edge_info['target']
         if node not in self.visited:
           if node in self.pqueue.queue_dict:
             node_priority = self.pqueue.mark_removed(node)
@@ -37,3 +44,5 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
           else:
             self.add_to_crawl(node)
       self.visited[new_node] = True
+    self.gbuffer.close()
+    return

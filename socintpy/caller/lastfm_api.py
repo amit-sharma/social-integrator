@@ -4,20 +4,14 @@ A bunch of definition within a class to call Last.fm api.
 
 from caller import call
 from api_caller import APICaller
-from caller_interface import CallerInterface
+from base_caller import BaseCaller
 
-class LastfmAPI(CallerInterface):
-  def __init__(self, auth_handler=None, host='ws.audioscrobbler.com',
+class LastfmAPI(BaseCaller):
+  def __init__(self, label = "lastfm", auth_handler=None, host='ws.audioscrobbler.com',
                api_root='/', api_key=None, cache=None, secure=False,
                retry_count=0, retry_delay=0, retry_errors=None):
-    self.auth = auth_handler
-    self.host = host
-    self.api_root = api_root
-    self.cache = cache
-    self.secure = secure
-    self.retry_count = retry_count
-    self.retry_delay = retry_delay
-    self.retry_errors = retry_errors
+    super(LastfmAPI, self).__init__(label, auth_handler, host, api_root, cache, 
+                                    secure, retry_count, rety_delay, retry_errors)
     self.api_key = api_key
 
   get_node_info = call(
