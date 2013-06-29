@@ -9,6 +9,7 @@ import httplib
 import urllib
 import re
 import time
+import logging
 
 path_variable_template = re.compile('{\w+}')
 
@@ -17,6 +18,7 @@ class APICaller(object):
   def __init__(self):
     self.parameters = {}
     self.path = None
+    self.final_path = None
     self.prefix = 'http://'
 
   def set_config(self, config):
@@ -40,6 +42,7 @@ class APICaller(object):
       self.prefix = 'https://'
   
   def build_parameters(self, args, kargs):
+    self.parameters={}
     for idx, arg in enumerate(args):
       if not arg:
         continue
@@ -57,7 +60,8 @@ class APICaller(object):
 
   def build_path(self):
     # replace parameters defined in the path
-    for variable in path_variable_template.findall(self.path):
+    self.final_path = self.path
+    for variable in path_variable_template.findall(self.final_path):
       name = variable.strip('{}')
       if name == 'user' and 'user' not in self.parameters and self.api.auth:
         # No 'user' parameter provided, fetch it from Auth instead.
@@ -68,12 +72,11 @@ class APICaller(object):
         except KeyError:
           raise NameError('No parameter value found for path variable: %s' % name)
         del self.parameters[name]
-      self.path = self.path.replace(variable, value)
-
+      self.final_path = self.final_path.replace(variable, value)
 
   def execute(self):
     # Build the request URL
-    url = self.api.api_root + self.path
+    url = self.api.api_root + self.final_path
     if self.parameters:
       url = '%s?%s' % (url, urllib.urlencode(self.parameters))
 
@@ -100,7 +103,7 @@ class APICaller(object):
 
       # Execute request
       try:
-        print url, self.api.host
+        logging.debug("Fetching %s from %s" %(url, self.api.host))
         conn.request(self.method, url, headers=self.headers, body=self.post_data)
         resp = conn.getresponse()
       except Exception, e:
@@ -118,7 +121,7 @@ class APICaller(object):
 
     # If an error was returned, throw an exception
     self.api.last_response = resp
-    print resp.read()
+    #print resp.read()
     if resp.status != 200:
       error_msg = "Error response: status code = %s" % resp.status
       raise NameError(error_msg)

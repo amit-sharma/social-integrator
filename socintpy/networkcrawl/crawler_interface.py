@@ -1,6 +1,6 @@
 class NetworkCrawlerInterface:
-  def setSeed(userid):
+  def set_seed_nodes(nodes_list):
     raise NotImplementedError
   
-  def crawlNetwork(max_iterations, max_nodes):
+  def crawl(max_iterations, max_nodes):
     raise NotImplementedError

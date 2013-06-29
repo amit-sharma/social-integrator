@@ -18,10 +18,11 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
       self.pqueue.push(node, priority)
       #self.visited[node] = False
       
-  def crawl(self):
+  def crawl(self, max_nodes = 10):
     node_counter = itertools.count()
     edge_counter = itertools.count()
-    while not self.pqueue.is_empty():
+    iterations = 0 
+    while (not self.pqueue.is_empty()) and iterations < max_nodes:
       new_node = self.pqueue.pop()
       if new_node in self.visited:
         continue
@@ -44,5 +45,6 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
           else:
             self.add_to_crawl(node)
       self.visited[new_node] = True
+      iterations += 1
     self.gbuffer.close()
     return

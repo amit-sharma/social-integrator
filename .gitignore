@@ -2,4 +2,5 @@
 *.dat
 *.db
 *.log
-
+*.swp
+*settings.py
