@@ -17,6 +17,7 @@ class BaseCaller(object):
     self.node_info_calls = kwargs.get('node_info_calls', None)
     self.edge_info_calls = kwargs.get('edge_info_calls', None)
     self.previous_call_time = 0
+    self.method_default_params = kwargs.get('method_default_params', None)
   
   def call_multiple_methods(self, user, methodnames_array, has_more_data_fun):
     response = {}

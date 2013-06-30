@@ -61,10 +61,12 @@ class LastfmAPI(BaseCaller):
         del datadict[key]
     return datadict
   
-  def get_default_params(self):
+  def get_default_params(self, method_name):
     params = {}
     params['format'] = self.response_format
     params['api_key'] = self.api_key
+    if method_name in self.method_default_params:
+      params.update(self.method_default_params[method_name])
     return params
 
   @staticmethod

@@ -17,7 +17,7 @@ def call(caller, **config):
     total_results_fetched = 0
     fetch_more_data = True
     while fetch_more_data:
-      api_params = api.get_default_params()
+      api_params = api.get_default_params(api_method)
       api_params.update(kargs)
       #print api_params, custom_params, api.get_default_params()
       caller.set_up(api, api_params)
