@@ -20,13 +20,13 @@ class LastfmAPI(BaseCaller):
 
   get_data = call(
       APICaller(),
-      path='2.0/?user={user}&method={method}&api_key={api_key}' + '&format=json',
-      allowed_param=['user','method','api_key']
+      path='2.0/',
+      allowed_param=[]
       )
   
   def get_node_info(self, user, method = "user.getinfo"):
     returned_data = self.call_multiple_methods(user, self.node_info_calls,
-        LastfmAPI.get_data)
+        self.has_more_pages)
     datadict = {}
     if 'user.getInfo' in returned_data:
       infodict = json.loads(returned_data['user.getInfo'])
@@ -60,5 +60,24 @@ class LastfmAPI(BaseCaller):
       if key in datadict:
         del datadict[key]
     return datadict
+  
+  def get_default_params(self):
+    params = {}
+    params['format'] = self.response_format
+    params['api_key'] = self.api_key
+    return params
 
+  @staticmethod
+  def analyze_page(resp, method):
+    resp_dict = json.loads(resp)
+    next_page_params = {}
+    num_items = None
+    if method == "user.getRecentTracks":
+      if '@attr' in resp_dict['recenttracks']:
+        attr_dict = resp_dict['recenttracks']['@attr']
+        if int(attr_dict['totalPages']) - int(attr_dict['page']) > 0:
+          next_page_params = {'page': int(attr_dict['page']) + 1}
+        num_items = int(attr_dict['perPage'])
+    
+    return next_page_params, num_items 
 

@@ -24,34 +24,29 @@ class APICaller(object):
   def set_config(self, config):
     self.path = config['path']
     self.allowed_param = config.get('allowed_param', [])
-    self.method = config.get('method', 'GET')
+    #self.method = config.get('method', 'GET')
     self.require_auth = config.get('require_auth', False)
     self.search_api = config.get('search_api', False)
     self.use_cache = config.get('use_cache', True)
     #self.api_key = config.get('api_key', None)
 
 
-  def set_up(self, api, args, kargs):
+  def set_up(self, api, api_params):
     self.api = api
-    self.post_data = kargs.pop('post_data', None)
-    self.headers = kargs.pop('headers', {})
-    self.build_parameters(args, kargs)
+    #self.has_more_data = kargs.pop('has_more_data', None)
+    self.method = api_params.pop('http_method', 'GET')
+    self.post_data = api_params.pop('post_data', None)
+    self.headers = api_params.pop('headers', {})
+    self.build_parameters(api_params)
     self.build_path()
     self.headers['Host'] = self.api.host
     if api.secure:
       self.prefix = 'https://'
   
-  def build_parameters(self, args, kargs):
+  def build_parameters(self, params_dict):
     self.parameters={}
-    for idx, arg in enumerate(args):
-      if not arg:
-        continue
-      try:
-        self.parameters[self.allowed_param[idx]] = convert_to_utf8_str(arg)
-      except IndexError:
-         raise NameError('Too many parameters supplied!')
 
-    for k, arg in kargs.items():
+    for k, arg in params_dict.items():
       if not arg:
         continue
       if k in self.parameters:
@@ -61,18 +56,6 @@ class APICaller(object):
   def build_path(self):
     # replace parameters defined in the path
     self.final_path = self.path
-    for variable in path_variable_template.findall(self.final_path):
-      name = variable.strip('{}')
-      if name == 'user' and 'user' not in self.parameters and self.api.auth:
-        # No 'user' parameter provided, fetch it from Auth instead.
-        value = self.api.auth.get_username()
-      else:
-        try:
-          value = urllib.quote(self.parameters[name])
-        except KeyError:
-          raise NameError('No parameter value found for path variable: %s' % name)
-        del self.parameters[name]
-      self.final_path = self.final_path.replace(variable, value)
 
   def execute(self):
     # Build the request URL
@@ -104,6 +87,7 @@ class APICaller(object):
       # Execute request
       try:
         logging.debug("Fetching %s from %s" %(url, self.api.host))
+        #print url, self.api.host, self.method
         conn.request(self.method, url, headers=self.headers, body=self.post_data)
         resp = conn.getresponse()
       except Exception, e:
