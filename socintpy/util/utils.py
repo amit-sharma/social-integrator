@@ -1,6 +1,4 @@
-'''
-some utility functions.
-'''
+## some utility functions.
 import importlib
 
 def convert_to_utf8_str(arg):

@@ -1,3 +1,5 @@
+## Class to store a network in GML format
+
 from socintpy.store.generic_store import GenericStore
 import codecs
 

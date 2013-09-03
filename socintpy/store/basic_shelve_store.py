@@ -9,16 +9,25 @@ class BasicShelveStore(GenericStore):
   def __del__(self):
     self.data_shelve.close()
 
-  def record(self, data_dict):
+  def record(self, key, data_dict):
     #data_shelve = shelve.open(store_path)
-    self.data_shelve.update(data_dict)
+    self.data_shelve[key] = data_dict
     #data_shelve.close()
   
-  def fetch(self, pattern, store_path):
+  def fetch(self, pattern):
     #data_shelve = shelve.open(store_path)
     data = self.data_shelve[pattern]
     #data_shelve.close()
     return data
+ 
+  def delete(self, key):
+    del data_shelve[key]
   
+  def get_all_data(self):
+    data = []
+    for key, value in self.data_shelve.iteritems():
+      data.append((key, value))
+    return data
+
   def close(self):
     self.data_shelve.close()

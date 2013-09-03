@@ -1,6 +1,4 @@
-'''
-A implementation of class Store for json files.
-'''
+##An implementation of class Store for json files.
 
 import json
 

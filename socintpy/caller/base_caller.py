@@ -19,7 +19,7 @@ class BaseCaller(object):
     self.previous_call_time = 0
     self.method_default_params = kwargs.get('method_default_params', None)
   
-  def call_multiple_methods(self, user, methodnames_array, has_more_data_fun):
+  def call_multiple_methods(self, user, methodnames_array):
     response = {}
     for method_name in methodnames_array:
       params = {

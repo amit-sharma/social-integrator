@@ -25,16 +25,17 @@ class LastfmAPI(BaseCaller):
       )
   
   def get_node_info(self, user, method = "user.getinfo"):
-    returned_data = self.call_multiple_methods(user, self.node_info_calls,
-        self.has_more_pages)
+    returned_data = self.call_multiple_methods(user, self.node_info_calls)
     datadict = {}
     if 'user.getInfo' in returned_data:
       infodict = json.loads(returned_data['user.getInfo'])
+      self.sanitizeKeys(infodict['user'])
       self.process_fields(infodict['user'])
       datadict.update(infodict['user'])
     if 'user.getRecentTracks' in returned_data:
       tracksdict = json.loads(returned_data['user.getRecentTracks'])
       for track in tracksdict['recenttracks']['track']:
+        self.sanitizeKeys(track)
         self.process_fields(track)
       datadict['tracks'] = tracksdict['recenttracks']['track']
 
@@ -44,7 +45,7 @@ class LastfmAPI(BaseCaller):
     return datadict
 
   def get_edges_info(self, user, method = "user.getfriends"):
-    returned_data = self.get_data(user=user, method=method, api_key=self.api_key)
+    returned_data = self.get_data(user=user, method=method)
     datadict = json.loads(returned_data)
     friends_list = datadict['friends']['user']
     for friend_info in friends_list:

@@ -1,7 +1,7 @@
-'''
-The base class for api methods.
+##The base class for api methods.
+
 #TODO Where is this class taken from? Please cite.
-'''
+
 #import sys, os
 #sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from socintpy.util.utils import *
