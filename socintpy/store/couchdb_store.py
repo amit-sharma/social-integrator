@@ -1,3 +1,8 @@
+"""An implementation of GenericStore for couchdb backend
+
+A class that exposes a dictionary-like interface for couchdb database
+"""
+
 import couchdb
 from socintpy.store.generic_store import GenericStore
 import logging
