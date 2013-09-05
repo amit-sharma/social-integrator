@@ -42,7 +42,13 @@ class CouchDBStore(GenericStore):
       print doc_id
       docs_list.append((doc_id, self.couch[doc_id]))
     return docs_list
-
+  
+  def ordered_values(self):
+    map_fun = '''function(doc) {
+                  emit(doc.created_time, doc)}'''
+    for row in self.couch.query(map_fun):
+      yield (row.key, row.value)
+ 
   def close(self):
     #self.couch_connection.close()
     pass

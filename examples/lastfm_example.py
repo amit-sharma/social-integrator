@@ -14,6 +14,6 @@ result = api.get_data(user='amit_ontop', method="user.getRecentTracks",
 print result      
 """
 
-crawler = BFSNetworkCrawler(api, store_type="couchdb", recover = False)
+crawler = BFSNetworkCrawler(api, store_type="couchdb", recover = True)
 crawler.crawl(seed_nodes=["jrs1991"], max_nodes = 10)
 

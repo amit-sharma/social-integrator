@@ -1,3 +1,9 @@
+""" An intermediary class to make it easier to store graph objects.
+
+Has a node store and an edge store as its attributes. Provides semantically meaningful
+functions such as store_node and store_edge.
+"""
+
 from socintpy.store.generic_store import GenericStore
 
 class GraphBuffer:

@@ -36,7 +36,7 @@ class GenericStore(UserDict.DictMixin):
     for key, value in data:
       values_list.append(value)
     return tuple(values_list)
-
+  
   def items(self):
     return tuple(self.get_all_data())
 
@@ -52,7 +52,9 @@ class GenericStore(UserDict.DictMixin):
   
   def delete(key):
     raise NotImplementedError
-
+  
+  def ordered_values():
+    raise NotImplementedError
   def close(self):
     raise NotImplementedError
 
