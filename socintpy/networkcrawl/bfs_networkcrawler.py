@@ -39,10 +39,11 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
       new_node = self.pqueue.pop()
       if new_node in self.gbuffer.nodes_store:
         continue
+      
       new_node_info = self.network.get_node_info(new_node)
+      print "Processing", new_node
       # Assume dict output for all stores.
       new_node_edges_info = self.network.get_edges_info(new_node)
-      
       for edge_info in new_node_edges_info:
         node = edge_info['target']
         if node not in self.gbuffer.nodes_store:
@@ -60,5 +61,6 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
         self.gbuffer.store_edge(str(edge_info['id']), edge_info)
       #self.visited[new_node] = True
       iterations += 1
+      print "Processed", new_node, "\n"
     self.gbuffer.close()
     return

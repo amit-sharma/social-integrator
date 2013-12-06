@@ -65,10 +65,21 @@ class PriorityQueue:
 
   #TODO resolve the last pop, that should not be rerun
   def rerun_history(self):
+    rerun_action_max = None 
+    action_counter = 0
     for created_time, doc in self.state_store.ordered_values():
+      if doc['action'] == 'pop':
+        rerun_action_max = action_counter
+      action_counter += 1
+    
+    action_counter = 0  
+    for created_time, doc in self.state_store.ordered_values():
+      if action_counter >= rerun_action_max:
+        break
       if doc['action'] == "push":
         self.push(doc['node'], doc['priority'], rerun=True)
       elif doc['action']  == "mark_removed":
         self.mark_removed(doc['node'], rerun = True)
       elif doc['action'] == "pop":
         self.pop(rerun = True)
+      action_counter += 1

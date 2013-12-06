@@ -47,6 +47,9 @@ class LastfmAPI(BaseCaller):
   def get_edges_info(self, user, method = "user.getfriends"):
     returned_data = self.get_data(user=user, method=method)
     datadict = json.loads(returned_data)
+    if 'total' in datadict['friends'] and datadict['friends']['total'] == "0":
+      return None
+      
     friends_list = datadict['friends']['user']
     for friend_info in friends_list:
       self.sanitizeKeys(friend_info)

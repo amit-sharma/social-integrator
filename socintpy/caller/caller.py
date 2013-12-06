@@ -30,7 +30,7 @@ def call(caller, **config):
       api.set_last_call_time(time.time())
       current_resp = caller.execute()
       response += current_resp
-      print current_resp
+      #print current_resp
       next_page_params, num_results = api.__class__.analyze_page(current_resp, api_method)
       if next_page_params:
         total_results_fetched += num_results
