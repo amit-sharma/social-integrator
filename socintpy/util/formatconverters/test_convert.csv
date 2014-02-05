@@ -1,0 +1,5 @@
+"good","1",5,2,5, "fast"
+"bad","2",2,5,4, "slow"
+"good", 1, 4,2,5, "faster"
+"bad", 1,4,2,1, "slow" 
+
