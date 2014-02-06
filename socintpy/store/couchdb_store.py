@@ -48,7 +48,10 @@ class CouchDBStore(GenericStore):
                   emit(doc.created_time, doc)}'''
     for row in self.couch.query(map_fun):
       yield (row.key, row.value)
- 
+  
+  def get_maximum_id(self):
+    return max(self.couch.keys())
+  
   def close(self):
     #self.couch_connection.close()
     pass

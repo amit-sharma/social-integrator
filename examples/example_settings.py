@@ -1,3 +1,6 @@
+"""
+Settings file used to initiate an API object.
+"""
 LABEL = "lastfm"
 API_KEY = "<YOUR_API_KEY>"
 HOST = "ws.audioscrobbler.com"

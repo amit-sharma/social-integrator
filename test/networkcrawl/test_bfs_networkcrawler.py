@@ -1,10 +1,15 @@
+""" File to test bfs network crawl.
+"""
 import unittest
-from socintpy.caller.caller_interface import CallerInterface
+from socintpy.caller.base_caller import BaseCaller
 from socintpy.networkcrawl.bfs_networkcrawler import BFSNetworkCrawler
 import shelve
 from pprint import pprint
 
-class TestWebCaller(CallerInterface):
+
+class TestWebCaller(BaseCaller):
+  """ A dummy web caller
+  """
   def __init__(self, label, edges):
     self.label = label
     self.edges = edges
@@ -39,15 +44,17 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     pass
 
   def test_crawl(self):
+    # Running the bfs crawler
     webnetwork = TestWebCaller("lastfm", self.network_edges)
     crawler = BFSNetworkCrawler(webnetwork, store_type="basic_shelve")
-    crawler.set_seed_nodes(["11", "5"])
-    crawler.crawl()
-
+    crawler.crawl(seed_nodes=["11","5"])
+    
+    # Accessing its results
     self.node_info_data = shelve.open("lastfm_nodes.db")
     self.node_connections_data = shelve.open("lastfm_edges.db")
     self.node_visit_order = list(webnetwork.get_visit_order())
-
+    
+    # Testing the results with expected values
     test_node_info = {}
     test_node_edges_data = {}
     test_visit_order = ["11", "5", "8", "1"]
