@@ -30,6 +30,9 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
   
   def __del__(self):
     self.gbuffer.close()
+  
+  def close_buffers(self):
+    self.gbuffer.close()
 
   #TODO recover is redundant with seed_nodes. remove in a later version.  
   def crawl(self, seed_nodes = None, max_nodes = 10, recover = False):

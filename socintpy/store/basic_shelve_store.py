@@ -16,7 +16,10 @@ class BasicShelveStore(GenericStore):
   
   def fetch(self, pattern):
     #data_shelve = shelve.open(store_path)
-    data = self.data_shelve[pattern]
+    if pattern in self.data_shelve:
+      data = self.data_shelve[pattern]
+    else:
+      data = None
     #data_shelve.close()
     return data
  

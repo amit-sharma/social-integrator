@@ -48,9 +48,10 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     webnetwork = TestWebCaller("lastfm", self.network_edges)
     crawler = BFSNetworkCrawler(webnetwork, store_type="basic_shelve")
     crawler.crawl(seed_nodes=["11","5"])
-    
+    crawler.close_buffers() 
     # Accessing its results
     self.node_info_data = shelve.open("lastfm_nodes.db")
+    print self.node_info_data
     self.node_connections_data = shelve.open("lastfm_edges.db")
     self.node_visit_order = list(webnetwork.get_visit_order())
     
@@ -71,9 +72,9 @@ class TestBFSNetworkCrawler(unittest.TestCase):
         edge_counter += 1
       node_counter += 1
       
-    #print self.node_visit_order
-    #pprint(self.node_info_data)
-    #pprint(test_node_info)
+    print self.node_visit_order
+    pprint(self.node_info_data)
+    pprint(test_node_info)
     #pprint(self.node_connections_data)
     self.assertListEqual(self.node_visit_order, test_visit_order,
         "Problem in order of BFS crawl")
