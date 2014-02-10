@@ -1,5 +1,6 @@
 import shelve
 from socintpy.store.generic_store import GenericStore
+#from pprint import pprint
 
 class BasicShelveStore(GenericStore):
   def __init__(self, store_path, data_type="default"):
@@ -26,11 +27,22 @@ class BasicShelveStore(GenericStore):
   def delete(self, key):
     del data_shelve[key]
   
+  def ordered_values(self):
+    new_arr = []
+    for val in self.data_shelve.values():
+      new_arr.append((val['created_time'], val))
+    return sorted(new_arr, key=lambda x: x[0])
+  
   def get_all_data(self):
     data = []
     for key, value in self.data_shelve.iteritems():
       data.append((key, value))
     return data
+
+  def get_maximum_id(self):
+    max_id= max([val['id'] for val in self.data_shelve.values()])
+    print max_id
+    return max_id
 
   def close(self):
     self.data_shelve.close()

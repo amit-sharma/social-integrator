@@ -53,7 +53,7 @@ class GenericStore(UserDict.DictMixin):
   def delete(key):
     raise NotImplementedError
   
-  def ordered_values():
+  def ordered_values(self):
     raise NotImplementedError
   def close(self):
     raise NotImplementedError

@@ -101,6 +101,8 @@ class PriorityQueue:
     for created_time, doc in self.state_store.ordered_values():
       if pop_counter >= rerun_action_max:
         break
+      
+      print self.queue_dict
       if doc['action'] == "push":
         self.push(doc['node'], doc['priority'], rerun=True)
       elif doc['action']  == "mark_removed":

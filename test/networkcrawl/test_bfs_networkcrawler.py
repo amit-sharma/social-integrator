@@ -43,13 +43,25 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     #self.node_connections_data.close()
     pass
 
+  
   def test_crawl(self):
     # Running the bfs crawler
     webnetwork = TestWebCaller("lastfm", self.network_edges)
     crawler = BFSNetworkCrawler(webnetwork, store_type="basic_shelve")
-    crawler.crawl(seed_nodes=["11","5"])
-    crawler.close_buffers() 
-    # Accessing its results
+    crawler.crawl(seed_nodes=["11","5"], max_nodes=3)
+    crawler.close() 
+    
+    self.compare_values(webnetwork, test_visit_order=['11','5','8'])   
+    
+    webnetwork = TestWebCaller("lastfm", self.network_edges)
+    crawler = BFSNetworkCrawler(webnetwork, store_type="basic_shelve")
+    crawler.crawl(recover=True)
+    crawler.close()
+
+    #self.compare_values(webnetwork)
+
+  def compare_values(self, webnetwork, test_visit_order):     
+    # Accessing the results of calling the source code
     self.node_info_data = shelve.open("lastfm_nodes.db")
     print self.node_info_data
     self.node_connections_data = shelve.open("lastfm_edges.db")
@@ -58,20 +70,21 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     # Testing the results with expected values
     test_node_info = {}
     test_node_edges_data = {}
-    test_visit_order = ["11", "5", "8", "1"]
+    #test_visit_order = ["11", "5", "8", "1"]
     node_counter = 0
     edge_counter = 0
     for i in test_visit_order:
       curr_node_info = webnetwork.get_node_info(i)
       curr_node_info['id'] = node_counter
-      test_node_info.update({str(node_counter): curr_node_info})
+      test_node_info.update({str(i): curr_node_info})
       curr_edges_info = webnetwork.get_edges_info(i)
       for edge_info in curr_edges_info:
         edge_info['id'] = edge_counter
         test_node_edges_data[str(edge_counter)] = edge_info
         edge_counter += 1
       node_counter += 1
-      
+    
+   
     print self.node_visit_order
     pprint(self.node_info_data)
     pprint(test_node_info)
@@ -84,6 +97,7 @@ class TestBFSNetworkCrawler(unittest.TestCase):
                          "Edges do not match: Problem in BFS crawl.")
     self.node_connections_data.close()
     self.node_info_data.close()
+
 
 if __name__ == "__main__":
   unittest.main()
