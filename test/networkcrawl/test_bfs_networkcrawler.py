@@ -3,7 +3,7 @@
 import unittest
 from socintpy.caller.base_caller import BaseCaller
 from socintpy.networkcrawl.bfs_networkcrawler import BFSNetworkCrawler
-import shelve
+import shelve, os
 from pprint import pprint
 
 
@@ -37,8 +37,13 @@ class TestBFSNetworkCrawler(unittest.TestCase):
                           "8": ["1", "11", "5"], "5": ["11", "8"]}
     self.node_info_data = None
     self.node_connections_data = None
+    self.correct_visit_order = ["11","5","8","1"]
 
   def tearDown(self):
+    self.
+    os.remove("lastfm_edges.db")
+    os.remove("lastfm_nodes.db")
+    os.remove("lastfm_state")
     #self.node_info_data.close()
     #self.node_connections_data.close()
     pass
@@ -46,26 +51,30 @@ class TestBFSNetworkCrawler(unittest.TestCase):
   
   def test_crawl(self):
     # Running the bfs crawler
-    webnetwork = TestWebCaller("lastfm", self.network_edges)
-    crawler = BFSNetworkCrawler(webnetwork, store_type="basic_shelve")
-    crawler.crawl(seed_nodes=["11","5"], max_nodes=3)
+    num_nodes_before_crash=2
+    webnetwork = TestWebCaller("test", self.network_edges)
+    crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
+    crawler.crawl(seed_nodes=["11","5"], max_nodes=num_nodes_before_crash)
     crawler.close() 
     
-    self.compare_values(webnetwork, test_visit_order=['11','5','8'])   
+    node_visit_order = webnetwork.get_visit_order()
+    self.compare_values(node_visit_order,
+test_visit_order=self.correct_visit_order[:num_nodes_before_crash])   
     
-    webnetwork = TestWebCaller("lastfm", self.network_edges)
-    crawler = BFSNetworkCrawler(webnetwork, store_type="basic_shelve")
+    crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
     crawler.crawl(recover=True)
     crawler.close()
 
-    #self.compare_values(webnetwork)
+    node_visit_order = webnetwork.get_visit_order()
+    self.compare_values(node_visit_order,
+test_visit_order=self.correct_visit_order)
 
-  def compare_values(self, webnetwork, test_visit_order):     
+  def compare_values(self, real_visit_order, test_visit_order):     
     # Accessing the results of calling the source code
-    self.node_info_data = shelve.open("lastfm_nodes.db")
+    self.node_info_data = self.crawler.gbuffer.nodes_store
     print self.node_info_data
     self.node_connections_data = shelve.open("lastfm_edges.db")
-    self.node_visit_order = list(webnetwork.get_visit_order())
+    self.node_visit_order = real_visit_order
     
     # Testing the results with expected values
     test_node_info = {}
@@ -73,11 +82,12 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     #test_visit_order = ["11", "5", "8", "1"]
     node_counter = 0
     edge_counter = 0
+    test_webnetwork =  TestWebCaller("lastfm", self.network_edges)
     for i in test_visit_order:
-      curr_node_info = webnetwork.get_node_info(i)
+      curr_node_info = test_webnetwork.get_node_info(i)
       curr_node_info['id'] = node_counter
       test_node_info.update({str(i): curr_node_info})
-      curr_edges_info = webnetwork.get_edges_info(i)
+      curr_edges_info = test_webnetwork.get_edges_info(i)
       for edge_info in curr_edges_info:
         edge_info['id'] = edge_counter
         test_node_edges_data[str(edge_counter)] = edge_info
@@ -100,6 +110,8 @@ class TestBFSNetworkCrawler(unittest.TestCase):
 
 
 if __name__ == "__main__":
+  #STORE_TYPE = "basic_shelve"
+  STORE_TYPE = "couchdb"
   unittest.main()
 
 

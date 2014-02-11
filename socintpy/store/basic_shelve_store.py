@@ -1,9 +1,10 @@
-import shelve
+import shelve,os
 from socintpy.store.generic_store import GenericStore
 #from pprint import pprint
 
 class BasicShelveStore(GenericStore):
   def __init__(self, store_path, data_type="default"):
+    self.store_path = store_path
     self.data_shelve = shelve.open(store_path)
     self.data_type = data_type
   
@@ -46,3 +47,7 @@ class BasicShelveStore(GenericStore):
 
   def close(self):
     self.data_shelve.close()
+
+  def destroy_store(self):
+    if os.path.isfile(self.store_path):
+      os.remove(self.store_path)

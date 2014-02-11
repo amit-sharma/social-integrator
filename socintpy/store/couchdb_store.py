@@ -10,11 +10,11 @@ import logging
 class CouchDBStore(GenericStore):
   def __init__(self, store_path, data_type="default"):
     self.couch_server = couchdb.Server()
-    sanitized_couchname = store_path.replace(".","")
+    self.sanitized_couchname = store_path.replace(".","").lower()
     try:
-      self.couch = self.couch_server.create(sanitized_couchname)
+      self.couch = self.couch_server.create(self.sanitized_couchname)
     except couchdb.http.PreconditionFailed:
-      self.couch = self.couch_server[sanitized_couchname]
+      self.couch = self.couch_server[self.sanitized_couchname]
     self.data_type = data_type
   
   def __del__(self):
@@ -50,8 +50,16 @@ class CouchDBStore(GenericStore):
       yield (row.key, row.value)
   
   def get_maximum_id(self):
-    return max(self.couch.keys())
+    #return max(self.keys())
+    map_fun = '''function(doc){
+                  emit(doc.id, null)}'''
+    rows = self.couch.query(map_fun)
+    max_id = max([row.key for row in rows])                
+    return max_id 
   
   def close(self):
     #self.couch_connection.close()
     pass
+
+  def destroy_store(self):
+    self.couch_server.delete(self.sanitized_couchname)

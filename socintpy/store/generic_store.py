@@ -43,19 +43,23 @@ class GenericStore(UserDict.DictMixin):
   def iteritems(self):
     for key, value in self.get_all_data():
       yield (key, value)
-
-  def record(data_dict):
+  
+  # Add the dictionary data_dict to the store, indexed by "key"
+  def record(self, key, data_dict):
     raise NotImplementedError
 
-  def fetch(pattern):
+  def fetch(self, pattern):
     raise NotImplementedError
   
-  def delete(key):
+  def delete(self, key):
     raise NotImplementedError
   
   def ordered_values(self):
     raise NotImplementedError
   def close(self):
+    raise NotImplementedError
+  
+  def destroy_store(self):
     raise NotImplementedError
 
   @staticmethod

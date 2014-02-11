@@ -9,7 +9,16 @@ import itertools
 # BFSnetworkcrawler is called for a specific network, which is required as a
 # parameter
 class BFSNetworkCrawler(NetworkCrawlerInterface):
+  ""
   def __init__(self, network, store_type = "gml"):
+    """ Function to initialize a network crawler.
+      Args:
+        network: the network object to be crawled
+        store_type: the type of storage. Valid values are "gml", "basic_shelve"
+                    or "couchdb"
+      Returns:
+        An initialized crawler object
+    """
     self.network = network
   
     store_class = GenericStore.get_store_class(store_type)
@@ -44,8 +53,8 @@ seed_nodes needs to be not None.
     # restart it from where it stopped.
     if recover:
       self.pqueue.rerun_history()
-      nodes_counter = itertools.count(self.gbuffer.nodes_store.get_maximum_id())
-      edge_counter  = itertools.count(self.gbuffer.edges_store.get_maximum_id())
+      node_counter = itertools.count(self.gbuffer.nodes_store.get_maximum_id()+1)
+      edge_counter = itertools.count(self.gbuffer.edges_store.get_maximum_id()+1)
     else:
       self.set_seed_nodes(seed_nodes)
       node_counter = itertools.count()
