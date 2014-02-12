@@ -22,5 +22,8 @@ class GraphBuffer:
   def close(self):
     self.nodes_store.close()
     self.edges_store.close()
-
+  
+  def destroy_stores(self):
+    self.nodes_store.destroy_store()
+    self.edges_store.destroy_store()
 

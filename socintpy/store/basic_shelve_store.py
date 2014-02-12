@@ -44,6 +44,9 @@ class BasicShelveStore(GenericStore):
     max_id= max([val['id'] for val in self.data_shelve.values()])
     print max_id
     return max_id
+  
+  def get_dict(self):
+    return self
 
   def close(self):
     self.data_shelve.close()

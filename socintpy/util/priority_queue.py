@@ -24,6 +24,9 @@ class PriorityQueue:
   
   def __del__(self):
     self.state_store.close()
+  
+  def destroy_state(self):
+    self.state_store.destroy_store()
 
   def push(self, node, priority = 0, rerun = False):
     """ Function to add a node to the queue, update the queue_dictionary  and 

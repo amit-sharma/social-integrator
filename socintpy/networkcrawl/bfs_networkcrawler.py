@@ -52,7 +52,9 @@ seed_nodes needs to be not None.
     # if the crawl was stopped for some reason, recover parameter helps to
     # restart it from where it stopped.
     if recover:
+      print "Starting recover"
       self.pqueue.rerun_history()
+      print "Ended recover"
       node_counter = itertools.count(self.gbuffer.nodes_store.get_maximum_id()+1)
       edge_counter = itertools.count(self.gbuffer.edges_store.get_maximum_id()+1)
     else:

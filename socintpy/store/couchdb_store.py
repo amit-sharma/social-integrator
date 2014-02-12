@@ -27,8 +27,8 @@ class CouchDBStore(GenericStore):
     try:
       couch_doc_id, doc_rev = self.couch.save(doc_data)
     except couchdb.http.ResourceConflict:
-      logging.error("The doc_id %s already exists in the couch"
-          %doc_id)
+      raise Exception
+      #logging.error("The doc_id %s already exists in the couch" %doc_id)
   
   def fetch(self, doc_id):
     data = None
@@ -57,6 +57,16 @@ class CouchDBStore(GenericStore):
     max_id = max([row.key for row in rows])                
     return max_id 
   
+  def get_dict(self):
+    new_dict = {}
+    for doc_id in self.couch:
+      simple_dict = dict(self.couch[doc_id])
+      data_key = simple_dict.pop('_id')
+      simple_dict.pop('_rev')
+      new_dict[data_key] = simple_dict
+
+    return new_dict
+     
   def close(self):
     #self.couch_connection.close()
     pass

@@ -38,14 +38,11 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     self.node_info_data = None
     self.node_connections_data = None
     self.correct_visit_order = ["11","5","8","1"]
+    self.crawler = None
 
   def tearDown(self):
-    self.
-    os.remove("lastfm_edges.db")
-    os.remove("lastfm_nodes.db")
-    os.remove("lastfm_state")
-    #self.node_info_data.close()
-    #self.node_connections_data.close()
+    self.crawler.gbuffer.destroy_stores()
+    self.crawler.pqueue.destroy_state()
     pass
 
   
@@ -53,27 +50,27 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     # Running the bfs crawler
     num_nodes_before_crash=2
     webnetwork = TestWebCaller("test", self.network_edges)
-    crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
-    crawler.crawl(seed_nodes=["11","5"], max_nodes=num_nodes_before_crash)
-    crawler.close() 
+    self.crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
+    self.crawler.crawl(seed_nodes=["11","5"], max_nodes=num_nodes_before_crash)
+    self.crawler.close() 
     
     node_visit_order = webnetwork.get_visit_order()
     self.compare_values(node_visit_order,
 test_visit_order=self.correct_visit_order[:num_nodes_before_crash])   
-    
-    crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
-    crawler.crawl(recover=True)
-    crawler.close()
+     
+    self.crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
+    self.crawler.crawl(recover=True)
+    self.crawler.close()
 
     node_visit_order = webnetwork.get_visit_order()
     self.compare_values(node_visit_order,
 test_visit_order=self.correct_visit_order)
-
+    
   def compare_values(self, real_visit_order, test_visit_order):     
     # Accessing the results of calling the source code
-    self.node_info_data = self.crawler.gbuffer.nodes_store
+    self.node_info_data = self.crawler.gbuffer.nodes_store.get_dict()
     print self.node_info_data
-    self.node_connections_data = shelve.open("lastfm_edges.db")
+    self.node_connections_data = self.crawler.gbuffer.edges_store.get_dict()
     self.node_visit_order = real_visit_order
     
     # Testing the results with expected values
@@ -82,7 +79,7 @@ test_visit_order=self.correct_visit_order)
     #test_visit_order = ["11", "5", "8", "1"]
     node_counter = 0
     edge_counter = 0
-    test_webnetwork =  TestWebCaller("lastfm", self.network_edges)
+    test_webnetwork =  TestWebCaller("test", self.network_edges)
     for i in test_visit_order:
       curr_node_info = test_webnetwork.get_node_info(i)
       curr_node_info['id'] = node_counter
@@ -105,8 +102,6 @@ test_visit_order=self.correct_visit_order)
                          "Nodes do not match: Problem in BFS crawl.")
     self.assertDictEqual(test_node_edges_data, dict(self.node_connections_data),
                          "Edges do not match: Problem in BFS crawl.")
-    self.node_connections_data.close()
-    self.node_info_data.close()
 
 
 if __name__ == "__main__":

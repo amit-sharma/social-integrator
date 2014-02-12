@@ -62,6 +62,8 @@ class GenericStore(UserDict.DictMixin):
   def destroy_store(self):
     raise NotImplementedError
 
+  def get_dict(self):
+    raise NotImplementedError
   @staticmethod
   def get_store_class(store_type):
     StoreClass = None
