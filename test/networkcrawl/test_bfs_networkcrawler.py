@@ -52,20 +52,20 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     webnetwork = TestWebCaller("test", self.network_edges)
     self.crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
     self.crawler.crawl(seed_nodes=["11","5"], max_nodes=num_nodes_before_crash)
-    self.crawler.close() 
     
     node_visit_order = webnetwork.get_visit_order()
     self.compare_values(node_visit_order,
 test_visit_order=self.correct_visit_order[:num_nodes_before_crash])   
-     
+    self.crawler.close() 
+
     self.crawler = BFSNetworkCrawler(webnetwork, store_type=STORE_TYPE)
     self.crawler.crawl(recover=True)
-    self.crawler.close()
 
     node_visit_order = webnetwork.get_visit_order()
     self.compare_values(node_visit_order,
 test_visit_order=self.correct_visit_order)
-    
+    self.crawler.close()  
+
   def compare_values(self, real_visit_order, test_visit_order):     
     # Accessing the results of calling the source code
     self.node_info_data = self.crawler.gbuffer.nodes_store.get_dict()
@@ -105,8 +105,8 @@ test_visit_order=self.correct_visit_order)
 
 
 if __name__ == "__main__":
-  #STORE_TYPE = "basic_shelve"
-  STORE_TYPE = "couchdb"
+  STORE_TYPE = "basic_shelve"
+  #STORE_TYPE = "couchdb"
   unittest.main()
 
 

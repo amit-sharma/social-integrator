@@ -41,7 +41,9 @@ class BasicShelveStore(GenericStore):
     return data
 
   def get_maximum_id(self):
-    max_id= max([val['id'] for val in self.data_shelve.values()])
+    max_id = -1
+    if self.data_shelve:
+      max_id= max([int(val['id']) for val in self.data_shelve.values()])
     print max_id
     return max_id
   

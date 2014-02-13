@@ -19,9 +19,9 @@ class PriorityQueue:
     # Assigning the type of store
     if store_class is not None:
       # counter for number of actions on the pqueue
-      self.update_counter = itertools.count()  
       self.state_store = store_class(store_name, data_type = "crawl_state")
-  
+      self.update_counter = itertools.count(self.state_store.get_maximum_id()+1)  
+
   def __del__(self):
     self.state_store.close()
   
@@ -37,8 +37,9 @@ class PriorityQueue:
     heapq.heappush(self.queue, entry)
     self.queue_dict[node] = entry
     if self.state_store is not None and not rerun:
-      self.state_store[str(next(self.update_counter))] = {'node': node,
-        'action':'push', 'priority':priority, 'created_time':time.time()}
+      self.update_state_store(node, 'push', priority)
+      #self.state_store[str(next(self.update_counter))] = {'node': node,
+      #  'action':'push', 'priority':priority, 'created_time':time.time()}
     #return entry_id
   
   def mark_removed(self, node, rerun = False):
@@ -53,8 +54,9 @@ class PriorityQueue:
     entry_priority = entry[0]
     entry[2] = "REMOVD"
     if self.state_store is not None and not rerun:
-      self.state_store[str(next(self.update_counter))] = {'node': node,
-        'action': 'mark_removed', 'priority': entry_priority, 'created_time':time.time()}
+      self.update_state_store(node, 'mark_removed', entry_priority)
+      #self.state_store[str(next(self.update_counter))] = {'node': node,
+      #  'action': 'mark_removed', 'priority': entry_priority, 'created_time':time.time()}
     return entry_priority
 
   def pop(self, rerun = False):
@@ -76,8 +78,9 @@ class PriorityQueue:
         found = True
         del self.queue_dict[node]
     if self.state_store is not None and not rerun:
-      self.state_store[str(next(self.update_counter))] = {'node': node,
-        'action': 'pop', 'priority': entry_priority, 'created_time': time.time()}
+      self.update_state_store(node, 'pop', entry_priority)
+      #self.state_store[str(next(self.update_counter))] = {'node': node,
+      #  'action': 'pop', 'priority': entry_priority, 'created_time': time.time()}
     if found:
       return node
     else:
@@ -114,3 +117,12 @@ class PriorityQueue:
       elif doc['action'] == "pop":
         self.pop(rerun = True)
         pop_counter += 1
+
+  def update_state_store(self, node, action, priority):
+    curr_counter = str(next(self.update_counter))   
+    store_key = action + curr_counter
+    self.state_store[store_key] = {'node': node,
+       'action': action, 'priority': priority, 
+       'id': curr_counter, 'created_time': time.time()}
+
+

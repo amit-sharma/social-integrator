@@ -51,10 +51,12 @@ class CouchDBStore(GenericStore):
   
   def get_maximum_id(self):
     #return max(self.keys())
-    map_fun = '''function(doc){
+    max_id = -1
+    if len(self.couch)>0:
+      map_fun = '''function(doc){
                   emit(doc.id, null)}'''
-    rows = self.couch.query(map_fun)
-    max_id = max([row.key for row in rows])                
+      rows = self.couch.query(map_fun)
+      max_id = max([int(row.key) for row in rows])                
     return max_id 
   
   def get_dict(self):
