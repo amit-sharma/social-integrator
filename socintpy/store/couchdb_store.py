@@ -27,8 +27,8 @@ class CouchDBStore(GenericStore):
     try:
       couch_doc_id, doc_rev = self.couch.save(doc_data)
     except couchdb.http.ResourceConflict:
-      raise Exception
-      #logging.error("The doc_id %s already exists in the couch" %doc_id)
+      #raise Exception
+      logging.error("The doc_id %s already exists in the couch" %doc_id)
   
   def fetch(self, doc_id):
     data = None

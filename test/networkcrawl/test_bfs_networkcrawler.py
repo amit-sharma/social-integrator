@@ -62,6 +62,7 @@ test_visit_order=self.correct_visit_order[:num_nodes_before_crash])
     self.crawler.crawl(recover=True)
 
     node_visit_order = webnetwork.get_visit_order()
+    print "Node visit order is", node_visit_order
     self.compare_values(node_visit_order,
 test_visit_order=self.correct_visit_order)
     self.crawler.close()  
