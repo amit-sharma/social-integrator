@@ -5,6 +5,7 @@ from socintpy.util.priority_queue import PriorityQueue
 from socintpy.store.graph_buffer import GraphBuffer
 from socintpy.store.generic_store import GenericStore
 import itertools
+import logging
 
 # BFSnetworkcrawler is called for a specific network, which is required as a
 # parameter
@@ -38,10 +39,11 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
     #self.visited[node] = False
   
   def __del__(self):
-    self.gbuffer.close()
+    self.close()
   
   def close(self):
     self.gbuffer.close()
+    self.pqueue.close()
 
   #TODO recover is redundant with seed_nodes. remove in a later version.  
   def crawl(self, seed_nodes = None, max_nodes = 10, recover = False):
@@ -52,9 +54,9 @@ seed_nodes needs to be not None.
     # if the crawl was stopped for some reason, recover parameter helps to
     # restart it from where it stopped.
     if recover:
-      print "Starting recover"
+      logging.info("Starting recovery of queue.")
       self.pqueue.rerun_history()
-      print "Ended recover"
+      logging.info("Ended recovery of queue.")
       node_counter = itertools.count(self.gbuffer.nodes_store.get_maximum_id()+1)
       edge_counter = itertools.count(self.gbuffer.edges_store.get_maximum_id()+1)
     else:
@@ -70,7 +72,7 @@ seed_nodes needs to be not None.
       
       # Get details about the current node 
       new_node_info = self.network.get_node_info(new_node)
-      print "Got information about", new_node
+      logging.info("Got information about %s" %new_node)
       # Assume dict output for all stores.
       new_node_edges_info = self.network.get_edges_info(new_node)
       for edge_info in new_node_edges_info:
@@ -92,5 +94,5 @@ seed_nodes needs to be not None.
         edge_info['id'] = next(edge_counter)
         self.gbuffer.store_edge(str(edge_info['id']), edge_info)
       iterations += 1
-      print "Processed", new_node, "\n"
+      logging.info("Processed %s \n" %new_node)
     return

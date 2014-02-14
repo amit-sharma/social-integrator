@@ -43,7 +43,6 @@ class TestBFSNetworkCrawler(unittest.TestCase):
   def tearDown(self):
     self.crawler.gbuffer.destroy_stores()
     self.crawler.pqueue.destroy_state()
-    pass
 
   
   def test_crawl(self):
@@ -65,8 +64,9 @@ test_visit_order=self.correct_visit_order[:num_nodes_before_crash])
     print "Node visit order is", node_visit_order
     self.compare_values(node_visit_order,
 test_visit_order=self.correct_visit_order)
+      
     self.crawler.close()  
-
+    
   def compare_values(self, real_visit_order, test_visit_order):     
     # Accessing the results of calling the source code
     self.node_info_data = self.crawler.gbuffer.nodes_store.get_dict()
@@ -106,8 +106,8 @@ test_visit_order=self.correct_visit_order)
 
 
 if __name__ == "__main__":
-  STORE_TYPE = "basic_shelve"
-  #STORE_TYPE = "couchdb"
+  #STORE_TYPE = "basic_shelve"
+  STORE_TYPE = "couchdb"
   unittest.main()
 
 

@@ -20,11 +20,16 @@ class PriorityQueue:
     if store_class is not None:
       # counter for number of actions on the pqueue
       self.state_store = store_class(store_name, data_type = "crawl_state")
+      #print "Initializing state store", store_name
+      #pprint(self.state_store)
       self.update_counter = itertools.count(self.state_store.get_maximum_id()+1)  
 
   def __del__(self):
+    self.close()
+
+  def close(self):
     self.state_store.close()
-  
+ 
   def destroy_state(self):
     self.state_store.destroy_store()
 
