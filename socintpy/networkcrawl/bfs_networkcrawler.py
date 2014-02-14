@@ -95,4 +95,5 @@ seed_nodes needs to be not None.
         self.gbuffer.store_edge(str(edge_info['id']), edge_info)
       iterations += 1
       logging.info("Processed %s \n" %new_node)
+      print "Processed ", new_node
     return

@@ -1,13 +1,18 @@
+""" Test class for Priority Queue.
+    Does not test for functionality with recovery.
+"""
+
 import unittest
 from socintpy.util.priority_queue import PriorityQueue
+from socintpy.store.basic_shelve_store import BasicShelveStore
 
 class PriorityQueueTestCase(unittest.TestCase):
   def setUp(self):
-    self.pqueue = PriorityQueue()
+    self.pqueue = PriorityQueue(store_class=STORE_CLASS, store_name="testpq" )
     self.test_data = [(10, "Phy"), (12, "Maths"), (30, "Chem"), (25, "Bio"),
                       (41, "English")]
   def tearDown(self):
-    pass
+    self.pqueue.close()
 
   def test_push(self):
     for data_element in self.test_data:
@@ -73,4 +78,5 @@ class PriorityQueueTestCase(unittest.TestCase):
                          "Problem with pop on PriorityQueue.")
 
 if __name__ == "__main__":
+  STORE_CLASS = BasicShelveStore
   unittest.main()

@@ -6,6 +6,8 @@ from socintpy.caller.caller import call
 from api_caller import APICaller
 from base_caller import BaseCaller
 import json
+from pprint import pprint
+import logging
 
 class LastfmAPI(BaseCaller):
   def __init__(self, kwargs):
@@ -76,6 +78,13 @@ class LastfmAPI(BaseCaller):
   @staticmethod
   def analyze_page(resp, method):
     resp_dict = json.loads(resp)
+    """if 'error' in resp_dict:
+      error_str = "Error fetching %s because:" %(method, resp_dict['message'])
+      print error_str
+      logging.error(error_str)
+      
+    pprint(resp_dict)
+    """
     next_page_params = {}
     num_items = None
     if method == "user.getRecentTracks":
@@ -86,4 +95,15 @@ class LastfmAPI(BaseCaller):
         num_items = int(attr_dict['perPage'])
     
     return next_page_params, num_items 
+  
+  def is_error(resp):
+    resp_dict = json.loads(resp)
+    call_error = False
+    if 'error' in resp_dict:
+      call_error = True
+      error_str = "Error fetching %s because:" %(method, resp_dict['message'
+])   
+      print error_str
+      logging.error(error_str)
+    return call_error
 

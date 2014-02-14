@@ -93,11 +93,17 @@ class APICaller(object):
       except Exception, e:
         raise NameError('Failed to send request: %s' % e)
 
-      # Exit request loop if non-retry error code
+      # Exit request loop if successful API call result
+      # Retry_errors=True => retries if there is an error
       if self.api.retry_errors:
-         if resp.status not in self.api.retry_errors: break
+        if resp.status == 200:
+          if self.api.is_error(resp.read()):
+            logging.error("Error in API call %s. Retrying..." %url)
+          else:
+            break      
+        #if resp.status not in self.api.retry_errors: break
       else:
-        if resp.status == 200: break
+        break
 
       # Sleep before retrying request again
       time.sleep(self.api.retry_delay)
@@ -106,8 +112,11 @@ class APICaller(object):
     # If an error was returned, throw an exception
     self.api.last_response = resp
     #print resp.read()
-    if resp.status != 200:
-      error_msg = "Error response: status code = %s" % resp.status
+    if resp.status == 200:
+      logging.debug("Got response from API: \n %s" %resp.read())
+    else:
+      error_msg = "Error response from API: status code = %s" % resp.status
+      logging.error(error_msg)
       raise NameError(error_msg)
 
     # Parse the response payload
