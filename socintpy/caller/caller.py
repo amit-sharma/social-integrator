@@ -15,7 +15,7 @@ def call(caller, **config):
   def _call(api, *args, **kargs):
     api_method = kargs['method']
     max_results = kargs.pop('max_results', None)
-    response= ''
+    response_array= []
     total_results_fetched = 0
     fetch_more_data = True
     while fetch_more_data:
@@ -27,25 +27,25 @@ def call(caller, **config):
       #print timediff, api.api_delay
       if api.api_delay and timediff < api.api_delay:
         time.sleep(api.api_delay - timediff)
-      logging.debug("Time between calls = %f seconds" % (time.time() -
+      logging.info("Time between calls = %f seconds" % (time.time() -
         api.previous_call_time))
       api.set_last_call_time(time.time())
       try:
         current_resp = caller.execute()
       except APICallError, e:
         raise APICallError(e)
-      response += current_resp
+      response_array.append(current_resp)
       #print current_resp
       next_page_params, num_results = api.__class__.analyze_page(current_resp, api_method)
       if next_page_params:
         total_results_fetched += num_results
-        if total_results_fetched < max_results:
+        if max_results is None or total_results_fetched < max_results:
           kargs.update(next_page_params)
         else:
           fetch_more_data = False
       else:
         fetch_more_data= False
-    return response
+    return response_array
 
   # we can do more things such as pages here
   return _call

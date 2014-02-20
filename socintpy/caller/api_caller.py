@@ -75,6 +75,7 @@ class APICaller(object):
     # or maximum number of retries is reached.
     retry = 0
     success = False
+    curr_error_str = None
     while retry < self.api.retry_count + 1:
       result = None
       if self.api.secure:
@@ -109,7 +110,8 @@ class APICaller(object):
         break
       """
       result = resp.read()
-      if resp.status == 200 and not self.api.is_error(result, self.method):
+      call_error, curr_error_str = self.api.is_error(result, self.method)
+      if resp.status == 200 and not call_error:
         success = True
         break
       else:
@@ -123,7 +125,8 @@ class APICaller(object):
     if success:
       logging.debug("Got response from API: \n %s" %result)
     else:
-      error_msg = "Error response from API: status code = %s" % resp.status
+      error_msg = "Error response from API: status code = %s, error_message = %s" %(resp.status, curr_error_str)
+      print error_msg
       logging.error(error_msg)
       raise APICallError(error_msg)
 

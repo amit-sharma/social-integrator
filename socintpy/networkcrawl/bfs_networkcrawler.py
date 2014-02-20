@@ -80,14 +80,18 @@ seed_nodes needs to be not None.
         logging.info("Crawler: Got information about %s" %new_node)
       # Assume dict output for all stores.
       new_node_edges_info = self.network.get_edges_info(new_node)
+      print "Got all data"
+      print "\n"
       if new_node_edges_info is None:
         logging.error("Crawler: Error in fetching node's edges info")
         raise NameError
       else:
         logging.info("Crawler: Got information about %s's edges" %new_node)
-
+      
       for edge_info in new_node_edges_info:
         node = edge_info['target']
+  
+        #self.pqueue.state_store = None
         if node not in self.gbuffer.nodes_store:
           # Update priority if node already exists in the queue
           if node in self.pqueue.queue_dict:
@@ -97,8 +101,9 @@ seed_nodes needs to be not None.
           # Otherwise just add the node to the queue
           else:
             self.add_to_crawl(node)
-      
+       
       # Now storing the data about the node and its edges
+      print "Starting to store node info"
       new_node_info['id'] = next(node_counter)
       self.gbuffer.store_node(new_node,  new_node_info)
       for edge_info in new_node_edges_info:

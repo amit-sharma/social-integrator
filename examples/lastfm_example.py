@@ -21,7 +21,7 @@ print result
 """
 
 # Set up the data crawl
-crawler = BFSNetworkCrawler(api, store_type="couchdb")
+crawler = BFSNetworkCrawler(api, store_type="basic_shelve")
 
 # Start the data crawl
 crawler.crawl(seed_nodes=["jrs1991"], max_nodes = 10)

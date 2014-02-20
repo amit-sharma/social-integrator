@@ -13,11 +13,12 @@ class BasicShelveStore(GenericStore):
 
   def record(self, key, data_dict):
     #data_shelve = shelve.open(store_path)
-    self.data_shelve[key] = data_dict
+    self.data_shelve[key.encode('ascii')] = data_dict
     #data_shelve.close()
   
   def fetch(self, pattern):
     #data_shelve = shelve.open(store_path)
+    pattern = pattern.encode('ascii')
     if pattern in self.data_shelve:
       data = self.data_shelve[pattern]
     else:
@@ -26,6 +27,7 @@ class BasicShelveStore(GenericStore):
     return data
  
   def delete(self, key):
+    key = pattern.encode('ascii')
     del data_shelve[key]
   
   def ordered_values(self):

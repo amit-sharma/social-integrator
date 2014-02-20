@@ -34,7 +34,8 @@ class LastfmAPI(BaseCaller):
 
     datadict = {}
     if 'user.getInfo' in returned_data:
-      infodict = json.loads(returned_data['user.getInfo'])
+      assert len(returned_data['user.getInfo']) == 1
+      infodict = json.loads(returned_data['user.getInfo'][0])
       self.sanitizeKeys(infodict['user'])
       self.process_fields(infodict['user'])
       datadict.update(infodict['user'])
@@ -84,19 +85,25 @@ class LastfmAPI(BaseCaller):
       params.update(self.method_default_params[method_name])
     return params
 
-  def get_tracks_from_json(self, jsondata, category, datatype="track"):
+  def get_tracks_from_json(self, jsondata_arr, category, datatype="track"):
     trackslist = None
-    tracksdict = json.loads(jsondata)
-    #print tracksdict
-    if 'total' in tracksdict[category] and tracksdict[category]['total'] == "0":
-      trackslist = []
-    else:
-      if type(tracksdict[category][datatype]) is dict:
-        tracksdict[category][datatype] = [tracksdict[category][datatype]]
-      for track in tracksdict[category][datatype]:
-        self.sanitizeKeys(track)
-        self.process_fields(track)
-      trackslist = tracksdict[category][datatype]
+    for jsondata in jsondata_arr:
+      tracksdict = json.loads(jsondata)
+      #print tracksdict
+      if 'total' in tracksdict[category] and tracksdict[category]['total'] == "0":
+        trackslist = []
+        assert len(jsondata_arr) == 1
+        break
+      else:
+        if type(tracksdict[category][datatype]) is dict:
+          tracksdict[category][datatype] = [tracksdict[category][datatype]]
+        for track in tracksdict[category][datatype]:
+          self.sanitizeKeys(track)
+          self.process_fields(track)
+        if trackslist is None:
+          trackslist = tracksdict[category][datatype]
+        else:
+          trackslist.extend(tracksdict[category][datatype])
     return trackslist
 
   @staticmethod
@@ -112,18 +119,28 @@ class LastfmAPI(BaseCaller):
     """
     next_page_params = {}
     num_items = None
-    if method == "user.getRecentTracks":
-      if '@attr' in resp_dict['recenttracks']:
-        attr_dict = resp_dict['recenttracks']['@attr']
+    if method == "user.getInfo":
+      pass
+    else:
+      methodkey_dict = {'user.getRecentTracks':'recenttracks',
+                      'user.getLovedTracks': 'lovedtracks',
+                      'user.getBannedTracks': 'bannedtracks',
+                      'user.getFriends': 'friends'
+                       }
+      if '@attr' in resp_dict[methodkey_dict[method]]:
+        print method 
+        attr_dict = resp_dict[methodkey_dict[method]]['@attr']
         if int(attr_dict['totalPages']) - int(attr_dict['page']) > 0:
           next_page_params = {'page': int(attr_dict['page']) + 1}
         num_items = int(attr_dict['perPage'])
+        print next_page_params, num_items
     
     return next_page_params, num_items 
   
   def is_error(self, resp_str, method):
     resp_dict = json.loads(resp_str)
     call_error = False
+    error_str = "No error found."
     if len(resp_str) < 1 or not resp_dict:
       call_error = True
       error_str = "Error fetching %s because server returned empty string." %method
@@ -132,8 +149,8 @@ class LastfmAPI(BaseCaller):
       error_str = "Error fetching %s because: %s" %(method, resp_dict['message'
 ])  
     if call_error: 
-      print error_str
+      #print error_str
       logging.error(error_str)
     
-    return call_error
+    return call_error, error_str
 
