@@ -45,7 +45,7 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
     self.gbuffer.close()
     self.pqueue.close()
 
-  #TODO recover is redundant with seed_nodes. remove in a later version.  
+  #TODO recover parameter is redundant with seed_nodes. remove in a later version.  
   def crawl(self, seed_nodes = None, max_nodes = 10, recover = False):
     """ Function to crawl the network using BFS.
         Works in two modes: fresh or recover. If recover is False, then
@@ -65,16 +65,27 @@ seed_nodes needs to be not None.
       edge_counter = itertools.count()
     iterations = 0 
     while (not self.pqueue.is_empty()) and iterations < max_nodes:
+      iterations += 1
       new_node = self.pqueue.pop()
       # Ignore if new_node has already been visited
       if new_node in self.gbuffer.nodes_store:
         continue
-      
+     
       # Get details about the current node 
       new_node_info = self.network.get_node_info(new_node)
-      logging.info("Got information about %s" %new_node)
+      if new_node_info is None:
+        logging.error("Crawler: Error in fetching node info")
+        raise NameError
+      else:  
+        logging.info("Crawler: Got information about %s" %new_node)
       # Assume dict output for all stores.
       new_node_edges_info = self.network.get_edges_info(new_node)
+      if new_node_edges_info is None:
+        logging.error("Crawler: Error in fetching node's edges info")
+        raise NameError
+      else:
+        logging.info("Crawler: Got information about %s's edges" %new_node)
+
       for edge_info in new_node_edges_info:
         node = edge_info['target']
         if node not in self.gbuffer.nodes_store:
@@ -93,7 +104,6 @@ seed_nodes needs to be not None.
       for edge_info in new_node_edges_info:
         edge_info['id'] = next(edge_counter)
         self.gbuffer.store_edge(str(edge_info['id']), edge_info)
-      iterations += 1
       logging.info("Processed %s \n" %new_node)
       print "Processed ", new_node
     return

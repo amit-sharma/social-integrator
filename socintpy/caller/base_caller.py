@@ -1,3 +1,5 @@
+from socintpy.caller.api_call_error import APICallError
+
 class BaseCaller(object):
   def __init__(self, kwargs):
     #label, auth_handler, host, api_root, cache, secure,
@@ -28,7 +30,10 @@ class BaseCaller(object):
                 'api_key': self.api_key,
                 'format': self.response_format,
                }
-      response[method_name] = self.get_data(**params)
+      try:
+        response[method_name] = self.get_data(**params)
+      except APICallError, e:
+        response[method_name] = None
     #import pprint
     #pprint.pprint(response)
     return response

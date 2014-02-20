@@ -3,6 +3,8 @@ A class to implement general API call function.
 '''
 import time
 import logging
+from socintpy.caller.api_call_error import APICallError 
+
 def call(caller, **config):
   '''Similar to the method in tweepy, but api_method can change
   so that we have different api methods for different websites'''
@@ -28,7 +30,10 @@ def call(caller, **config):
       logging.debug("Time between calls = %f seconds" % (time.time() -
         api.previous_call_time))
       api.set_last_call_time(time.time())
-      current_resp = caller.execute()
+      try:
+        current_resp = caller.execute()
+      except APICallError, e:
+        raise APICallError(e)
       response += current_resp
       #print current_resp
       next_page_params, num_results = api.__class__.analyze_page(current_resp, api_method)

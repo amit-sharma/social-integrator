@@ -5,6 +5,7 @@
 #import sys, os
 #sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from socintpy.util.utils import *
+from socintpy.caller.api_call_error import APICallError
 import httplib
 import urllib
 import re
@@ -73,7 +74,9 @@ class APICaller(object):
     # Continue attempting request until successful
     # or maximum number of retries is reached.
     retry = 0
+    success = False
     while retry < self.api.retry_count + 1:
+      result = None
       if self.api.secure:
         conn = httplib.HTTPSConnection(self.api.host)
       else:
@@ -95,7 +98,7 @@ class APICaller(object):
 
       # Exit request loop if successful API call result
       # Retry_errors=True => retries if there is an error
-      if self.api.retry_errors:
+      """if self.api.retry_errors:
         if resp.status == 200:
           if self.api.is_error(resp.read()):
             logging.error("Error in API call %s. Retrying..." %url)
@@ -104,23 +107,28 @@ class APICaller(object):
         #if resp.status not in self.api.retry_errors: break
       else:
         break
-
-      # Sleep before retrying request again
-      time.sleep(self.api.retry_delay)
-      retry += 1
+      """
+      result = resp.read()
+      if resp.status == 200 and not self.api.is_error(result, self.method):
+        success = True
+        break
+      else:
+        logging.error("Error in API call %s. Retrying..." %url)      
+        # Sleep before retrying request again
+        time.sleep(self.api.retry_delay)
+        retry += 1
 
     # If an error was returned, throw an exception
     self.api.last_response = resp
-    #print resp.read()
-    if resp.status == 200:
-      logging.debug("Got response from API: \n %s" %resp.read())
+    if success:
+      logging.debug("Got response from API: \n %s" %result)
     else:
       error_msg = "Error response from API: status code = %s" % resp.status
       logging.error(error_msg)
-      raise NameError(error_msg)
+      raise APICallError(error_msg)
 
     # Parse the response payload
-    result = resp.read()
+    
     conn.close()
 
     # Store result into cache if one is available.
