@@ -20,6 +20,7 @@ class BaseCaller(object):
     self.edge_info_calls = kwargs.get('edge_info_calls', None)
     self.previous_call_time = 0
     self.method_default_params = kwargs.get('method_default_params', None)
+    self.errorcodes_dict = kwargs.get('errorcodes_dict', None)
   
   def call_multiple_methods(self, user, methodnames_array):
     response = {}
@@ -33,7 +34,7 @@ class BaseCaller(object):
       try:
         response[method_name] = self.get_data(**params)
       except APICallError, e:
-        response[method_name] = None
+        response[method_name] = {'error_code': e.error_code, 'error_message':e.error_message} 
     #import pprint
     #pprint.pprint(response)
     return response

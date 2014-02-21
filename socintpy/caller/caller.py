@@ -33,7 +33,7 @@ def call(caller, **config):
       try:
         current_resp = caller.execute()
       except APICallError, e:
-        raise APICallError(e)
+        raise APICallError(e.error_code, e.error_message)
       response_array.append(current_resp)
       #print current_resp
       next_page_params, num_results = api.__class__.analyze_page(current_resp, api_method)

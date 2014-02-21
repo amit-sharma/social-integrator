@@ -4,11 +4,13 @@ A bunch of definition within a class to call Last.fm api.
 
 from socintpy.caller.caller import call
 from socintpy.caller.api_call_error import APICallError
+from socintpy.caller import api_error_codes
 from api_caller import APICaller
 from base_caller import BaseCaller
 import json
 from pprint import pprint
 import logging
+import random 
 
 class LastfmAPI(BaseCaller):
   def __init__(self, kwargs):
@@ -31,6 +33,9 @@ class LastfmAPI(BaseCaller):
   def get_node_info(self, user):
     # Error handling is such that None means an error, and [] means zero values.
     returned_data = self.call_multiple_methods(user, self.node_info_calls)
+    for val in returned_data.values():
+      if 'error_code' in val:
+        return None
 
     datadict = {}
     if 'user.getInfo' in returned_data:
@@ -39,12 +44,13 @@ class LastfmAPI(BaseCaller):
       self.sanitizeKeys(infodict['user'])
       self.process_fields(infodict['user'])
       datadict.update(infodict['user'])
-    if 'user.getRecentTracks' in returned_data and returned_data['user.getRecentTracks'] is not None:
+        
+    if 'user.getRecentTracks' in returned_data:
       datadict['tracks'] = self.get_tracks_from_json(returned_data['user.getRecentTracks'], category="recenttracks")
-    if 'user.getLovedTracks' in returned_data and returned_data['user.getLovedTracks'] is not None:
+    if 'user.getLovedTracks' in returned_data:
       datadict['lovedtracks'] = self.get_tracks_from_json(returned_data['user.getLovedTracks'], category="lovedtracks")
 
-    if 'user.getBannedTracks' in returned_data and returned_data['user.getBannedTracks'] is not None:
+    if 'user.getBannedTracks' in returned_data:
       datadict['bannedtracks'] = self.get_tracks_from_json(returned_data['user.getBannedTracks'], category="bannedtracks")
 
 
@@ -53,10 +59,14 @@ class LastfmAPI(BaseCaller):
 
   def get_edges_info(self, user):
     returned_data = self.call_multiple_methods(user, self.edge_info_calls)
+    for val in returned_data.values():
+      if 'error_code' in val:
+        return None
+
     datadict = {}
 
-    # this API method was called and there was no exception in its execution
-    if 'user.getFriends' in returned_data and returned_data['user.getFriends'] is not None:
+    # checking if this API method was called 
+    if 'user.getFriends' in returned_data:
       """
       if 'total' in datadict['friends'] and datadict['friends']['total'] == "0":
         return None
@@ -105,7 +115,15 @@ class LastfmAPI(BaseCaller):
         else:
           trackslist.extend(tracksdict[category][datatype])
     return trackslist
-
+  
+  def get_uniform_random_nodes(self, n):
+    """ Function to get uniformly sampled nodes.
+        
+        Chose 25M as on 04-01-2010, the number of users was slightly more than
+        25M. See user 'carolinenovinha'.
+    """
+    return [str(val) for val in random.sample(xrange(1,25000000), n)]    
+    
   @staticmethod
   def analyze_page(resp, method):
     #print resp
@@ -139,16 +157,16 @@ class LastfmAPI(BaseCaller):
   
   def is_error(self, resp_str, method):
     resp_dict = json.loads(resp_str)
-    call_error = False
+    call_error = 0
     error_str = "No error found."
     if len(resp_str) < 1 or not resp_dict:
-      call_error = True
-      error_str = "Error fetching %s because server returned empty string." %method
+      call_error = api_error_codes.EMPTY_API_RESPONSE
+      error_str = "Error fetching %s because:: Error %d: Server returned empty string." %(method, call_error)
     elif 'error' in resp_dict:
-      call_error = True
-      error_str = "Error fetching %s because: %s" %(method, resp_dict['message'
+      call_error = self.errorcodes_dict[int(resp_dict['error'])]
+      error_str = "Error fetching %s because:: Error %d: %s" %(method, call_error, resp_dict['message'
 ])  
-    if call_error: 
+    if call_error != 0: 
       #print error_str
       logging.error(error_str)
     

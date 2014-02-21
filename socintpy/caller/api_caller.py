@@ -6,6 +6,7 @@
 #sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from socintpy.util.utils import *
 from socintpy.caller.api_call_error import APICallError
+from socintpy.caller import api_error_codes
 import httplib
 import urllib
 import re
@@ -76,6 +77,7 @@ class APICaller(object):
     retry = 0
     success = False
     curr_error_str = None
+    call_error_code = None
     while retry < self.api.retry_count + 1:
       result = None
       if self.api.secure:
@@ -110,12 +112,12 @@ class APICaller(object):
         break
       """
       result = resp.read()
-      call_error, curr_error_str = self.api.is_error(result, self.method)
-      if resp.status == 200 and not call_error:
+      call_error_code, curr_error_str = self.api.is_error(result, self.method)
+      if resp.status == 200 and call_error_code == 0:
         success = True
         break
       else:
-        logging.error("Error in API call %s. Retrying..." %url)      
+        logging.error("Error %d (%s) in API call %s. Retrying..." %(call_error_code, curr_error_str,url))      
         # Sleep before retrying request again
         time.sleep(self.api.retry_delay)
         retry += 1
@@ -125,10 +127,10 @@ class APICaller(object):
     if success:
       logging.debug("Got response from API: \n %s" %result)
     else:
-      error_msg = "Error response from API: status code = %s, error_message = %s" %(resp.status, curr_error_str)
+      error_msg = "Error response from API: HTTP response code = %s, error_code=%d, error_message = %s" %(resp.status, call_error_code, curr_error_str)
       print error_msg
       logging.error(error_msg)
-      raise APICallError(error_msg)
+      raise APICallError(call_error_code, error_msg)
 
     # Parse the response payload
     

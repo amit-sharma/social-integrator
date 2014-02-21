@@ -71,27 +71,30 @@ seed_nodes needs to be not None.
       if new_node in self.gbuffer.nodes_store:
         continue
      
+      
       # Get details about the current node 
       new_node_info = self.network.get_node_info(new_node)
       if new_node_info is None:
-        logging.error("Crawler: Error in fetching node info")
-        raise NameError
-      else:  
-        logging.info("Crawler: Got information about %s" %new_node)
+        error_msg = "Crawler: Error in fetching node info. Skipping node %s" %new_node
+        logging.error(error_msg)
+        print error_msg
+        continue
+        #raise NameError
       # Assume dict output for all stores.
       new_node_edges_info = self.network.get_edges_info(new_node)
-      print "Got all data"
-      print "\n"
       if new_node_edges_info is None:
-        logging.error("Crawler: Error in fetching node's edges info")
-        raise NameError
-      else:
-        logging.info("Crawler: Got information about %s's edges" %new_node)
+        error_msg = "Crawler: Error in fetching node edges info. Skipping node %s" %new_node
+        logging.error(error_msg)
+        print error_msg
+        continue
+        #raise NameError
       
+      logging.info("Crawler: Got information about %s" %new_node)
+      
+      print "Got all data"
       for edge_info in new_node_edges_info:
         node = edge_info['target']
   
-        #self.pqueue.state_store = None
         if node not in self.gbuffer.nodes_store:
           # Update priority if node already exists in the queue
           if node in self.pqueue.queue_dict:

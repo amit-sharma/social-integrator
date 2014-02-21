@@ -23,4 +23,5 @@ def get_args(settings_module):
   args['node_info_calls'] = settings_module.NODE_INFO_CALLS
   args['edge_info_calls'] = settings_module.EDGE_INFO_CALLS
   args['method_default_params'] = settings_module.METHOD_DEFAULT_PARAMS
+  args['errorcodes_dict'] = settings_module.ERRORCODES_DICT
   return args

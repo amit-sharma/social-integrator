@@ -24,5 +24,5 @@ print result
 crawler = BFSNetworkCrawler(api, store_type="basic_shelve")
 
 # Start the data crawl
-crawler.crawl(seed_nodes=["jrs1991"], max_nodes = 10)
+crawler.crawl(seed_nodes=api.get_uniform_random_nodes(100), max_nodes = 100000)
 
