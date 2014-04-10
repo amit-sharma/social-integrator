@@ -156,16 +156,22 @@ class LastfmAPI(BaseCaller):
     return next_page_params, num_items 
   
   def is_error(self, resp_str, method):
-    resp_dict = json.loads(resp_str)
-    call_error = 0
-    error_str = "No error found."
-    if len(resp_str) < 1 or not resp_dict:
-      call_error = api_error_codes.EMPTY_API_RESPONSE
+    call_error = 0                                                              
+    error_str = "No error found." 
+    if len(resp_str) < 1:                                      
+      call_error = api_error_codes.EMPTY_API_RESPONSE                           
       error_str = "Error fetching %s because:: Error %d: Server returned empty string." %(method, call_error)
-    elif 'error' in resp_dict:
-      call_error = self.errorcodes_dict[int(resp_dict['error'])]
-      error_str = "Error fetching %s because:: Error %d: %s" %(method, call_error, resp_dict['message'
-])  
+    else:
+      resp_dict = None
+      try:
+        resp_dict = json.loads(resp_str)
+      except ValueError, e:
+        call_error = api_error_codes.MALFORMED_API_RESPONSE
+        error_str = "Error fetching %s because:: Error %d: Server returned string that is not valid JSON." %(method, call_error)
+      if resp_dict is not None and 'error' in resp_dict:
+        call_error = self.errorcodes_dict[int(resp_dict['error'])]
+        error_str = "Error fetching %s because:: Error %d: %s" %(method, call_error, resp_dict['message'])  
+    
     if call_error != 0: 
       #print error_str
       logging.error(error_str)

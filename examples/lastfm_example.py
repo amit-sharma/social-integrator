@@ -21,8 +21,10 @@ print result
 """
 
 # Set up the data crawl
-crawler = BFSNetworkCrawler(api, store_type="basic_shelve")
-
+crawler = BFSNetworkCrawler(api, seed_nodes=api.get_uniform_random_nodes(100), store_type="basic_shelve", recover=False)
+crawler = BFSNetworkCrawler(api, seed_nodes=None, store_type="basic_shelve", recover=True)
 # Start the data crawl
-crawler.crawl(seed_nodes=api.get_uniform_random_nodes(100), max_nodes = 100000)
+crawler.crawl(max_nodes = 1000000)
+
+#crawler.crawl(max_nodes = 100000, recover=True)
 
