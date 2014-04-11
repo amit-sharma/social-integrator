@@ -1,4 +1,4 @@
-## An implementation of a network crawler, using BFS
+## An implementation of a network crawler, using BFS.
 
 from socintpy.networkcrawl.crawler_interface import NetworkCrawlerInterface
 from socintpy.util.priority_queue import PriorityQueue
