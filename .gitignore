@@ -5,4 +5,4 @@
 *.swp
 *settings.py
 build-couchdb
-.idea/*
+.idea/
