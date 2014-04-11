@@ -15,19 +15,22 @@ class PriorityQueue:
     self.queue = []  # a list that has the data
     self.queue_dict = {} # a dictionary indexing the nodes
     self.counter = itertools.count() # number of nodes
-    
+    self.visited = {}
     # Assigning the type of store
     if store_class is not None:
       # counter for number of actions on the pqueue
       self.state_store = store_class(store_name, data_type = "crawl_state")
       if recover:
         last_checkpoint_id=self.state_store.get_maximum_id()
+        print("Last checkpoint", last_checkpoint_id)
         if last_checkpoint_id != -1:
           logging.info("Starting recovery of queue.")
           recovered_state_store = self.state_store[str(last_checkpoint_id)]
+          print(recovered_state_store)
           self.queue = recovered_state_store['queue']
           self.queue_dict = recovered_state_store['queue_dict']
           self.counter = recovered_state_store['counter']
+          self.visited = recovered_state_store['visited']
           logging.info("Ended recovery of queue with checkpoint id: " + str(last_checkpoint_id))
       #print "Initializing state store", store_name
       #pprint(self.state_store)
@@ -99,7 +102,9 @@ class PriorityQueue:
   
   def save_checkpoint(self):
     created_time = time.time()
-    self.state_store[str(created_time)] = {'id':created_time, 'queue':self.queue, 'queue_dict':self.queue_dict, 'counter':self.counter}
+    self.state_store[str(created_time)] = {'id':created_time, 'queue':self.queue, 'queue_dict':self.queue_dict,
+                                           'counter':self.counter, 'visited': self.visited}
     return
 
-
+  def mark_visited(self, node):
+    self.visited[node] = True

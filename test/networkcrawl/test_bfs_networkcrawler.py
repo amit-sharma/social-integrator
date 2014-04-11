@@ -39,6 +39,7 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     self.node_connections_data = None
     self.correct_visit_order = ["11","5","8","1"]
     self.crawler = None
+    self.STORE_TYPE = "basic_shelve"
 
   def tearDown(self):
     self.crawler.gbuffer.destroy_stores()
@@ -49,15 +50,15 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     # Running the bfs crawler
     num_nodes_before_crash=2
     webnetwork = TestWebCaller("test", self.network_edges)
-    self.crawler = BFSNetworkCrawler(webnetwork, seed_nodes=["11","5"], store_type=STORE_TYPE, recover=False)
+    self.crawler = BFSNetworkCrawler(webnetwork, seed_nodes=["11","5"], store_type=self.STORE_TYPE, recover=False)
     self.crawler.crawl(max_nodes=num_nodes_before_crash)
     
     node_visit_order = webnetwork.get_visit_order()
     self.compare_values(node_visit_order, test_visit_order=self.correct_visit_order[:num_nodes_before_crash])
     self.crawler.close() 
 
-    self.crawler = BFSNetworkCrawler(webnetwork, seed_nodes=None, store_type=STORE_TYPE, recover=True)
-    self.crawler.crawl()
+    self.crawler = BFSNetworkCrawler(webnetwork, seed_nodes=["11","5"], store_type=self.STORE_TYPE, recover=True)
+    self.crawler.crawl(checkpoint_frequency=1)
 
     node_visit_order = webnetwork.get_visit_order()
     print("Node visit order is", node_visit_order)
@@ -105,8 +106,7 @@ test_visit_order=self.correct_visit_order)
 
 
 if __name__ == "__main__":
-  #STORE_TYPE = "basic_shelve"
-  STORE_TYPE = "couchdb"
+  #STORE_TYPE = "couchdb"
   unittest.main()
 
 

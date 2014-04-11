@@ -46,29 +46,30 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
     self.gbuffer.close()
     self.pqueue.close()
 
-  def crawl(self, max_nodes = 10):
+  def crawl(self, max_nodes = 10, checkpoint_frequency=100):
     """ Function to crawl the network using BFS.
         Works in two modes: fresh or recover. If recover is False, then
 seed_nodes needs to be not None.
     """
     # if the crawl was stopped for some reason, recover parameter helps to
     # restart it from where it stopped.
-    if self.recover:
+    if self.recover and not self.pqueue.is_empty():
       # Just trying to minimize conflict. May lead to duplicate storage.
-      node_counter = itertools.count(self.gbuffer.nodes_store.get_maximum_id()+1)
-      edge_counter = itertools.count(self.gbuffer.edges_store.get_maximum_id()+1)
+      node_counter = itertools.count(len(self.pqueue.visited.keys())+1)
+      edge_counter = itertools.count(len(self.pqueue.visited.keys())+1)
+      print("Node counter", node_counter)
     else:
       self.set_seed_nodes(self.seed_nodes)
       node_counter = itertools.count()
       edge_counter = itertools.count()
-    iterations = 0 
+    iterations = 0
     while (not self.pqueue.is_empty()) and iterations < max_nodes:
       iterations += 1
       new_node = self.pqueue.pop()
       logging.info("Popped %s from queue and now starting to process it..." %new_node)
       print "Popped %s from queue and now starting to process it..." %new_node
       # Ignore if new_node has already been visited
-      if new_node in self.gbuffer.nodes_store:
+      if new_node in self.pqueue.visited:
         continue
      
       
@@ -95,7 +96,7 @@ seed_nodes needs to be not None.
       for edge_info in new_node_edges_info:
         node = edge_info['target']
   
-        if node not in self.gbuffer.nodes_store:
+        if node not in self.pqueue.visited:
           # Update priority if node already exists in the queue
           if node in self.pqueue.queue_dict:
             node_priority = self.pqueue.mark_removed(node)
@@ -109,12 +110,13 @@ seed_nodes needs to be not None.
       print "Starting to store node info"
       new_node_info['id'] = next(node_counter)
       self.gbuffer.store_node(new_node,  new_node_info)
+      self.pqueue.mark_visited(new_node)
       for edge_info in new_node_edges_info:
         edge_info['id'] = next(edge_counter)
         self.gbuffer.store_edge(str(edge_info['id']), edge_info)
       logging.info("Processed %s \n" %new_node)
       print "Processed ", new_node
-      if iterations % 100 == 0:
+      if iterations % checkpoint_frequency == 0:
         self.pqueue.save_checkpoint()
 
     return
