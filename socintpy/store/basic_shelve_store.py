@@ -5,9 +5,7 @@ from socintpy.store.generic_store import GenericStore
 class BasicShelveStore(GenericStore):
   def __init__(self, store_path, data_type="default"):
     self.store_path = store_path
-    print(store_path, data_type)
     self.data_shelve = shelve.open(store_path)
-    print(self.data_shelve)
     self.data_type = data_type
   
   def __del__(self):
@@ -47,7 +45,6 @@ class BasicShelveStore(GenericStore):
   def get_maximum_id(self):
     max_id = -1
     if self.data_shelve:
-      print("Data shelve is active.")
       max_id= max([int(val['id']) for val in self.data_shelve.values()])
     print max_id
     return max_id

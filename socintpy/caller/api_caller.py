@@ -97,7 +97,12 @@ class APICaller(object):
         conn.request(self.method, url, headers=self.headers, body=self.post_data)
         resp = conn.getresponse()
       except Exception, e:
-        raise NameError('Failed to send request: %s' % e)
+        logging.error("Error in fetching data from API: %s. Retrying..." %(url))
+        # Sleep before retrying request again
+        time.sleep(self.api.retry_delay)
+        retry += 1
+        #raise NameError('Failed to send request: %s' % e)
+        continue
 
       # Exit request loop if successful API call result
       # Retry_errors=True => retries if there is an error

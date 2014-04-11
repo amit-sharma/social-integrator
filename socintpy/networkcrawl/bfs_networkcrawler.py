@@ -1,4 +1,6 @@
-## An implementation of a network crawler, using BFS.
+"""An implementation of a network crawler, using BFS.
+
+"""
 
 from socintpy.networkcrawl.crawler_interface import NetworkCrawlerInterface
 from socintpy.util.priority_queue import PriorityQueue
@@ -10,7 +12,9 @@ import logging
 # BFSnetworkcrawler is called for a specific network, which is required as a
 # parameter
 class BFSNetworkCrawler(NetworkCrawlerInterface):
-  ""
+  """
+  BFS Crawler. Uses a weighted BFS implementation which gives more weight to nodes that are seen multiple times.
+  """
   def __init__(self, network, store_type = "gml"):
     """ Function to initialize a network crawler.
       Args:
@@ -117,7 +121,6 @@ seed_nodes needs to be not None.
         self.gbuffer.store_edge(str(edge_info['id']), edge_info)
       logging.info("Processed %s \n" %new_node)
       print "Processed ", new_node
-      print(iterations%checkpoint_frequency)
       if iterations % checkpoint_frequency == 0:
         print(iterations%checkpoint_frequency)
         self.pqueue.save_checkpoint(self.gbuffer.nodes_store.get_maximum_id()+1, self.gbuffer.edges_store.get_maximum_id()+1)

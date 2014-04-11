@@ -42,7 +42,7 @@ class PriorityQueue:
       self.push(seed, priority=0)
     if self.store_class is not None and do_recovery:
       last_checkpoint_id=self.state_store.get_maximum_id()
-      print("Last checkpoint", last_checkpoint_id)
+      #print("Last checkpoint", last_checkpoint_id)
       if last_checkpoint_id != -1:
         logging.info("Starting recovery of queue.")
         recovered_state_store = self.state_store[str(last_checkpoint_id)]
