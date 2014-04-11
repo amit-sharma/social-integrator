@@ -11,7 +11,7 @@ import logging
 # parameter
 class BFSNetworkCrawler(NetworkCrawlerInterface):
   ""
-  def __init__(self, network, seed_nodes=None, store_type = "gml", recover = True):
+  def __init__(self, network, store_type = "gml"):
     """ Function to initialize a network crawler.
       Args:
         network: the network object to be crawled
@@ -21,24 +21,24 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
         An initialized crawler object
     """
     self.network = network
-    self.seed_nodes = seed_nodes
-    self.recover = recover
     store_class = GenericStore.get_store_class(store_type)
     # Buffer to store network data 
     self.gbuffer = GraphBuffer(self.network.label, store_class)
     #self.recover = recover
     # Priority queue in memory that keeps track of nodes to visit
     self.pqueue = PriorityQueue(store_class, store_name = self.network.label +
-    "_state", recover=recover)
+    "_state")
 
+  """
   def set_seed_nodes(self, seed_values):
     for seed in seed_values:
       self.add_to_crawl(seed)
-  
+  """
   def add_to_crawl(self, node, priority=0):
     self.pqueue.push(node, priority)
     #self.visited[node] = False
-  
+
+
   def __del__(self):
     self.close()
   
@@ -46,22 +46,23 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
     self.gbuffer.close()
     self.pqueue.close()
 
-  def crawl(self, max_nodes = 10, checkpoint_frequency=100):
+  def crawl(self, seed_nodes, max_nodes = 10, recover=True, checkpoint_frequency=100):
     """ Function to crawl the network using BFS.
         Works in two modes: fresh or recover. If recover is False, then
 seed_nodes needs to be not None.
     """
     # if the crawl was stopped for some reason, recover parameter helps to
     # restart it from where it stopped.
-    if self.recover and not self.pqueue.is_empty():
+    #if self.recover and not self.pqueue.is_empty():
       # Just trying to minimize conflict. May lead to duplicate storage.
-      node_counter = itertools.count(len(self.pqueue.visited.keys())+1)
-      edge_counter = itertools.count(len(self.pqueue.visited.keys())+1)
-      print("Node counter", node_counter)
-    else:
-      self.set_seed_nodes(self.seed_nodes)
-      node_counter = itertools.count()
-      edge_counter = itertools.count()
+    #  node_counter = itertools.count(self.gbuffer.nodes_store.get_maximum_id()+1)
+    #  edge_counter = itertools.count(self.gbuffer.edges_store.get_maximum_id()+1)
+    #  print("Node counter", node_counter)
+    #else:
+    #  self.set_seed_nodes(self.seed_nodes)
+    prior_num_nodes_visited, prior_num_edges_visited = self.pqueue.initialize(seed_nodes, do_recovery=recover)
+    node_counter = itertools.count(prior_num_nodes_visited)
+    edge_counter = itertools.count(prior_num_edges_visited)
     iterations = 0
     while (not self.pqueue.is_empty()) and iterations < max_nodes:
       iterations += 1
@@ -116,7 +117,9 @@ seed_nodes needs to be not None.
         self.gbuffer.store_edge(str(edge_info['id']), edge_info)
       logging.info("Processed %s \n" %new_node)
       print "Processed ", new_node
+      print(iterations%checkpoint_frequency)
       if iterations % checkpoint_frequency == 0:
-        self.pqueue.save_checkpoint()
+        print(iterations%checkpoint_frequency)
+        self.pqueue.save_checkpoint(self.gbuffer.nodes_store.get_maximum_id()+1, self.gbuffer.edges_store.get_maximum_id()+1)
 
     return

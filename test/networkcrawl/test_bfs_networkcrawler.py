@@ -5,6 +5,7 @@ from socintpy.caller.base_caller import BaseCaller
 from socintpy.networkcrawl.bfs_networkcrawler import BFSNetworkCrawler
 import shelve, os
 from pprint import pprint
+from collections import OrderedDict
 
 
 class TestWebCaller(BaseCaller):
@@ -42,6 +43,10 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     self.STORE_TYPE = "basic_shelve"
 
   def tearDown(self):
+    """
+    Function that deletes all files after the test is complete. Disable this for testing if required.
+    """
+    print("Deleting all data files generated as a part of test tearDown().")
     self.crawler.gbuffer.destroy_stores()
     self.crawler.pqueue.destroy_state()
 
@@ -49,16 +54,17 @@ class TestBFSNetworkCrawler(unittest.TestCase):
   def test_crawl(self):
     # Running the bfs crawler
     num_nodes_before_crash=2
+    checkpoint_freq = 3
     webnetwork = TestWebCaller("test", self.network_edges)
-    self.crawler = BFSNetworkCrawler(webnetwork, seed_nodes=["11","5"], store_type=self.STORE_TYPE, recover=False)
-    self.crawler.crawl(max_nodes=num_nodes_before_crash)
+    self.crawler = BFSNetworkCrawler(webnetwork, store_type=self.STORE_TYPE)
+    self.crawler.crawl(seed_nodes=["11","5"], max_nodes=num_nodes_before_crash, recover=False, checkpoint_frequency=checkpoint_freq)
     
     node_visit_order = webnetwork.get_visit_order()
     self.compare_values(node_visit_order, test_visit_order=self.correct_visit_order[:num_nodes_before_crash])
     self.crawler.close() 
 
-    self.crawler = BFSNetworkCrawler(webnetwork, seed_nodes=["11","5"], store_type=self.STORE_TYPE, recover=True)
-    self.crawler.crawl(checkpoint_frequency=1)
+    self.crawler = BFSNetworkCrawler(webnetwork, store_type=self.STORE_TYPE)
+    self.crawler.crawl(seed_nodes=["11", "5"], max_nodes=10, recover=True, checkpoint_frequency=checkpoint_freq)
 
     node_visit_order = webnetwork.get_visit_order()
     print("Node visit order is", node_visit_order)
@@ -70,9 +76,9 @@ test_visit_order=self.correct_visit_order)
   def compare_values(self, real_visit_order, test_visit_order):     
     # Accessing the results of calling the source code
     self.node_info_data = self.crawler.gbuffer.nodes_store.get_dict()
-    print self.node_info_data
+    print(self.node_info_data)
     self.node_connections_data = self.crawler.gbuffer.edges_store.get_dict()
-    self.node_visit_order = real_visit_order
+    self.node_visit_order = list(OrderedDict.fromkeys(real_visit_order))
     
     # Testing the results with expected values
     test_node_info = {}
@@ -92,12 +98,14 @@ test_visit_order=self.correct_visit_order)
         edge_counter += 1
       node_counter += 1
     
-   
+
     print self.node_visit_order
     pprint(self.node_info_data)
     pprint(test_node_info)
+    pprint(self.node_connections_data)
+    pprint(test_node_edges_data)
     #pprint(self.node_connections_data)
-    self.assertListEqual(self.node_visit_order, test_visit_order,
+    self.assertListEqual(test_visit_order,self.node_visit_order,
         "Problem in order of BFS crawl")
     self.assertDictEqual(test_node_info, dict(self.node_info_data), 
                          "Nodes do not match: Problem in BFS crawl.")

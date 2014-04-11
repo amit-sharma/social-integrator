@@ -11,27 +11,16 @@ import time
 from pprint import pprint
 
 class PriorityQueue:
-  def __init__(self, store_class = None, store_name = None, recover=True):
+  def __init__(self, store_class = None, store_name = None):
     self.queue = []  # a list that has the data
     self.queue_dict = {} # a dictionary indexing the nodes
     self.counter = itertools.count() # number of nodes
     self.visited = {}
+    self.store_class = store_class
     # Assigning the type of store
-    if store_class is not None:
+    if self.store_class is not None:
       # counter for number of actions on the pqueue
       self.state_store = store_class(store_name, data_type = "crawl_state")
-      if recover:
-        last_checkpoint_id=self.state_store.get_maximum_id()
-        print("Last checkpoint", last_checkpoint_id)
-        if last_checkpoint_id != -1:
-          logging.info("Starting recovery of queue.")
-          recovered_state_store = self.state_store[str(last_checkpoint_id)]
-          print(recovered_state_store)
-          self.queue = recovered_state_store['queue']
-          self.queue_dict = recovered_state_store['queue_dict']
-          self.counter = recovered_state_store['counter']
-          self.visited = recovered_state_store['visited']
-          logging.info("Ended recovery of queue with checkpoint id: " + str(last_checkpoint_id))
       #print "Initializing state store", store_name
       #pprint(self.state_store)
       #self.update_counter = itertools.count(self.state_store.get_maximum_id()+1)
@@ -44,6 +33,29 @@ class PriorityQueue:
  
   def destroy_state(self):
     self.state_store.destroy_store()
+
+  def initialize(self, seed_nodes, do_recovery=True):
+    num_nodes_stored = 0
+    num_edges_stored = 0
+
+    for seed in seed_nodes:
+      self.push(seed, priority=0)
+    if self.store_class is not None and do_recovery:
+      last_checkpoint_id=self.state_store.get_maximum_id()
+      print("Last checkpoint", last_checkpoint_id)
+      if last_checkpoint_id != -1:
+        logging.info("Starting recovery of queue.")
+        recovered_state_store = self.state_store[str(last_checkpoint_id)]
+        print(recovered_state_store)
+        self.queue = recovered_state_store['queue']
+        self.queue_dict = recovered_state_store['queue_dict']
+        self.visited = recovered_state_store['visited']
+        self.counter  = recovered_state_store['counter']
+        num_nodes_stored = recovered_state_store['num_nodes_stored']
+        num_edges_stored = recovered_state_store['num_edges_stored']
+        logging.info("Ended recovery of queue with checkpoint id: " + str(last_checkpoint_id))
+
+    return(num_nodes_stored, num_edges_stored)
 
   def push(self, node, priority = 0):
     """ Function to add a node to the queue, update the queue_dictionary  and 
@@ -100,10 +112,10 @@ class PriorityQueue:
   def is_empty(self):
     return not self.queue_dict
   
-  def save_checkpoint(self):
-    created_time = time.time()
-    self.state_store[str(created_time)] = {'id':created_time, 'queue':self.queue, 'queue_dict':self.queue_dict,
-                                           'counter':self.counter, 'visited': self.visited}
+  def save_checkpoint(self, num_nodes_stored, num_edges_stored):
+    self.state_store[str(num_nodes_stored)] = {'id':num_nodes_stored, 'queue':self.queue, 'queue_dict':self.queue_dict,
+                                           'num_edges_stored': num_edges_stored, 'num_nodes_stored': num_nodes_stored,
+                                           'visited': self.visited, 'counter':self.counter}
     return
 
   def mark_visited(self, node):
