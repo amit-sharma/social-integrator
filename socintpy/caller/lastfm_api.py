@@ -13,6 +13,13 @@ import logging
 import random 
 
 class LastfmAPI(BaseCaller):
+
+  methodkey_dict =     {'user.getRecentTracks':'recenttracks',
+                           'user.getLovedTracks': 'lovedtracks',
+                           'user.getBannedTracks': 'bannedtracks',
+                           'user.getFriends': 'friends'
+                        }
+
   def __init__(self, kwargs):
     #auth_handler=None, host='ws.audioscrobbler.com',
     #           api_root='/', api_key=None, cache=None, secure=False,
@@ -22,6 +29,7 @@ class LastfmAPI(BaseCaller):
     #                                secure, retry_count, retry_delay,
     #                                retry_errors, api_delay)
     self.irrelevant_keys = ["image", "realname"]
+
 
   get_data = call(
       APICaller(),
@@ -124,54 +132,70 @@ class LastfmAPI(BaseCaller):
     """
     return [str(val) for val in random.sample(xrange(1,25000000), n)]    
     
-  @staticmethod
-  def analyze_page(resp, method):
-    #print resp
-    resp_dict = json.loads(resp)
-    """if 'error' in resp_dict:
-      error_str = "Error fetching %s because:" %(method, resp_dict['message'])
-      print error_str
-      logging.error(error_str)
-      
-    pprint(resp_dict)
+  @classmethod
+  def analyze_page(cls, resp, method):
+    """ Function to check if more pages need to be fetched.
+
+    Assumes that error checking has already been done and thus the string given is a valid json object.
     """
+    resp_dict = json.loads(resp)
     next_page_params = {}
     num_items = None
     if method == "user.getInfo":
       pass
     else:
-      methodkey_dict = {'user.getRecentTracks':'recenttracks',
-                      'user.getLovedTracks': 'lovedtracks',
-                      'user.getBannedTracks': 'bannedtracks',
-                      'user.getFriends': 'friends'
-                       }
-      if '@attr' in resp_dict[methodkey_dict[method]]:
+      #logging.debug(str(resp_dict) +str(type(resp_dict))+methodkey_dict[method])
+      #logging.debug(resp_dict)
+      if '@attr' in resp_dict[cls.methodkey_dict[method]]:
         print method 
-        attr_dict = resp_dict[methodkey_dict[method]]['@attr']
+        attr_dict = resp_dict[cls.methodkey_dict[method]]['@attr']
         if int(attr_dict['totalPages']) - int(attr_dict['page']) > 0:
           next_page_params = {'page': int(attr_dict['page']) + 1}
         num_items = int(attr_dict['perPage'])
         print next_page_params, num_items
     
     return next_page_params, num_items 
-  
-  def is_error(self, resp_str, method):
+
+  def check_valid_response(self, respdict, apimethod):
+    call_error = 0
+    error_str = "No error found."
+    if apimethod in self.methodkey_dict:
+      datadict = respdict[self.methodkey_dict[apimethod]]
+      if "#text" in datadict and datadict["#text"]=="\n":
+        call_error = api_error_codes.MALFORMED_API_RESPONSE
+        error_str = "Error fetching %s because:: Error %d: Server returned malformed data or incomplete data." %(apimethod, call_error)
+    return call_error, error_str
+
+  def is_error(self, resp_str, apimethod):
+    """ API domain specific function to check for errors in the API response returned.
+
+     If there is an error found, then APICaller will retry fetching the data via its execute method
+     (if retry is enabled in settings.py).
+    """
     call_error = 0                                                              
-    error_str = "No error found." 
-    if len(resp_str) < 1:                                      
+    error_str = "No error found."
+    #print len(resp_str.strip('" '))
+    if len(resp_str) < 1 or len(resp_str.strip('" ')) <=1:
       call_error = api_error_codes.EMPTY_API_RESPONSE                           
-      error_str = "Error fetching %s because:: Error %d: Server returned empty string." %(method, call_error)
+      error_str = "Error fetching %s because:: Error %d: Server returned empty string." %(apimethod, call_error)
     else:
       resp_dict = None
       try:
         resp_dict = json.loads(resp_str)
       except ValueError, e:
         call_error = api_error_codes.MALFORMED_API_RESPONSE
-        error_str = "Error fetching %s because:: Error %d: Server returned string that is not valid JSON." %(method, call_error)
-      if resp_dict is not None and 'error' in resp_dict:
-        call_error = self.errorcodes_dict[int(resp_dict['error'])]
-        error_str = "Error fetching %s because:: Error %d: %s" %(method, call_error, resp_dict['message'])  
-    
+        error_str = "Error fetching %s because:: Error %d: Server returned string that is not valid JSON." %(apimethod, call_error)
+
+      if resp_dict is not None and call_error==0:
+        if 'error' in resp_dict:
+          call_error = self.errorcodes_dict[int(resp_dict['error'])]
+          error_str = "Error fetching %s because:: Error %d: %s" %(apimethod, call_error, resp_dict['message'])
+        else:
+          ce, es = self.check_valid_response(resp_dict, apimethod)
+          if ce != 0:
+            call_error = ce
+            error_str = es
+
     if call_error != 0: 
       #print error_str
       logging.error(error_str)

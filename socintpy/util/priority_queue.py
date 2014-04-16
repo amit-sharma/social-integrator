@@ -46,7 +46,7 @@ class PriorityQueue:
       if last_checkpoint_id != -1:
         logging.info("Starting recovery of queue.")
         recovered_state_store = self.state_store[str(last_checkpoint_id)]
-        print(recovered_state_store)
+        #print(recovered_state_store)
         self.queue = recovered_state_store['queue']
         self.queue_dict = recovered_state_store['queue_dict']
         self.visited = recovered_state_store['visited']

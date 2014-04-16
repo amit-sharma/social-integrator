@@ -117,7 +117,7 @@ class APICaller(object):
         break
       """
       result = resp.read()
-      call_error_code, curr_error_str = self.api.is_error(result, self.method)
+      call_error_code, curr_error_str = self.api.is_error(result, self.parameters['method'])
       if resp.status == 200 and call_error_code == 0:
         success = True
         break
