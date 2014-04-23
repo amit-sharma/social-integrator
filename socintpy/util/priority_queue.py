@@ -34,14 +34,14 @@ class PriorityQueue:
   def destroy_state(self):
     self.state_store.destroy_store()
 
-  def initialize(self, seed_nodes, do_recovery=True):
+  def initialize(self, seed_nodes, do_recovery=True, checkpoint_freq=None):
     num_nodes_stored = 0
     num_edges_stored = 0
 
     for seed in seed_nodes:
       self.push(seed, priority=0)
     if self.store_class is not None and do_recovery:
-      last_checkpoint_id=self.state_store.get_maximum_id()
+      last_checkpoint_id=self.state_store.get_last_good_state_id(checkpoint_freq)
       #print("Last checkpoint", last_checkpoint_id)
       if last_checkpoint_id != -1:
         logging.info("Starting recovery of queue.")
@@ -112,11 +112,19 @@ class PriorityQueue:
   def is_empty(self):
     return not self.queue_dict
   
-  def save_checkpoint(self, num_nodes_stored, num_edges_stored):
+  def save_checkpoint(self, num_nodes_stored, num_edges_stored, store_freq):
     self.state_store[str(num_nodes_stored)] = {'id':num_nodes_stored, 'queue':self.queue, 'queue_dict':self.queue_dict,
                                            'num_edges_stored': num_edges_stored, 'num_nodes_stored': num_nodes_stored,
                                            'visited': self.visited, 'counter':self.counter}
+    try:
+      self.state_store.delete(str(num_nodes_stored-2*store_freq))
+    except KeyError:
+      logging.error("Could not delete from the state_store. Id was %d" %(num_nodes_stored -2*store_freq))
+
     return
 
   def mark_visited(self, node):
     self.visited[node] = True
+
+  def print_size(self):
+    print("Size of queue",len(self.queue), len(self.queue_dict), len(self.visited))

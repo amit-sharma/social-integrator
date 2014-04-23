@@ -162,8 +162,9 @@ class LastfmAPI(BaseCaller):
     if apimethod in self.methodkey_dict:
       datadict = respdict[self.methodkey_dict[apimethod]]
       if "#text" in datadict and datadict["#text"]=="\n":
-        call_error = api_error_codes.MALFORMED_API_RESPONSE
-        error_str = "Error fetching %s because:: Error %d: Server returned malformed data or incomplete data." %(apimethod, call_error)
+        if not ("total" in datadict and int(datadict["total"])==0):
+          call_error = api_error_codes.MALFORMED_API_RESPONSE
+          error_str = "Error fetching %s because:: Error %d: Server returned malformed data or incomplete data." %(apimethod, call_error)
     return call_error, error_str
 
   def is_error(self, resp_str, apimethod):

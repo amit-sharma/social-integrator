@@ -1,4 +1,5 @@
 import shelve,os
+import bsddb, logging
 from socintpy.store.generic_store import GenericStore
 #from pprint import pprint
 
@@ -13,6 +14,8 @@ class BasicShelveStore(GenericStore):
 
   def record(self, key, data_dict):
     #data_shelve = shelve.open(store_path)
+    #print key.encode('ascii')
+    #print data_dict
     self.data_shelve[key.encode('ascii')] = data_dict
     #data_shelve.close()
   
@@ -26,9 +29,9 @@ class BasicShelveStore(GenericStore):
     #data_shelve.close()
     return data
  
-  def delete(self, key):
+  def delete(self, pattern):
     key = pattern.encode('ascii')
-    del data_shelve[key]
+    del self.data_shelve[key]
   
   def ordered_values(self):
     new_arr = []
@@ -48,7 +51,39 @@ class BasicShelveStore(GenericStore):
       max_id= max([int(val['id']) for val in self.data_shelve.values()])
     print max_id
     return max_id
-  
+
+  def get_last_good_state_id(self, checkpoint_freq):
+    last_id = -1
+    try:
+      state_ids = self.data_shelve.keys()
+      if len(state_ids) > 0:
+        last_id = max([int(v) for v in state_ids])
+    except bsddb.db.DBPageNotFoundError:
+      logging.error("Shelve corrupted. Trying recovery now.")
+      print("Shelve corrupted.")
+      prev_id = None
+      curr_id = checkpoint_freq
+      all_data = {}
+      try:
+        while True:
+          if str(curr_id) in self.data_shelve:
+            all_data[str(curr_id)] = self.data_shelve[str(curr_id)]
+            prev_id = curr_id
+            curr_id += checkpoint_freq
+      except bsddb.db.DBPageNotFoundError:
+        if prev_id is not None:
+          last_id = prev_id
+      self.data_shelve.close()
+      self.data_shelve = shelve.open(self.store_path, flag='n')
+      for key, val in all_data.iteritems():
+        self.record(key, val)
+
+    return last_id
+
+
+
+
+
   def get_dict(self):
     return self
 
