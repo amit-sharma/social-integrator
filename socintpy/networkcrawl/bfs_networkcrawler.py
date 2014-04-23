@@ -129,10 +129,11 @@ seed_nodes needs to be not None.
         logging.info("Processed %s \n" % new_node)
         print "Processed ", new_node
         if iterations % checkpoint_frequency == 0:
-          curr_num_nodes_stored = self.gbuffer.nodes_store.get_maximum_id() + 1
+          #curr_num_nodes_stored = self.gbuffer.nodes_store.get_maximum_id() + 1
+          curr_num_nodes_stored = self.gbuffer.nodes_store.get_count_records()
           print("Making a checkpoint for pqueue state", iterations, curr_num_nodes_stored)
           logging.info("Making a checkpoint for pqueue state: %d", curr_num_nodes_stored)
-          self.pqueue.save_checkpoint(curr_num_nodes_stored, self.gbuffer.edges_store.get_maximum_id() + 1, checkpoint_frequency)
+          self.pqueue.save_checkpoint(curr_num_nodes_stored, self.gbuffer.edges_store.get_count_records(), checkpoint_frequency)
         #print gc.collect()
     except (KeyboardInterrupt, SystemExit):
       self.pqueue.close()

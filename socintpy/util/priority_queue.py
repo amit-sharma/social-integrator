@@ -55,6 +55,7 @@ class PriorityQueue:
         num_edges_stored = recovered_state_store['num_edges_stored']
         logging.info("Ended recovery of queue with checkpoint id: " + str(last_checkpoint_id))
 
+    print("size of pqueue", len(self.queue), len(self.queue_dict), len(self.visited) )
     return(num_nodes_stored, num_edges_stored)
 
   def push(self, node, priority = 0):
@@ -120,6 +121,7 @@ class PriorityQueue:
       self.state_store.delete(str(num_nodes_stored-2*store_freq))
     except KeyError:
       logging.error("Could not delete from the state_store. Id was %d" %(num_nodes_stored -2*store_freq))
+      print("Could not delete from the state_store. Id was %d" %(num_nodes_stored -2*store_freq))
 
     return
 

@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as etree
-from socintpy.networkdata.network_data_interface import NetworkDataInterface
+from socintpy.networkdata.network_data_preparser import NetworkDataInterface
 
 class GoodreadsData(NetworkDataInterface): 
 

@@ -74,5 +74,7 @@ class GenericStore(UserDict.DictMixin):
       StoreClass = class_for_name("socintpy.store.gml_store", "GMLStore")        
     elif store_type == "couchdb":                                                
       StoreClass = class_for_name("socintpy.store.couchdb_store", "CouchDBStore")
+    elif store_type == "sqlite":
+      StoreClass = class_for_name("socintpy.store.sqlite_store", "SqliteStore")
     return StoreClass
                    

@@ -1,3 +1,5 @@
+"""Takes too much memory compared to sqlite. Consider deprecated.
+"""
 import shelve,os
 import bsddb, logging
 from socintpy.store.generic_store import GenericStore
@@ -6,7 +8,7 @@ from socintpy.store.generic_store import GenericStore
 class BasicShelveStore(GenericStore):
   def __init__(self, store_path, data_type="default"):
     self.store_path = store_path
-    self.data_shelve = shelve.open(store_path)
+    self.data_shelve = shelve.open(store_path, protocol=-1)
     self.data_type = data_type
   
   def __del__(self):
