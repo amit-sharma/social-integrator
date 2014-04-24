@@ -1,4 +1,3 @@
-
 from socintpy.caller.github_api import GithubAPI
 
 api = GithubAPI()

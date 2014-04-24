@@ -2,32 +2,38 @@ from collections import namedtuple
 import heapq
 import operator
 import math, random
-import utils
 
 
-class NetworkNode():
+class NetworkNode(object):
     user_sim = {}
 
     def __init__(self, uid, node_data):
         self.uid = uid
         self.node_data = node_data
         self.interactions = {}
+        self.friends = {}
+        if node_data is not None and 'interactions' in node_data:
+            for interact_type in node_data['interactions']:
+                self.register_interactions(interact_type)
+
 
     def register_interactions(self, interaction_name):
-      self.interactions[interaction_name] = {}
+        self.interactions[interaction_name] = {}
 
     def add_interaction(self, interaction_name, interaction_id, interaction_data):
-      self.interactions[interaction_name][interaction_id] = {'id': interaction_id, 'interaction_data':interaction_data}
+        self.interactions[interaction_name][interaction_id] = {'id': interaction_id,
+                                                               'interaction_data': interaction_data}
 
     def add_friend(self, friendid, friend_data):
-      self.friends[friendid] = {'id':friendid, 'friend_data':friend_data}
+        self.friends[friendid] = {'id': friendid, 'friend_data': friend_data}
 
     def createFriendSet(self):
         self.friends = set()
-        for k,v in self.fitems.iteritems():
+        for k, v in self.fitems.iteritems():
             for friendid, created_time in v:
                 self.friends.add(friendid)
         return self.friends
+
     """
     def createLikesOnlySet(self):
         self.likes_only = set()

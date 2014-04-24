@@ -14,6 +14,6 @@ NODE_INFO_CALLS = ["user.getInfo", "user.getRecentTracks"]
 EDGE_INFO_CALLS = ["getFriends"]
 
 METHOD_DEFAULT_PARAMS = {
-                         'user.getInfo':  {},
-                         'user.getRecentTracks': {'limit': 200}
-                        }
+    'user.getInfo': {},
+    'user.getRecentTracks': {'limit': 200}
+}
