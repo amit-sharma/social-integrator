@@ -8,3 +8,4 @@ class NetworkDataPreparser:
 
     def read_nodes(self):
         raise NotImplementedError("NetworkDataPreparser: read_nodes is not implemented.")
+
