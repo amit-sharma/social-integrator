@@ -3,6 +3,7 @@ class NetworkDataPreparser:
         self.nodes = {}
         self.items = {}
         self.edges = {}
+        self.interaction_types = []
 
 
     def read_nodes(self):

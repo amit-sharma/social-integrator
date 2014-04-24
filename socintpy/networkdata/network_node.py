@@ -5,34 +5,42 @@ import math, random
 
 
 class NetworkNode(object):
+    FRIEND_ONLY = 2
+    CORE_USER = 1
     user_sim = {}
 
-    def __init__(self, uid, node_data):
+    def __init__(self, uid, is_core, node_data):
         self.uid = uid
+        self.is_core = is_core
         self.node_data = node_data
         self.interactions = {}
         self.friends = {}
+        self.interaction_types = []
         if node_data is not None and 'interactions' in node_data:
-            for interact_type in node_data['interactions']:
-                self.register_interactions(interact_type)
+            self.interaction_types = node_data['interactions']
+            self.register_interactions(self.interaction_types)
 
 
-    def register_interactions(self, interaction_name):
-        self.interactions[interaction_name] = {}
+    def register_interactions(self, interactions_list):
+        for interact_type in interactions_list:
+            self.interactions[interact_type] = {}
 
-    def add_interaction(self, interaction_name, interaction_id, interaction_data):
-        self.interactions[interaction_name][interaction_id] = {'id': interaction_id,
+    def mark_as_core(self):
+        self.is_core = True
+
+    def add_interaction(self, interaction_name, item_id, interaction_data):
+        self.interactions[interaction_name][item_id] = {'id': item_id,
                                                                'interaction_data': interaction_data}
 
-    def add_friend(self, friendid, friend_data):
-        self.friends[friendid] = {'id': friendid, 'friend_data': friend_data}
+    def add_friend(self, friendid, friend_node,  friendship_data):
+        self.friends[friendid] = {'id': friendid, 'friend_node': friend_node, 'friendship_data': friendship_data}
 
-    def createFriendSet(self):
-        self.friends = set()
-        for k, v in self.fitems.iteritems():
-            for friendid, created_time in v:
-                self.friends.add(friendid)
-        return self.friends
+    def get_items_interacted_with(self):
+        interacted_items = set()
+        for interact_dict in self.interactions.itervalues():
+            interacted_items.union(interact_dict.iterkeys())
+        return interacted_items
+
 
     """
     def createLikesOnlySet(self):
@@ -71,12 +79,14 @@ class NetworkNode(object):
     def getNumLikes(self):
         return len(self.likes)
 
+    """
+
     def getAllCircleItems(self):
-        items = []
-        items.extend([v1 for v1, v2 in self.likes])
+        circle_items = []
+        circle_items.extend([v1 for v1, v2 in self.interactions])
         items.extend(self.fitems.keys())
         return set(items)
-
+    """
     def getOverallCircleLikes(self, itemid):
         numlikes = 0
         for k,v in self.likes:

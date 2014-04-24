@@ -1,6 +1,6 @@
 ## some utility functions.
 import importlib
-
+import math
 
 def convert_to_utf8_str(arg):
     # written by Michael Norton (http://docondev.blogspot.com/)
@@ -19,3 +19,8 @@ def class_for_name(module_name, class_name):
     # found
     c = getattr(m, class_name)
     return c
+
+def mean_sd(data_list):
+    mean_val = sum(data_list)/float(len(data_list))
+    variance = sum([(val-mean_val)*(val-mean_val) for val in data_list])/float(len(data_list))
+    return (mean_val, math.sqrt(variance))

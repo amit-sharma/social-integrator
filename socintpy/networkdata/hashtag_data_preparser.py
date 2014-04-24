@@ -9,8 +9,8 @@ class HashtagDataPreparser(NetworkDataPreparser):
         NetworkDataPreparser.__init__(self)
         self.datadir = datadir
         self.itemcounter = 1
-        self.allfriends = {}
-        self.INTERACTION_TYPES = ["hashtag"]
+        #self.allfriends = {}
+        self.interaction_types = ["hashtag"]
 
     def get_all_data(self):
         self.read_nodes()
@@ -23,7 +23,10 @@ class HashtagDataPreparser(NetworkDataPreparser):
                 if extn == "featnames":
                     self._add_to_item_dict(filename)
                 if extn == "egofeat":
-                    self.nodes[uid] = NetworkNode(uid, {'interactions': self.INTERACTION_TYPES})
+                    if uid in self.nodes:
+                        self.nodes[uid].mark_as_core()
+                    else:
+                        self.nodes[uid] = NetworkNode(uid, is_core=True, node_data={'interactions': self.interaction_types})
 
         for uid, node in self.nodes.iteritems():
             tagmap = self._get_local_tag_map(uid)
@@ -36,7 +39,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
             for i in range(len(like_arr)):
                 if like_arr[i].strip("\n") == "1":
                     #print tagmap[i]
-                    node.add_interaction("hashtag", self.items[tagmap[i]], None)
+                    node.add_interaction("hashtag", self.items[tagmap[i]], {"hashtag_string":tagmap[i]})
             ulikes_file.close()
         return self.nodes
 
@@ -66,27 +69,25 @@ class HashtagDataPreparser(NetworkDataPreparser):
         return
 
     def read_friends(self):
-        for uid, node in self.nodes.iteritems():
+        """ Reads friend data and overwrites previous data written on the node object for the friend.
+        """
+        all_core_users =  [(k,v) for k, v in self.nodes.iteritems()]
+        for uid, node in all_core_users:
             tagmap = self._get_local_tag_map(uid)
             flikes_file = open(self.datadir + uid + ".feat", "r")
             for line in flikes_file:
                 cols = line.split()
                 friendid = cols[0]
-                node.add_friend(friendid, None)
-                if friendid not in self.allfriends:
-                    self.allfriends[friendid] = NetworkNode(friendid, {'interactions': self.INTERACTION_TYPES})
+                if friendid not in self.nodes:
+                    self.nodes[friendid] = NetworkNode(friendid, is_core=False, node_data={'interactions': self.interaction_types})
+
                 for i in range(1, len(cols)):
                     if cols[i].strip("\n") == "1":
                         itemid = self.items[tagmap[i - 1]]
-
-                        #if itemid not in ucircle.fitems:
-                        #    ucircle.fitems[itemid] = set()
-                        #ucircle.fitems[itemid].add((friendid, None))
-
-                        #Adding to allfriends too
-                        self.allfriends[friendid].add_interaction("hashtag", itemid, None)
+                        self.nodes[friendid].add_interaction("hashtag", itemid, {'hashtag_string':tagmap[i-1]})
+                node.add_friend(friendid, self.nodes[friendid], None)
             print ("Processed and read", uid)
-        return self.nodes, self.allfriends
+        return self.nodes
 
     def get_artists(self):
         self.artists = {}
