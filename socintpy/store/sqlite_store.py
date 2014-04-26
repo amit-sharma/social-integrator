@@ -76,5 +76,8 @@ class SqliteStore(GenericStore):
         self.con.close()
 
     def destroy_store(self):
-        self.con.execute("drop table if exists data")
-        self.con.commit()
+        #self.con.execute("drop table if exists data")
+        #self.con.commit()
+        self.con.close()
+        if os.path.isfile(self.db_filename):
+            os.remove(self.db_filename)

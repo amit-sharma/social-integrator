@@ -40,7 +40,7 @@ class LastfmAPI(BaseCaller):
     # there is no error in fetching them.
     def get_node_info(self, user):
         # Error handling is such that None means an error, and [] means zero values.
-        returned_data = self.call_multiple_methods(user, self.node_info_calls)
+        returned_data = self.call_multiple_methods(user, self.node_info_calls, abort_if_error=True)
         for val in returned_data.values():
             if 'error_code' in val:
                 return None
@@ -69,7 +69,7 @@ class LastfmAPI(BaseCaller):
         return datadict
 
     def get_edges_info(self, user):
-        returned_data = self.call_multiple_methods(user, self.edge_info_calls)
+        returned_data = self.call_multiple_methods(user, self.edge_info_calls, abort_if_error=True)
         for val in returned_data.values():
             if 'error_code' in val:
                 return None

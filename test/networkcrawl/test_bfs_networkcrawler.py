@@ -42,7 +42,7 @@ class TestBFSNetworkCrawler(unittest.TestCase):
         self.node_connections_data = None
         self.correct_visit_order = ["11", "5", "8", "1"]
         self.crawler = None
-        self.STORE_TYPE = "basic_shelve"
+        self.STORE_TYPE = "sqlite"
 
     def tearDown(self):
         """
@@ -56,10 +56,10 @@ class TestBFSNetworkCrawler(unittest.TestCase):
     def test_crawl(self):
         # Running the bfs crawler
         num_nodes_before_crash = 2
-        checkpoint_freq = 3
+        checkpoint_freq = 2
         webnetwork = TestWebCaller("test", self.network_edges)
         self.crawler = BFSNetworkCrawler(webnetwork, store_type=self.STORE_TYPE)
-        self.crawler.crawl(seed_nodes=["11", "5"], max_nodes=num_nodes_before_crash, recover=False,
+        self.crawler.crawl(seed_nodes=["11", "5"], max_nodes=num_nodes_before_crash, recover=True,
                            checkpoint_frequency=checkpoint_freq)
 
         node_visit_order = webnetwork.get_visit_order()
@@ -74,13 +74,13 @@ class TestBFSNetworkCrawler(unittest.TestCase):
         self.compare_values(node_visit_order,
                             test_visit_order=self.correct_visit_order)
 
-        self.crawler.close()
+        #self.crawler.close()
 
     def compare_values(self, real_visit_order, test_visit_order):
         # Accessing the results of calling the source code
-        self.node_info_data = self.crawler.gbuffer.nodes_store.get_dict()
+        self.node_info_data = self.crawler.gbuffer.nodes_store
         print(self.node_info_data)
-        self.node_connections_data = self.crawler.gbuffer.edges_store.get_dict()
+        self.node_connections_data = self.crawler.gbuffer.edges_store
         self.node_visit_order = list(OrderedDict.fromkeys(real_visit_order))
 
         # Testing the results with expected values

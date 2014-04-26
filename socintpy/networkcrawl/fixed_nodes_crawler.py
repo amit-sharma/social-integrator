@@ -1,7 +1,7 @@
 from socintpy.networkcrawl.crawler_interface import NetworkCrawlerInterface
 from socintpy.store.generic_store import GenericStore
 from socintpy.store.graph_buffer import GraphBuffer
-import logging
+import logging, itertools
 
 class FixedNodesCrawler(NetworkCrawlerInterface):
     def __init__(self, network, store_type):
@@ -11,7 +11,9 @@ class FixedNodesCrawler(NetworkCrawlerInterface):
         # Buffer to store network data
         self.gbuffer = GraphBuffer(self.network.label, store_class)
 
-    def crawl(self, nodes_list):
+    def crawl(self, nodes_list, start_node_id, start_edge_id):
+        node_counter = itertools.count(start_node_id)
+        edge_counter = itertools.count(start_edge_id)
         # Get details about the current node
         try:
             for new_node in nodes_list:
@@ -21,7 +23,6 @@ class FixedNodesCrawler(NetworkCrawlerInterface):
                     logging.error(error_msg)
                     print error_msg
                     continue
-                    #raise NameError
                 # Assume dict output for all stores.
                 new_node_edges_info = self.network.get_edges_info(new_node)
                 if new_node_edges_info is None:
@@ -47,7 +48,12 @@ class FixedNodesCrawler(NetworkCrawlerInterface):
                 print "Processed ", new_node
 
         except (KeyboardInterrupt, SystemExit):
-            self.pqueue.close()
             self.gbuffer.close()
+
+    def __del__(self):
+        self.close()
+
+    def close(self):
+        self.gbuffer.close()
 
 
