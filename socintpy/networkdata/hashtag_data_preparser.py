@@ -37,7 +37,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
             line = ulikes_file.readline()
             like_arr = line.split()
             for i in range(len(like_arr)):
-                if like_arr[i].strip("\n") == "1":
+                if like_arr[i].strip("\n") == "1" and tagmap[i][0]=='#':
                     #print tagmap[i]
                     node.add_interaction("hashtag", self.items[tagmap[i]], {"hashtag_string":tagmap[i]})
             ulikes_file.close()
@@ -63,7 +63,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
             cols = line.split()
             tagname = cols[1].strip("\n")
             #print tagname
-            if tagname not in self.items:
+            if tagname not in self.items and tagname[0] == '#':
                 self.items[tagname] = self.itemcounter
                 self.itemcounter += 1
         return
@@ -82,17 +82,12 @@ class HashtagDataPreparser(NetworkDataPreparser):
                     self.nodes[friendid] = NetworkNode(friendid, is_core=False, node_data={'interactions': self.interaction_types})
 
                 for i in range(1, len(cols)):
-                    if cols[i].strip("\n") == "1":
+                    if cols[i].strip("\n") == "1" and tagmap[i-1][0]=='#':
                         itemid = self.items[tagmap[i - 1]]
                         self.nodes[friendid].add_interaction("hashtag", itemid, {'hashtag_string':tagmap[i-1]})
                 node.add_friend(friendid, self.nodes[friendid], None)
             print ("Processed and read", uid)
         return self.nodes
-
-    def get_artists(self):
-        self.artists = {}
-        return self.artists
-
 
 if __name__ == "__main__":
     data = HashtagDataPreparser("/home/asharma/datasets/twitter_jure/")

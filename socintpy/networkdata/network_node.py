@@ -38,7 +38,7 @@ class NetworkNode(object):
     def get_items_interacted_with(self):
         interacted_items = set()
         for interact_dict in self.interactions.itervalues():
-            interacted_items.union(interact_dict.iterkeys())
+            interacted_items = interacted_items.union(interact_dict.keys())
         return interacted_items
 
 
