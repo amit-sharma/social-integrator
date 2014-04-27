@@ -24,3 +24,15 @@ def mean_sd(data_list):
     mean_val = sum(data_list)/float(len(data_list))
     variance = sum([(val-mean_val)*(val-mean_val) for val in data_list])/float(len(data_list))
     return (mean_val, math.sqrt(variance))
+
+def l2_norm(values_dict, binary=True):
+    norm = 0
+    if binary:
+        norm = len(values_dict)
+    else:
+        for val in values_dict.itervalues():
+            norm += (len(val)*len(val))
+
+    norm = math.sqrt(norm)
+    return norm
+
