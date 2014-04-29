@@ -101,24 +101,43 @@ class BasicNetworkAnalyzer(object):
                 interactions_per_user[interact_type] += len(interact_dict)
         return interactions_per_user
 
-    def compare_circle_global_knnsimilarity(self, interact_type, k):
-        sims_global = []
+    def compare_circle_global_knnsimilarity(self, interact_type, klim):
         sims_local = []
+        sims_global = []
+
         for k,v in self.netdata.get_core_nodes_iterable():
-            global_candidates = self.netdata.get_nonfriends_iterable(v)
-            sims_global.append(self.compute_knearest_neighbors(v, global_candidates, interact_type, k))
-            local_candidates = v.friends.iteritems()
-            sims_local.append(self.compute_knearest_neighbors(v, local_candidates, interact_type, k))
+            if v.interactions[interact_type]:
+                global_candidates = self.netdata.get_nonfriends_iterable(v)
+                globalk_neighbors = self.compute_knearest_neighbors(v, global_candidates, interact_type, klim)
+                if globalk_neighbors:
+                    global_simvector = [sim for sim, neigh in globalk_neighbors]
+                    sims_global.append(sum(global_simvector)/len(global_simvector))
+                else:
+                    print "Error in finding global %d neighbors" % klim,"for",v.uid
+                    continue
+
+                local_candidates = v.get_friendnodes_iterable()
+                localk_neighbors = self.compute_knearest_neighbors(v, local_candidates, interact_type, klim)
+                if localk_neighbors:
+                    localsim_vector = [sim for sim, neigh in localk_neighbors]
+                    sims_local.append(sum(localsim_vector)/len(localsim_vector))
+                else:
+                    print "Error in finding local %d neighbors for %s" % (klim,v.uid)
+                    continue
+            else:
+                print "Error in finding %d neighbors for %s:(Has no interactions)" % (klim,v.uid)
             #print sim1, sim2
         return sims_local, sims_global
 
-    def compute_knearest_neighbors(self, node, candidate_nodes_iterable, interact_type, k):
+    @staticmethod
+    def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k, node_interactions=None):
         minheap=[]
         for cnode_id, candidate_node  in candidate_nodes_iterable:
-            curr_sim = node.compute_node_similarity(candidate_node.interactions[interact_type], interact_type)
-            heapq.heappush(minheap, (curr_sim, candidate_node))
-            if len(minheap) > k:
-                heapq.heappop(minheap)
+            curr_sim = node.compute_node_similarity(candidate_node.interactions[interact_type], interact_type, node_interactions)
+            if curr_sim is not None:
+                heapq.heappush(minheap, (curr_sim, candidate_node))
+                if len(minheap) > k:
+                    heapq.heappop(minheap)
         return minheap
 
     """

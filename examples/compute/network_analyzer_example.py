@@ -1,11 +1,12 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
+from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 import  socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import getopt,sys
 
 COMPATIBLE_DOMAINS = ['twitter']
-AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity']
+AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender']
 def usage():
     print "Too few or erroneous parameters"
     print 'Usage: python '+sys.argv[0]+' -d <dataset> -p <path>'
@@ -44,10 +45,13 @@ if __name__ == "__main__":
         usage()
         sys.exit(2)
 
+    data = None
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path)
-
-    data.get_all_data()
+    try:
+        data.get_all_data()
+    except:
+        raise
     net_analyzer = BasicNetworkAnalyzer(data)
 
     if computation_cmd=="basic_stats" or computation_cmd is None:
@@ -61,31 +65,34 @@ if __name__ == "__main__":
         #Compute K-nearest similarity
         KLIMITS = [5, 10]
         for curr_lim in KLIMITS:
-            plot_circle, plot_external = net_analyzer.compare_circle_global_knnsimilarity("hashtag", k=curr_lim)
+            plot_circle, plot_external = net_analyzer.compare_circle_global_knnsimilarity("hashtag", klim=curr_lim)
             plotter.plotLinesYY(plot_circle, plot_external, "Friends", "Global")
             print "K", curr_lim
             print "Circle Average", utils.mean_sd(plot_circle)
             print "Global Average", utils.mean_sd(plot_external)
-    """
+
     elif computation_cmd=="knn_recommender":
         #Compute K-nearest recommender
+        KLIMITS = [5,10]
+        rec_analyzer = RecommenderAnalyzer(data, max_recs_shown=10, traintest_split=0.7)
         for curr_lim in KLIMITS:
             local_avg=[]
             global_avg=[]
             Ntotal = 5
-            for i in range(Ntotal):
-                plot_circle, plot_external = compareKNearestRecommender(limit=curr_lim)
+            for i in range(Ntotal): # randomize because of training-test split.
+                plot_circle, plot_external = rec_analyzer.compare_knearest_recommenders("hashtag", klim=curr_lim)
                 print "K", curr_lim
-                curr_avg_local = sum(plot_circle)/float(len(plot_circle))
-                curr_avg_global = sum(plot_external)/float(len(plot_external))
-                print "Circle Average", curr_avg_local, "Std Error:", getStdError(plot_circle)
-                print "Global Average", curr_avg_global , "Std Error: ", getStdError(plot_external), "\n"
-                local_avg.append(curr_avg_local)
-                global_avg.append(curr_avg_global)
+                #print plot_circle, plot_external
+                curr_avg_local = utils.mean_sd(plot_circle)
+                curr_avg_global =  utils.mean_sd(plot_external)
+                print "Circle Average", curr_avg_local
+                print "Global Average", curr_avg_global
+                local_avg.append(curr_avg_local[0])
+                global_avg.append(curr_avg_global[0])
                 #plotLinesYY(plot_circle, plot_external, "Friends", "Global")
             print "Local", sum(local_avg)/float(Ntotal)
             print "Global", sum(global_avg)/float(Ntotal)
-
+    """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
             plot_circle, plot_external = compareRandomRecommender(limit=curr_lim)

@@ -3,6 +3,8 @@ from socintpy.networkdata.network_node import NetworkNode
 from pprint import pprint
 import os
 
+def handle_os_walk(os_error):
+    raise
 
 class HashtagDataPreparser(NetworkDataPreparser):
     def __init__(self, datadir):
@@ -17,7 +19,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
         self.read_friends()
 
     def read_nodes(self):
-        for root, dirs, files in os.walk(self.datadir):
+        for root, dirs, files in os.walk(self.datadir, onerror=handle_os_walk):
             for filename in files:
                 uid, extn = filename.split(".")
                 if extn == "featnames":

@@ -42,7 +42,9 @@ class NetworkNode(object):
             interacted_items = interacted_items.union(interact_dict.keys())
         return interacted_items
 
-
+    def get_friendnodes_iterable(self):
+        for k, v_dict in self.friends.iteritems():
+            yield k, v_dict['friend_node']
     """
     def createLikesOnlySet(self):
         self.likes_only = set()
@@ -127,8 +129,10 @@ class NetworkNode(object):
         sparsity = num_circle_likes / (float(num_circle_items*num_people))
         return sparsity
     """
-    def compute_node_similarity(self, others_interactions, interact_type):
-        my_interactions = self.interactions[interact_type]
+    def compute_node_similarity(self, others_interactions, interact_type, my_interactions=None):
+        if my_interactions is None:
+            my_interactions = self.interactions[interact_type]
+
         if len(my_interactions) == 0 or len(others_interactions) == 0:
             return None
         sim_score = 0
@@ -146,7 +150,7 @@ class NetworkNode(object):
         #    print UCircle.user_sim[(self.uid, other_uid)], usersim, self.uid, other_uid
         #    pprint(UCircle.user_sim)
         #UCircle.user_sim[(self.uid, other_uid)] = usersim
-    """
+
     def circleKNearestSim(self, allfr, num, my_likes):
         minheap=[]
         for frid in self.friends:
@@ -155,7 +159,7 @@ class NetworkNode(object):
             if len(minheap) > num:
                 heapq.heappop(minheap)
         return minheap
-
+    """
     def circleRandomUsers(self, allfr, num):
         selected_friends = random.sample(self.friends, min(num, len(self.friends)))
         res = []
