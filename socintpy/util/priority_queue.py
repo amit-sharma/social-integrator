@@ -7,8 +7,6 @@
 import itertools
 import heapq
 import logging
-import time
-from pprint import pprint
 
 
 class PriorityQueue:

@@ -4,9 +4,6 @@ Has a node store and an edge store as its attributes. Provides semantically mean
 functions such as store_node and store_edge.
 """
 
-from socintpy.store.generic_store import GenericStore
-
-
 class GraphBuffer:
     def __init__(self, label, StoreClass):
         self.graph_label = label

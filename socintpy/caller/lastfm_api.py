@@ -133,6 +133,7 @@ class LastfmAPI(BaseCaller):
 
             Chose 25M as on 04-01-2010, the number of users was slightly more than
             25M. See user 'carolinenovinha'.
+            So taking users before 2010 and seeing their activity in 2014, in the hopes that their friend circle has stabilized by then.
         """
         return [str(val) for val in random.sample(xrange(1, 25000000), n)]
 

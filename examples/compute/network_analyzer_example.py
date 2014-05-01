@@ -1,11 +1,12 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
+from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
 import  socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import getopt,sys
 
-COMPATIBLE_DOMAINS = ['twitter']
+COMPATIBLE_DOMAINS = ['twitter', 'lastfm']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender']
 def usage():
     print "Too few or erroneous parameters"
@@ -48,10 +49,14 @@ if __name__ == "__main__":
     data = None
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path)
+    elif dataset_domain== "lastfm":
+        data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db")
+
     try:
         data.get_all_data()
     except:
         raise
+
     net_analyzer = BasicNetworkAnalyzer(data)
 
     if computation_cmd=="basic_stats" or computation_cmd is None:

@@ -121,6 +121,7 @@ class BFSNetworkCrawler(NetworkCrawlerInterface):
                 # Now storing the data about the node and its edges
                 print "Starting to store node info"
                 new_node_info['id'] = next(node_counter)
+
                 self.gbuffer.store_node(new_node, new_node_info)
                 self.pqueue.mark_visited(new_node)
                 for edge_info in new_node_edges_info:
