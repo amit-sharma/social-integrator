@@ -1,3 +1,7 @@
+""" A crawler that takes in a fixed list of nodes and crawls them.
+
+"""
+
 from socintpy.networkcrawl.crawler_interface import NetworkCrawlerInterface
 from socintpy.store.generic_store import GenericStore
 from socintpy.store.graph_buffer import GraphBuffer
