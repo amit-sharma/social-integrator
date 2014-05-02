@@ -10,16 +10,20 @@ class NetworkNode(object):
     CORE_USER = 1
     user_sim = {}
 
-    def __init__(self, uid, is_core, node_data):
+    def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
         self.uid = uid
-        self.is_core = is_core
+        self.has_friends = has_friends
+        self.has_interactions = has_interactions
         self.node_data = node_data
-        self.interactions = {}
-        self.friends = {}
-        self.interaction_types = []
-        if node_data is not None and 'interactions' in node_data:
-            self.interaction_types = node_data['interactions']
-            self.register_interactions(self.interaction_types)
+        if self.has_interactions:
+            self.interactions = {}
+            self.interaction_types = []
+            if node_data is not None and 'interactions' in node_data:
+                self.interaction_types = node_data['interactions']
+                self.register_interactions(self.interaction_types)
+
+        if self.has_friends:
+            self.friends = {}
 
 
     def register_interactions(self, interactions_list):

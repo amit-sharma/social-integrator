@@ -71,7 +71,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
         return
 
     def read_friends(self):
-        """ Reads friend data and overwrites previous data written on the node object for the friend.
+        """ Reads friend data and overwrites previous data (if crawled before) written on the node object for the friend.
         """
         all_core_users =  [(k,v) for k, v in self.nodes.iteritems()]
         for uid, node in all_core_users:

@@ -18,7 +18,7 @@ class SqliteStore(GenericStore):
             self.con = sqlite.connect(self.db_filename)
             self.con.execute("create table data (key PRIMARY KEY,value)")
         else:
-            self.con = sqlite.connect(self.db_filename)
+            self.con = sqlite.connect(self.db_filename, timeout=10)
 
     def fetch(self, key):
         row = self.con.execute("select value from data where key=?", (key,)).fetchone()
@@ -42,8 +42,16 @@ class SqliteStore(GenericStore):
             raise KeyError
 
     def iteritems(self):
-        for row in self.con.execute("select key,value from data").fetchall():
-            yield ( row[0], cPickle.loads(str(row[1])) )
+        cursor = self.con.cursor()
+        cursor.execute("select key,value from data")
+        arraysize = 10
+        while True:
+            row_list = cursor.fetchmany(arraysize)
+            if not row_list:
+                break
+            for row in row_list:
+            #for row in self.result_iter(cursor):
+                yield (row[0], cPickle.loads(str(row[1])))
 
     def keys(self):
         return [row[0] for row in self.con.execute("select key from data").fetchall()]
@@ -63,7 +71,6 @@ class SqliteStore(GenericStore):
 
     def get_maximum_idd(self):
         row = self.con.execute("select max(key) from data").fetchone()
-
         if row[0] is None:
             return -1
         else:

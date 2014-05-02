@@ -22,6 +22,7 @@ def get_cmd_parameters(argval_list):
         if o =="-m":
             mode = a
 
+
     if mode is None:
         assert False, "Invalid mode!"
     else:

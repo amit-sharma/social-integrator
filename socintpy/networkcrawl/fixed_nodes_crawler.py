@@ -11,12 +11,13 @@ class FixedNodesCrawler(NetworkCrawlerInterface):
         # Buffer to store network data
         self.gbuffer = GraphBuffer(self.network.label, store_class)
 
-    def crawl(self, nodes_list, start_node_id, start_edge_id):
-        node_counter = itertools.count(start_node_id)
-        edge_counter = itertools.count(start_edge_id)
-        # Get details about the current node
+    def crawl(self, nodes_list, start_from_index=1):
         try:
+            counter = 0
             for new_node in nodes_list:
+                counter +=1
+                if counter < start_from_index:
+                    continue
                 new_node_info = self.network.get_node_info(new_node)
                 if new_node_info is None:
                     error_msg = "Crawler: Error in fetching node info. Skipping node %s" % new_node
@@ -38,12 +39,11 @@ class FixedNodesCrawler(NetworkCrawlerInterface):
 
                 # Now storing the data about the node and its edges
                 print "Starting to store node info"
-                new_node_info['id'] = next(node_counter)
+                new_node_info['id'] = -1
                 self.gbuffer.store_node(new_node, new_node_info)
-                self.pqueue.mark_visited(new_node)
                 for edge_info in new_node_edges_info:
-                    edge_info['id'] = next(edge_counter)
-                    self.gbuffer.store_edge(str(edge_info['id']), edge_info)
+                    edge_info['id'] = -1
+                    self.gbuffer.store_edge(str(edge_info['source']+'_'+edge_info['target']), edge_info)
                 logging.info("Processed %s \n" % new_node)
                 print "Processed ", new_node
 

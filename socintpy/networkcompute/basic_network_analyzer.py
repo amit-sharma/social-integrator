@@ -14,16 +14,19 @@ class BasicNetworkAnalyzer(object):
         print min_circle_size, avg_circle_size, max_circle_size
 
     def show_basic_stats(self):
-        num_core_users = sum([v.is_core for v in self.netdata.nodes.itervalues()])
-        print "Number of Core Users", num_core_users
-        num_overall_users = len(self.netdata.nodes)
-        print "Number of overall users", len(self.netdata.nodes)
+        num_interactdata_users = sum([1 for _ in self.netdata.get_nodes_iterable(should_have_interactions=True)])
+        print "Number of Users with interaction data", num_interactdata_users
+        num_frienddata_users = sum([1 for _ in self.netdata.get_nodes_iterable(should_have_friends=True)])
+        print "Number of Users with friendship data", num_frienddata_users
 
-        fr_arr = [len(v.friends) for v in self.netdata.nodes.itervalues() if v.is_core]
+        num_overall_users = len(self.netdata.nodes)
+        print "Number of overall users", num_overall_users
+
+        fr_arr = [len(v.friends) for k,v in self.netdata.get_nodes_iterable(should_have_friends=True)]
         print "Mean, SD of number of friends per user", mean_sd(fr_arr)
 
         items_all=[]
-        for v in self.netdata.nodes.itervalues():
+        for k,v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             #items_all = items_all.union(v.get_items_interacted_with())
             items_all.extend(v.get_items_interacted_with())
         items_all = set(items_all)
@@ -33,7 +36,7 @@ class BasicNetworkAnalyzer(object):
         items_by_interaction = {}
         for interact_type in self.netdata.interaction_types:
             items_by_interaction[interact_type] = set()
-        for v in self.netdata.nodes.itervalues():
+        for k,v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             for interact_type, interact_dict in v.interactions.iteritems():
                 items_by_interaction[interact_type] |= set(interact_dict.keys())
 
@@ -44,10 +47,10 @@ class BasicNetworkAnalyzer(object):
         for interact_type, total_interacts in sum_each_interaction_dict.iteritems():
             print(interact_type)
             print( "--Total, Mean of %s interactions per user = (%d, %f)"
-                   %(interact_type, total_interacts, total_interacts/num_overall_users) )
+                   %(interact_type, total_interacts, total_interacts/float(num_interactdata_users)) )
 
             print( "--Total, Mean of %s interactions per item = (%d, %f)"
-                   %(interact_type, total_interacts, total_interacts/len(items_all)) )
+                   %(interact_type, total_interacts, total_interacts/float(len(items_all))) )
 
         return
 
@@ -55,7 +58,7 @@ class BasicNetworkAnalyzer(object):
         counter = 0
         circle_sims = []
         global_sims = []
-        for k,v in self.netdata.get_core_nodes_iterable():
+        for k,v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
             avg = 0.0
             #print v.friends
@@ -96,7 +99,7 @@ class BasicNetworkAnalyzer(object):
         for interact_type in self.netdata.interaction_types:
             interactions_per_user[interact_type] = 0
 
-        for v in self.netdata.nodes.itervalues():
+        for k,v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             for interact_type, interact_dict in v.interactions.iteritems():
                 interactions_per_user[interact_type] += len(interact_dict)
         return interactions_per_user
@@ -105,7 +108,7 @@ class BasicNetworkAnalyzer(object):
         sims_local = []
         sims_global = []
 
-        for k,v in self.netdata.get_core_nodes_iterable():
+        for k,v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if v.interactions[interact_type]:
                 global_candidates = self.netdata.get_nonfriends_iterable(v)
                 globalk_neighbors = self.compute_knearest_neighbors(v, global_candidates, interact_type, klim)
