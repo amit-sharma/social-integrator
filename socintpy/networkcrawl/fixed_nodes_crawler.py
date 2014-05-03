@@ -45,8 +45,8 @@ class FixedNodesCrawler(NetworkCrawlerInterface):
                 print "Got all data"
 
                 # Now storing the data about the node and its edges
-                FixedNodesCrawler.store_data(self.gbuffer, new_node, new_node_info, new_node_edges_info)
                 print "Starting to store node info"
+                FixedNodesCrawler.store_data(self.gbuffer, new_node, new_node_info, new_node_edges_info)
         except (KeyboardInterrupt, SystemExit):
             self.close()
 
