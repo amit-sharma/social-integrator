@@ -20,9 +20,9 @@ class SqliteStore(GenericStore):
             self.con.execute("create table data (key PRIMARY KEY,value)")
         else:
             self.con = sqlite.connect(self.db_filename, timeout=10)
-        write_mode = self.con.execute("PRAGMA journal_mode=WAL").fetchone()
-        if write_mode[0] != "wal":
-            raise ValueError, "Write mode not set for Sqlite!"
+        #write_mode = self.con.execute("PRAGMA journal_mode=WAL").fetchone()
+        #if write_mode[0] != "wal":
+        #    raise ValueError, "Write mode not set for Sqlite!"
 
     def fetch(self, key):
         row = self.con.execute("select value from data where key=?", (key,)).fetchone()
