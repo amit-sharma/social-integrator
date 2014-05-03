@@ -2,7 +2,6 @@
 
 """
 import getopt
-from examples import settings
 from socintpy.caller.get_api import get_api, get_args
 from socintpy.networkcrawl.fixed_nodes_crawler import FixedNodesCrawler
 import examples.settings as settings  # Local settings file, not in repo for security reasons
