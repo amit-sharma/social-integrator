@@ -17,6 +17,9 @@ class GraphBuffer:
     def store_edge(self, key, edge_info):
         self.edges_store[key] = edge_info
 
+    def store_edges(self, keys, edges_data):
+        self.edges_store.record_many(keys, edges_data)
+
     def close(self):
         self.nodes_store.close()
         self.edges_store.close()

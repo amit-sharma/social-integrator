@@ -14,24 +14,35 @@ class SqliteStore(GenericStore):
     def __init__(self, dictName, data_type="default"):
         self.db_filename = "%s.sqlite" % dictName
         self.data_type = data_type
+
         if not os.path.isfile(self.db_filename):
             self.con = sqlite.connect(self.db_filename)
             self.con.execute("create table data (key PRIMARY KEY,value)")
         else:
             self.con = sqlite.connect(self.db_filename, timeout=10)
+        write_mode = self.con.execute("PRAGMA journal_mode=WAL").fetchone()
+        if write_mode[0] != "wal":
+            raise ValueError, "Write mode not set for Sqlite!"
 
     def fetch(self, key):
         row = self.con.execute("select value from data where key=?", (key,)).fetchone()
         if not row: raise KeyError
         return cPickle.loads(str(row[0]))
 
-    def record(self, key, item):
+    def record(self, key, item, commit=True):
         pdata = cPickle.dumps(item, cPickle.HIGHEST_PROTOCOL)
         item = sqlite3.Binary(pdata)
         if self.con.execute("select key from data where key=?", (key,)).fetchone():
             self.con.execute("update data set value=? where key=?", (item, key))
         else:
             self.con.execute("insert into data (key,value) values (?,?)", (key, item))
+        if commit:
+            self.con.commit()
+
+    def record_many(self, keys, items_list):
+        self.con.execute("BEGIN TRANSACTION")
+        for i in range(len(keys)):
+            self.record(keys[i], items_list[i], commit=False)
         self.con.commit()
 
     def delete(self, key):
