@@ -6,7 +6,7 @@ import  socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import getopt,sys
 
-COMPATIBLE_DOMAINS = ['twitter', 'lastfm']
+COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender']
 def usage():
     print "Too few or erroneous parameters"

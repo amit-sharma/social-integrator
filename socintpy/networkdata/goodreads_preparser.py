@@ -1,20 +1,17 @@
 import xml.etree.ElementTree as etree
-from socintpy.networkdata.network_data_preparser import NetworkDataInterface
+from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 
 
-class GoodreadsData(NetworkDataInterface):
-    def __init__(self):
-        self.nodes = {}
-        self.items = {}
-        self.interactions = {}
-        self.edges = {}
+class GoodreadsData(NetworkDataPreparser):
 
     def __init__(self, node_filename=None, item_filename=None,
                  interaction_filename=None, edge_filename=None):
         self.nodes = self.read_nodes_file(node_filename)
         self.items = self.read_items_file(item_filename)
-        #self.interactions = self.read_interactions_file(interaction_filename)
-        #self.edges = self.read_edges_file(edge_filename)
+        self.interactions = self.read_interactions_file(interaction_filename)
+        self.interaction_types = ["rate"]
+
+        self.edges = self.read_edges_file(edge_filename)
 
     def read_items_file(self, filename):
         items_dict = {}
@@ -73,10 +70,13 @@ class GoodreadsData(NetworkDataInterface):
 
 if __name__ == "__main__":
     x = GoodreadsData(
-        node_filename='/home/amit/datasets/goodreads/goodreads.300k.users.xml',
-        item_filename='/home/amit/datasets/goodreads/goodreads.300k.items.xml',
-        interaction_filename='/home/amit/datasets/goodreads/goodreads.300k.collections.txt',
-        edge_filename="/home/amit/datasets/goodreads/goodreads.300k.edges.xml"
+        node_filename='/home/asharma/datasets/goodreads/goodreads.300k.users.xml',
+        item_filename='/home/asharma/datasets/goodreads/goodreads.300k.items.xml',
+        interaction_filename='/home/asharma/datasets/goodreads/goodreads.300k.collections.txt',
+        edge_filename="/home/asharma/datasets/goodreads/goodreads.300k.edges.xml"
     )
+    u_dict=x.read_nodes_file()
+    print u_dict["1"]
+
 
 
