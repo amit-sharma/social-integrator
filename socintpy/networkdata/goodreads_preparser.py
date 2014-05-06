@@ -1,23 +1,22 @@
 #import xml.etree.ElementTree as etree
 from lxml import etree
 from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
+from socintpy.networkdata.network_node import NetworkNode
 import socintpy.util.utils as utils
 
 
 class GoodreadsDataPreparser(NetworkDataPreparser):
+    interaction_types = ["rate"]
     def __init__(self, data_path):
         NetworkDataPreparser.__init__(self)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
-        self.interaction_filename = data_path + "goodreads.300k.collections.txt"
-        #self.nodes = self.read_nodes_file(node_filename)
         self.items_filename = data_path + "goodreads.300k.items.xml"
         self.edges_filename = data_path + "goodreads.300k.edges.xml"
 
         self.interactions_filename = data_path + "goodreads.300k.collections.txt"
-        #self.interaction_types = ["rate"]
+        self.interaction_types = ["rate"]
 
-        #self.edges = self.read_edges_file(edge_filename)
 
 
     def get_all_data(self):
@@ -25,6 +24,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         print self.nodes["1"]
         self.read_items_file()
         self.read_edges_file()
+        self.read_interactions_file()
 
 
     def read_items_file(self):
@@ -35,12 +35,14 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
 
     def read_nodes_file(self):
         context = etree.iterparse(self.nodes_filename, events=('end',), tag="user")
-        self.nodes = utils.fast_iter(context, lambda elem: (elem.get("user_id"), dict(elem.attrib)))
+        nodes_iter = utils.fast_iter(context, self.handle_nodes)
+        for k, v in nodes_iter:
+            self.nodes[k] = v
         return self.edges
 
-    def read_interactions_file(self, filename):
-        interactions_dict = {}
-        inter_file = open(filename)
+    def read_interactions_file(self):
+        #interactions_dict = {}
+        inter_file = open(self.interactions_filename)
         for line in inter_file:
             cols = line.strip(" \n\t").split(",")
             user_id = cols[0]
@@ -49,9 +51,14 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             rating = cols[3]
             new_interaction = {'user_id': user_id, 'item_id': item_id,
                                'timestamp': timestamp, 'rating': rating}
-            interactions_dict[user_id + item_id] = new_interaction
-        return interactions_dict
+            #interactions_dict[user_id + item_id] = new_interaction
+            self.nodes[user_id].add_interaction("rate", item_id, new_interaction)
 
+    @staticmethod
+    def handle_nodes(elem):
+        uid = elem.get("user_id")
+        newnode= NetworkNode(uid, is_core=True, node_data={'interactions': GoodreadsDataPreparser.interaction_types})
+        return (uid, newnode)
 
     @staticmethod
     def handle_edges(elem):
@@ -61,12 +68,15 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             key = sender_id + receiver_id
         else:
             key = receiver_id + sender_id
-        return key, dict(elem.attrib)
+        return (sender_id, receiver_id), dict(elem.attrib)
 
 
     def read_edges_file(self):
         context = etree.iterparse(self.edges_filename, events=('end',), tag="edge")
-        self.edges = utils.fast_iter(context, self.handle_edges)
+        edges_iter = utils.fast_iter(context, self.handle_edges)
+        for k, v in edges_iter:
+            sender_id, receiver_id = k
+            self.nodes[sender_id].add_friend(receiver_id, self.nodes[receiver_id], None)
         return self.edges
 
 
