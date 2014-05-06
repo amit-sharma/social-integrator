@@ -1,3 +1,5 @@
+import pyximport; pyximport.install()
+import socintpy.cythoncode.cnetwork_node as cnetwork_node
 from collections import namedtuple
 import heapq
 import operator
@@ -5,40 +7,39 @@ import math, random
 import socintpy.util.utils as utils
 
 
-class NetworkNode(object):
+class NetworkNode(cnetwork_node.CNetworkNode):
     FRIEND_ONLY = 2
     CORE_USER = 1
     user_sim = {}
     __slots__ = ('uid', 'has_friends', 'has_interactions', 'node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
     def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
-        self.uid = uid
-        self.has_friends = has_friends
-        self.has_interactions = has_interactions
+        #self.uid = uid
+        #self.has_friends = has_friends
+        #self.has_interactions = has_interactions
         self.node_data = node_data
         if self.has_interactions:
-            self.interactions = {}
+            self.interactions = []
             self.interaction_types = []
-            if node_data is not None and 'interactions' in node_data:
-                self.interaction_types = node_data['interactions']
+            if node_data is not None and node_data.interaction_types is not None:
+                self.interaction_types = node_data.interaction_types
                 self.register_interactions(self.interaction_types)
 
         if self.has_friends:
-            self.friends = {}
+            self.friends = []
 
 
     def register_interactions(self, interactions_list):
         for interact_type in interactions_list:
-            self.interactions[interact_type] = {}
+            self.interactions.append([])
 
     def mark_as_core(self):
         self.is_core = True
 
     def add_interaction(self, interaction_name, item_id, interaction_data):
-        self.interactions[interaction_name][item_id] = {'id': item_id,
-                                                               'interaction_data': interaction_data}
+        self.interactions[interaction_name].append((item_id, interaction_data))
 
     def add_friend(self, friendid, friend_node,  friendship_data):
-        self.friends[friendid] = {'id': friendid, 'friend_node': friend_node, 'friendship_data': friendship_data}
+        self.friends.append((friendid,friend_node, friendship_data))
 
     def get_items_interacted_with(self):
         interacted_items = set()
@@ -280,3 +281,7 @@ class NetworkNode(object):
         return "User ID: "+str(self.uid) + "\t" + "Likes:" + str(self.getNumLikes()) + "\t" + "Friends:" + str(self.getNumFriends()) + "\n"
         #return "User ID: "+str(self.uid) + "\n" + "Likes:" + str(self.likes) +"\n\n\n" + "".join([("Item Id: "+str(k)+"\n"+"Friend Likers: "+str(v)+"\n") for k,v in self.fitems.iteritems()])a
     """
+
+if __name__ == "__main__":
+    a = NetworkNode(1)
+    print a.uid

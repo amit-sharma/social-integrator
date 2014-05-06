@@ -1,6 +1,6 @@
-class NetworkDataPreparser:
+class NetworkDataPreparser():
     def __init__(self):
-        self.nodes = {}
+        self.nodes = []
         self.items = []
         self.edges = []
         self.interaction_types = []
@@ -19,6 +19,6 @@ class NetworkDataPreparser:
 
     def get_nonfriends_iterable(self, node):
         for k, v in self.nodes.iteritems():
-            if k not in node.friends and k!=node.uid:
+            if k not in node.friends and k != node.uid:
                 yield k, v
 
