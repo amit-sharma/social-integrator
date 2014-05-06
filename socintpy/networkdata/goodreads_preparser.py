@@ -24,7 +24,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         print self.nodes["1"]
         self.read_items_file()
         self.read_edges_file()
-        self.read_interactions_file()
+        #self.read_interactions_file()
 
 
     def read_items_file(self):
@@ -57,7 +57,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     @staticmethod
     def handle_nodes(elem):
         uid = elem.get("user_id")
-        newnode= NetworkNode(uid, is_core=True, node_data={'interactions': GoodreadsDataPreparser.interaction_types})
+        newnode= NetworkNode(uid, has_friends=True, has_interactions=True, node_data={'interactions': GoodreadsDataPreparser.interaction_types})
         return (uid, newnode)
 
     @staticmethod

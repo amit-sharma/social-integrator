@@ -6,6 +6,7 @@ from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
 import  socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import getopt,sys
+from guppy import hpy
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender']
@@ -48,6 +49,8 @@ if __name__ == "__main__":
         sys.exit(2)
 
     data = None
+    h = hpy()
+    h.setref()
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path)
     elif dataset_domain== "lastfm":
@@ -59,7 +62,8 @@ if __name__ == "__main__":
         data.get_all_data()
     except:
         raise
-
+    print h.heap()
+    sys.exit(0)
     net_analyzer = BasicNetworkAnalyzer(data)
 
     if computation_cmd=="basic_stats" or computation_cmd is None:
