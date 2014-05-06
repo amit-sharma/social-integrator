@@ -3,12 +3,13 @@ from lxml import etree
 from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 from socintpy.networkdata.network_node import NetworkNode
 import socintpy.util.utils as utils
+from collections import namedtuple
 
 
-class GoodreadsDataPreparser(NetworkDataPreparser):
+class GoodreadsDataPreparser():#NetworkDataPreparser):
     interaction_types = ["rate"]
     def __init__(self, data_path):
-        NetworkDataPreparser.__init__(self)
+        #NetworkDataPreparser.__init__(self)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
         self.items_filename = data_path + "goodreads.300k.items.xml"
@@ -20,18 +21,19 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
 
 
     def get_all_data(self):
-        self.read_nodes_file()
-        print self.nodes["1"]
-        self.read_items_file()
+        #self.read_nodes_file()
+        #print self.nodes["1"]
+       	#self.read_items_file()
         #self.read_edges_file()
         self.read_interactions_file()
 
 
     def read_items_file(self):
+	self.items = []
         context = etree.iterparse(self.items_filename, events=('end',), tag="item")
         items_iter = utils.fast_iter(context, lambda elem: (elem.get('item_id'), dict(elem.attrib)))
         for k, v in items_iter:
-            self.items[k]=v
+            self.items.append(v)
         return self.items
 
 
@@ -43,19 +45,22 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         return self.nodes
 
     def read_interactions_file(self):
-        #interactions_dict = {}
+        self.interactions_dict = []
         inter_file = open(self.interactions_filename)
         counter = 0
+	Interact_data = namedtuple('idata', 'user_id item_id timestamp rating')
         for line in inter_file:
             cols = line.strip(" \n\t").split(",")
             user_id = cols[0]
             item_id = cols[1]
             timestamp = cols[2]
             rating = cols[3]
-            new_interaction = {'user_id': user_id, 'item_id': item_id,
-                               'timestamp': timestamp, 'rating': rating}
-            #interactions_dict[user_id + item_id] = new_interaction
-            self.nodes[user_id].add_interaction("rate", item_id, new_interaction)
+            #new_interaction = {'user_id': user_id, 'item_id': item_id,
+            #                   'timestamp': timestamp, 'rating': rating}
+            #self.interactions_dict[user_id + item_id] = new_interaction
+	    new_interaction = Interact_data(user_id, item_id, timestamp, rating)
+	    self.interactions_dict.append(new_interaction)
+            #self.nodes[user_id].add_interaction("rate", item_id, new_interaction)
             counter += 1
             if counter > 100:
                 break
