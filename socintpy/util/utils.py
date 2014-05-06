@@ -110,3 +110,13 @@ def run_async(func):
         return func_hl
 
     return async_func
+
+def fast_iter(context, func):
+    res = {}	
+    for event, elem in context:
+        k, v= func(elem)
+        res[k] = v
+        while elem.getprevious() is not None:
+            del elem.getparent()[0]
+    del context
+    return res
