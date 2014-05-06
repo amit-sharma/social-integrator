@@ -2,16 +2,21 @@ import xml.etree.ElementTree as etree
 from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 
 
-class GoodreadsData(NetworkDataPreparser):
+class GoodreadsDataPreparser(NetworkDataPreparser):
 
-    def __init__(self, node_filename=None, item_filename=None,
-                 interaction_filename=None, edge_filename=None):
-        self.nodes = self.read_nodes_file(node_filename)
-        self.items = self.read_items_file(item_filename)
-        self.interactions = self.read_interactions_file(interaction_filename)
-        self.interaction_types = ["rate"]
+    def __init__(self, data_path):
+        self.datadir = data_path
+        self.nodes_filename = data_path + "goodreads.300k.users.xml"
+        self.interaction_filename = data_path + "goodreads.300k.collections.txt"
+        #self.nodes = self.read_nodes_file(node_filename)
+        #self.items = self.read_items_file(item_filename)
+        #self.interactions = self.read_interactions_file(interaction_filename)
+        #self.interaction_types = ["rate"]
 
-        self.edges = self.read_edges_file(edge_filename)
+        #self.edges = self.read_edges_file(edge_filename)
+
+    def get_all_data(self):
+        self.read_nodes_file()
 
     def read_items_file(self, filename):
         items_dict = {}
@@ -26,9 +31,9 @@ class GoodreadsData(NetworkDataPreparser):
                 root.clear()
         return items_dict
 
-    def read_nodes_file(self, filename):
+    def read_nodes_file(self):
         users_dict = {}
-        context = iter(etree.iterparse(filename, events=('start', 'end')))
+        context = iter(etree.iterparse(self.nodes_filename, events=('start', 'end')))
         event, root = context.next()
 
         for event, elem in context:
@@ -69,7 +74,7 @@ class GoodreadsData(NetworkDataPreparser):
 
 
 if __name__ == "__main__":
-    x = GoodreadsData(
+    x = GoodreadsDataPreparser(
         node_filename='/home/asharma/datasets/goodreads/goodreads.300k.users.xml',
         item_filename='/home/asharma/datasets/goodreads/goodreads.300k.items.xml',
         interaction_filename='/home/asharma/datasets/goodreads/goodreads.300k.collections.txt',

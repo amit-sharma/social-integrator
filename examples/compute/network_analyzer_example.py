@@ -1,5 +1,6 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
+from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
 import  socintpy.util.plotter as plotter
@@ -51,6 +52,8 @@ if __name__ == "__main__":
         data = HashtagDataPreparser(dataset_path)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db")
+    elif dataset_domain=="goodreads":
+        data = GoodreadsDataPreparser(dataset_path)
 
     try:
         data.get_all_data()
