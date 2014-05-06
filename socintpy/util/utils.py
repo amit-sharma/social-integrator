@@ -114,7 +114,7 @@ def run_async(func):
 def fast_iter(context, func):
     counter = 0
     for event, elem in context:
-	if counter > 1000:
+	if counter > 10000:
 	    break
 	counter +=1 
         k, v= func(elem)

@@ -24,7 +24,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         print self.nodes["1"]
         self.read_items_file()
         #self.read_edges_file()
-        #self.read_interactions_file()
+        self.read_interactions_file()
 
 
     def read_items_file(self):
@@ -43,6 +43,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     def read_interactions_file(self):
         #interactions_dict = {}
         inter_file = open(self.interactions_filename)
+        counter = 0
         for line in inter_file:
             cols = line.strip(" \n\t").split(",")
             user_id = cols[0]
@@ -53,6 +54,9 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
                                'timestamp': timestamp, 'rating': rating}
             #interactions_dict[user_id + item_id] = new_interaction
             self.nodes[user_id].add_interaction("rate", item_id, new_interaction)
+            counter += 1
+            if counter > 10000:
+                break
 
     @staticmethod
     def handle_nodes(elem):
