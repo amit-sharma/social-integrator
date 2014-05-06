@@ -5,6 +5,7 @@ from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 class GoodreadsDataPreparser(NetworkDataPreparser):
 
     def __init__(self, data_path):
+        NetworkDataPreparser.__init__(self)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
         self.interaction_filename = data_path + "goodreads.300k.collections.txt"
