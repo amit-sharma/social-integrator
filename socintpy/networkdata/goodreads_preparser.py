@@ -55,7 +55,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             #interactions_dict[user_id + item_id] = new_interaction
             self.nodes[user_id].add_interaction("rate", item_id, new_interaction)
             counter += 1
-            if counter > 10000:
+            if counter > 100:
                 break
 
     @staticmethod

@@ -111,13 +111,14 @@ def run_async(func):
 
     return async_func
 
+
 def fast_iter(context, func):
     counter = 0
     for event, elem in context:
-	if counter > 10000:
-	    break
-	counter +=1 
-        k, v= func(elem)
+        if counter > 100:
+            break
+        counter += 1
+        k, v = func(elem)
         #res[k] = v
         while elem.getprevious() is not None:
             del elem.getparent()[0]
