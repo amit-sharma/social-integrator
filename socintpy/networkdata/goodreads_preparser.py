@@ -38,7 +38,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         nodes_iter = utils.fast_iter(context, self.handle_nodes)
         for k, v in nodes_iter:
             self.nodes[k] = v
-        return self.edges
+        return self.nodes
 
     def read_interactions_file(self):
         #interactions_dict = {}
