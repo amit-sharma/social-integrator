@@ -2,7 +2,7 @@ class NetworkDataPreparser:
     def __init__(self):
         self.nodes = {}
         self.items = {}
-        self.edges = {}
+        self.edges = []
         self.interaction_types = []
 
 

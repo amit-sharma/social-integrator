@@ -29,7 +29,9 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
 
     def read_items_file(self):
         context = etree.iterparse(self.items_filename, events=('end',), tag="item")
-        self.items = utils.fast_iter(context, lambda elem: (elem.get('item_id'), dict(elem.attrib)))
+        items_iter = utils.fast_iter(context, lambda elem: (elem.get('item_id'), dict(elem.attrib)))
+        for k, v in items_iter:
+            self.items[k]=v
         return self.items
 
 
@@ -81,7 +83,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         for k, v in edges_iter:
             sender_id, receiver_id = k
             self.nodes[sender_id].add_friend(receiver_id, self.nodes[receiver_id], None)
-        return self.edges
+        #return self.edges
 
 
     if __name__ == "__main__":

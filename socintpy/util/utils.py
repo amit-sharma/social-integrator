@@ -123,4 +123,4 @@ def fast_iter(context, func):
         while elem.getprevious() is not None:
             del elem.getparent()[0]
         yield k, v
-    del context
+
