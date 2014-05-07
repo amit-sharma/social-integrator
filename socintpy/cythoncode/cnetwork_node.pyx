@@ -1,18 +1,57 @@
 import cython
+from libc.stdlib cimport malloc,free
+from libc.stdio cimport printf
+cdef struct idata:
+    int item_id
+    char *timestamp
+    int rating
 
 cdef class CNetworkNode:
-    cdef public int _uid
-    cdef public int _has_friends
-    cdef public int _has_interactions
+    cdef public int c_uid
+    cdef public int c_has_friends
+    cdef public int c_has_interactions
+    cdef idata *c_list
+
+    def __cinit__(self, *args,  **kwargs):
+        #self.c_uid = args[0]
+        #self.c_hasfriends = args[1]
+        #self.c_hasinteractions = args[2]
+        #print "cinit"
+        pass
+
+    def __init__(self,*args, **kwargs):
+        self.c_uid = int(args[0])
+        self.c_has_friends = int(args[1])
+        self.c_has_interactions = int(args[2])
+        #print "iniit"
+
+    def __dealloc__(self):
+        free(self.c_list)
+
+
+    cpdef int store_interactions(self, interact_type, ilist):
+        self.c_list = <idata *>malloc(len(ilist)*cython.sizeof(idata))
+        if self.c_list is NULL:
+            raise MemoryError()
+        for i in xrange(len(ilist)):
+            #print "In the loop %d" %i
+            self.c_list[i].item_id = ilist[i].item_id
+            self.c_list[i].rating = ilist[i].rating
+            self.c_list[i].timestamp = ilist[i].timestamp
+        return len(ilist)
 
     property uid:
         def __get__(self):
-            return self.uid
+            return self.c_uid
 
     property has_interactions:
         def __get__(self):
-            return self.has_interactions
+            return self.c_has_interactions
 
     property has_friends:
         def __get__(self):
-            return self.has_friends
+            return self.c_has_friends
+
+    #property interactions:
+    #    def __get__(self):
+    #        return self.c_list

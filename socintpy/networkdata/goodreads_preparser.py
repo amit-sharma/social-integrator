@@ -10,7 +10,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     interaction_types = range(1)
     NodeData = namedtuple('NodeData', 'original_node_id interaction_types')
     ItemData = namedtuple('ItemData', 'item_id original_item_id average_rating popularity')
-    InteractData = namedtuple('InteractData', 'user_id item_id timestamp rating')
+    InteractData = namedtuple('InteractData', 'item_id timestamp rating')
 
     def __init__(self, data_path):
         NetworkDataPreparser.__init__(self)
@@ -28,7 +28,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         print self.nodes[1]
         #self.read_items_file()
         #self.read_edges_file()
-        #self.read_interactions_file()
+        self.read_interactions_file()
 
 
     def read_nodes_file(self):
@@ -56,24 +56,29 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         inter_file = open(self.interactions_filename)
         counter = 0
         #Interact_data = namedtuple('idata', 'user_id item_id timestamp rating')
+        num_interacts = 0
+        ilist = []
+        prev_user = None
 
         for line in inter_file:
             cols = line.strip(" \n\t").split(",")
             user_id = int(cols[0])
             item_id = int(cols[1])
             timestamp = cols[2]
-            rating = int(cols[3])  if cols[3] != 'NaN' else None
-            new_interaction = GoodreadsDataPreparser.InteractData(user_id, item_id, timestamp, rating)
-            #self.interactions_dict[user_id + item_id] = new_interaction
-            #new_interaction = Interact_data(user_id, item_id, timestamp, rating)
-            #self.interactions_dict.append(new_interaction)
-            if user_id < len(self.nodes):
-                self.nodes[user_id].add_interaction("rate", item_id, new_interaction)
-            else:
-                self.nodes[2].add_interaction("rate", item_id, new_interaction)
+            rating = int(cols[3])  if cols[3] != 'NaN' else -1
+            new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)
+            if prev_user is not None and prev_user != user_id:
+                self.nodes[prev_user].store_interactions("rate", ilist)
+                num_interacts = 0
+                ilist = []
+            ilist.append(new_interaction)
+            num_interacts += 1
+
+            prev_user = user_id
+
             counter += 1
-            if counter > 1000:
-                break
+            #if counter > 1000000:
+            #    break
 
 
     @staticmethod
@@ -107,6 +112,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     def read_edges_file(self):
         context = etree.iterparse(self.edges_filename, events=('end',), tag="edge")
         edges_iter = utils.fast_iter(context, self.handle_edges)
+        count_dict = {}
         for (sender_id, receiver_id), edgedata in edges_iter:
             #sender_id, receiver_id = k
             if sender_id < len(self.nodes) and receiver_id <len(self.nodes):
