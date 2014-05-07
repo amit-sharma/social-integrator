@@ -45,12 +45,12 @@ class NetworkNode(cnetwork_node.CNetworkNode):
     def add_friend(self, friendid, friend_node,  friendship_data):
         self.friends.append((friendid,friend_node, friendship_data))
 
-    def get_items_interacted_with(self):
+    """def get_items_interacted_with(self):
         interacted_items = set()
         for interact_dict in self.interactions.itervalues():
             interacted_items = interacted_items.union(interact_dict.keys())
         return interacted_items
-
+    """
     def get_friendnodes_iterable(self):
         for k, v_dict in self.friends.iteritems():
             yield k, v_dict['friend_node']

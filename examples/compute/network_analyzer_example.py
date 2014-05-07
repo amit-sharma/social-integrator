@@ -49,8 +49,8 @@ if __name__ == "__main__":
         sys.exit(2)
 
     data = None
-    h = hpy()
-    h.setref()
+    #h = hpy()
+    #h.setref()
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path)
     elif dataset_domain== "lastfm":
@@ -62,8 +62,8 @@ if __name__ == "__main__":
         data.get_all_data()
     except:
         raise
-    print h.heap()
-    sys.exit(0)
+    #print h.heap()
+    #sys.exit(0)
     net_analyzer = BasicNetworkAnalyzer(data)
 
     if computation_cmd=="basic_stats" or computation_cmd is None:

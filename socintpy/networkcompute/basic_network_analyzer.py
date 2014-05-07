@@ -32,7 +32,7 @@ class BasicNetworkAnalyzer(object):
         items_all = set(items_all)
         print "Total number of items", len(items_all)
         print "Types of interactions with items", self.netdata.interaction_types
-
+        """
         items_by_interaction = {}
         for interact_type in self.netdata.interaction_types:
             items_by_interaction[interact_type] = set()
@@ -51,7 +51,7 @@ class BasicNetworkAnalyzer(object):
 
             print( "--Total, Mean of %s interactions per item = (%d, %f)"
                    %(interact_type, total_interacts, total_interacts/float(len(items_all))) )
-
+        """
         return
 
     def compare_circle_global_similarity(self, interact_type, num_random_trials):
