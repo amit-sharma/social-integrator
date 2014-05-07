@@ -8,6 +8,7 @@ cdef struct idata:
     int rating
 
 @cython.freelist(1024)
+@cython.no_gc_clear
 cdef class CNetworkNode:
     cdef public int c_uid
     cdef public int c_has_friends
@@ -46,7 +47,7 @@ cdef class CNetworkNode:
 
     cpdef get_items_interacted_with(self):
         interacted_items = set()
-        for i in xrange(len(self.count_clist)):
+        for i in xrange(self.count_clist):
             interacted_items.add(self.c_list[i].item_id)
         return interacted_items
     property uid:

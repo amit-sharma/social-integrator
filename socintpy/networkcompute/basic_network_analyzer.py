@@ -24,6 +24,7 @@ class BasicNetworkAnalyzer(object):
 
         fr_arr = [len(v.friends) for v in self.netdata.get_nodes_iterable(should_have_friends=True)]
         print "Mean, SD of number of friends per user", mean_sd(fr_arr)
+        print "Number of users with zero friends", sum([1 for v in fr_arr if v == 0])
 
         items_all=[]
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
