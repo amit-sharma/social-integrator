@@ -5,10 +5,10 @@ functions such as store_node and store_edge.
 """
 
 class GraphBuffer:
-    def __init__(self, label, StoreClass):
+    def __init__(self, label, StoreClass, output_dir=""):
         self.graph_label = label
-        self.nodes_store = StoreClass(label + "_nodes.db", data_type="node")
-        self.edges_store = StoreClass(label + "_edges.db", data_type="edge")
+        self.nodes_store = StoreClass(output_dir + label + "_nodes.db", data_type="node")
+        self.edges_store = StoreClass(output_dir + label + "_edges.db", data_type="edge")
         return
 
     def store_node(self, key, node_info):

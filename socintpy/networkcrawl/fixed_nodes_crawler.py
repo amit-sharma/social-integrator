@@ -10,12 +10,12 @@ from socintpy.util.utils import run_async
 
 
 class FixedNodesCrawler(NetworkCrawlerInterface):
-    def __init__(self, network, store_type):
+    def __init__(self, network, store_type, output_dir=""):
         self.network= network
         self.store_type = store_type
         store_class = GenericStore.get_store_class(store_type)
         # Buffer to store network data
-        self.gbuffer = GraphBuffer(self.network.label, store_class)
+        self.gbuffer = GraphBuffer(self.network.label, store_class, output_dir=output_dir)
 
     def crawl(self, nodes_list, start_from_index=1):
         try:
