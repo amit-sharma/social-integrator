@@ -35,7 +35,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         context = etree.iterparse(self.nodes_filename, events=('end',), tag="user")
         nodes_iter = utils.fast_iter(context, self.handle_nodes)
 
-        self.nodes.insert(0,None) # to offset for a 1-based node id and zero-based list index
+        self.nodes.insert(0, None) # to offset for a 1-based node id and zero-based list index
         for uid, node_data in nodes_iter:
             self.nodes.insert(uid, NetworkNode(uid, has_friends=True, has_interactions=True, node_data=node_data))
         print "All nodes stored", len(self.nodes)
