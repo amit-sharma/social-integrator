@@ -45,7 +45,7 @@ cdef class CNetworkNode:
 
     cpdef get_items_interacted_with(self):
         interacted_items = set()
-        for i in xrange(self.count_clist):
+        for i in xrange(len(self.count_clist)):
             interacted_items.add(self.c_list[i].item_id)
         return interacted_items
     property uid:

@@ -22,3 +22,5 @@ class NetworkDataPreparser():
             if v.uid not in [f[0] for f in node.friends] and v.uid != node.uid:
                 yield v
 
+    def get_total_num_nodes(self):
+        return len(self.nodes)-1
