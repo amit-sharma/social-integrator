@@ -25,34 +25,35 @@ class BasicNetworkAnalyzer(object):
         fr_arr = [len(v.friends) for v in self.netdata.get_nodes_iterable(should_have_friends=True)]
         print "Mean, SD of number of friends per user", mean_sd(fr_arr)
         print "Number of users with zero friends", sum([1 for v in fr_arr if v == 0])
-
+        
         items_all=[]
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             #items_all = items_all.union(v.get_items_interacted_with())
-            items_all.extend(v.get_items_interacted_with())
+            items_all.extend(v.get_all_items_interacted_with())
         items_all = set(items_all)
         print "Total number of items", len(items_all)
         print "Types of interactions with items", self.netdata.interaction_types
-        """
-        items_by_interaction = {}
+        
+        items_by_interaction = []
         for interact_type in self.netdata.interaction_types:
-            items_by_interaction[interact_type] = set()
-        for k,v in self.netdata.get_nodes_iterable(should_have_interactions=True):
-            for interact_type, interact_dict in v.interactions.iteritems():
-                items_by_interaction[interact_type] |= set(interact_dict.keys())
+            items_by_interaction.append(set())
 
-        for interact_type, items_set in items_by_interaction.iteritems():
-            print( "--Total number of items with interaction %s: %d" %(interact_type, len(items_set)) )
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            for interact_type in self.netdata.interaction_types:
+                items_by_interaction[interact_type] |= set(v.get_items_interacted_with(interact_type))
 
+        for i in xrange(len(items_by_interaction)):
+            print( "--Total number of items with interaction %s: %d" %(i, len(items_by_interaction[i])) )
+        
         sum_each_interaction_dict = self.get_sum_interactions_by_type()
         for interact_type, total_interacts in sum_each_interaction_dict.iteritems():
-            print(interact_type)
-            print( "--Total, Mean of %s interactions per user = (%d, %f)"
+            #print(interact_type)
+            print( "--Total, Mean of %d interactions per user = (%d, %f)"
                    %(interact_type, total_interacts, total_interacts/float(num_interactdata_users)) )
 
-            print( "--Total, Mean of %s interactions per item = (%d, %f)"
+            print( "--Total, Mean of %d interactions per item = (%d, %f)"
                    %(interact_type, total_interacts, total_interacts/float(len(items_all))) )
-        """
+         
         return
 
     def compare_circle_global_similarity(self, interact_type, num_random_trials):
@@ -100,9 +101,9 @@ class BasicNetworkAnalyzer(object):
         for interact_type in self.netdata.interaction_types:
             interactions_per_user[interact_type] = 0
 
-        for k,v in self.netdata.get_nodes_iterable(should_have_interactions=True):
-            for interact_type, interact_dict in v.interactions.iteritems():
-                interactions_per_user[interact_type] += len(interact_dict)
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            for interact_type in self.netdata.interaction_types:
+                interactions_per_user[interact_type] += len(v.get_items_interacted_with(interact_type))
         return interactions_per_user
 
     def compare_circle_global_knnsimilarity(self, interact_type, klim):

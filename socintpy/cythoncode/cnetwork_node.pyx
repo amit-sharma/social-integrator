@@ -13,7 +13,7 @@ cdef class CNetworkNode:
     cdef public int c_uid
     cdef public int c_has_friends
     cdef public int c_has_interactions
-    cdef idata *c_list
+    cdef idata **c_list
     cdef int *c_length_list
     cdef int c_num_interact_types
 
@@ -22,9 +22,9 @@ cdef class CNetworkNode:
         #self.c_hasfriends = args[1]
         #self.c_hasinteractions = args[2]
         #print "cinit"
-        if !(kwargs['node_data'] is None):
+        if not (kwargs['node_data'] is None):
             self.c_num_interact_types = len(kwargs['node_data'].interaction_types)
-            self.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(idata *))
+            self.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))
             self.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))
 
     def __init__(self,*args, **kwargs):
@@ -48,12 +48,31 @@ cdef class CNetworkNode:
             self.c_list[interact_type][i].timestamp = ilist[i].timestamp
         self.c_length_list[interact_type] = len(ilist)
         return len(ilist)
-
-    cpdef get_items_interacted_with(self):
+    """
+    cpdef get_items_interacted_with(self, interact_type=-1):
         interacted_items = set()
-        for interact_type in xrange(self.c_num_interact_types):
+        if interact_type == -1:
+            for curr_interact_type in xrange(self.c_num_interact_types):
+                for i in xrange(self.c_length_list[curr_interact_type]):
+                    #print self.c_list[curr_interact_type][i].item_id
+                    interacted_items.add(self.c_list[curr_interact_type][i].item_id)
+        else:
             for i in xrange(self.c_length_list[interact_type]):
                 interacted_items.add(self.c_list[interact_type][i].item_id)
+        return interacted_items
+    """
+    cpdef get_all_items_interacted_with(self):
+        interacted_items = set()                                                
+        for curr_interact_type in xrange(self.c_num_interact_types):        
+            for i in xrange(self.c_length_list[curr_interact_type]):        
+                #print self.c_list[curr_interact_type][i].item_id           
+                interacted_items.add(self.c_list[curr_interact_type][i].item_id)
+        return interacted_items
+    
+    cpdef get_items_interacted_with(self, interact_type):
+        interacted_items = set()
+        for i in xrange(self.c_length_list[interact_type]):                 
+            interacted_items.add(self.c_list[interact_type][i].item_id)   
         return interacted_items
 
     property uid:
