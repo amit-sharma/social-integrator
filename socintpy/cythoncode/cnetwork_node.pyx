@@ -1,5 +1,5 @@
 import cython
-from libc.stdlib cimport malloc,free
+from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.stdio cimport printf
 cdef struct idata:
     int item_id
@@ -26,11 +26,11 @@ cdef class CNetworkNode:
         #print "iniit"
 
     def __dealloc__(self):
-        free(self.c_list)
+        PyMem_Free(self.c_list)
 
 
     cpdef int store_interactions(self, interact_type, ilist):
-        self.c_list = <idata *>malloc(len(ilist)*cython.sizeof(idata))
+        self.c_list = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
         if self.c_list is NULL:
             raise MemoryError()
         for i in xrange(len(ilist)):

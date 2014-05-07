@@ -26,8 +26,8 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     def get_all_data(self):
         self.read_nodes_file()
         print self.nodes[1]
-        #self.read_items_file()
-        #self.read_edges_file()
+        self.read_items_file()
+        self.read_edges_file()
         self.read_interactions_file()
 
 
