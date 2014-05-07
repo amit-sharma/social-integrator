@@ -16,7 +16,7 @@ def usage():
 
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "output="])
+        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython" "output="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -30,6 +30,7 @@ if __name__ == "__main__":
     dataset_domain=None
     dataset_path = None
     computation_cmd = None
+    impl_type = "python"
     for o, a in opts:
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -43,6 +44,8 @@ if __name__ == "__main__":
                 assert False, "Unhandled computation."
             else:
                 computation_cmd = a
+        if o == "--cython":
+            impl_type = "cython"
 
     if dataset_domain is None or dataset_path is None:
         usage()
@@ -56,7 +59,7 @@ if __name__ == "__main__":
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db")
     elif dataset_domain=="goodreads":
-        data = GoodreadsDataPreparser(dataset_path)
+        data = GoodreadsDataPreparser(dataset_path, impl_type)
 
     try:
         data.get_all_data()

@@ -1,10 +1,13 @@
+from socintpy.networkdata.network_node import CyNetworkNode
+from socintpy.networkdata.pynetwork_node import PyNetworkNode
+
+
 class NetworkDataPreparser():
-    def __init__(self):
+    def __init__(self, node_impl):
         self.nodes = []
         self.items = []
         self.edges = []
-        #self.interaction_types = []
-
+        self.impl_type = node_impl
 
     def read_nodes(self):
         raise NotImplementedError("NetworkDataPreparser: read_nodes is not implemented.")
@@ -24,3 +27,9 @@ class NetworkDataPreparser():
 
     def get_total_num_nodes(self):
         return len(self.nodes)-1
+
+    def create_network_node(self, uid, has_friends=True, has_interactions=True, node_data=None):
+        if self.impl_type == "cython":
+            return CyNetworkNode(uid, has_friends, has_interactions, node_data)
+        else:
+            return PyNetworkNode(uid, has_friends, has_interactions, node_data)

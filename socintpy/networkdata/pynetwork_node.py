@@ -6,31 +6,45 @@ import operator
 import math, random
 import socintpy.util.utils as utils
 
-class CyNetworkNode(cnetwork_node.CNetworkNode):
+
+class PyNetworkNode(object):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
     user_sim = {}
-    __slots__ = ('node_data', 'interaction_types', 'friends', 'is_core')
+    __slots__ = 'uid', 'has_friends', 'has_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
 
     def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
-        #self.uid = uid
-        #self.has_friends = has_friends
-        #self.has_interactions = has_interactions
-        super(CyNetworkNode, self).__init__(uid, has_friends, has_interactions, node_data)
+        self.uid = uid
+        self.has_friends = has_friends
+        self.has_interactions = has_interactions
         self.node_data = node_data
-        #print getattr(self, 'uid')
-        #if self.has_interactions:
-        #    self.interactions = []
-        #    self.interaction_types = []
-        #    if node_data is not None and node_data.interaction_types is not None:
-        #        self.interaction_types = node_data.interaction_types
-        #        self.register_interactions(self.interaction_types)
+        if self.has_interactions:
+            self.interactions = []
+            self.interaction_types = []
+            if node_data is not None and node_data.interaction_types is not None:
+                self.interaction_types = node_data.interaction_types
+                self.register_interactions(self.interaction_types)
 
         if self.has_friends:
             self.friends = []
 
 
+    def register_interactions(self, interactions_list):
+        for interact_type in interactions_list:
+            self.interactions.insert(interact_type, [])
 
+    def add_interaction(self, interaction_name, item_id, interaction_data):
+        self.interactions[interaction_name].append((item_id, interaction_data))
+
+    def add_friend(self, friendid, friend_node,  friendship_data):
+        self.friends.append((friendid,friend_node, friendship_data))
+
+    def get_items_interacted_with(self):
+        interacted_items = []
+        for interact_list in self.interactions:
+            interacted_items = interacted_items.extend([val[0] for val in interact_list])
+        interacted_items = set(interacted_items)
+        return interacted_items
 
     def get_friendnodes_iterable(self):
         for k, v_dict in self.friends.iteritems():
@@ -266,3 +280,4 @@ class CyNetworkNode(cnetwork_node.CNetworkNode):
         return "User ID: "+str(self.uid) + "\t" + "Likes:" + str(self.getNumLikes()) + "\t" + "Friends:" + str(self.getNumFriends()) + "\n"
         #return "User ID: "+str(self.uid) + "\n" + "Likes:" + str(self.likes) +"\n\n\n" + "".join([("Item Id: "+str(k)+"\n"+"Friend Likers: "+str(v)+"\n") for k,v in self.fitems.iteritems()])a
     """
+
