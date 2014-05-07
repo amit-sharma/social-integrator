@@ -1,6 +1,7 @@
 import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.stdio cimport printf
+
 cdef struct idata:
     int item_id
     char *timestamp
