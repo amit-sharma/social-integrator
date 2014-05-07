@@ -15,6 +15,7 @@ cdef class CNetworkNode:
     cdef public int c_has_interactions
     cdef idata *c_list
     cdef int *c_length_list
+    cdef int c_num_interact_types
 
     def __cinit__(self, *args,  **kwargs):
         #self.c_uid = args[0]
@@ -22,9 +23,9 @@ cdef class CNetworkNode:
         #self.c_hasinteractions = args[2]
         #print "cinit"
         if !(kwargs['node_data'] is None):
-            interaction_types = kwargs['node_data'].interaction_types
-            self.c_list = <idata **>PyMem_Malloc(len(interaction_types)*cython.sizeof(idata *))
-            self.c_length_list = <int *>PyMem_Malloc(len(interaction_types)*cython.sizeof(int))
+            self.c_num_interact_types = len(kwargs['node_data'].interaction_types)
+            self.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(idata *))
+            self.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))
 
     def __init__(self,*args, **kwargs):
         self.c_uid = int(args[0])
@@ -50,10 +51,11 @@ cdef class CNetworkNode:
 
     cpdef get_items_interacted_with(self):
         interacted_items = set()
-        for interact_type in xrange(self.c_num_interaction_types):
+        for interact_type in xrange(self.c_num_interact_types):
             for i in xrange(self.c_length_list[interact_type]):
                 interacted_items.add(self.c_list[interact_type][i].item_id)
         return interacted_items
+
     property uid:
         def __get__(self):
             return self.c_uid
