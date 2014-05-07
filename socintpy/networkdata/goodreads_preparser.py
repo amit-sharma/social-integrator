@@ -1,7 +1,6 @@
 #import xml.etree.ElementTree as etree
 from lxml import etree
 from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
-from socintpy.networkdata.network_node import NetworkNode
 import socintpy.util.utils as utils
 from collections import namedtuple
 
@@ -13,8 +12,8 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     ItemData = namedtuple('ItemData', 'item_id original_item_id average_rating popularity')
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
 
-    def __init__(self, data_path):
-        NetworkDataPreparser.__init__(self)
+    def __init__(self, data_path, node_impl):
+        NetworkDataPreparser.__init__(self, node_impl)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
         self.items_filename = data_path + "goodreads.300k.items.xml"
@@ -38,7 +37,8 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
 
         self.nodes.insert(0, None) # to offset for a 1-based node id and zero-based list index
         for uid, node_data in nodes_iter:
-            self.nodes.insert(uid, NetworkNode(uid, has_friends=True, has_interactions=True, node_data=node_data))
+            nnode = self.create_network_node(uid, has_friends=True, has_interactions=True, node_data=node_data)
+            self.nodes.insert(uid, nnode)
         print "All nodes stored", len(self.nodes)
         return self.nodes
 
