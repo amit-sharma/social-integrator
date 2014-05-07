@@ -38,6 +38,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         self.nodes.insert(0,None) # to offset for a 1-based node id and zero-based list index
         for uid, node_data in nodes_iter:
             self.nodes.insert(uid, NetworkNode(uid, has_friends=True, has_interactions=True, node_data=node_data))
+        print "All nodes stored", len(self.nodes)
         return self.nodes
 
 
@@ -48,7 +49,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         self.items.insert(0, None)
         for itemid, itemdata in items_iter:
             self.items.insert(itemid, itemdata)
-
+        print "all items stored", len(self.items)
         return self.items
 
     def read_interactions_file(self):
@@ -79,7 +80,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             counter += 1
             #if counter > 1000000:
             #    break
-
+        print "All interactions stored", counter
 
     @staticmethod
     def handle_nodes(elem):
@@ -121,6 +122,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             #else:
             #    print "error: node is missing to create edge"
             #return self.edges
+        print "All edges stored"
 
 
 if __name__ == "__main__":
