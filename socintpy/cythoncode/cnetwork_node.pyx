@@ -7,6 +7,7 @@ cdef struct idata:
     char *timestamp
     int rating
 
+@cython.freelist(1024)
 cdef class CNetworkNode:
     cdef public int c_uid
     cdef public int c_has_friends

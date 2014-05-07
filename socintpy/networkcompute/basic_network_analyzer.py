@@ -19,7 +19,7 @@ class BasicNetworkAnalyzer(object):
         num_frienddata_users = sum([1 for _ in self.netdata.get_nodes_iterable(should_have_friends=True)])
         print "Number of Users with friendship data", num_frienddata_users
 
-        num_overall_users = self.netdata.get_total_num_users()
+        num_overall_users = self.netdata.get_total_num_nodes()
         print "Number of overall users", num_overall_users
 
         fr_arr = [len(v.friends) for v in self.netdata.get_nodes_iterable(should_have_friends=True)]
