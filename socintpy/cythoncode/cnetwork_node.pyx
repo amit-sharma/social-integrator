@@ -13,14 +13,17 @@ cdef class CNetworkNode:
     cdef public int c_has_friends
     cdef public int c_has_interactions
     cdef idata *c_list
-    cdef int count_clist
+    cdef int *c_length_list
 
     def __cinit__(self, *args,  **kwargs):
         #self.c_uid = args[0]
         #self.c_hasfriends = args[1]
         #self.c_hasinteractions = args[2]
         #print "cinit"
-        pass
+        if !(kwargs['node_data'] is None):
+            interaction_types = kwargs['node_data'].interaction_types
+            self.c_list = <idata **>PyMem_Malloc(len(interaction_types)*cython.sizeof(idata *))
+            self.c_length_list = <int *>PyMem_Malloc(len(interaction_types)*cython.sizeof(int))
 
     def __init__(self,*args, **kwargs):
         self.c_uid = int(args[0])
@@ -33,21 +36,22 @@ cdef class CNetworkNode:
 
 
     cpdef int store_interactions(self, interact_type, ilist):
-        self.c_list = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
+        self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
         if self.c_list is NULL:
             raise MemoryError()
         for i in xrange(len(ilist)):
             #print "In the loop %d" %i
-            self.c_list[i].item_id = ilist[i].item_id
-            self.c_list[i].rating = ilist[i].rating
-            self.c_list[i].timestamp = ilist[i].timestamp
-        self.count_clist = len(ilist)
+            self.c_list[interact_type][i].item_id = ilist[i].item_id
+            self.c_list[interact_type][i].rating = ilist[i].rating
+            self.c_list[interact_type][i].timestamp = ilist[i].timestamp
+        self.c_length_list[interact_type] = len(ilist)
         return len(ilist)
 
     cpdef get_items_interacted_with(self):
         interacted_items = set()
-        for i in xrange(len(self.count_clist)):
-            interacted_items.add(self.c_list[i].item_id)
+        for interact_type in xrange(self.c_num_interaction_types):
+            for i in xrange(self.c_length_list[interact_type]):
+                interacted_items.add(self.c_list[interact_type][i].item_id)
         return interacted_items
     property uid:
         def __get__(self):

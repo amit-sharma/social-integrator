@@ -8,6 +8,7 @@ from collections import namedtuple
 
 class GoodreadsDataPreparser(NetworkDataPreparser):
     interaction_types = range(1)
+    RATE_ACTION = interaction_types[0]
     NodeData = namedtuple('NodeData', 'original_node_id interaction_types')
     ItemData = namedtuple('ItemData', 'item_id original_item_id average_rating popularity')
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
@@ -69,7 +70,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             rating = int(cols[3])  if cols[3] != 'NaN' else -1
             new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)
             if prev_user is not None and prev_user != user_id:
-                self.nodes[prev_user].store_interactions("rate", ilist)
+                self.nodes[prev_user].store_interactions(self.RATE_ACTION, ilist)
                 num_interacts = 0
                 ilist = []
             ilist.append(new_interaction)
