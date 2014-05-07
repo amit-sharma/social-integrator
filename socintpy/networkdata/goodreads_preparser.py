@@ -77,10 +77,10 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             num_interacts += 1
 
             prev_user = user_id
-
+            
             counter += 1
-            if counter > 1000:
-                break
+            #if counter > 1000:
+            #    break
         print "All interactions stored", counter
 
     @staticmethod
