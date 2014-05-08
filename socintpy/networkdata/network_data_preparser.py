@@ -1,4 +1,4 @@
-from socintpy.networkdata.network_node import CyNetworkNode
+from socintpy.networkdata.network_node import NetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 
 
@@ -27,9 +27,12 @@ class NetworkDataPreparser():
 
     def get_total_num_nodes(self):
         return len(self.nodes)-1
+    
+    def get_node_ids(self):
+        return range(1,len(self.nodes))
 
     def create_network_node(self, uid, has_friends=True, has_interactions=True, node_data=None):
         if self.impl_type == "cython":
-            return CyNetworkNode(uid, has_friends, has_interactions, node_data)
+            return NetworkNode(uid, has_friends=has_friends, has_interactions=has_interactions, node_data=node_data)
         else:
             return PyNetworkNode(uid, has_friends, has_interactions, node_data)

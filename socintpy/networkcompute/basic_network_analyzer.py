@@ -60,23 +60,30 @@ class BasicNetworkAnalyzer(object):
         counter = 0
         circle_sims = []
         global_sims = []
-        for k,v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
+        for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
             avg = 0.0
             #print v.friends
             if len(v.interactions[interact_type]) ==0:
                 print "Node has no interactions. Skipping!"
                 continue
+            count_sim_trials = 0
             for i in range(num_random_trials):
-                candidate_users =  set(self.netdata.nodes.keys()) - set(v.friends.keys() + [v.uid])
-                rand_people = random.sample(candidate_users, len(v.friends))
-                rand_items = self.items_from_people(rand_people, interact_type)
-                avg += v.compute_similarity(rand_items, interact_type)
-            avg_external_similarity = avg/float(num_random_trials)
+                candidate_users =  set(self.netdata.get_node_ids()) - set(v.get_friend_ids() + [v.uid])
+                rand_people = random.sample(candidate_users, v.get_num_friends())
+                rand_items = self.items_interacted_by_people(rand_people, interact_type)
+                trial_global_similarity=v.compute_similarity(rand_items, interact_type)
+                if trial_global_similarity is not None:
+                    avg += trial_global_similarity
+                    count_sim_trials += 1
+            if count_sim_trials == 0:
+                #print "Node has no global sim"
+                continue
+            avg_external_similarity = avg/float(count_sim_trials)
 
             # Second, calculating the similarity of a user with his friends
-            friends_list = v.friends.keys()
-            circle_items =self.items_from_people(friends_list, interact_type)
+            friends_list = v.get_friend_ids()
+            circle_items =self.items_interacted_by_people(friends_list, interact_type)
             circle_similarity = v.compute_similarity(circle_items, interact_type)
             if circle_similarity is None:
                 print "Node has no friends to compute circle similarity. Skipping!"
@@ -87,13 +94,14 @@ class BasicNetworkAnalyzer(object):
 
         return circle_sims, global_sims
 
-    def items_from_people(self, people_list, interaction_type):
+    def items_interacted_by_people(self, people_list, interaction_type):
         items_dict={}
-        for rp in people_list:
-            for item_id, interact_val in self.netdata.nodes[rp].interactions[interaction_type].iteritems():
-                if item_id not in items_dict:
-                    items_dict[item_id] = set()
-                items_dict[item_id].add((rp, None))
+        for node_id in people_list:
+            item_ids = self.netdata.nodes[node_id].get_items_interacted_with(interaction_type)
+            for itemid in item_ids:
+                if itemid not in items_dict:
+                    items_dict[itemid] = []
+                items_dict[itemid].append((node_id, None))
         return items_dict
 
     def get_sum_interactions_by_type(self):

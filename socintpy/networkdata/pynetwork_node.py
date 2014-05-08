@@ -11,7 +11,7 @@ class PyNetworkNode(object):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
     user_sim = {}
-    __slots__ = 'uid', 'has_friends', 'has_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
+    __slots__ = ('uid', 'has_friends', 'has_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
 
     def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
         self.uid = uid
@@ -35,16 +35,30 @@ class PyNetworkNode(object):
 
     def add_interaction(self, interaction_name, item_id, interaction_data):
         self.interactions[interaction_name].append((item_id, interaction_data))
+    
+    def store_interactions(self, interaction_type, items_list):
+        for interact_tuple in items_list:
+            self.interactions[interaction_type].append(interact_tuple)
 
     def add_friend(self, friendid, friend_node,  friendship_data):
         self.friends.append((friendid,friend_node, friendship_data))
 
-    def get_items_interacted_with(self):
+    def get_all_items_interacted_with(self):
         interacted_items = []
         for interact_list in self.interactions:
-            interacted_items = interacted_items.extend([val[0] for val in interact_list])
+            interacted_items.extend([val[0] for val in interact_list])
+        #print interacted_items
         interacted_items = set(interacted_items)
         return interacted_items
+    
+    def get_items_interacted_with(self, interact_type):
+        return set([ val[0] for val in self.interactions[interact_type] ])
+
+    def get_friend_ids(self):
+        return [val[0] for val in self.friends]
+
+    def get_num_friends(self):
+        return len(self.friends)
 
     def get_friendnodes_iterable(self):
         for k, v_dict in self.friends.iteritems():
@@ -67,14 +81,17 @@ class PyNetworkNode(object):
         return self.externalNonWeightedSimilarity(self.get_friends_interactions(interact_type))
 
     def compute_similarity(self, items, interact_type):
+        """ Computes cosine similarity between two item vectors.
+        """
         if len(self.interactions[interact_type]) == 0 or len(items) == 0:
             return None
         simscore=float(0)
-        for item_id, interact_data in self.interactions[interact_type].iteritems():
+        for interact_tuple in self.interactions[interact_type]:
+            item_id = interact_tuple[0]
             if item_id in items:
                 simscore += len(items[item_id])
         #return simscore/(len(self.interactions[interact_type])*len(self.friends))
-        return simscore/ (utils.l2_norm(self.interactions[interact_type],binary=True)* utils.l2_norm(items, binary=False))
+        return simscore/ (utils.l2_norm(self.interactions[interact_type],binary=True)* utils.l2_norm(items.itervalues(), binary=False))
 
     def externalNonWeightedSimilarity(self, items):
         simscore=float(0)

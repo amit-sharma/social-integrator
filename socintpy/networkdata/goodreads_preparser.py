@@ -79,8 +79,8 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             prev_user = user_id
             
             counter += 1
-            #if counter > 1000:
-            #    break
+            if counter > 1000:
+                break
         print "All interactions stored", counter
 
     @staticmethod
@@ -117,9 +117,9 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         count_dict = {}
         for (sender_id, receiver_id), edgedata in edges_iter:
             #sender_id, receiver_id = k
-            if sender_id < len(self.nodes) and receiver_id <len(self.nodes):
-                self.nodes[sender_id].add_friend(receiver_id, self.nodes[receiver_id], None)
-                self.nodes[receiver_id].add_friend(sender_id, self.nodes[sender_id], None)
+            #if sender_id < len(self.nodes) and receiver_id <len(self.nodes):
+            self.nodes[sender_id].add_friend(receiver_id, self.nodes[receiver_id], None)
+                #self.nodes[receiver_id].add_friend(sender_id, self.nodes[sender_id], None)
             #else:
             #    print "error: node is missing to create edge"
             #return self.edges

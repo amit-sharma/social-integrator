@@ -16,7 +16,7 @@ def usage():
 
 if __name__ == "__main__":
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython" "output="])
+        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", "output="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -31,6 +31,7 @@ if __name__ == "__main__":
     dataset_path = None
     computation_cmd = None
     impl_type = "python"
+    
     for o, a in opts:
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -72,7 +73,7 @@ if __name__ == "__main__":
     if computation_cmd=="basic_stats" or computation_cmd is None:
         net_analyzer.show_basic_stats()
     elif computation_cmd=="random_similarity":
-        circlesims, globalsims = net_analyzer.compare_circle_global_similarity("hashtag", num_random_trials=2)
+        circlesims, globalsims = net_analyzer.compare_circle_global_similarity(0, num_random_trials=2)
         plotter.plotLinesYY(circlesims, globalsims, "Friends", "Global")
         print "Circle Average", sum(circlesims)/float(len(circlesims))
         print "Global Average", sum(globalsims)/float(len(globalsims))

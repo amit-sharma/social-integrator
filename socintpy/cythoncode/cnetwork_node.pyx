@@ -9,6 +9,7 @@ cdef struct idata:
 
 @cython.freelist(1024)
 @cython.no_gc_clear
+
 cdef class CNetworkNode:
     cdef public int c_uid
     cdef public int c_has_friends
@@ -18,20 +19,15 @@ cdef class CNetworkNode:
     cdef int c_num_interact_types
 
     def __cinit__(self, *args,  **kwargs):
-        #self.c_uid = args[0]
-        #self.c_hasfriends = args[1]
-        #self.c_hasinteractions = args[2]
-        #print "cinit"
         if not (kwargs['node_data'] is None):
             self.c_num_interact_types = len(kwargs['node_data'].interaction_types)
             self.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))
             self.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))
-
+    
     def __init__(self,*args, **kwargs):
         self.c_uid = int(args[0])
         self.c_has_friends = int(args[1])
         self.c_has_interactions = int(args[2])
-        #print "iniit"
 
     def __dealloc__(self):
         PyMem_Free(self.c_list)

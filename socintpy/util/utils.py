@@ -30,12 +30,13 @@ def mean_sd(data_list):
     return (mean_val, math.sqrt(variance))
 
 
-def l2_norm(values_dict, binary=True):
+def l2_norm(values_iter, binary=True):
     norm = 0
     if binary:
-        norm = len(values_dict)
+        for val in values_iter:
+            norm += 1
     else:
-        for val in values_dict.itervalues():
+        for val in values_iter:
             norm += (len(val) * len(val))
 
     norm = math.sqrt(norm)
