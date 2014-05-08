@@ -10,8 +10,8 @@ import socintpy.util.utils as utils
 class PyNetworkNode(object):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
-    user_sim = {}
-    __slots__ = ('uid', 'has_friends', 'has_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
+    #user_sim = {}
+    #__slots__ = ('uid', 'has_friends', 'has_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
 
     def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
         self.uid = uid

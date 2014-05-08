@@ -62,14 +62,17 @@ class BasicNetworkAnalyzer(object):
         global_sims = []
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
+            if counter % 1000 == 0:
+                print "Starting node", counter
             avg = 0.0
             #print v.friends
             if v.get_num_interactions(interact_type) ==0:
                 print "Node has no interactions. Skipping!"
                 continue
+            
             count_sim_trials = 0
+            candidate_users =  set(self.netdata.get_node_ids()) - set(v.get_friend_ids() + [v.uid])
             for i in range(num_random_trials):
-                candidate_users =  set(self.netdata.get_node_ids()) - set(v.get_friend_ids() + [v.uid])
                 rand_people = random.sample(candidate_users, v.get_num_friends())
                 rand_items = self.items_interacted_by_people(rand_people, interact_type)
                 trial_global_similarity=v.compute_similarity(rand_items, interact_type)

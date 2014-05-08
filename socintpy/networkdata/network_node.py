@@ -10,7 +10,7 @@ class NetworkNode(cnetwork_node.CNetworkNode):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
     user_sim = {}
-    __slots__ = ('node_data', 'friends') 
+    __slots__ = ('node_data','friends') 
 
     def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
         #self.uid = uid
@@ -29,13 +29,19 @@ class NetworkNode(cnetwork_node.CNetworkNode):
         if self.has_friends:
             self.friends = []
 
-
     def add_friend(self, friendid, friend_node,  friendship_data):
         self.friends.append((friendid,friend_node, friendship_data))
+
 
     def get_friendnodes_iterable(self):
         for k, v_dict in self.friends.iteritems():
             yield k, v_dict['friend_node']
+
+    def get_friend_ids(self):
+        return [val[0] for val in self.friends]
+
+    def get_num_friends(self):
+        return len(self.friends)
     """
     def createLikesOnlySet(self):
         self.likes_only = set()
@@ -46,22 +52,13 @@ class NetworkNode(cnetwork_node.CNetworkNode):
     def getTotalItems(self):
         length_fitems = sum([len(v) for k,v in self.fitems.iteritems()])
         return len(self.likes) + length_fitems
-    """
+   
     def compute_friends_simiilarity(self, interact_type):
         return self.externalSimilarity(self.get_friends_interactions(interact_type))
 
     def compute_nonweighted_friends_similarity(self, interact_type):
         return self.externalNonWeightedSimilarity(self.get_friends_interactions(interact_type))
 
-    def compute_similarity(self, items, interact_type):
-        if len(self.interactions[interact_type]) == 0 or len(items) == 0:
-            return None
-        simscore=float(0)
-        for item_id, interact_data in self.interactions[interact_type].iteritems():
-            if item_id in items:
-                simscore += len(items[item_id])
-        #return simscore/(len(self.interactions[interact_type])*len(self.friends))
-        return simscore/ (utils.l2_norm(self.interactions[interact_type],binary=True)* utils.l2_norm(items, binary=False))
 
     def externalNonWeightedSimilarity(self, items):
         simscore=float(0)
@@ -70,22 +67,14 @@ class NetworkNode(cnetwork_node.CNetworkNode):
                 simscore += 1
         return simscore/(len(self.likes))
 
-    """
 
-    def getNumFriends(self):
-        return len(self.friends)
-
-    def getNumLikes(self):
-        return len(self.likes)
-
-    """
 
     def getAllCircleItems(self):
         circle_items = []
         circle_items.extend([v1 for v1, v2 in self.interactions])
         items.extend(self.fitems.keys())
         return set(items)
-    """
+    
     def getOverallCircleLikes(self, itemid):
         numlikes = 0
         for k,v in self.likes:
@@ -119,7 +108,7 @@ class NetworkNode(cnetwork_node.CNetworkNode):
         num_people = self.getNumFriends() + 1
         sparsity = num_circle_likes / (float(num_circle_items*num_people))
         return sparsity
-    """
+    
     def compute_node_similarity(self, others_interactions, interact_type, my_interactions=None):
         if my_interactions is None:
             my_interactions = self.interactions[interact_type]
@@ -150,7 +139,7 @@ class NetworkNode(cnetwork_node.CNetworkNode):
             if len(minheap) > num:
                 heapq.heappop(minheap)
         return minheap
-    """
+    
     def circleRandomUsers(self, allfr, num):
         selected_friends = random.sample(self.friends, min(num, len(self.friends)))
         res = []
