@@ -64,7 +64,7 @@ class BasicNetworkAnalyzer(object):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
             avg = 0.0
             #print v.friends
-            if len(v.interactions[interact_type]) ==0:
+            if v.get_num_interactions(interact_type) ==0:
                 print "Node has no interactions. Skipping!"
                 continue
             count_sim_trials = 0
