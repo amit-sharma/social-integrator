@@ -81,7 +81,7 @@ if __name__ == "__main__":
         #Compute K-nearest similarity
         KLIMITS = [5, 10]
         for curr_lim in KLIMITS:
-            plot_circle, plot_external = net_analyzer.compare_circle_global_knnsimilarity("hashtag", klim=curr_lim)
+            plot_circle, plot_external = net_analyzer.compare_circle_global_knnsimilarity(0, klim=curr_lim)
             plotter.plotLinesYY(plot_circle, plot_external, "Friends", "Global")
             print "K", curr_lim
             print "Circle Average", utils.mean_sd(plot_circle)

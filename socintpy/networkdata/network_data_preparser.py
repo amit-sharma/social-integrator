@@ -21,8 +21,9 @@ class NetworkDataPreparser():
             yield v
 
     def get_nonfriends_iterable(self, node):
+        node_friend_ids = [f[0] for f in node.friends]
         for v in self.nodes[1:]:
-            if v.uid not in [f[0] for f in node.friends] and v.uid != node.uid:
+            if v.uid not in node_friend_ids and v.uid != node.uid:
                 yield v
 
     def get_total_num_nodes(self):

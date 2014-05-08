@@ -118,8 +118,8 @@ class BasicNetworkAnalyzer(object):
         sims_local = []
         sims_global = []
 
-        for k,v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
-            if v.interactions[interact_type]:
+        for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
+            if v.has_interactions(interact_type):
                 global_candidates = self.netdata.get_nonfriends_iterable(v)
                 globalk_neighbors = self.compute_knearest_neighbors(v, global_candidates, interact_type, klim)
                 if globalk_neighbors:

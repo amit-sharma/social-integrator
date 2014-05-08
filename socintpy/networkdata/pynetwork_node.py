@@ -63,6 +63,9 @@ class PyNetworkNode(object):
     def get_num_interactions(self, interact_type):
         return len(self.interactions[interact_type])
 
+    def has_interactions(self, interact_type):
+        return self.interactions[interact_type]
+
     def get_friendnodes_iterable(self):
         for k, v_dict in self.friends.iteritems():
             yield k, v_dict['friend_node']
