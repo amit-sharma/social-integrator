@@ -56,7 +56,12 @@ cdef class CNetworkNode:
         self.c_should_have_interactions = int(args[2])
 
     def __dealloc__(self):
+        cdef int interact_type
+        for interact_type in xrange(self.c_num_interact_types):
+            PyMem_Free(self.c_list[interact_type])
         PyMem_Free(self.c_list)
+        PyMem_Free(self.c_length_list)
+        PyMem_Free(self.c_friend_list)
 
 
     cpdef int store_interactions(self, interact_type, ilist):
