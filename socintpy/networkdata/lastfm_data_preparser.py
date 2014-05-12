@@ -19,7 +19,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
         i = 0
         for temp_key, data_dict in self.nodes_db.iteritems():
             user_id = temp_key
-            new_netnode = NetworkNode(user_id, has_friends=True, has_interactions=True, node_data={'interactions':self.interaction_types})
+            new_netnode = NetworkNode(user_id, should_have_friends=True, should_have_interactions=True, node_data={'interactions':self.interaction_types})
             for trackdict in data_dict['lovedtracks']:
                 new_netnode.add_interaction("love", trackdict['mbid'], {'created_time': trackdict['date']['uts']})
 
@@ -47,7 +47,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
             source_user = data_dict['source']
             target_user = data_dict['target']
             if target_user not in self.nodes:
-                self.nodes[target_user] = NetworkNode(target_user, has_friends=False,has_interactions=False, node_data={'interactions':self.interaction_types})
+                self.nodes[target_user] = NetworkNode(target_user, should_have_friends=False, should_have_interactions=False, node_data={'interactions':self.interaction_types})
             self.nodes[source_user].add_friend(target_user, self.nodes[target_user], None)
             #break
 

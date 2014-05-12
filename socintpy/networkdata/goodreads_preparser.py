@@ -37,7 +37,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
 
         self.nodes.insert(0, None) # to offset for a 1-based node id and zero-based list index
         for uid, node_data in nodes_iter:
-            nnode = self.create_network_node(uid, has_friends=True, has_interactions=True, node_data=node_data)
+            nnode = self.create_network_node(uid, should_have_friends=True, should_have_interactions=True, node_data=node_data)
             self.nodes.insert(uid, nnode)
         print "All nodes stored", len(self.nodes)
         return self.nodes
@@ -89,7 +89,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         original_uid = elem.get("original_user_id")
         uid = int(elem.get("user_id"))
         node_data = GoodreadsDataPreparser.NodeData(original_uid, GoodreadsDataPreparser.interaction_types)
-        #newnode = NetworkNode(uid, has_friends=True, has_interactions=True,
+        #newnode = NetworkNode(uid, should_have_friends=True, should_have_interactions=True,
         #                      node_data={'interactions': GoodreadsDataPreparser.interaction_types})
         return (uid, node_data)
 

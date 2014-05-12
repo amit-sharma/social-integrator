@@ -11,21 +11,21 @@ class PyNetworkNode(object):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
     #user_sim = {}
-    #__slots__ = ('uid', 'has_friends', 'has_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
+    #__slots__ = ('uid', 'should_have_friends', 'should_have_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
 
-    def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
+    def __init__(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         self.uid = uid
-        self.has_friends = has_friends
-        self.has_interactions = has_interactions
+        self.should_have_friends = should_have_friends
+        self.should_have_interactions = should_have_interactions
         self.node_data = node_data
-        if self.has_interactions:
+        if self.should_have_interactions:
             self.interactions = []
             self.interaction_types = []
             if node_data is not None and node_data.interaction_types is not None:
                 self.interaction_types = node_data.interaction_types
                 self.register_interactions(self.interaction_types)
 
-        if self.has_friends:
+        if self.should_have_friends:
             self.friends = []
 
 
@@ -66,7 +66,7 @@ class PyNetworkNode(object):
     def has_interactions(self, interact_type):
         return self.interactions[interact_type]
 
-    def fhas_friends(self):
+    def has_friends(self):
         return self.friends
 
     def get_friendnodes_iterable(self):

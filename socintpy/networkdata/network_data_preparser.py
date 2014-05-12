@@ -14,9 +14,9 @@ class NetworkDataPreparser():
 
     def get_nodes_iterable(self, should_have_friends= False, should_have_interactions=False):
         for v in self.nodes[1:]:
-            if should_have_friends and not v.has_friends:
+            if should_have_friends and not v.should_have_friends:
                 continue
-            if should_have_interactions and not v.has_interactions:
+            if should_have_interactions and not v.should_have_interactions:
                 continue
             yield v
 
@@ -32,8 +32,8 @@ class NetworkDataPreparser():
     def get_node_ids(self):
         return range(1,len(self.nodes))
 
-    def create_network_node(self, uid, has_friends=True, has_interactions=True, node_data=None):
+    def create_network_node(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         if self.impl_type == "cython":
-            return NetworkNode(uid, has_friends=has_friends, has_interactions=has_interactions, node_data=node_data)
+            return NetworkNode(uid, should_have_friends=should_have_friends, should_have_interactions=should_have_interactions, node_data=node_data)
         else:
-            return PyNetworkNode(uid, has_friends, has_interactions, node_data)
+            return PyNetworkNode(uid, should_have_friends, should_have_interactions, node_data)

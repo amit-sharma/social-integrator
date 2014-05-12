@@ -12,21 +12,21 @@ class NetworkNode(cnetwork_node.CNetworkNode):
     user_sim = {}
     __slots__ = ('node_data','friends') 
 
-    def __init__(self, uid, has_friends=True, has_interactions=True, node_data=None):
+    def __init__(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         #self.uid = uid
         #self.has_friends = has_friends
         #self.has_interactions = has_interactions
-        super(NetworkNode, self).__init__(uid, has_friends, has_interactions, node_data=node_data)
+        super(NetworkNode, self).__init__(uid, should_have_friends, should_have_interactions, node_data=node_data)
         self.node_data = node_data
         #print getattr(self, 'uid')
-        #if self.has_interactions:
+        #if self.should_have_interactions:
         #    self.interactions = []
         #    self.interaction_types = []
         #    if node_data is not None and node_data.interaction_types is not None:
         #        self.interaction_types = node_data.interaction_types
         #        self.register_interactions(self.interaction_types)
 
-        if self.has_friends:
+        if self.should_have_friends:
             self.friends = []
 
     def add_friend(self, friendid, friend_node,  friendship_data):
@@ -43,7 +43,7 @@ class NetworkNode(cnetwork_node.CNetworkNode):
     def get_num_friends(self):
         return len(self.friends)
 
-    def fhas_friends(self):
+    def has_friends(self):
         return self.friends
     """
     def createLikesOnlySet(self):

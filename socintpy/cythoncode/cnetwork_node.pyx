@@ -22,8 +22,8 @@ cdef float l2_norm_dict(dict_val_iter):
 @cython.no_gc_clear
 cdef class CNetworkNode:
     cdef public int c_uid
-    cdef public int c_has_friends
-    cdef public int c_has_interactions
+    cdef public int c_should_have_friends
+    cdef public int c_should_have_interactions
     cdef idata **c_list
     cdef int *c_length_list
     cdef int c_num_interact_types
@@ -39,8 +39,8 @@ cdef class CNetworkNode:
     
     def __init__(self,*args, **kwargs):
         self.c_uid = int(args[0])
-        self.c_has_friends = int(args[1])
-        self.c_has_interactions = int(args[2])
+        self.c_should_have_friends = int(args[1])
+        self.c_should_have_interactions = int(args[2])
 
     def __dealloc__(self):
         PyMem_Free(self.c_list)
@@ -99,13 +99,13 @@ cdef class CNetworkNode:
         def __get__(self):
             return self.c_uid
 
-    property has_interactions:
+    property should_have_interactions:
         def __get__(self):
-            return self.c_has_interactions
+            return self.c_should_have_interactions
 
-    property has_friends:
+    property should_have_friends:
         def __get__(self):
-            return self.c_has_friends
+            return self.c_should_have_friends
 
     #property interactions:
     #    def __get__(self):

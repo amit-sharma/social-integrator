@@ -67,8 +67,8 @@ class BasicNetworkAnalyzer(object):
             counter += 1
             avg = 0.0
             #print v.friends
-            if not v.has_interactions(interact_type) or not v.fhas_friends():
-                print "Node has no interactions. Skipping!"
+            if not v.has_interactions(interact_type) or not v.has_friends():
+                #print "Node has no interactions. Skipping!"
                 continue
             
             count_sim_trials = 0

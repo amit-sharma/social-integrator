@@ -9,6 +9,7 @@ import logging, sys
 
 def usage():
     print "Too few or erroneous parameters"
+    # start_from_index is 1-based, not zero-based.
     print 'Usage: python '+sys.argv[0]+' -n <input-file> -s <start_from_index> -d <database-directory> -a <api-key>'
 
 if __name__ == "__main__":
