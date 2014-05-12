@@ -66,6 +66,9 @@ class PyNetworkNode(object):
     def has_interactions(self, interact_type):
         return self.interactions[interact_type]
 
+    def fhas_friends(self):
+        return self.friends
+
     def get_friendnodes_iterable(self):
         for k, v_dict in self.friends.iteritems():
             yield k, v_dict['friend_node']

@@ -64,14 +64,15 @@ class BasicNetworkAnalyzer(object):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
             if counter % 1000 == 0:
                 print "Starting node", counter
+            counter += 1
             avg = 0.0
             #print v.friends
-            if v.get_num_interactions(interact_type) ==0:
+            if not v.has_interactions(interact_type) or not v.fhas_friends():
                 print "Node has no interactions. Skipping!"
                 continue
             
             count_sim_trials = 0
-            candidate_users =  set(self.netdata.get_node_ids()) - set(v.get_friend_ids() + [v.uid])
+            candidate_users = set(self.netdata.get_node_ids()) - set(v.get_friend_ids() + [v.uid])
             for i in range(num_random_trials):
                 rand_people = random.sample(candidate_users, v.get_num_friends())
                 rand_items = self.items_interacted_by_people(rand_people, interact_type)
@@ -80,7 +81,7 @@ class BasicNetworkAnalyzer(object):
                     avg += trial_global_similarity
                     count_sim_trials += 1
             if count_sim_trials == 0:
-                #print "Node has no global sim"
+                print "Node has no global sim", v.get_num_friends()
                 continue
             avg_external_similarity = avg/float(count_sim_trials)
 
@@ -93,7 +94,6 @@ class BasicNetworkAnalyzer(object):
                 continue
             circle_sims.append(circle_similarity)
             global_sims.append(avg_external_similarity)
-            counter += 1
 
         return circle_sims, global_sims
 

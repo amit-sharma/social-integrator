@@ -26,7 +26,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     def get_all_data(self):
         self.read_nodes_file()
         print self.nodes[1]
-        self.read_items_file()
+        #self.read_items_file()
         self.read_edges_file()
         self.read_interactions_file()
 
@@ -67,7 +67,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             user_id = int(cols[0])
             item_id = int(cols[1])
             timestamp = cols[2]
-            rating = int(cols[3])  if cols[3] != 'NaN' else -1
+            rating = int(cols[3]) if cols[3] != 'NaN' else -1
             new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)
             if prev_user is not None and prev_user != user_id:
                 self.nodes[prev_user].store_interactions(self.RATE_ACTION, ilist)
@@ -81,6 +81,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             counter += 1
             #if counter > 1000:
             #    break
+        self.nodes[prev_user].store_interactions(self.RATE_ACTION, ilist)
         print "All interactions stored", counter
 
     @staticmethod

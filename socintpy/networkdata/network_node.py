@@ -42,6 +42,9 @@ class NetworkNode(cnetwork_node.CNetworkNode):
 
     def get_num_friends(self):
         return len(self.friends)
+
+    def fhas_friends(self):
+        return self.friends
     """
     def createLikesOnlySet(self):
         self.likes_only = set()
