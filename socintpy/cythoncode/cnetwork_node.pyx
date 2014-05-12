@@ -8,6 +8,8 @@ cdef struct idata:
     char *timestamp
     int rating
 
+cdef struct fdata:
+    int receiver_id
 
 cdef float l2_norm_dict(dict_val_iter):
     cdef float norm = 0
@@ -27,15 +29,26 @@ cdef class CNetworkNode:
     cdef idata **c_list
     cdef int *c_length_list
     cdef int c_num_interact_types
+    cdef fdata *c_friend_list
+    cdef int c_length_friend_list
 
     def __cinit__(self, *args,  **kwargs):
         cdef int a
-        if not (kwargs['node_data'] is None):
+        if kwargs['should_have_interactions'] and not (kwargs['node_data'] is None):
             self.c_num_interact_types = len(kwargs['node_data'].interaction_types)
             self.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))
             self.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))
             for a in xrange(self.c_num_interact_types):
                 self.c_length_list[a] = 0
+        else:
+            self.c_num_interact_types = 0
+            self.c_list = NULL
+            self.c_length_list = NULL
+
+        self.c_friend_list = NULL
+        self.c_length_friend_list = 0
+        #if kwargs['should_have_friends']:
+        #    self.c_friend_list = <fdata **>PyMem_Malloc(self.)
     
     def __init__(self,*args, **kwargs):
         self.c_uid = int(args[0])
@@ -57,8 +70,18 @@ cdef class CNetworkNode:
             self.c_list[interact_type][i].rating = ilist[i].rating
             self.c_list[interact_type][i].timestamp = ilist[i].timestamp
         self.c_length_list[interact_type] = len(ilist)
-        return len(ilist)
-    
+        return self.c_length_list[interact_type]
+
+    cpdef int store_friends(self, flist):
+        self.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
+        if self.c_friend_list is NULL:
+            raise MemoryError()
+        cdef int i
+        for i in xrange(len(flist)):
+            self.c_friend_list[i].receiver_id = flist[i].receiver_id
+        self.c_length_friend_list = len(flist)
+        return self.c_length_friend_list
+
     cpdef get_all_items_interacted_with(self):
         interacted_items = set()                                                
         cdef int i
@@ -74,13 +97,32 @@ cdef class CNetworkNode:
         for i in xrange(self.c_length_list[interact_type]):                 
             interacted_items.add(self.c_list[interact_type][i].item_id)   
         return interacted_items
-    
+
+    cpdef get_friend_ids(self):
+        cdef int i
+        id_list = []
+        for i in xrange(self.c_length_friend_list):
+            id_list.append(self.c_friend_list[i].receiver_id)
+        return id_list
+
     cpdef get_num_interactions(self, interact_type):
-        return self.c_length_list[interact_type]
+        if self.c_list is NULL:
+            return 0
+        else:
+            return self.c_length_list[interact_type]
 
     cpdef has_interactions(self, interact_type):
-        return (self.c_length_list[interact_type] > 0)
-    
+        return (not (self.c_list is NULL)) and (self.c_length_list[interact_type] > 0)
+
+    cpdef get_num_friends(self):
+        if self.c_friend_list is NULL:
+            return 0
+        else:
+            return self.c_length_friend_list
+
+    cpdef has_friends(self):
+        return (not(self.c_friend_list is NULL)) and (self.c_length_friend_list > 0)
+
     cpdef compute_similarity(self, items, interact_type):
         if self.c_length_list[interact_type] ==0 or len(items) == 0:
             return None 

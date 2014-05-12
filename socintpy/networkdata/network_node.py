@@ -9,15 +9,15 @@ import socintpy.util.utils as utils
 class NetworkNode(cnetwork_node.CNetworkNode):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
-    user_sim = {}
-    __slots__ = ('node_data','friends') 
+    #user_sim = {}
+    #__slots__ = ('node_data','friends')
 
     def __init__(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         #self.uid = uid
         #self.has_friends = has_friends
         #self.has_interactions = has_interactions
         super(NetworkNode, self).__init__(uid, should_have_friends, should_have_interactions, node_data=node_data)
-        self.node_data = node_data
+        #self.node_data = node_data
         #print getattr(self, 'uid')
         #if self.should_have_interactions:
         #    self.interactions = []
@@ -26,17 +26,15 @@ class NetworkNode(cnetwork_node.CNetworkNode):
         #        self.interaction_types = node_data.interaction_types
         #        self.register_interactions(self.interaction_types)
 
-        if self.should_have_friends:
-            self.friends = []
-
+        #if self.should_have_friends:
+        #    self.friends = []
+    """
     def add_friend(self, friendid, friend_node,  friendship_data):
         self.friends.append((friendid,friend_node, friendship_data))
-
 
     def get_friendnodes_iterable(self):
         for k, v_dict in self.friends.iteritems():
             yield k, v_dict['friend_node']
-
     def get_friend_ids(self):
         return [val[0] for val in self.friends]
 
@@ -45,6 +43,8 @@ class NetworkNode(cnetwork_node.CNetworkNode):
 
     def has_friends(self):
         return self.friends
+    """
+
     """
     def createLikesOnlySet(self):
         self.likes_only = set()

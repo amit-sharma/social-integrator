@@ -11,13 +11,14 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     NodeData = namedtuple('NodeData', 'original_node_id interaction_types')
     ItemData = namedtuple('ItemData', 'item_id original_item_id average_rating popularity')
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
+    EdgeData = namedtuple('EdgeData', 'receiver_id')
 
     def __init__(self, data_path, node_impl):
         NetworkDataPreparser.__init__(self, node_impl)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
         self.items_filename = data_path + "goodreads.300k.items.xml"
-        self.edges_filename = data_path + "goodreads.300k.edges.xml"
+        self.edges_filename = data_path + "goodreads.300k.edges.newxml"
         self.interactions_filename = data_path + "goodreads.300k.collections.txt"
         #self.interaction_types = range(1)
         #rate = range(1)
@@ -116,15 +117,22 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         context = etree.iterparse(self.edges_filename, events=('end',), tag="edge")
         edges_iter = utils.fast_iter(context, self.handle_edges)
         count_dict = {}
-        for (sender_id, receiver_id), edgedata in edges_iter:
-            #sender_id, receiver_id = k
-            #if sender_id < len(self.nodes) and receiver_id <len(self.nodes):
-            self.nodes[sender_id].add_friend(receiver_id, self.nodes[receiver_id], None)
-                #self.nodes[receiver_id].add_friend(sender_id, self.nodes[sender_id], None)
-            #else:
-            #    print "error: node is missing to create edge"
-            #return self.edges
-        print "All edges stored"
+        flist = []
+        prev_sender = None
+        curr_sender = None
+        counter = 0
+        for (sender_id, receiver_id), _ in edges_iter:
+            curr_sender = sender_id
+            new_edge = GoodreadsDataPreparser.EdgeData(receiver_id)
+            if prev_sender is not None and curr_sender != prev_sender:
+                self.nodes[prev_sender].store_friends(flist)
+                flist = []
+            flist.append(new_edge)
+            prev_sender = curr_sender
+            counter += 1
+        self.nodes[prev_sender].store_friends(flist)
+        print "All edges stored", counter
+
 
 
 if __name__ == "__main__":

@@ -39,9 +39,15 @@ class PyNetworkNode(object):
     def store_interactions(self, interaction_type, items_list):
         for interact_tuple in items_list:
             self.interactions[interaction_type].append(interact_tuple)
+        return len(self.interactions[interaction_type])
 
     def add_friend(self, friendid, friend_node,  friendship_data):
         self.friends.append((friendid,friend_node, friendship_data))
+
+    def store_friends(self, friends_list):
+        for friend_tuple in friends_list:
+            self.friends.append(friend_tuple)
+        return len(self.friends)
 
     def get_all_items_interacted_with(self):
         interacted_items = []
@@ -69,9 +75,9 @@ class PyNetworkNode(object):
     def has_friends(self):
         return self.friends
 
-    def get_friendnodes_iterable(self):
-        for k, v_dict in self.friends.iteritems():
-            yield k, v_dict['friend_node']
+    #def get_friendnodes_iterable(self):
+    #    for k, v_dict in self.friends.iteritems():
+    #        yield k, v_dict['friend_node']
     """
     def createLikesOnlySet(self):
         self.likes_only = set()
