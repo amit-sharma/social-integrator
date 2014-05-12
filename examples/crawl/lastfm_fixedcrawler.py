@@ -9,15 +9,12 @@ import logging, sys
 
 def usage():
     print "Too few or erroneous parameters"
-    print 'Usage: python '+sys.argv[0]+' -n <input-file> -s <start_from_index> -d <database-directory>'
+    print 'Usage: python '+sys.argv[0]+' -n <input-file> -s <start_from_index> -d <database-directory> -a <api-key>'
 
 if __name__ == "__main__":
-    # Set the log level
-    numeric_loglevel = getattr(logging, settings.LOG_LEVEL, None)
-    logging.basicConfig(filename="/home/as2447/datasets/lastfm/linux06/socintpy_fixed.log", level=numeric_loglevel)
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "n:s:d:", ["help", "output="])
+        opts, args = getopt.getopt(sys.argv[1:], "n:s:d:a:", ["help", "output="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -29,6 +26,7 @@ if __name__ == "__main__":
 
     start_from_index = None
     data_dir = None
+    cmd_api_key = None
     for o,a in opts:
         if o=="-n":
             nodes_list = []
@@ -40,13 +38,20 @@ if __name__ == "__main__":
             start_from_index = int(a)
         if o == "-d":
             data_dir = a
+        if o == "-a":
+            cmd_api_key = a
 
 
+    # Set the log level
+    numeric_loglevel = getattr(logging, settings.LOG_LEVEL, None)
+    logging.basicConfig(filename=data_dir+"socintpy_fixed.log", level=numeric_loglevel)
 
     #cmd_params = cmd_script.get_cmd_parameters(sys.argv)
     cmd_params = {'mode':'fetch_data'}    # Fetch api object using the settings from settings.py
 
     api_args = get_args(settings)
+    if cmd_api_key is not None:
+        api_args['api_key'] = cmd_api_key
     api = get_api(api_args)
 
 
@@ -58,6 +63,9 @@ if __name__ == "__main__":
         logging.info("STORE: sqlite")
         logging.info("START_FROM_INDEX: %d" %start_from_index)
         logging.info("DATABASE_DIRECTORY: %s" %a)
+        logging.info("API_KEY: %s" %api_args['api_key'])
+        print("API_KEY: %s" %api_args['api_key'])
+        
         crawler = FixedNodesCrawler(api, store_type="sqlite", output_dir=data_dir)
         # Start the data crawl
         crawler.crawl(nodes_list, start_from_index=start_from_index)
