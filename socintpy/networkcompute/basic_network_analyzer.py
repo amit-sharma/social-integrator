@@ -60,6 +60,7 @@ class BasicNetworkAnalyzer(object):
         counter = 0
         circle_sims = []
         global_sims = []
+        all_node_ids = xrange(1, self.netdata.get_total_num_nodes()+1)
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
             if counter % 1000 == 0:
@@ -77,10 +78,15 @@ class BasicNetworkAnalyzer(object):
             #for fid in v.get_friend_ids():
             #    candidate_users[fid] = False
             #candidate_users[v.uid] = False
+            friends_list =  v.get_friend_ids()
+            num_friends = v.get_num_friends()
             for i in range(num_random_trials):
-                rand_people = random.sample(xrange(1, self.netdata.get_total_num_nodes()+1), v.get_num_friends())
-                #TODO implement filter for non-friends
-                rand_items = self.items_interacted_by_people(rand_people, interact_type)
+                rand_people = random.sample(all_node_ids, num_friends*2+1)
+                rand_people_iter = self.set_difference_generator(rand_people, friends_list+[v.uid], num_friends)
+                    
+                    #TODO implement filter for non-friends
+                
+                rand_items = self.items_interacted_by_people(rand_people_iter, interact_type)
                 trial_global_similarity=v.compute_similarity(rand_items, interact_type)
                 #trial_global_similarity=1
                 if trial_global_similarity is not None:
@@ -103,6 +109,15 @@ class BasicNetworkAnalyzer(object):
             global_sims.append(avg_external_similarity)
 
         return circle_sims, global_sims
+
+    def set_difference_generator(self, list1, list2, max_results):
+        counter = 0
+        for val in list1:
+            if counter == max_results:
+                break
+            if val not in list2:
+                counter += 1 
+                yield val
 
     def items_interacted_by_people(self, people_list, interaction_type):
         items_dict={}

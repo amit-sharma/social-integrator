@@ -66,7 +66,10 @@ class FixedNodesCrawler(NetworkCrawlerInterface):
         edge_keys = []
         for edge_info in edges_data:
             edge_info['id'] = -1
-            edge_keys.append(str(edge_info['source']+'_'+edge_info['target']))
+            edge_source_str = edge_info['source'].encode('ascii', 'ignore')
+            edge_target_str = edge_info['target'].encode('ascii', 'ignore')
+            #edge_keys.append(str(edge_info['source']+'_'+edge_info['target']))
+            edge_keys.append(edge_source_str + '_' + edge_target_str)
 
         gbuffer.store_edges(edge_keys, edges_data)
         logging.info("Processed and stored successfully %s \n" % node_id)

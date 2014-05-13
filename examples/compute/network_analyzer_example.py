@@ -74,7 +74,7 @@ if __name__ == "__main__":
         net_analyzer.show_basic_stats()
     elif computation_cmd=="random_similarity":
         circlesims, globalsims = net_analyzer.compare_circle_global_similarity(0, num_random_trials=2)
-        plotter.plotLinesYY(circlesims, globalsims, "Friends", "Global")
+        #plotter.plotLinesYY(circlesims, globalsims, "Friends", "Global")
         print "Circle Average", sum(circlesims)/float(len(circlesims))
         print "Global Average", sum(globalsims)/float(len(globalsims))
     elif computation_cmd=="knn_similarity":
