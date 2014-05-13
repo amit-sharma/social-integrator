@@ -58,7 +58,7 @@ class PyNetworkNode(object):
         return interacted_items
     
     def get_items_interacted_with(self, interact_type):
-        return set([ val[0] for val in self.interactions[interact_type] ])
+        return set([val[0] for val in self.interactions[interact_type]])
 
     def get_friend_ids(self):
         return [val[0] for val in self.friends]
@@ -107,6 +107,20 @@ class PyNetworkNode(object):
                 simscore += len(items[item_id])
         #return simscore/(len(self.interactions[interact_type])*len(self.friends))
         return simscore/ (utils.l2_norm(self.interactions[interact_type],binary=True)* utils.l2_norm(items.itervalues(), binary=False))
+
+    def compute_node_similarity(self, others_interactions, interact_type):
+        #if my_interactions is None:
+        my_interactions = self.interactions[interact_type]
+
+        if len(my_interactions) == 0 or len(others_interactions) == 0:
+            return None
+        sim_score = float(0)
+        for interact_tuple in my_interactions:
+            item_id = interact_tuple[0]
+            if item_id in others_interactions:
+                sim_score += 1
+        sim_score = sim_score/ (utils.l2_norm(my_interactions, binary=True) * utils.l2_norm(others_interactions, binary=True))
+        return sim_score
 
     def externalNonWeightedSimilarity(self, items):
         simscore=float(0)
@@ -165,27 +179,7 @@ class PyNetworkNode(object):
         sparsity = num_circle_likes / (float(num_circle_items*num_people))
         return sparsity
     """
-    def compute_node_similarity(self, others_interactions, interact_type, my_interactions=None):
-        if my_interactions is None:
-            my_interactions = self.interactions[interact_type]
 
-        if len(my_interactions) == 0 or len(others_interactions) == 0:
-            return None
-        sim_score = 0
-        for item_id in my_interactions.iterkeys():
-            if item_id in others_interactions:
-                sim_score += 1
-        sim_score = sim_score/ (utils.l2_norm(my_interactions, binary=True) * utils.l2_norm(others_interactions, binary=True))
-        return sim_score
-
-        #simscore = len(my_interactions & others_interactions)
-        #unionsum = len(my_interactions) + len(others_interactions) - simscore
-        #usersim = simscore/float(unionsum)
-
-        #if (self.uid, other_uid) in UCircle.user_sim:
-        #    print UCircle.user_sim[(self.uid, other_uid)], usersim, self.uid, other_uid
-        #    pprint(UCircle.user_sim)
-        #UCircle.user_sim[(self.uid, other_uid)] = usersim
 
     def circleKNearestSim(self, allfr, num, my_likes):
         minheap=[]

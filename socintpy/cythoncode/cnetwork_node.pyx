@@ -2,6 +2,14 @@ import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.stdio cimport printf
 from libc.math cimport sqrt
+#from libc.stdlib import qsort
+import numpy as np
+cimport numpy as np
+
+cdef extern from "stdlib.h":
+    void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *))
+DTYPE = np.float
+ctypedef np.float_t DTYPE_t
 
 cdef struct idata:
     int item_id
@@ -11,6 +19,15 @@ cdef struct idata:
 cdef struct fdata:
     int receiver_id
 
+cdef int comp(const void *elem1, const void *elem2):
+    cdef int *a
+    cdef int *b
+    a = <int *> elem1
+    b = <int *> elem2
+    if a[0] > b[0]: return 1
+    if a[0] < b[0]: return -1
+    return 0
+
 cdef float l2_norm_dict(dict_val_iter):
     cdef float norm = 0
     cdef float temp
@@ -19,6 +36,32 @@ cdef float l2_norm_dict(dict_val_iter):
         norm += temp*temp
     norm = sqrt(norm)
     return norm
+
+cdef int exists(int val, fdata *arr, int length_arr):
+    cdef int low, high, mid
+    low = 0
+    high = length_arr -1
+
+    while(low <= high):
+        mid = (low + high)/2
+        if val == arr[mid].receiver_id:
+            return 1
+        elif val > arr[mid].receiver_id:
+            low = mid+1
+        else:
+            high = mid-1
+    return 0
+
+#@cython.boundscheck(False)
+cdef min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):
+    cdef int i
+    cdef DTYPE_t min_val = arr[0]
+    min_index[0] = 0
+    for i in range(1, length_arr):
+        if arr[i] < min_val:
+            min_val = arr[i]
+            min_index[0] = i
+    return min_val
 
 @cython.freelist(1024)
 @cython.no_gc_clear
@@ -141,6 +184,40 @@ cdef class CNetworkNode:
         l2_norm1 = sqrt(self.c_length_list[interact_type])
         l2_norm2 = l2_norm_dict(items.itervalues())
         return simscore/(l2_norm1*l2_norm2)
+
+    cpdef compute_node_similarity(self, others_interactions, int interact_type):
+        cdef int length_my_interactions
+        cdef idata *my_interactions
+        my_interactions = self.c_list[interact_type]
+        length_my_interactions = self.c_length_list[interact_type]
+        cdef float simscore = 0
+        cdef float l2_norm1, l2_norm2
+        cdef int i, item_id
+        for i in xrange(length_my_interactions):
+            item_id = my_interactions[i].item_id
+            if item_id in others_interactions:
+                simscore += 1
+        l2_norm1 = sqrt(length_my_interactions)
+        l2_norm2 = sqrt(len(others_interactions))
+        return simscore/(l2_norm1*l2_norm2)
+
+    @cython.boundscheck(False)
+    cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim):
+        cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
+        qsort(self.c_friend_list, self.c_length_friend_list, sizeof(fdata), comp)
+        cdef fdata *friend_arr = self.c_friend_list
+        cdef int i, min_sim_index
+        cdef DTYPE_t sim, min_sim
+        min_sim = 0
+        min_sim_index = 0
+        for node_obj in allnodes_iterable:
+            if not exists(node_obj.uid, friend_arr, self.c_length_friend_list) and node_obj.uid != self.c_uid:
+                sim = self.compute_node_similarity(node_obj.get_items_interacted_with(interact_type), interact_type)
+                if sim > min_sim:
+                    sims_vector[min_sim_index] = sim
+                    min_sim = min(sims_vector, klim, &min_sim_index)
+        return sims_vector
+
 
     property uid:
         def __get__(self):
