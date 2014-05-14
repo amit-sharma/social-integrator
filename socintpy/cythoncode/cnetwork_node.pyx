@@ -8,6 +8,7 @@ cimport numpy as np
 
 cdef extern from "stdlib.h":
     void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *))
+
 DTYPE = np.float
 ctypedef np.float_t DTYPE_t
 
@@ -19,13 +20,22 @@ cdef struct idata:
 cdef struct fdata:
     int receiver_id
 
-cdef int comp(const void *elem1, const void *elem2):
-    cdef int *a
-    cdef int *b
-    a = <int *> elem1
-    b = <int *> elem2
-    if a[0] > b[0]: return 1
-    if a[0] < b[0]: return -1
+cdef int comp_interactions(const void *elem1, const void *elem2):
+    cdef idata *a
+    cdef idata *b
+    a = <idata *> elem1
+    b = <idata *> elem2
+    if a[0].item_id > b[0].item_id: return 1
+    if a[0].item_id < b[0].item_id: return -1
+    return 0
+
+cdef int comp_friends(const void *elem1, const void *elem2):
+    cdef fdata *a
+    cdef fdata *b
+    a = <fdata *> elem1
+    b = <fdata *> elem2
+    if a[0].receiver_id > b[0].receiver_id: return 1
+    if a[0].receiver_id < b[0].receiver_id: return -1
     return 0
 
 cdef float l2_norm_dict(dict_val_iter):
@@ -52,8 +62,8 @@ cdef int exists(int val, fdata *arr, int length_arr):
             high = mid-1
     return 0
 
-#@cython.boundscheck(False)
-cdef min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):
+@cython.boundscheck(False)
+cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):
     cdef int i
     cdef DTYPE_t min_val = arr[0]
     min_index[0] = 0
@@ -95,8 +105,8 @@ cdef class CNetworkNode:
     
     def __init__(self,*args, **kwargs):
         self.c_uid = int(args[0])
-        self.c_should_have_friends = int(args[1])
-        self.c_should_have_interactions = int(args[2])
+        self.c_should_have_friends = kwargs['should_have_friends']
+        self.c_should_have_interactions = kwargs['should_have_interactions']
 
     def __dealloc__(self):
         cdef int interact_type
@@ -112,12 +122,13 @@ cdef class CNetworkNode:
         if self.c_list is NULL:
             raise MemoryError()
         cdef int i
-        for i in xrange(len(ilist)):
+        for i in range(len(ilist)):
             #print "In the loop %d" %i
             self.c_list[interact_type][i].item_id = ilist[i].item_id
             self.c_list[interact_type][i].rating = ilist[i].rating
             self.c_list[interact_type][i].timestamp = ilist[i].timestamp
         self.c_length_list[interact_type] = len(ilist)
+        qsort(self.c_list[interact_type], self.c_length_list[interact_type], sizeof(idata), comp_interactions)
         return self.c_length_list[interact_type]
 
     cpdef int store_friends(self, flist):
@@ -128,6 +139,8 @@ cdef class CNetworkNode:
         for i in xrange(len(flist)):
             self.c_friend_list[i].receiver_id = flist[i].receiver_id
         self.c_length_friend_list = len(flist)
+        
+        qsort(self.c_friend_list, self.c_length_friend_list, sizeof(fdata), comp_friends)
         return self.c_length_friend_list
 
     cpdef get_all_items_interacted_with(self):
@@ -142,10 +155,10 @@ cdef class CNetworkNode:
     cpdef get_items_interacted_with(self, interact_type):
         interacted_items = set()
         cdef int i
-        for i in xrange(self.c_length_list[interact_type]):                 
+        for i in range(self.c_length_list[interact_type]):                 
             interacted_items.add(self.c_list[interact_type][i].item_id)   
         return interacted_items
-
+    
     cpdef get_friend_ids(self):
         cdef int i
         id_list = []
@@ -193,7 +206,7 @@ cdef class CNetworkNode:
         cdef float simscore = 0
         cdef float l2_norm1, l2_norm2
         cdef int i, item_id
-        for i in xrange(length_my_interactions):
+        for i in range(length_my_interactions):
             item_id = my_interactions[i].item_id
             if item_id in others_interactions:
                 simscore += 1
@@ -201,18 +214,42 @@ cdef class CNetworkNode:
         l2_norm2 = sqrt(len(others_interactions))
         return simscore/(l2_norm1*l2_norm2)
 
+    cdef compute_node_similarity_c(self, idata *others_interactions, int length_others_interactions, int interact_type ):
+        cdef float l2_norm1, l2_norm2, simscore
+        cdef idata *my_interactions = self.c_list[interact_type]
+        cdef int i, j
+        simscore = 0
+        i = 0 
+        j = 0
+        while i < self.c_length_list[interact_type] and j < length_others_interactions:
+            if my_interactions[i].item_id < others_interactions[j].item_id:
+                i += 1
+            elif my_interactions[i].item_id > others_interactions[j].item_id:
+                j+= 1
+            else:
+                simscore +=1
+                i += 1
+                j += 1
+        l2_norm1 = sqrt(self.c_length_list[interact_type])
+        l2_norm2 = sqrt(length_others_interactions)
+
+        return simscore/(l2_norm1*l2_norm2)
+
     @cython.boundscheck(False)
     cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim):
         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
-        qsort(self.c_friend_list, self.c_length_friend_list, sizeof(fdata), comp)
         cdef fdata *friend_arr = self.c_friend_list
         cdef int i, min_sim_index
         cdef DTYPE_t sim, min_sim
+        cdef CNetworkNode c_node_obj
         min_sim = 0
         min_sim_index = 0
         for node_obj in allnodes_iterable:
-            if not exists(node_obj.uid, friend_arr, self.c_length_friend_list) and node_obj.uid != self.c_uid:
-                sim = self.compute_node_similarity(node_obj.get_items_interacted_with(interact_type), interact_type)
+        #for i in range(10):
+            c_node_obj = <CNetworkNode>node_obj
+            if (not exists(c_node_obj.c_uid, friend_arr, self.c_length_friend_list)) and c_node_obj.c_uid != self.c_uid:
+                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
+                sim=1
                 if sim > min_sim:
                     sims_vector[min_sim_index] = sim
                     min_sim = min(sims_vector, klim, &min_sim_index)

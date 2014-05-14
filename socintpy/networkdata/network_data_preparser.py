@@ -1,4 +1,5 @@
-from socintpy.networkdata.network_node import NetworkNode
+import pyximport; pyximport.install()
+from socintpy.cythoncode.cnetwork_node import CNetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 
 
@@ -20,6 +21,9 @@ class NetworkDataPreparser():
                 continue
             yield v
 
+    def get_all_nodes(self):
+        return self.nodes[1:]
+
     def get_nonfriends_iterable(self, node):
         node_friend_ids = node.get_friend_ids()
         for v in self.nodes[1:]:
@@ -38,6 +42,6 @@ class NetworkDataPreparser():
 
     def create_network_node(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         if self.impl_type == "cython":
-            return NetworkNode(uid, should_have_friends=should_have_friends, should_have_interactions=should_have_interactions, node_data=node_data)
+            return CNetworkNode(uid, should_have_friends=should_have_friends, should_have_interactions=should_have_interactions, node_data=node_data)
         else:
             return PyNetworkNode(uid, should_have_friends, should_have_interactions, node_data)
