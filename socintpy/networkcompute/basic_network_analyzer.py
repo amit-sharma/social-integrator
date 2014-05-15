@@ -153,7 +153,7 @@ class BasicNetworkAnalyzer(object):
             if v.has_interactions(interact_type):
 
                 np_array = v.compute_local_topk_similarity(self.netdata.get_friends_nodes(v), interact_type, klim)
-
+                local_sim_avg = sum(np_array)/len(np_array)
                 """
                 local_candidates = self.netdata.get_friends_iterable(v)
                 localk_neighbors = self.compute_knearest_neighbors(v, local_candidates, interact_type, klim)

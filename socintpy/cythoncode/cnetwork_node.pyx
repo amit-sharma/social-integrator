@@ -374,6 +374,23 @@ cdef class CNetworkNode:
 
         return sims_vector
 
+    @cython.boundscheck(False)
+    cpdef compute_local_topk_similarity(self, friends_iterable, int interact_type, int klim):
+        cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
+        #cdef fdata *friend_arr = self.c_friend_list
+        cdef int i, min_sim_index
+        cdef DTYPE_t sim, min_sim
+        cdef CNetworkNode c_node_obj
+        min_sim = 0
+        min_sim_index = 0
+        for node_obj in friends_iterable:
+            c_node_obj = <CNetworkNode>node_obj
+            sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
+            if sim > min_sim:
+                sims_vector[min_sim_index] = sim
+                min_sim = min(sims_vector, klim, &min_sim_index)
+        return sims_vector
+
     cpdef create_training_test_sets(int interact_type, int traintest_split):
         cdef int i
         cdef int k1 = 0, k2 = 0
