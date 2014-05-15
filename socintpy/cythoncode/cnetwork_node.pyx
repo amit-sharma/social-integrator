@@ -275,7 +275,7 @@ cdef class CNetworkNode:
         cdef int *other_interactions
         cdef CNetworkNode c_node_obj
         c_node_obj = <CNetworkNode>other_node
-         if data_type_code == 'a':
+        if data_type_code == 'a':
             print "All"
             #my_interactions = self.c_list[interact_type]
             #length_my_interactions = self.c_length_list[interact_type]
