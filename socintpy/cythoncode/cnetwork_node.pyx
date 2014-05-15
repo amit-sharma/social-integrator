@@ -3,14 +3,20 @@ from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.stdio cimport printf
 from libc.math cimport sqrt
 #from libc.stdlib import qsort
+import scipy.sparse as sp
 import numpy as np
 cimport numpy as np
+cimport cython
+
 
 cdef extern from "stdlib.h":
     void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *))
 
 DTYPE = np.float
 ctypedef np.float_t DTYPE_t
+
+DTYPE_INT = np.int
+ctypedef np.int_t DTYPE_INT_t
 
 cdef struct idata:
     int item_id
@@ -19,6 +25,40 @@ cdef struct idata:
 
 cdef struct fdata:
     int receiver_id
+
+cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):
+    cdef CNetworkNode c_node_obj
+    cdef int total_interactions = 0
+    cdef int total_nodes = 0
+    for node_obj in all_nodes:
+        c_node_obj = <CNetworkNode>node_obj
+        total_interactions += c_node_obj.c_length_list[interact_type]
+        total_nodes += 1
+
+    cdef np.ndarray[DTYPE_t, ndim=1] data = np.empty(total_interactions, dtype=DTYPE)
+    cdef np.ndarray[DTYPE_INT_t, ndim=1] indices = np.empty(total_interactions, dtype=DTYPE_INT)
+    cdef np.ndarray[DTYPE_INT_t, ndim=1] indptr = np.empty(total_nodes+1+1, dtype=DTYPE_INT)
+    cdef int curr_index = 0
+    cdef int i,j
+    i = 0
+    indptr[0:2]=0
+    i+=1
+    for node_obj in all_nodes:
+        c_node_obj = <CNetworkNode>node_obj
+        i+=1
+        for j in range(c_node_obj.c_length_list[interact_type]):
+            data[curr_index] = 1
+            indices[curr_index] = c_node_obj.c_list[interact_type][j].item_id
+            curr_index += 1
+        indptr[i] = indptr[i-1] + c_node_obj.c_length_list[interact_type]
+
+    mat = sp.csr_matrix((data, indices, indptr))
+    cc = mat * mat.transpose()
+    print mat[6,346165], mat[1,1], mat[1,1669118]
+    print data.shape[0]
+    print mat.shape[0], mat.shape[1]
+    print cc.shape[0], cc.shape[1]
+
 
 cdef int comp_interactions(const void *elem1, const void *elem2):
     cdef idata *a
@@ -249,7 +289,7 @@ cdef class CNetworkNode:
             c_node_obj = <CNetworkNode>node_obj
             if (not exists(c_node_obj.c_uid, friend_arr, self.c_length_friend_list)) and c_node_obj.c_uid != self.c_uid:
                 sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
-                sim=1
+                #sim=1
                 if sim > min_sim:
                     sims_vector[min_sim_index] = sim
                     min_sim = min(sims_vector, klim, &min_sim_index)
@@ -271,3 +311,40 @@ cdef class CNetworkNode:
     #property interactions:
     #    def __get__(self):
     #        return self.c_list
+
+
+"""
+cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):
+    cdef CNetworkNode c_node_obj
+    cdef int total_interactions = 0
+    cdef int total_nodes = 0
+    for node_obj in all_nodes:
+        c_node_obj = <CNetworkNode>node_obj
+        total_interactions += c_node_obj.c_length_list[interact_type]
+        total_nodes += 1
+
+    cdef np.ndarray[DTYPE_t, ndim=1] data = np.empty(total_interactions, dtype=DTYPE)
+    cdef np.ndarray[DTYPE_INT_t, ndim=1] indices = np.empty(total_interactions, dtype=DTYPE_INT)
+    cdef np.ndarray[DTYPE_INT_t, ndim=1] indptr = np.empty(total_nodes+1+1, dtype=DTYPE_INT)
+    cdef int curr_index = 0
+    cdef int i,j
+    i = 0
+    indptr[0:2]=0
+    i+=1
+    for node_obj in all_nodes:
+        c_node_obj = <CNetworkNode>node_obj
+        i+=1
+        for j in range(c_node_obj.c_length_list[interact_type]):
+            data[curr_index] = 1
+            indices[curr_index] = c_node_obj.c_list[interact_type][j].item_id
+            curr_index += 1
+        indptr[i] = indptr[i-1] + c_node_obj.c_length_list[interact_type]
+
+    mat = sp.csr_matrix((data, indices, indptr))
+    cc = mat * mat.transpose()
+    print mat[6,346165], mat[1,1], mat[1,1669118]
+    print data.shape[0]
+    print mat.shape[0], mat.shape[1]
+    print cc.shape[0], cc.shape[1]
+    print cc
+"""

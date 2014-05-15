@@ -1,3 +1,5 @@
+import pyximport; pyximport.install()
+from socintpy.cythoncode.cnetwork_node import compute_global_topk_similarity
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.util.utils import mean_sd
 import random
@@ -143,6 +145,8 @@ class BasicNetworkAnalyzer(object):
         sims_local = []
         sims_global = []
         counter = 0
+        compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
+        return
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if counter % 1000 == 0:
                 print "Starting node", counter
@@ -173,6 +177,7 @@ class BasicNetworkAnalyzer(object):
                 sims_global.append(global_sim_avg)
 
                 sims_local.append(local_sim_avg)
+                #print(global_sim_avg, local_sim_avg)
 
             else:
                 print "Error in finding %d neighbors for %s:(Has no interactions)" % (klim,v.uid)
@@ -184,7 +189,7 @@ class BasicNetworkAnalyzer(object):
         minheap=[]
         for candidate_node in candidate_nodes_iterable:
             curr_sim = node.compute_node_similarity(candidate_node.get_items_interacted_with(interact_type), interact_type)
-            curr_sim = 1
+            #curr_sim = 1
             if curr_sim is not None:
                 heapq.heappush(minheap, (curr_sim, candidate_node))
                 if len(minheap) > k:
