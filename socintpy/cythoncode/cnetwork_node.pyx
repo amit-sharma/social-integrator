@@ -298,6 +298,7 @@ cdef class CNetworkNode:
                     min_sim = min(sims_vector, klim, &min_sim_index)
         return sims_vector
 
+    @cython.boundscheck(False)
     cpdef compute_global_topk_similarity_mat(self, mat, int klim):
         #print mat.shape[0], mat.shape[1]
         #print self.uid

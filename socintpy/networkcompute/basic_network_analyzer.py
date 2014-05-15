@@ -145,7 +145,7 @@ class BasicNetworkAnalyzer(object):
         sims_local = []
         sims_global = []
         counter = 0
-        #mat=compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
+        mat=compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if counter % 1000 == 0:
                 print "Starting node", counter
@@ -160,8 +160,8 @@ class BasicNetworkAnalyzer(object):
                     #print "Error in finding local %d neighbors for %s" % (klim,v.uid), localk_neighbors
                     continue
 
-                np_array = v.compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
-                #np_array = v.compute_global_topk_similarity_mat(mat, klim)
+                #np_array = v.compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
+                np_array = v.compute_global_topk_similarity_mat(mat, klim)
                 #print np_array
                 global_sim_avg = sum(np_array)/len(np_array)
                 """
