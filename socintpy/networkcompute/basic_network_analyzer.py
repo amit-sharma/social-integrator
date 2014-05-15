@@ -151,6 +151,10 @@ class BasicNetworkAnalyzer(object):
                 print "Starting node", counter
             counter += 1
             if v.has_interactions(interact_type):
+
+                np_array = v.compute_local_topk_similarity(self.netdata.get_friends_nodes(v), interact_type, klim)
+
+                """
                 local_candidates = self.netdata.get_friends_iterable(v)
                 localk_neighbors = self.compute_knearest_neighbors(v, local_candidates, interact_type, klim)
                 if len(localk_neighbors) == klim:
@@ -159,7 +163,7 @@ class BasicNetworkAnalyzer(object):
                 else:
                     #print "Error in finding local %d neighbors for %s" % (klim,v.uid), localk_neighbors
                     continue
-
+                """
                 np_array = v.compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
                 #np_array = v.compute_global_topk_similarity_mat(mat, klim)
                 #print np_array
@@ -186,10 +190,12 @@ class BasicNetworkAnalyzer(object):
         return sims_local, sims_global
 
     @staticmethod
-    def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k):
+    def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k, data_type="all"):
         minheap=[]
+        data_type_code = ord(data_type[0])
         for candidate_node in candidate_nodes_iterable:
-            curr_sim = node.compute_node_similarity(candidate_node.get_items_interacted_with(interact_type), interact_type)
+            curr_sim = node.compute_node_similarity(candidate_node, interact_type, data_type_code)
+
             #curr_sim = 1
             if curr_sim is not None:
                 heapq.heappush(minheap, (curr_sim, candidate_node))

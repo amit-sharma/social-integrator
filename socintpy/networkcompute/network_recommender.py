@@ -31,10 +31,10 @@ class RecAlgoEvaluator:
         return self.train_likes, self.test_likes
         
 class Recommender:
-    def __init__(self, uc, netdata, evaluator, interact_type, maxitems):
+    def __init__(self, uc, netdata, interact_type, maxitems):
         self.usercircle=uc
         self.netdata = netdata
-        self.evaluator = evaluator
+        #self.evaluator = evaluator
         self.interact_type = interact_type
         if not maxitems:
             self.max_items = 10
@@ -97,14 +97,14 @@ class Recommender:
             return 0.0
         
 class CircleKNearestRecommender(Recommender):
-    def __init__(self, uc, netdata, evaluator, interact_type, K=50, max_items=None):
-        Recommender.__init__(self, uc, netdata, evaluator, interact_type, max_items)
+    def __init__(self, uc, netdata, interact_type, K=50, max_items=None):
+        Recommender.__init__(self, uc, netdata, interact_type, max_items)
         self.K = K
     
     def recommend(self):
         close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle, self.netdata.get_friends_iterable(self.usercircle),
-                                                                      self.interact_type, self.K,
-                                                                      self.evaluator.train_likes)
+                                                                      self.interact_type, self.K, data_type="learn"
+                                                                      )
         self.rec_items = self._selectWeightedPopularRecsFromUsers(close_users)
         return self.rec_items
 
@@ -119,15 +119,15 @@ class CircleRandomRecommender(Recommender):
         return self.rec_items
 
 class GlobalKNearestRecommender(Recommender):
-    def __init__(self, uc, netdata, evaluator, interact_type, K=50, max_items=None):
-        Recommender.__init__(self, uc, netdata, evaluator, interact_type, max_items)
+    def __init__(self, uc, netdata, interact_type, K=50, max_items=None):
+        Recommender.__init__(self, uc, netdata, interact_type, max_items)
         self.K = K
         
     def recommend(self):
         close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle,
                                                                       self.netdata.get_nonfriends_iterable(self.usercircle),
-                                                                      self.interact_type, self.K,
-                                                                      self.evaluator.train_likes)
+                                                                      self.interact_type, self.K, data_type="learn"
+                                                                      )
         self.rec_items = self._selectWeightedPopularRecsFromUsers(close_users)
         return self.rec_items
 

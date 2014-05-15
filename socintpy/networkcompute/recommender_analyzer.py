@@ -13,10 +13,10 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
         comm2 = []
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if v.get_num_interactions(interact_type)>1: # minimum required to split data in train and test set
-                ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
-                traindata, testdata = ev.create_training_test_sets()
-
-                r1 = recsys.CircleKNearestRecommender(v, self.netdata, ev, interact_type=interact_type, K=klim,
+                #ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
+                #traindata, testdata = ev.create_training_test_sets()
+                v.create_training_test_sets(interact_type, self.traintest_split)
+                r1 = recsys.CircleKNearestRecommender(v, self.netdata, interact_type=interact_type, K=klim,
                                                       max_items=self.max_recs_shown)
                 r1.recommend()
 
