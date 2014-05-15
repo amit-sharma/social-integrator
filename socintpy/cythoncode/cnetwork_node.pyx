@@ -312,7 +312,7 @@ cdef class CNetworkNode:
         cdef DTYPE_t val
         min_sim_index = 0
         cdef int i
-        for i in sim_col.shape[0]:
+        for i in range(sim_col.shape[0]):
             val = sim_col[i,0]
             #print val
             if val > min_sim:
