@@ -119,9 +119,9 @@ cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index
 @cython.freelist(1024)
 @cython.no_gc_clear
 cdef class CNetworkNode:
-    cdef public int c_uid
-    cdef public int c_should_have_friends
-    cdef public int c_should_have_interactions
+    cdef int c_uid
+    cdef int c_should_have_friends
+    cdef int c_should_have_interactions
     cdef idata **c_list
     cdef int *c_length_list
     cdef int c_num_interact_types
