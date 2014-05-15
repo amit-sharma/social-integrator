@@ -96,7 +96,7 @@ if __name__ == "__main__":
             global_avg=[]
             Ntotal = 5
             for i in range(Ntotal): # randomize because of training-test split.
-                plot_circle, plot_external = rec_analyzer.compare_knearest_recommenders("hashtag", klim=curr_lim)
+                plot_circle, plot_external = rec_analyzer.compare_knearest_recommenders(0, klim=curr_lim)
                 print "K", curr_lim
                 #print plot_circle, plot_external
                 curr_avg_local = utils.mean_sd(plot_circle)

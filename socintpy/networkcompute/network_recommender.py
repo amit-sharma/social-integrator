@@ -12,13 +12,14 @@ class RecAlgoEvaluator:
         self.test_likes = {}
         self.traintestsplit = split
         self.interact_type = interact_type
+
     #TODO adhoc step here to transfer a value to the test set. think of a better way.
     def create_training_test_sets(self):
-        for k, interaction_data in self.usercircle.interactions[self.interact_type].iteritems():
+        for item_id in self.usercircle.get_items_interacted_with(self.interact_type):
             if random() < self.traintestsplit:
-                self.train_likes[k] = interaction_data
+                self.train_likes[item_id] = True
             else:
-                self.test_likes[k] = interaction_data
+                self.test_likes[item_id] = True
         
         #prevent empty test set
         # TODO: not really random right now!
@@ -101,7 +102,7 @@ class CircleKNearestRecommender(Recommender):
         self.K = K
     
     def recommend(self):
-        close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle, self.usercircle.get_friendnodes_iterable(),
+        close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle, self.netdata.get_friends_iterable(self.usercircle),
                                                                       self.interact_type, self.K,
                                                                       self.evaluator.train_likes)
         self.rec_items = self._selectWeightedPopularRecsFromUsers(close_users)
