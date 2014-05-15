@@ -53,11 +53,12 @@ cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):
         indptr[i] = indptr[i-1] + c_node_obj.c_length_list[interact_type]
 
     mat = sp.csr_matrix((data, indices, indptr))
-    cc = mat * mat.transpose()
-    print mat[6,346165], mat[1,1], mat[1,1669118]
-    print data.shape[0]
-    print mat.shape[0], mat.shape[1]
-    print cc.shape[0], cc.shape[1]
+    #cc = mat * mat.transpose()
+    #print mat[6,346165], mat[1,1], mat[1,1669118]
+    #print data.shape[0]
+    #print mat.shape[0], mat.shape[1]
+    #print cc.shape[0], cc.shape[1]
+    return mat
 
 
 cdef int comp_interactions(const void *elem1, const void *elem2):
@@ -254,7 +255,7 @@ cdef class CNetworkNode:
         l2_norm2 = sqrt(len(others_interactions))
         return simscore/(l2_norm1*l2_norm2)
 
-    cdef compute_node_similarity_c(self, idata *others_interactions, int length_others_interactions, int interact_type ):
+    cdef compute_node_similarity_c(self, idata *others_interactions, int length_others_interactions, int interact_type):
         cdef float l2_norm1, l2_norm2, simscore
         cdef idata *my_interactions = self.c_list[interact_type]
         cdef int i, j
@@ -276,8 +277,11 @@ cdef class CNetworkNode:
         return simscore/(l2_norm1*l2_norm2)
 
     @cython.boundscheck(False)
-    cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim):
+    cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim, mat):
+        x = mat[self.uid,]
+        cc = mat*x.T
         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
+        """
         cdef fdata *friend_arr = self.c_friend_list
         cdef int i, min_sim_index
         cdef DTYPE_t sim, min_sim
@@ -285,7 +289,6 @@ cdef class CNetworkNode:
         min_sim = 0
         min_sim_index = 0
         for node_obj in allnodes_iterable:
-        #for i in range(10):
             c_node_obj = <CNetworkNode>node_obj
             if (not exists(c_node_obj.c_uid, friend_arr, self.c_length_friend_list)) and c_node_obj.c_uid != self.c_uid:
                 sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
@@ -293,6 +296,7 @@ cdef class CNetworkNode:
                 if sim > min_sim:
                     sims_vector[min_sim_index] = sim
                     min_sim = min(sims_vector, klim, &min_sim_index)
+        """
         return sims_vector
 
 
