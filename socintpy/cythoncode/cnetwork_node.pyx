@@ -304,7 +304,7 @@ cdef class CNetworkNode:
         #print self.uid
         user_row = mat[self.uid,:]
         sim_col = mat * user_row.T
-        sim_indices,_=sim_col.nonzero()
+        #sim_indices,_=sim_col.nonzero()
         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
 
         cdef int min_sim_index = 0
@@ -312,7 +312,7 @@ cdef class CNetworkNode:
         cdef DTYPE_t val
         min_sim_index = 0
         cdef int i
-        for i in sim_indices:
+        for i in sim_col.shape[0]:
             val = sim_col[i,0]
             #print val
             if val > min_sim:
