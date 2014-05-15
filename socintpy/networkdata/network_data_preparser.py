@@ -3,6 +3,7 @@ from socintpy.cythoncode.cnetwork_node import CNetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 
 
+
 class NetworkDataPreparser():
     def __init__(self, node_impl):
         self.nodes = []
