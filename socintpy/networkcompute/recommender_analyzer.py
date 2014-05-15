@@ -11,7 +11,7 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
     def compare_knearest_recommenders(self, interact_type, klim=None):
         comm1 = []
         comm2 = []
-        for v in self.netdata.get_core_nodes_iterable(should_have_friends=True, should_have_interactions=True):
+        for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if len(v.interactions[interact_type])>1: # minimum required to split data in train and test set
                 ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
                 traindata, testdata = ev.create_training_test_sets()
