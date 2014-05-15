@@ -8,7 +8,7 @@ import numpy as np
 cimport numpy as np
 cimport cython
 
-cdef extern from "stdlib.h"
+cdef extern from "stdlib.h":
     int RAND_MAX
 
 cdef extern from "stdlib.h":
