@@ -160,7 +160,9 @@ class BasicNetworkAnalyzer(object):
                     #print "Error in finding local %d neighbors for %s" % (klim,v.uid), localk_neighbors
                     continue
 
-                np_array = v.compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim, mat)
+                #np_array = v.compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
+                np_array = v.compute_global_topk_similarity_mat(mat, klim)
+                #print np_array
                 global_sim_avg = sum(np_array)/len(np_array)
                 """
                 global_candidates = self.netdata.get_nonfriends_iterable(v)
