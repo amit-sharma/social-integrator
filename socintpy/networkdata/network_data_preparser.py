@@ -34,6 +34,9 @@ class NetworkDataPreparser():
     def get_friends_iterable(self, node):
         for fid in node.get_friend_ids():
             yield self.nodes[fid]
+    
+    def get_friends_nodes(self, node):
+        return [self.nodes[fid] for fid in node.get_friend_ids() ]
 
     def get_total_num_nodes(self):
         return len(self.nodes)-1

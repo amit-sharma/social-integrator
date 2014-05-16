@@ -18,11 +18,17 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
                 v.create_training_test_sets(interact_type, self.traintest_split)
                 r1 = recsys.CircleKNearestRecommender(v, self.netdata, interact_type=interact_type, K=klim,
                                                       max_items=self.max_recs_shown)
-                r1.recommend()
+                ret1 = r1.recommend()
+                if ret1 is None:
+                    print "Error in computing local recommendations for", v.uid
+                    continue
 
-                r2 = recsys.GlobalKNearestRecommender(v, self.netdata, ev, interact_type=interact_type, K=klim,
+                r2 = recsys.GlobalKNearestRecommender(v, self.netdata, interact_type=interact_type, K=klim,
                                                       max_items=self.max_recs_shown)
-                r2.recommend()
+                ret2 = r2.recommend()
+                if ret2 is None:
+                    print "Error in computing global recommendaitons for", v.uid
+                    continue
                 #print "Circle recommendations:", v.uid,r1.recommend()
                 #print "Global recommendations", v.uid, r2.recommend()
                 comm1.append(r1.getNDCG())

@@ -1,18 +1,38 @@
 import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
-from libc.stdio cimport printf
 from libc.math cimport sqrt
-#from libc.stdlib import qsort, rand
+from libc.stdlib cimport rand
 import scipy.sparse as sp
 import numpy as np
 cimport numpy as np
 cimport cython
+cimport c_uthash
+
+cdef extern from "uthash.h":
+    ctypedef struct UT_hash_table:
+        pass
+
+    cdef struct UT_hash_handle:
+        UT_hash_table *tbl
+        void *prev
+        void *next
+        UT_hash_handle *hh_prev
+        UT_hash_handle *hh_next
+        void *key
+        unsigned keylen
+        unsigned hashv
+
+    cdef void HASH_FIND_INT(int_counter *head_ptr, int *query_id, int_counter *s)
+    cdef void HASH_ADD_INT_CUSTOM(int_counter *head_ptr, int_counter *s)
+    cdef void HASH_SORT(int_counter *head_ptr, int(const void *, const void *))
+    cdef void HASH_DEL(int_counter *head_ptr, int_counter *s)
 
 cdef extern from "stdlib.h":
     int RAND_MAX
 
 cdef extern from "stdlib.h":
     void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *))
+
 
 DTYPE = np.float
 ctypedef np.float_t DTYPE_t
@@ -27,6 +47,11 @@ cdef struct idata:
 
 cdef struct fdata:
     int receiver_id
+
+ctypedef struct int_counter:
+    int id
+    int count
+    UT_hash_handle hh
 
 cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):
     cdef CNetworkNode c_node_obj
@@ -73,14 +98,14 @@ cdef compute_node_similarity_c(int* my_interactions, int *other_interactions, in
     while i < length_my_interactions and j < length_other_interactions:
         if my_interactions[i] < other_interactions[j]:
             i += 1
-        elif my_interactions[i] > others_interactions[j]:
+        elif my_interactions[i] > other_interactions[j]:
             j+= 1
         else:
             simscore +=1
             i += 1
             j += 1
     l2_norm1 = sqrt(length_my_interactions)
-    l2_norm2 = sqrt(length_others_interactions)
+    l2_norm2 = sqrt(length_other_interactions)
 
     return simscore/(l2_norm1*l2_norm2)
 
@@ -91,6 +116,13 @@ cdef int comp_interactions(const void *elem1, const void *elem2):
     b = <idata *> elem2
     if a[0].item_id > b[0].item_id: return 1
     if a[0].item_id < b[0].item_id: return -1
+    return 0
+
+cdef int compare_int_counter(const void *elem1, const void *elem2):
+    cdef int_counter *a = <int_counter *>elem1
+    cdef int_counter *b = <int_counter *>elem2
+    if a[0].count > b[0].count: return -1
+    if a[0].count < b[0].count: return 1
     return 0
 
 cdef int comp_friends(const void *elem1, const void *elem2):
@@ -126,6 +158,21 @@ cdef int exists(int val, fdata *arr, int length_arr):
             high = mid-1
     return 0
 
+cdef in_array(int val, int *arr, int length_arr):
+    cdef int low, high, mid
+    low = 0
+    high = length_arr -1
+
+    while(low <= high):
+        mid = (low + high)/2
+        if val == arr[mid]:
+            return 1
+        elif val > arr[mid]:
+            low = mid+1
+        else:
+            high = mid-1
+    return 0
+
 @cython.boundscheck(False)
 cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):
     cdef int i
@@ -136,6 +183,18 @@ cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index
             min_val = arr[i]
             min_index[0] = i
     return min_val
+
+cdef void delete_hashtable(int_counter *head_ptr):
+    cdef int_counter *s
+    cdef int_counter *tmp
+
+    s = head_ptr
+    while s != NULL:
+        HASH_DEL(head_ptr,s)
+        tmp = <int_counter *>s.hh.next
+        PyMem_Free(s)
+        s = tmp
+
 
 @cython.freelist(1024)
 @cython.no_gc_clear
@@ -275,27 +334,29 @@ cdef class CNetworkNode:
         cdef int *other_interactions
         cdef CNetworkNode c_node_obj
         c_node_obj = <CNetworkNode>other_node
-        if data_type_code == 'a':
-            print "All"
+        if data_type_code == <int>'a':
             #my_interactions = self.c_list[interact_type]
-            #length_my_interactions = self.c_length_list[interact_type]
-            other_interactions = self.c_node_obj.c_list[interact_type]
-            length_other_interactions = self.c_node_obj.c_length_list[interact_type]
-            return self.compute_node_similarity_c(other_interactions, length_other_interactions, interact_type)
-        elif data_type_code == 'l':
-            print "Train"
+            length_my_interactions = self.c_length_list[interact_type]
+            #other_interactions = self.c_node_obj.c_list[interact_type]
+            length_other_interactions = c_node_obj.c_length_list[interact_type]
+            if length_my_interactions > 0 and length_other_interactions > 0:
+                return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type)
+        elif data_type_code == <int>'l':
             my_interactions = self.c_train_ids
             length_my_interactions = self.c_length_train_ids
-            other_interactions = self.c_node_obj.c_train_ids
-            length_other_interactions = self.c_node_obj.c_length_train_ids
-            return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
-        elif data_type_code == 't':
-            print "Test"
+            other_interactions = c_node_obj.c_train_ids
+            length_other_interactions = c_node_obj.c_length_train_ids
+            print length_my_interactions, length_other_interactions
+            if length_my_interactions > 0 and length_other_interactions > 0:
+                return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
+        elif data_type_code == <int>'t':
             my_interactions = self.c_test_ids
             length_my_interactions = self.c_length_test_ids
-            other_interactions = self.c_node_obj.c_test_ids
-            length_other_interactions = self.c_node_obj.c_length_test_ids
-            return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
+            other_interactions = c_node_obj.c_test_ids
+            length_other_interactions = c_node_obj.c_length_test_ids
+            if length_my_interactions > 0 and length_other_interactions > 0:
+                return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
+        return None
 
         """
         cdef float simscore = 0
@@ -343,12 +404,13 @@ cdef class CNetworkNode:
         min_sim_index = 0
         for node_obj in allnodes_iterable:
             c_node_obj = <CNetworkNode>node_obj
-            if (not exists(c_node_obj.c_uid, friend_arr, self.c_length_friend_list)) and c_node_obj.c_uid != self.c_uid:
-                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
-                #sim=1
-                if sim > min_sim:
-                    sims_vector[min_sim_index] = sim
-                    min_sim = min(sims_vector, klim, &min_sim_index)
+            if c_node_obj.c_length_list[interact_type]>0:
+                if (not exists(c_node_obj.c_uid, friend_arr, self.c_length_friend_list)) and c_node_obj.c_uid != self.c_uid:
+                    sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
+                    #sim=1
+                    if sim > min_sim:
+                        sims_vector[min_sim_index] = sim
+                        min_sim = min(sims_vector, klim, &min_sim_index)
         return sims_vector
 
     @cython.boundscheck(False)
@@ -383,15 +445,21 @@ cdef class CNetworkNode:
         cdef CNetworkNode c_node_obj
         min_sim = 0
         min_sim_index = 0
+        cdef int counter = 0
         for node_obj in friends_iterable:
             c_node_obj = <CNetworkNode>node_obj
-            sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
-            if sim > min_sim:
-                sims_vector[min_sim_index] = sim
-                min_sim = min(sims_vector, klim, &min_sim_index)
+            if self.c_length_list[interact_type]>0 and c_node_obj.c_length_list[interact_type]>0: 
+                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type)
+                if sim > min_sim:
+                    sims_vector[min_sim_index] = sim
+                    min_sim = min(sims_vector, klim, &min_sim_index)
+                counter += 1
+        if counter < klim:
+            sims_vector = None
         return sims_vector
 
-    cpdef create_training_test_sets(int interact_type, int traintest_split):
+    # By construction, train test are guaranteed to be sorted too
+    cpdef create_training_test_sets(self, int interact_type, float traintest_split):
         cdef int i
         cdef int k1 = 0, k2 = 0
         cdef float random_num
@@ -402,7 +470,6 @@ cdef class CNetworkNode:
 
         for i in range(self.c_length_list[interact_type]):
             random_num = (<float>rand())/RAND_MAX
-            print random_num
             if random_num < traintest_split:
                 self.c_train_ids[k1] = self.c_list[interact_type][i].item_id
                 k1 += 1
@@ -411,6 +478,43 @@ cdef class CNetworkNode:
                 k2 += 1
         self.c_length_train_ids = k1
         self.c_length_test_ids = k2
+    
+    def in_test_set(self, int item_id):
+        cdef int i
+        for i in range(self.c_length_test_ids):
+            if self.c_test_ids[i] == item_id:
+                return True
+        return False
+
+    def compute_weighted_popular_recs(self, close_users, int max_users):
+        cdef int i
+        cdef int_counter *count_items = NULL
+        cdef int_counter *s
+        #cdef np.ndarray[DTYPE_INT_t, ndim=1] rec_list_ids = np.zeros(max_users, dtype=DTYPE_INT)
+        rec_list_ids = []
+        for sim, unode in close_users:
+            c_node_obj = <CNetworkNode>unode
+            for i in range(c_node_obj.c_length_train_ids):
+                if not in_array(c_node_obj.c_train_ids[i], self.c_train_ids, self.c_length_train_ids):
+                    HASH_FIND_INT(count_items, &(c_node_obj.c_train_ids[i]), s)
+                    if s == NULL:
+                        s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))
+                        s[0].id = c_node_obj.c_train_ids[i]
+                        s[0].count = 0
+                        HASH_ADD_INT_CUSTOM(count_items, s)
+                    s[0].count += 1
+        HASH_SORT(count_items, compare_int_counter)
+        s=count_items;
+        i = 0
+        while s!=NULL and i < max_users:
+            rec_list_ids.append(s[0].id)
+            i += 1
+            s = <int_counter *>s.hh.next
+        delete_hashtable(count_items)
+        return rec_list_ids
+
+
+
 
     property uid:
         def __get__(self):
@@ -424,6 +528,9 @@ cdef class CNetworkNode:
         def __get__(self):
             return self.c_should_have_friends
 
+    property length_test_ids:
+        def __get__(self):
+            return self.c_length_test_ids
     #property interactions:
     #    def __get__(self):
     #        return self.c_list

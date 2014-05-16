@@ -153,7 +153,11 @@ class BasicNetworkAnalyzer(object):
             if v.has_interactions(interact_type):
 
                 np_array = v.compute_local_topk_similarity(self.netdata.get_friends_nodes(v), interact_type, klim)
-                local_sim_avg = sum(np_array)/len(np_array)
+                if np_array is not None:
+                    local_sim_avg = sum(np_array)/len(np_array)
+                else:
+                    #print "Error in finding local %d neighbors for %s" % (klim,v.uid), localk_neighbors
+                    continue
                 """
                 local_candidates = self.netdata.get_friends_iterable(v)
                 localk_neighbors = self.compute_knearest_neighbors(v, local_candidates, interact_type, klim)
@@ -195,7 +199,7 @@ class BasicNetworkAnalyzer(object):
         data_type_code = ord(data_type[0])
         for candidate_node in candidate_nodes_iterable:
             curr_sim = node.compute_node_similarity(candidate_node, interact_type, data_type_code)
-
+            #print curr_sim
             #curr_sim = 1
             if curr_sim is not None:
                 heapq.heappush(minheap, (curr_sim, candidate_node))

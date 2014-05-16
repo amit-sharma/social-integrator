@@ -79,13 +79,13 @@ class Recommender:
         dcg =0
         i = 1
         for itemid in self.rec_items:
-            if itemid in self.evaluator.test_likes:
+            if self.usercircle.in_test_set(itemid):
                 rel = 1
             else:
                 rel = 0
             dcg += (rel if i==1 else (rel/math.log(i,2)))
             i += 1
-        idcg_size = min(self.max_items, len(self.rec_items), len(self.evaluator.test_likes)) # ideal DCG
+        idcg_size = min(self.max_items, len(self.rec_items), self.usercircle.length_test_ids) # ideal DCG
         idcg = 0
         #print self.max_items, self.test_likes, self.usercircle.likes
         for i in range(1,idcg_size+1):
@@ -102,10 +102,15 @@ class CircleKNearestRecommender(Recommender):
         self.K = K
     
     def recommend(self):
-        close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle, self.netdata.get_friends_iterable(self.usercircle),
-                                                                      self.interact_type, self.K, data_type="learn"
-                                                                      )
-        self.rec_items = self._selectWeightedPopularRecsFromUsers(close_users)
+        close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle,
+                                                                      self.netdata.get_friends_nodes(self.usercircle),
+                                                                      self.interact_type, self.K, data_type="learn")
+        #print len(close_users)
+        if len(close_users)< self.K:
+            print "Cannot find k closest friends for recommend"
+            return None                                                                  
+        self.rec_items = self.uc.compute_weighted_popular_recs(close_users, self.interact_type, self.max_items,
+                                                               data_type="learn")
         return self.rec_items
 
 class CircleRandomRecommender(Recommender):
@@ -125,9 +130,12 @@ class GlobalKNearestRecommender(Recommender):
         
     def recommend(self):
         close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle,
-                                                                      self.netdata.get_nonfriends_iterable(self.usercircle),
+                                                                      self.netdata.get_nonfriends_nodes(self.usercircle),
                                                                       self.interact_type, self.K, data_type="learn"
                                                                       )
+        if len(close_users) < self.K:
+            print "Cannot find k closest global for recommend"
+            return None
         self.rec_items = self._selectWeightedPopularRecsFromUsers(close_users)
         return self.rec_items
 
