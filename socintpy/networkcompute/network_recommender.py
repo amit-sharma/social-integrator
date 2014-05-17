@@ -4,6 +4,7 @@ from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 import socintpy.util.utils as utils
 import operator
 import math
+import logging
 
 class RecAlgoEvaluator:
     def __init__(self, uc, interact_type, split):
@@ -93,7 +94,7 @@ class Recommender:
         if idcg > 0:
             return dcg/float(idcg)
         else:
-            print "Critical Error, how can idcg be zero!!!\n\n\n\n"
+            logging.error("Critical Error, how can idcg be zero!!!\n\n\n\n")
             return 0.0
         
 class CircleKNearestRecommender(Recommender):
@@ -107,7 +108,7 @@ class CircleKNearestRecommender(Recommender):
                                                                       self.interact_type, self.K, data_type="learn")
         #print "Num close users", len(close_users), "Num friends", self.usercircle.get_num_friends()
         if len(close_users)< self.K:
-            print "Cannot find k closest friends for recommend"
+            logging.warning("Cannot find k closest friends for recommend")
             return None                                                                  
         self.rec_items = self.usercircle.compute_weighted_popular_recs(close_users,self.max_items) 
         return self.rec_items
@@ -133,7 +134,7 @@ class GlobalKNearestRecommender(Recommender):
                                                                       self.interact_type, self.K, data_type="learn"
                                                                       )
         if len(close_users) < self.K:
-            print "Cannot find k closest global for recommend"
+            logging.warning("Cannot find k closest global for recommend")
             return None
         self.rec_items = self.usercircle.compute_weighted_popular_recs(close_users, self.max_items)
         return self.rec_items

@@ -7,6 +7,7 @@ import  socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import getopt,sys
 from guppy import hpy
+import logging
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender']
@@ -15,6 +16,7 @@ def usage():
     print 'Usage: python '+sys.argv[0]+' -d <dataset> -p <path>'
 
 if __name__ == "__main__":
+    logging.basicConfig(filename="run.log", level="DEBUG")
     try:
         opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", "output="])
     except getopt.GetoptError as err:

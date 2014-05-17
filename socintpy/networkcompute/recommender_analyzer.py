@@ -1,6 +1,6 @@
 import socintpy.networkcompute.network_recommender as recsys
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
-
+import logging
 
 class RecommenderAnalyzer(BasicNetworkAnalyzer):
     def __init__(self, networkdata, max_recs_shown, traintest_split):
@@ -11,6 +11,7 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
     def compare_knearest_recommenders(self, interact_type, klim=None):
         comm1 = []
         comm2 = []
+        i = 0
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if v.get_num_interactions(interact_type)>1: # minimum required to split data in train and test set
                 #ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
@@ -18,18 +19,22 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
                 v.create_training_test_sets(interact_type, self.traintest_split)
 
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
+            if i % 1000 == 0:
+                print "Starting ", i
+            i += 1
+            if v.get_num_interactions(interact_type)>1:
                 r1 = recsys.CircleKNearestRecommender(v, self.netdata, interact_type=interact_type, K=klim,
                                                       max_items=self.max_recs_shown)
                 ret1 = r1.recommend()
                 if ret1 is None:
-                    print "Error in computing local recommendations for", v.uid
+                    logging.warning("Error in computing local recommendations for %d" %v.uid)
                     continue
 
                 r2 = recsys.GlobalKNearestRecommender(v, self.netdata, interact_type=interact_type, K=klim,
                                                       max_items=self.max_recs_shown)
                 ret2 = r2.recommend()
                 if ret2 is None:
-                    print "Error in computing global recommendaitons for", v.uid
+                    logging.warning("Error in computing global recommendaitons for %d" %v.uid)
                     continue
                 #print "Circle recommendations:", v.uid,r1.recommend()
                 #print "Global recommendations", v.uid, r2.recommend()
