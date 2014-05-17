@@ -1,3 +1,4 @@
+# distutils: include_dirs = /home/asharma/code/social-integrator/socintpy/cython-code
 import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.math cimport sqrt
@@ -227,6 +228,8 @@ cdef class CNetworkNode:
 
         self.c_friend_list = NULL
         self.c_length_friend_list = 0
+        self.c_length_test_ids = 0
+        self.c_length_train_ids = 0
         #if kwargs['should_have_friends']:
         #    self.c_friend_list = <fdata **>PyMem_Malloc(self.)
     
@@ -346,7 +349,7 @@ cdef class CNetworkNode:
             length_my_interactions = self.c_length_train_ids
             other_interactions = c_node_obj.c_train_ids
             length_other_interactions = c_node_obj.c_length_train_ids
-            print length_my_interactions, length_other_interactions
+            #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
             if length_my_interactions > 0 and length_other_interactions > 0:
                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
         elif data_type_code == <int>'t':
@@ -478,6 +481,7 @@ cdef class CNetworkNode:
                 k2 += 1
         self.c_length_train_ids = k1
         self.c_length_test_ids = k2
+        #print "train-test numbers", self.c_length_train_ids, self.c_length_test_ids, self.uid
     
     def in_test_set(self, int item_id):
         cdef int i

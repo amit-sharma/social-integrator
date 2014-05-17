@@ -16,6 +16,8 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
                 #ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
                 #traindata, testdata = ev.create_training_test_sets()
                 v.create_training_test_sets(interact_type, self.traintest_split)
+
+        for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
                 r1 = recsys.CircleKNearestRecommender(v, self.netdata, interact_type=interact_type, K=klim,
                                                       max_items=self.max_recs_shown)
                 ret1 = r1.recommend()

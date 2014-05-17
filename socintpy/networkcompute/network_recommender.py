@@ -105,12 +105,11 @@ class CircleKNearestRecommender(Recommender):
         close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle,
                                                                       self.netdata.get_friends_nodes(self.usercircle),
                                                                       self.interact_type, self.K, data_type="learn")
-        #print len(close_users)
+        #print "Num close users", len(close_users), "Num friends", self.usercircle.get_num_friends()
         if len(close_users)< self.K:
             print "Cannot find k closest friends for recommend"
             return None                                                                  
-        self.rec_items = self.uc.compute_weighted_popular_recs(close_users, self.interact_type, self.max_items,
-                                                               data_type="learn")
+        self.rec_items = self.usercircle.compute_weighted_popular_recs(close_users,self.max_items) 
         return self.rec_items
 
 class CircleRandomRecommender(Recommender):
@@ -136,7 +135,7 @@ class GlobalKNearestRecommender(Recommender):
         if len(close_users) < self.K:
             print "Cannot find k closest global for recommend"
             return None
-        self.rec_items = self._selectWeightedPopularRecsFromUsers(close_users)
+        self.rec_items = self.usercircle.compute_weighted_popular_recs(close_users, self.max_items)
         return self.rec_items
 
 class GlobalRandomRecommender(Recommender):

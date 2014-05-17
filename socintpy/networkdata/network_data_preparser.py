@@ -30,6 +30,14 @@ class NetworkDataPreparser():
         for v in self.nodes[1:]:
             if v.uid not in node_friend_ids and v.uid != node.uid:
                 yield v
+    
+    def get_nonfriends_nodes(self, node):
+        ret = []
+        node_friend_ids = node.get_friend_ids()
+        for v in self.nodes[1:]:
+            if v.uid not in node_friend_ids and v.uid != node.uid:
+                ret.append(v)
+        return ret
 
     def get_friends_iterable(self, node):
         for fid in node.get_friend_ids():

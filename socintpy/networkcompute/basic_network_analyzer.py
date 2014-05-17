@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+#import pyximport; pyximport.install()
 from socintpy.cythoncode.cnetwork_node import compute_global_topk_similarity
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.util.utils import mean_sd
