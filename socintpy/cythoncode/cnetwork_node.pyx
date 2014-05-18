@@ -1,4 +1,3 @@
-# distutils: include_dirs = /home/asharma/code/social-integrator/socintpy/cython-code
 import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from libc.math cimport sqrt

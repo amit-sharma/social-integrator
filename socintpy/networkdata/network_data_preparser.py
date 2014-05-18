@@ -22,6 +22,16 @@ class NetworkDataPreparser():
                 continue
             yield v
 
+    def get_nodes_list(self, should_have_friends=False, should_have_interactions=False):
+        ret_list = []
+        for v in self.nodes[1:]:
+            if should_have_friends and not v.should_have_friends:
+                continue
+            if should_have_interactions and not v.should_have_interactions:
+                continue
+            ret_list.append(v)
+        return ret_list
+
     def get_all_nodes(self):
         return self.nodes[1:]
 
