@@ -96,7 +96,7 @@ if __name__ == "__main__":
         for curr_lim in KLIMITS:
             local_avg=[]
             global_avg=[]
-            Ntotal = 5
+            Ntotal = 1
             for i in range(Ntotal): # randomize because of training-test split.
                 plot_circle, plot_external = rec_analyzer.compare_knearest_recommenders(0, klim=curr_lim)
                 print "K", curr_lim
