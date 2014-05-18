@@ -5,6 +5,7 @@ from multiprocessing import Pool
 
 
 def process_nodes(partial_nodes_list, netdata, interact_type, klim, max_recs_shown):
+    print "Started process"
     ret_local = []
     ret_global = []
     for v in partial_nodes_list:
@@ -27,6 +28,7 @@ def process_nodes(partial_nodes_list, netdata, interact_type, klim, max_recs_sho
             ret_local.append(r1.getNDCG())
             ret_global.append(r2.getNDCG())
             #print "User l:wikes: ", v.likes, len(v.friends), comm1[len(comm1)-1], comm2[len(comm2)-1], "\n"
+    print "Ended process"
     return (ret_local, ret_global)
 
 
