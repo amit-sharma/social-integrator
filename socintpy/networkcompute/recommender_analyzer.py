@@ -1,7 +1,7 @@
 import socintpy.networkcompute.network_recommender as recsys
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 import logging
-from multiprocessing import Pool, Process
+from multiprocessing import Pool, Process, Queue
 
 #g_netdata= None
 #g_interact_type = None
@@ -9,7 +9,7 @@ from multiprocessing import Pool, Process
 #g_max_recs_shown = None
 #g_nodes_list = None
 
-def process_nodes(partial_nodes_list, g_netdata, g_interact_type, g_klim, g_max_recs_shown):
+def process_nodes(partial_nodes_list, g_netdata, g_interact_type, g_klim, g_max_recs_shown, q):
 #def process_nodes(partial_nodes_list):
 #def process_nodes(v_index):
     print "Started process"
@@ -49,6 +49,7 @@ def process_nodes(partial_nodes_list, g_netdata, g_interact_type, g_klim, g_max_
                     #print "User l:wikes: ", v.likes, len(v.friends), comm1[len(comm1)-1], comm2[len(comm2)-1], "\n"
     print "Ended process"
     #return (ret_local, ret_global)
+    q.put((local_ret_list, global_ret_list))
     return local_ret_list, global_ret_list
 
  
@@ -118,11 +119,16 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
         #pool.join()
         #q = queue
         #"""
+        q = Queue()
         proc_list = []
         for i in range(num_processes):
-            p = Process(target=process_nodes, args=(arg_list[i],self.netdata, interact_type,klim, self.max_recs_shown))
+            p = Process(target=process_nodes, args=(arg_list[i],self.netdata, interact_type,klim, self.max_recs_shown, q))
             p.start()
             proc_list.append(p)
+        for p in proc_list:
+            local_curr_list, global_curr_list = q.get()
+            comm1.extend(local_curr_list)
+            comm2.extend(global_curr_list)
         for p in proc_list:
             p.join()
         """
