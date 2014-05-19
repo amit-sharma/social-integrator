@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+#import pyximport; pyximport.install()
 from socintpy.cythoncode.cnetwork_node import CNetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 

@@ -1,4 +1,4 @@
-import pyximport; pyximport.install()
+#import pyximport; pyximport.install()
 import socintpy.cythoncode.cnetwork_node as cnetwork_node
 from collections import namedtuple
 import heapq
