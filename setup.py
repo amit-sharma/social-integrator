@@ -13,6 +13,7 @@ setup(
     long_description=open('README.txt').read(),
     install_requires=[
         "matplotlib >= 1.1.1",
-        "numpy >= 0.1.4",
+        "numpy >= 1.6.2",
+        "cython" >= "0.20.1",
     ],
 )
