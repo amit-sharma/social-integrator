@@ -3,14 +3,14 @@ from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 import logging
 from multiprocessing import Pool, Process
 
-g_netdata= None
-g_interact_type = None
-g_klim = None
-g_max_recs_shown = None
-g_nodes_list = None
+#g_netdata= None
+#g_interact_type = None
+#g_klim = None
+#g_max_recs_shown = None
+#g_nodes_list = None
 
-#def process_nodes(partial_nodes_list, netdata, interact_type, klim, max_recs_shown):
-def process_nodes(partial_nodes_list):
+def process_nodes(partial_nodes_list, g_netdata, g_interact_type, g_klim, g_max_recs_shown):
+#def process_nodes(partial_nodes_list):
 #def process_nodes(v_index):
     print "Started process"
     #v = g_nodes_list[v_index]
@@ -54,20 +54,20 @@ def process_nodes(partial_nodes_list):
  
 class RecommenderAnalyzer(BasicNetworkAnalyzer):
     def __init__(self, networkdata, max_recs_shown, traintest_split):
-        global g_max_recs_shown, g_netdata
+        #global g_max_recs_shown, g_netdata
         super(RecommenderAnalyzer, self).__init__(networkdata)
         self.traintest_split = traintest_split
         self.max_recs_shown = max_recs_shown
-        g_max_recs_shown = max_recs_shown
-        g_netdata = networkdata
+        #g_max_recs_shown = max_recs_shown
+        #g_netdata = networkdata
 
     def compare_knearest_recommenders(self, interact_type, klim=None):
-        global g_interact_type, g_klim, g_nodes_list
+        #global g_interact_type, g_klim, g_nodes_list
         comm1 = []
         comm2 = []
         i = 0
-        g_interact_type = interact_type
-        g_klim = klim
+        #g_interact_type = interact_type
+        #g_klim = klim
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if v.get_num_interactions(interact_type) > 1:  # minimum required to split data in train and test set
                 #ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
@@ -101,7 +101,7 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
         """
         nodes_list = self.netdata.get_nodes_list(should_have_friends=True, should_have_interactions=True)
         g_nodes_list = nodes_list
-        num_processes = 2
+        num_processes = 8
         partial_num_nodes = len(nodes_list) / num_processes + 1
         arg_list = []
         for i in range(num_processes):
@@ -117,14 +117,18 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
         #pool.close()
         #pool.join()
         #q = queue
+        #"""
         proc_list = []
         for i in range(num_processes):
-            p = Process(target=process_nodes, args=(arg_list[i]))
+            p = Process(target=process_nodes, args=(arg_list[i],self.netdata, interact_type,klim, self.max_recs_shown))
             p.start()
             proc_list.append(p)
         for p in proc_list:
             p.join()
-
+        """
+        for i in range(num_processes):
+            process_nodes(arg_list[i], self.netdata, interact_type, klim, self.max_recs_shown)
+        """
         """
         for ret_local, ret_global in res_list:
             if ret_local is not None and ret_global is not None:
