@@ -5,8 +5,8 @@ from socintpy.store.sqlite_store import SqliteStore
 
 
 class LastfmDataPreparser(NetworkDataPreparser):
-    def __init__(self, nodes_store_path, edges_store_path):
-        NetworkDataPreparser.__init__(self)
+    def __init__(self, nodes_store_path, edges_store_path, node_impl):
+        NetworkDataPreparser.__init__(self, node_impl)
         self.nodes_db = SqliteStore(nodes_store_path)
         self.edges_db = SqliteStore(edges_store_path)
         self.interaction_types = ["listen", "love", "ban"]

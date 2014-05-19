@@ -60,7 +60,7 @@ if __name__ == "__main__":
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path)
     elif dataset_domain== "lastfm":
-        data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db")
+        data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type)
 
