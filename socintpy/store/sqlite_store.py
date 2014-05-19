@@ -52,9 +52,12 @@ class SqliteStore(GenericStore):
         else:
             raise KeyError
 
-    def iteritems(self):
+    def iteritems(self, sorted=False):
         cursor = self.con.cursor()
-        cursor.execute("select key,value from data")
+        if sorted:
+            cursor.execute("select key,value from data order by key")
+        else:
+            cursor.execute("select key,value from data")
         arraysize = 10
         while True:
             row_list = cursor.fetchmany(arraysize)
