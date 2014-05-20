@@ -105,7 +105,7 @@ class CircleKNearestRecommender(Recommender):
     def recommend(self):
         close_users = BasicNetworkAnalyzer.compute_knearest_neighbors(self.usercircle,
                                                                       self.netdata.get_friends_nodes(self.usercircle),
-                                                                      self.interact_type, self.K, data_type="learn")
+                                                                      self.interact_type, self.K,data_type="learn")
         #print "Num close users", len(close_users), "Num friends", self.usercircle.get_num_friends()
         if len(close_users)< self.K:
             logging.warning("Cannot find k closest friends for recommend")

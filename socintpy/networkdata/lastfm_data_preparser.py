@@ -2,11 +2,12 @@ from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 from socintpy.networkdata.network_node import NetworkNode
 from socintpy.store.sqlite_store import SqliteStore
 from collections import namedtuple
+import logging
 
 class LastfmDataPreparser(NetworkDataPreparser):
     interact_types_dict = {"listen": 0, "love": 1, "ban": 2}
     NodeData = namedtuple('NodeData', 'original_uid interaction_types')
-    InteractData = namedtuple('InteractData', 'item_id original_item_id created_time')
+    InteractData = namedtuple('InteractData', 'item_id original_item_id timestamp rating')
     EdgeData= namedtuple('EdgeData', 'receiver_id')
     def __init__(self, nodes_store_path, edges_store_path, node_impl):
         NetworkDataPreparser.__init__(self, node_impl)
@@ -25,6 +26,9 @@ class LastfmDataPreparser(NetworkDataPreparser):
         itemid_dict = {}
         self.nodes.append(None)
         for temp_key, data_dict in self.nodes_db.iteritems():
+            if self.node_index % 1000 == 0:
+                print "Storing information about ", self.node_index
+
             self.node_index += 1
             user_id = self.node_index
             #print data_dict
@@ -40,7 +44,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
                 if '@attr' in trackdict:
                     #pprint(trackdict)
                     if 'nowplaying' in trackdict['@attr']:
-                        print "Now playing track, ignoring!"
+                        logging.warn("Now playing track, ignoring %s,%d!" %(data_dict['name'], user_id))
                         continue
                 recent_tracks_list.append(trackdict)
             self.store_interactions_by_type(new_netnode, self.interact_types_dict['listen'], recent_tracks_list, itemid_dict)
@@ -59,7 +63,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
                 item_id = self.item_index
                 itemid_dict[orig_item_id] = item_id
                 self.item_index += 1
-            ilist.append(LastfmDataPreparser.InteractData(item_id=item_id, original_item_id=trackdict['mbid'],created_time=trackdict['date']['uts']))
+            ilist.append(LastfmDataPreparser.InteractData(item_id=item_id, original_item_id=trackdict['mbid'],timestamp=trackdict['date']['uts'], rating=1))
         netnode.store_interactions(interact_type, ilist)
         return
 
@@ -85,7 +89,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
                 flist = []
                 
             flist.append(LastfmDataPreparser.EdgeData(receiver_id=friend_id))
-            prev_user = source_id
+            prev_source_id = source_id
             #break
         self.nodes[prev_source_id].store_friends(flist)
         return

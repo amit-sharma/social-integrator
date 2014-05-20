@@ -59,6 +59,7 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
         super(RecommenderAnalyzer, self).__init__(networkdata)
         self.traintest_split = traintest_split
         self.max_recs_shown = max_recs_shown
+        self.cutoff_rating = 3
         #g_max_recs_shown = max_recs_shown
         #g_netdata = networkdata
 
@@ -73,7 +74,7 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
             if v.get_num_interactions(interact_type) > 1:  # minimum required to split data in train and test set
                 #ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
                 #traindata, testdata = ev.create_training_test_sets()
-                v.create_training_test_sets(interact_type, self.traintest_split)
+                v.create_training_test_sets(interact_type, self.traintest_split, self.cutoff_rating)
 
         """
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):

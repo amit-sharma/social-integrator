@@ -63,6 +63,7 @@ class BasicNetworkAnalyzer(object):
         circle_sims = []
         global_sims = []
         all_node_ids = xrange(1, self.netdata.get_total_num_nodes()+1)
+        cutoff_rating = 3
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
             if counter % 1000 == 0:
@@ -86,10 +87,10 @@ class BasicNetworkAnalyzer(object):
                 rand_people = random.sample(all_node_ids, num_friends*2+1)
                 rand_people_iter = self.set_difference_generator(rand_people, friends_list+[v.uid], num_friends)
                     
-                    #TODO implement filter for non-friends
-                
-                rand_items = self.items_interacted_by_people(rand_people_iter, interact_type)
-                trial_global_similarity=v.compute_similarity(rand_items, interact_type)
+
+                #rand_items = self.items_interacted_by_people(rand_people_iter, interact_type, rating_cutoff=cutoff_rating)
+                #trial_global_similarity=v.compute_similarity(rand_items, interact_type, cutoff_rating)
+                trial_global_similarity = v.compute_mean_similarity(self.netdata.get_node_objs(rand_people_iter), interact_type, cutoff_rating)
                 #trial_global_similarity=1
                 if trial_global_similarity is not None:
                     avg += trial_global_similarity
@@ -100,14 +101,15 @@ class BasicNetworkAnalyzer(object):
             avg_external_similarity = avg/float(count_sim_trials)
 
             # Second, calculating the similarity of a user with his friends
-            friends_list = v.get_friend_ids()
-            circle_items = self.items_interacted_by_people(friends_list, interact_type)
-            circle_similarity = v.compute_similarity(circle_items, interact_type)
+            #friends_list = v.get_friend_ids()
+            #circle_items = self.items_interacted_by_people(friends_list, interact_type, rating_cutoff=cutoff_rating)
+            #circle_similarity = v.compute_similarity(circle_items, interact_type, cutoff_rating)
+            avg_circle_similarity = v.compute_mean_similarity(self.netdata.get_friends_nodes(v), interact_type, cutoff_rating)
             #circle_similarity=1
-            if circle_similarity is None:
+            if avg_circle_similarity is None:
                 print "Node has no friends to compute circle similarity. Skipping!"
                 continue
-            circle_sims.append(circle_similarity)
+            circle_sims.append(avg_circle_similarity)
             global_sims.append(avg_external_similarity)
 
         return circle_sims, global_sims
@@ -121,10 +123,10 @@ class BasicNetworkAnalyzer(object):
                 counter += 1 
                 yield val
 
-    def items_interacted_by_people(self, people_list, interaction_type):
+    def items_interacted_by_people(self, people_list, interaction_type, rating_cutoff=None):
         items_dict={}
         for node_id in people_list:
-            item_ids = self.netdata.nodes[node_id].get_items_interacted_with(interaction_type)
+            item_ids = self.netdata.nodes[node_id].get_items_interacted_with(interaction_type, rating_cutoff)
             for itemid in item_ids:
                 if itemid not in items_dict:
                     items_dict[itemid] = []
@@ -141,10 +143,12 @@ class BasicNetworkAnalyzer(object):
                 interactions_per_user[interact_type] += len(v.get_items_interacted_with(interact_type))
         return interactions_per_user
 
+    #TODO have pearson correlation instead of jaccard because these ratings are real valued. going with a cutoff now.
     def compare_circle_global_knnsimilarity(self, interact_type, klim):
         sims_local = []
         sims_global = []
         counter = 0
+        cutoff_rating = 3
         #mat=compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             if counter % 1000 == 0:
@@ -152,7 +156,7 @@ class BasicNetworkAnalyzer(object):
             counter += 1
             if v.has_interactions(interact_type):
 
-                np_array = v.compute_local_topk_similarity(self.netdata.get_friends_nodes(v), interact_type, klim)
+                np_array = v.compute_local_topk_similarity(self.netdata.get_friends_nodes(v), interact_type, klim, cutoff_rating)
                 if np_array is not None:
                     local_sim_avg = sum(np_array)/len(np_array)
                 else:
@@ -168,7 +172,7 @@ class BasicNetworkAnalyzer(object):
                     #print "Error in finding local %d neighbors for %s" % (klim,v.uid), localk_neighbors
                     continue
                 """
-                np_array = v.compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
+                np_array = v.compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim, cutoff_rating)
                 #np_array = v.compute_global_topk_similarity_mat(mat, klim)
                 #print np_array
                 global_sim_avg = sum(np_array)/len(np_array)
@@ -194,7 +198,7 @@ class BasicNetworkAnalyzer(object):
         return sims_local, sims_global
 
     @staticmethod
-    def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k, data_type="all"):
+    def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k, data_type="all" ):
         minheap=[]
         data_type_code = ord(data_type[0])
         for candidate_node in candidate_nodes_iterable:
