@@ -50,10 +50,10 @@ class BasicNetworkAnalyzer(object):
         sum_each_interaction_dict = self.get_sum_interactions_by_type()
         for interact_type, total_interacts in sum_each_interaction_dict.iteritems():
             #print(interact_type)
-            print( "--Total, Mean of %d interactions per user = (%d, %f)"
-                   %(interact_type, total_interacts, total_interacts/float(num_interactdata_users)) )
+            print( "--Total, Mean, Max, Min of %d interactions per user = (%d, %f)"
+                   %(interact_type, total_interacts, total_interacts/float(num_interactdata_users)))
 
-            print( "--Total, Mean of %d interactions per item = (%d, %f)"
+            print( "--Total, Mean, Max, Min of %d interactions per item = (%d, %f)"
                    %(interact_type, total_interacts, total_interacts/float(len(items_all))) )
          
         return

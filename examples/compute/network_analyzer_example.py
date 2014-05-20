@@ -122,9 +122,13 @@ if __name__ == "__main__":
             print utils.mean_sd(coverage_list)
     elif computation_cmd == "items_edge_coverage":
         locality_analyzer = LocalityAnalyzer(data)
-        items_cov_list, cov_ratio_list = locality_analyzer.compare_items_edge_coverage(0, minimum_interactions=5)
+        items_cov_list, items_popularity, cov_ratio_list = locality_analyzer.compare_items_edge_coverage(0, minimum_interactions=1)
         print utils.mean_sd(items_cov_list)
-        plotter.plotHist(sorted(items_cov_list), "Item", "Ratio of Edge coverage to total popularity")
+        print utils.mean_sd(items_popularity)
+        plotter.plotHist(sorted([val for val in cov_ratio_list if val<=1]), "Ratio of Edge coverage to total popularity", "Frequency", logyscale=True)
+        plotter.plotHist(sorted([val for val in cov_ratio_list]), "Ratio of Edge coverage to total popularity", "Frequency", logyscale=True)
+        #plotter.plotHist(sorted(items_popularity), "Item", "total popularity")
+        plotter.plotCumulativePopularity(items_popularity, labelx="Item percentile", labely="Cum. percent of number of likes")
     """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
