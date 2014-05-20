@@ -57,13 +57,19 @@ class NetworkDataPreparser():
             yield self.nodes[fid]
     
     def get_friends_nodes(self, node):
-        return [self.nodes[fid] for fid in node.get_friend_ids() ]
+        return [self.nodes[fid] for fid in node.get_friend_ids()]
 
     def get_total_num_nodes(self):
         return len(self.nodes)-1
     
     def get_node_ids(self):
         return range(1,len(self.nodes))
+
+    def get_item_ids(self):
+        return range(1, len(self.items))
+
+    def get_total_num_items(self):
+        return len(self.items)-1
 
     def create_network_node(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         if self.impl_type == "cython":

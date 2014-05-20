@@ -239,11 +239,14 @@ cdef class CNetworkNode:
 
     def __dealloc__(self):
         cdef int interact_type
-        for interact_type in xrange(self.c_num_interact_types):
-            PyMem_Free(self.c_list[interact_type])
-        PyMem_Free(self.c_list)
-        PyMem_Free(self.c_length_list)
-        PyMem_Free(self.c_friend_list)
+        if self.c_list:
+            for interact_type in xrange(self.c_num_interact_types):
+                PyMem_Free(self.c_list[interact_type])
+
+            PyMem_Free(self.c_list)
+            PyMem_Free(self.c_length_list)
+        if self.c_friend_list:
+            PyMem_Free(self.c_friend_list)
         if self.c_train_ids:
             PyMem_Free(self.c_train_ids)
             PyMem_Free(self.c_test_ids)
@@ -504,6 +507,72 @@ cdef class CNetworkNode:
         else:
             return sim_avg/counter
 
+    cpdef compute_items_coverage(self, friends_iterable, int interact_type, int min_friends, int max_friends):
+        if self.c_length_list[interact_type] == 0 or self.c_length_friend_list < min_friends or self.c_length_friend_list >= max_friends:
+            return None
+        cdef int_counter *all_items = NULL
+        cdef int_counter *s = NULL
+        cdef int i
+        cdef int num_items_found = 0
+        for node_obj in friends_iterable:
+            c_node_obj = <CNetworkNode>node_obj
+            for i in range(c_node_obj.c_length_list[interact_type]):
+                HASH_FIND_INT(all_items, &(c_node_obj.c_list[interact_type][i].item_id), s)
+                if s == NULL:
+                    s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))
+                    s[0].id = c_node_obj.c_list[interact_type][i].item_id
+                    s[0].count = 0
+                    HASH_ADD_INT_CUSTOM(all_items, s)
+                s[0].count += 1
+
+        s = NULL
+        for i in range(self.c_length_list[interact_type]):
+            HASH_FIND_INT(all_items, &(self.c_list[interact_type][i].item_id), s)
+            if s != NULL:
+                num_items_found += 1
+
+        delete_hashtable(all_items)
+        return (<float>num_items_found)/self.c_length_list[interact_type]
+
+    cdef void update_items_edge_coverage_c(self, idata* others_interactions, int length_others_interactions, int interact_type, unsigned int [:] items_edge_coverage_view):
+        cdef idata *my_interactions = self.c_list[interact_type]
+        cdef int i, j
+        i = 0
+        j = 0
+        #cdef int my_count = 0
+        #cdef int others_count = 0
+        while i < self.c_length_list[interact_type] and j < length_others_interactions:
+            if my_interactions[i].item_id < others_interactions[j].item_id:
+                #if my_interactions[i].rating > cutoff_rating:
+                #    my_count += 1
+                i += 1
+            elif my_interactions[i].item_id > others_interactions[j].item_id:
+                #if others_interactions[j].rating > cutoff_rating:
+                #    others_count += 1
+                j+= 1
+            else:
+                #if my_interactions[i].rating > cutoff_rating and others_interactions[j].rating > cutoff_rating:
+                #    simscore +=1
+                items_edge_coverage_view[my_interactions[i].item_id] += 1
+                #if my_interactions[i].rating > cutoff_rating:
+                #    my_count += 1
+                #if others_interactions[j].rating > cutoff_rating:
+                #    others_count += 1
+                i += 1
+                j += 1
+
+    cpdef update_items_edge_coverage(self, friends_iterable, int interact_type, unsigned int [:] items_edge_coverage_view):
+        cdef int i
+        for node_obj in friends_iterable:
+            c_node_obj = <CNetworkNode>node_obj
+            self.update_items_edge_coverage_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, items_edge_coverage_view)
+
+    cpdef update_items_popularity(self, interact_type, unsigned int [:] total_popularity_view):
+        item_ids = self.get_items_interacted_with(interact_type)
+        cdef int itemid
+        for itemid in item_ids:
+            total_popularity_view[itemid] += 1
+
     # By construction, train test are guaranteed to be sorted too
     cpdef create_training_test_sets(self, int interact_type, float traintest_split, float cutoff_rating):
         cdef int i
@@ -537,7 +606,7 @@ cdef class CNetworkNode:
     def compute_weighted_popular_recs(self, close_users, int max_users):
         cdef int i
         cdef int_counter *count_items = NULL
-        cdef int_counter *s
+        cdef int_counter *s = NULL
         #cdef np.ndarray[DTYPE_INT_t, ndim=1] rec_list_ids = np.zeros(max_users, dtype=DTYPE_INT)
         rec_list_ids = []
         for sim, unode in close_users:

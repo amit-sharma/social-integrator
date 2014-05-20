@@ -1,4 +1,6 @@
+import math
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
+from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
@@ -10,7 +12,8 @@ from guppy import hpy
 import logging
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
-AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender']
+AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
+                          'items_edge_coverage']
 def usage():
     print "Too few or erroneous parameters"
     print 'Usage: python '+sys.argv[0]+' -d <dataset> -p <path>'
@@ -110,6 +113,18 @@ if __name__ == "__main__":
                 #plotLinesYY(plot_circle, plot_external, "Friends", "Global")
             print "Local", sum(local_avg)/float(Ntotal)
             print "Global", sum(global_avg)/float(Ntotal)
+    elif computation_cmd == "circle_coverage":
+        lim_friends = [(5,10), (10,20), (20,50), (50,100)]
+        for fr_limit in lim_friends:
+            locality_analyzer = LocalityAnalyzer(data)
+            coverage_list = locality_analyzer.compare_circle_item_coverages(0, fr_limit[0], fr_limit[1])
+            plotter.plotLineY(sorted(coverage_list), "User", "Fraction of Items Covered with %d-%d friends" % (fr_limit[0], fr_limit[1]))
+            print utils.mean_sd(coverage_list)
+    elif computation_cmd == "items_edge_coverage":
+        locality_analyzer = LocalityAnalyzer(data)
+        items_cov_list, cov_ratio_list = locality_analyzer.compare_items_edge_coverage(0, minimum_interactions=5)
+        print utils.mean_sd(items_cov_list)
+        plotter.plotHist(sorted(items_cov_list), "Item", "Ratio of Edge coverage to total popularity")
     """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
