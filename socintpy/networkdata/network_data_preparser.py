@@ -5,11 +5,13 @@ from socintpy.networkdata.pynetwork_node import PyNetworkNode
 
 
 class NetworkDataPreparser():
-    def __init__(self, node_impl):
+    def __init__(self, node_impl, min_interactions=5, min_friends=1):
         self.nodes = []
         self.items = []
         self.edges = []
         self.impl_type = node_impl
+        self.min_interactions = min_interactions
+        self.min_friends = min_friends
 
     def read_nodes(self):
         raise NotImplementedError("NetworkDataPreparser: read_nodes is not implemented.")

@@ -58,12 +58,12 @@ class HashtagDataPreparser(NetworkDataPreparser):
                         like_arr = line.split()
                         idata_list = []
                         for i in range(len(like_arr)):
-                            if like_arr[i].strip("\n") == "1" and tagmap[i][0] == '#':
+                            if like_arr[i].strip("\n") == "1":# and tagmap[i][0] == '#':
                                 #print tagmap[i]
                                 # TODO do something about original/unique hashtag strings
                                 idata_list.append(HashtagDataPreparser.InteractData(self.items_dict[tagmap[i]], timestamp="", rating=1))
                         ulikes_file.close()
-                        if len(idata_list) > 0: # adding only core users with at least one hashtag interaction
+                        if len(idata_list) >= self.min_interactions:  # adding only core users with at least one hashtag interaction
                             newnode = self.create_network_node(self.node_index, should_have_friends=True,
                                                            should_have_interactions=True,
                                                            node_data=node_data)
@@ -95,7 +95,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
             cols = line.split()
             tagname = cols[1].strip("\n")
             #print tagname
-            if tagname not in self.items_dict and tagname[0] == '#':
+            if tagname not in self.items_dict:# and tagname[0] == '#':
                 self.items_dict[tagname] = self.item_counter
                 self.item_counter += 1
         return
