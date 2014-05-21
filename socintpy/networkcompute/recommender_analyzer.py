@@ -54,16 +54,16 @@ def process_nodes(partial_nodes_list, g_netdata, g_interact_type, g_klim, g_max_
 
  
 class RecommenderAnalyzer(BasicNetworkAnalyzer):
-    def __init__(self, networkdata, max_recs_shown, traintest_split):
+    def __init__(self, networkdata, max_recs_shown, traintest_split, cutoff_rating):
         #global g_max_recs_shown, g_netdata
         super(RecommenderAnalyzer, self).__init__(networkdata)
         self.traintest_split = traintest_split
         self.max_recs_shown = max_recs_shown
-        self.cutoff_rating = 3
+        self.cutoff_rating = cutoff_rating
         #g_max_recs_shown = max_recs_shown
         #g_netdata = networkdata
 
-    def compare_knearest_recommenders(self, interact_type, klim=None):
+    def compare_knearest_recommenders(self, interact_type, klim, num_processes):
         #global g_interact_type, g_klim, g_nodes_list
         comm1 = []
         comm2 = []
@@ -102,8 +102,6 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
                 #print "User l:wikes: ", v.likes, len(v.friends), comm1[len(comm1)-1], comm2[len(comm2)-1], "\n"
         """
         nodes_list = self.netdata.get_nodes_list(should_have_friends=True, should_have_interactions=True)
-        g_nodes_list = nodes_list
-        num_processes = 8
         partial_num_nodes = len(nodes_list) / num_processes + 1
         arg_list = []
         for i in range(num_processes):

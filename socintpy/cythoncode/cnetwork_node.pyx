@@ -279,21 +279,26 @@ cdef class CNetworkNode:
         return self.c_length_friend_list
 
     cpdef get_all_items_interacted_with(self):
-        interacted_items = []
+        interacted_items = set()
         cdef int i, curr_interact_type
         for curr_interact_type in range(self.c_num_interact_types):
             for i in range(self.c_length_list[curr_interact_type]):
                 #print self.c_list[curr_interact_type][i].item_id           
-                interacted_items.append(self.c_list[curr_interact_type][i].item_id)
-        return set(interacted_items)
-    
+                interacted_items.add(self.c_list[curr_interact_type][i].item_id)
+        return interacted_items
+
+    def print_interactions(self, interact_type):
+        print self.c_uid
+        for i in range(self.c_length_list[interact_type]):
+            print "---", self.c_list[interact_type][i].item_id
+
     cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=-1):
         interacted_items = set()
         cdef int i
         for i in range(self.c_length_list[interact_type]):
             if self.c_list[interact_type][i].rating > rating_cutoff:
                 interacted_items.add(self.c_list[interact_type][i].item_id)
-        print len(interacted_items)
+        #print self.c_uid, len(interacted_items), interact_type
         return interacted_items
     
     cpdef get_friend_ids(self):
@@ -385,10 +390,10 @@ cdef class CNetworkNode:
         return simscore/(l2_norm1*l2_norm2)
         """
 
-    cdef float compute_node_similarity_c(self, idata *others_interactions, int length_others_interactions, int interact_type, float cutoff_rating=0):
+    cdef float compute_node_similarity_c(self, idata *others_interactions, int length_others_interactions, int interact_type, float cutoff_rating=-1):
         cdef float l2_norm1, l2_norm2, simscore
         cdef idata *my_interactions = self.c_list[interact_type]
-        cdef int i, j
+        cdef int i, j, k
         simscore = 0
         i = 0 
         j = 0
@@ -413,11 +418,20 @@ cdef class CNetworkNode:
                     others_count += 1
                 i += 1
                 j += 1
+        if j == length_others_interactions:
+            for k in range(i,self.c_length_list[interact_type]):
+                if my_interactions[k].rating > cutoff_rating:
+                    my_count += 1
+        elif i == self.c_length_list[interact_type]:
+            for k in range(j, length_others_interactions):
+                if others_interactions[k].rating > cutoff_rating:
+                    others_count += 1
 
         if my_count == 0 or others_count == 0:
             return -1
         #l2_norm1 = sqrt(self.c_length_list[interact_type])
         #l2_norm2 = sqrt(length_others_interactions)
+        #print self.c_length_list[interact_type], my_count, length_others_interactions, others_count
         l2_norm1 = sqrt(my_count)
         l2_norm2 = sqrt(others_count)
 

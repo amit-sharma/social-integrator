@@ -21,7 +21,7 @@ def usage():
 if __name__ == "__main__":
     logging.basicConfig(filename="run.log", level="DEBUG")
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", "output="])
+        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", "cutoffrating", "output="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     dataset_path = None
     computation_cmd = None
     impl_type = "python"
-    
+    cutoff_rating = -1 # sufficiently small value so that cutoff has no effect.
     for o, a in opts:
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -52,6 +52,8 @@ if __name__ == "__main__":
                 computation_cmd = a
         if o == "--cython":
             impl_type = "cython"
+        if o =="--cutoffrating":
+            cutoff_rating = a
 
     if dataset_domain is None or dataset_path is None:
         usage()
@@ -77,16 +79,18 @@ if __name__ == "__main__":
 
     if computation_cmd=="basic_stats" or computation_cmd is None:
         net_analyzer.show_basic_stats()
+
     elif computation_cmd=="random_similarity":
-        circlesims, globalsims = net_analyzer.compare_circle_global_similarity(0, num_random_trials=2)
+        circlesims, globalsims = net_analyzer.compare_circle_global_similarity(0, num_random_trials=5, cutoff_rating=cutoff_rating)
         #plotter.plotLinesYY(circlesims, globalsims, "Friends", "Global")
         print "Circle Average", sum(circlesims)/float(len(circlesims))
         print "Global Average", sum(globalsims)/float(len(globalsims))
+
     elif computation_cmd=="knn_similarity":
         #Compute K-nearest similarity
         KLIMITS = [5, 10]
         for curr_lim in KLIMITS:
-            plot_circle, plot_external = net_analyzer.compare_circle_global_knnsimilarity(0, klim=curr_lim)
+            plot_circle, plot_external = net_analyzer.compare_circle_global_knnsimilarity(0, klim=curr_lim, cutoff_rating=cutoff_rating)
             plotter.plotLinesYY(plot_circle, plot_external, "Friends", "Global")
             print "K", curr_lim
             print "Circle Average", utils.mean_sd(plot_circle)
@@ -94,14 +98,14 @@ if __name__ == "__main__":
 
     elif computation_cmd=="knn_recommender":
         #Compute K-nearest recommender
-        KLIMITS = [5,10]
-        rec_analyzer = RecommenderAnalyzer(data, max_recs_shown=10, traintest_split=0.7)
+        KLIMITS = [5,10, 50]
+        rec_analyzer = RecommenderAnalyzer(data, max_recs_shown=10, traintest_split=0.7, cutoff_rating=cutoff_rating)
         for curr_lim in KLIMITS:
             local_avg=[]
             global_avg=[]
             Ntotal = 1
             for i in range(Ntotal): # randomize because of training-test split.
-                plot_circle, plot_external = rec_analyzer.compare_knearest_recommenders(0, klim=curr_lim)
+                plot_circle, plot_external = rec_analyzer.compare_knearest_recommenders(0, klim=curr_lim, num_processes=2)
                 print "K", curr_lim
                 #print plot_circle, plot_external
                 curr_avg_local = utils.mean_sd(plot_circle)

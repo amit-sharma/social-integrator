@@ -47,9 +47,6 @@ class HashtagDataPreparser(NetworkDataPreparser):
                         print "Oh, we should not come here", uname
                     else:
 
-                        newnode = self.create_network_node(self.node_index, should_have_friends=True,
-                                                                   should_have_interactions=True,
-                                                                   node_data=node_data)
 
                         #for node_obj in self.nodes:
                         tagmap = self._get_local_tag_map(uname)
@@ -63,14 +60,18 @@ class HashtagDataPreparser(NetworkDataPreparser):
                         for i in range(len(like_arr)):
                             if like_arr[i].strip("\n") == "1" and tagmap[i][0] == '#':
                                 #print tagmap[i]
-                                # TODO do something about original hashtag strings
+                                # TODO do something about original/unique hashtag strings
                                 idata_list.append(HashtagDataPreparser.InteractData(self.items_dict[tagmap[i]], timestamp="", rating=1))
                         ulikes_file.close()
-                        newnode.store_interactions(HashtagDataPreparser.HASHTAG, idata_list)
+                        if len(idata_list) > 0: # adding only core users with at least one hashtag interaction
+                            newnode = self.create_network_node(self.node_index, should_have_friends=True,
+                                                           should_have_interactions=True,
+                                                           node_data=node_data)
+                            newnode.store_interactions(HashtagDataPreparser.HASHTAG, idata_list)
 
-                        self.nodes.insert(self.node_index, newnode)
-                        node_id_dict[uname] = self.node_index
-                        self.node_index += 1
+                            self.nodes.insert(self.node_index, newnode)
+                            node_id_dict[uname] = self.node_index
+                            self.node_index += 1
 
         return node_id_dict
 
@@ -100,7 +101,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
         return
 
     def read_friends(self, node_id_dict):
-        """ Reads friend data and overwrites previous data (if crawled before) written on the node object for the friend.
+        """ Reads friend data and does not overwrites previous data of hashtags (if crawled before) written on the node object for the friend.
         """
         #all_core_users =  [(k,v) for k, v in self.nodes.iteritems()]
         core_nodes_arr = []
@@ -115,6 +116,7 @@ class HashtagDataPreparser(NetworkDataPreparser):
             for line in flikes_file:
                 cols = line.split()
                 friendname = cols[0]
+                curr_friend_id = None
                 if friendname not in node_id_dict:
                     node_data = HashtagDataPreparser.NodeData(friendname, HashtagDataPreparser.interaction_types)
                     self.nodes.insert(self.node_index, self.create_network_node(self.node_index, should_have_friends=False,
@@ -122,15 +124,19 @@ class HashtagDataPreparser(NetworkDataPreparser):
                                                                            node_data=node_data))
                     node_id_dict[friendname] = self.node_index
                     self.node_index += 1
-                curr_friend_id = node_id_dict[friendname]
-                #print curr_friend_id, len(self.nodes)
-                idata_list = []
-                for i in range(1, len(cols)):
-                    if cols[i].strip("\n") == "1" and tagmap[i-1][0]=='#':
-                        itemid = self.items_dict[tagmap[i - 1]]
-                        idata = HashtagDataPreparser.InteractData(itemid, "", 1)
-                        idata_list.append(idata)
-                self.nodes[curr_friend_id].store_interactions(HashtagDataPreparser.HASHTAG, idata_list)
+
+                    curr_friend_id = node_id_dict[friendname]
+                    #print curr_friend_id, len(self.nodes)
+                    idata_list = []
+
+                    for i in range(1, len(cols)):
+                        if cols[i].strip("\n") == "1" and tagmap[i-1][0]=='#':
+                            itemid = self.items_dict[tagmap[i - 1]]
+                            idata = HashtagDataPreparser.InteractData(itemid, "", 1)
+                            idata_list.append(idata)
+                    self.nodes[curr_friend_id].store_interactions(HashtagDataPreparser.HASHTAG, idata_list)
+                else:
+                    curr_friend_id = node_id_dict[friendname]
                 fdata = HashtagDataPreparser.EdgeData(curr_friend_id)
                 friends_list.append(fdata)
             self.nodes[node_id].store_friends(friends_list)

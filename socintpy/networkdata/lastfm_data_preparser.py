@@ -9,6 +9,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
     NodeData = namedtuple('NodeData', 'original_uid interaction_types')
     InteractData = namedtuple('InteractData', 'item_id original_item_id timestamp rating')
     EdgeData= namedtuple('EdgeData', 'receiver_id')
+
     def __init__(self, nodes_store_path, edges_store_path, node_impl):
         NetworkDataPreparser.__init__(self, node_impl)
         self.nodes_db = SqliteStore(nodes_store_path)

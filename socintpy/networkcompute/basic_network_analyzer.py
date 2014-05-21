@@ -58,12 +58,11 @@ class BasicNetworkAnalyzer(object):
          
         return
 
-    def compare_circle_global_similarity(self, interact_type, num_random_trials):
+    def compare_circle_global_similarity(self, interact_type, num_random_trials, cutoff_rating):
         counter = 0
         circle_sims = []
         global_sims = []
-        all_node_ids = xrange(1, self.netdata.get_total_num_nodes()+1)
-        cutoff_rating = 3
+        all_node_ids = range(1, self.netdata.get_total_num_nodes()+1)
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
             # First calculating average similarity with random people whose number equals the number of friends a user has.
             if counter % 1000 == 0:
@@ -144,14 +143,14 @@ class BasicNetworkAnalyzer(object):
         return interactions_per_user
 
     #TODO have pearson correlation instead of jaccard because these ratings are real valued. going with a cutoff now.
-    def compare_circle_global_knnsimilarity(self, interact_type, klim):
+    def compare_circle_global_knnsimilarity(self, interact_type, klim, cutoff_rating):
         sims_local = []
         sims_global = []
         counter = 0
-        cutoff_rating = 3
+        #cutoff_rating = 3
         #mat=compute_global_topk_similarity(self.netdata.get_all_nodes(), interact_type, klim)
         for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
-            if counter % 1000 == 0:
+            if counter % 10 == 0:
                 print "Starting node", counter
             counter += 1
             if v.has_interactions(interact_type):

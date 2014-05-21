@@ -125,3 +125,11 @@ def fast_iter(context, func):
             del elem.getparent()[0]
         yield k, v
 
+def compute_cosine_similarity(list1, list2):
+    sim = 0
+    for val in list1:
+        if val in list2:
+            sim += 1
+    l2norm1 = math.sqrt(len(list1))
+    l2norm2 = math.sqrt(len(list2))
+    return sim/(l2norm1*l2norm2)
