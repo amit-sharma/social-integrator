@@ -293,7 +293,7 @@ cdef class CNetworkNode:
         for i in range(self.c_length_list[interact_type]):
             if self.c_list[interact_type][i].rating > rating_cutoff:
                 interacted_items.add(self.c_list[interact_type][i].item_id)
-        print interacted_items
+        print len(interacted_items)
         return interacted_items
     
     cpdef get_friend_ids(self):

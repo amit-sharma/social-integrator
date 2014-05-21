@@ -59,7 +59,7 @@ class PyNetworkNode(object):
     
     def get_items_interacted_with(self, interact_type):
         ret_val = set([val[0] for val in self.interactions[interact_type]])
-        print ret_val
+        print len(ret_val)
         return ret_val
 
     def get_friend_ids(self):

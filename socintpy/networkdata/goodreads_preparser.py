@@ -68,20 +68,21 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             user_id = int(cols[0])
             item_id = int(cols[1])
             timestamp = cols[2]
-            rating = int(cols[3]) if cols[3] != 'NaN' else -1
-            new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)
-            if prev_user is not None and prev_user != user_id:
-                self.nodes[prev_user].store_interactions(self.RATE_ACTION, ilist)
-                num_interacts = 0
-                ilist = []
-            ilist.append(new_interaction)
-            num_interacts += 1
+            if cols[3] != 'NaN':
+                rating = int(cols[3])
+                new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)
+                if prev_user is not None and prev_user != user_id:
+                    self.nodes[prev_user].store_interactions(self.RATE_ACTION, ilist)
+                    num_interacts = 0
+                    ilist = []
+                ilist.append(new_interaction)
+                num_interacts += 1
 
-            prev_user = user_id
+                prev_user = user_id
             
-            counter += 1
-            #if counter > 1000:
-            #    break
+                counter += 1
+                #if counter > 1000:
+                #    break
         self.nodes[prev_user].store_interactions(self.RATE_ACTION, ilist)
         print "All interactions stored", counter
 
