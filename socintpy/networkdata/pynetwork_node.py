@@ -52,13 +52,15 @@ class PyNetworkNode(object):
     def get_all_items_interacted_with(self):
         interacted_items = []
         for interact_list in self.interactions:
-            interacted_items.extend([val[0] for val in interact_list])
+            interacted_items.extend([val.item_id for val in interact_list])
         #print interacted_items
         interacted_items = set(interacted_items)
         return interacted_items
     
     def get_items_interacted_with(self, interact_type):
-        return set([val[0] for val in self.interactions[interact_type]])
+        ret_val = set([val[0] for val in self.interactions[interact_type]])
+        print ret_val
+        return ret_val
 
     def get_friend_ids(self):
         return [val[0] for val in self.friends]

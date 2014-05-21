@@ -279,20 +279,21 @@ cdef class CNetworkNode:
         return self.c_length_friend_list
 
     cpdef get_all_items_interacted_with(self):
-        interacted_items = set()                                                
-        cdef int i
-        for curr_interact_type in xrange(self.c_num_interact_types):        
-            for i in xrange(self.c_length_list[curr_interact_type]):        
+        interacted_items = []
+        cdef int i, curr_interact_type
+        for curr_interact_type in range(self.c_num_interact_types):
+            for i in range(self.c_length_list[curr_interact_type]):
                 #print self.c_list[curr_interact_type][i].item_id           
-                interacted_items.add(self.c_list[curr_interact_type][i].item_id)
-        return interacted_items
+                interacted_items.append(self.c_list[curr_interact_type][i].item_id)
+        return set(interacted_items)
     
-    cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=0):
+    cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=-1):
         interacted_items = set()
         cdef int i
         for i in range(self.c_length_list[interact_type]):
             if self.c_list[interact_type][i].rating > rating_cutoff:
                 interacted_items.add(self.c_list[interact_type][i].item_id)
+        print interacted_items
         return interacted_items
     
     cpdef get_friend_ids(self):

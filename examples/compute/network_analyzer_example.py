@@ -61,7 +61,7 @@ if __name__ == "__main__":
     #h = hpy()
     #h.setref()
     if dataset_domain == "twitter":
-        data = HashtagDataPreparser(dataset_path)
+        data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
     elif dataset_domain=="goodreads":
