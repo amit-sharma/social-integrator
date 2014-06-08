@@ -78,6 +78,7 @@ class APICaller(object):
         success = False
         curr_error_str = None
         call_error_code = None
+        resp = None
         while retry < self.api.retry_count + 1:
             result = None
             if self.api.secure:
