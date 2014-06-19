@@ -9,6 +9,7 @@ import  socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import getopt,sys
 from guppy import hpy
+from pprint import pprint
 import logging
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
@@ -16,7 +17,13 @@ AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 
                           'items_edge_coverage']
 def usage():
     print "Too few or erroneous parameters"
-    print 'Usage: python '+sys.argv[0]+' -d <dataset> -p <path>'
+    print 'Usage: python '+sys.argv[0]+' -d <dataset_name> -p <path> -c <computation>'
+
+def compare_sims(fr_sim, nonfr_sim):
+    diff = ( [(fr_sim[ind][1], nonfr_sim[ind][1], fr_sim[ind][1]-nonfr_sim[ind][1]) for ind in range(len(fr_sim))])
+    #pprint(diff)
+    print "Circle dominates is", sum([1 for v1,v2,v3 in diff if v3>0])
+    print "non-friends dominate is", sum([1 for v1,v2,v3 in diff if v3<0])
 
 if __name__ == "__main__":
     logging.basicConfig(filename="run.log", level="DEBUG")
@@ -66,7 +73,7 @@ if __name__ == "__main__":
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
-    elif dataset_domain=="goodreads":
+    if dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type)
 
     try:
@@ -76,40 +83,52 @@ if __name__ == "__main__":
     #print h.heap()
     #sys.exit(0)
     net_analyzer = BasicNetworkAnalyzer(data)
-
+    outf = open(computation_cmd + "_output.tsv", "w")
     if computation_cmd=="basic_stats" or computation_cmd is None:
         net_analyzer.show_basic_stats()
 
     elif computation_cmd=="random_similarity":
         circlesims, globalsims = net_analyzer.compare_circle_global_similarity(0, num_random_trials=5, cutoff_rating=cutoff_rating)
         #plotter.plotLinesYY(circlesims, globalsims, "Friends", "Global")
-        print "Circle Average", sum(circlesims)/float(len(circlesims))
-        print "Global Average", sum(globalsims)/float(len(globalsims))
+        outf.write("User_id\tcircle_sim\tnonfriend_sim\n")
+        for ind in range(len(circlesims)):
+            outf.write("%s\t%f\t%f\n" %(circlesims[ind][0], circlesims[ind][1], globalsims[ind][1]))
+        print "Circle Average", sum([v2 for v1,v2 in circlesims])/float(len(circlesims))
+        print "Global Average", sum([v2 for v1,v2 in globalsims])/float(len(globalsims))
 
     elif computation_cmd=="knn_similarity":
         #Compute K-nearest similarity
-        KLIMITS = [5, 10]
+        KLIMITS = [10]
+        outf.write("User_id\tk\tcircle_sim\tnonfriend_sim\n")
         for curr_lim in KLIMITS:
             plot_circle, plot_external = net_analyzer.compare_circle_global_knnsimilarity(0, klim=curr_lim, cutoff_rating=cutoff_rating)
-            plotter.plotLinesYY(plot_circle, plot_external, "Friends", "Global")
+            compare_sims(plot_circle, plot_external)
+            for ind in range(len(plot_circle)):
+                outf.write("%s\t%d\t%f\t%f\n" %(plot_circle[ind][0], curr_lim, plot_circle[ind][1], plot_external[ind][1]))
+            #plotter.plotLinesYY(plot_circle, plot_external, "Friends", "Global")
             print "K", curr_lim
-            print "Circle Average", utils.mean_sd(plot_circle)
-            print "Global Average", utils.mean_sd(plot_external)
+            print "Circle Average", utils.mean_sd([v2 for v1,v2 in plot_circle]), len(plot_circle)
+            print "Global Average", utils.mean_sd([v2 for v1,v2 in plot_external]), len(plot_external)
 
     elif computation_cmd=="knn_recommender":
         #Compute K-nearest recommender
-        KLIMITS = [5,10, 50]
+        KLIMITS = [10]
         rec_analyzer = RecommenderAnalyzer(data, max_recs_shown=10, traintest_split=0.7, cutoff_rating=cutoff_rating)
+        outf.write("User_id\tk\trun_index\tcircle_sim\tnonfriend_sim\n")
         for curr_lim in KLIMITS:
             local_avg=[]
             global_avg=[]
             Ntotal = 1
             for i in range(Ntotal): # randomize because of training-test split.
                 plot_circle, plot_external = rec_analyzer.compare_knearest_recommenders(0, klim=curr_lim, num_processes=2)
+                compare_sims(plot_circle, plot_external)
+                for ind in range(len(plot_circle)):
+                    outf.write("%s\t%d\t%d\t%f\t%f\n" %(plot_circle[ind][0], curr_lim, i, plot_circle[ind][1], plot_external[ind][1]))
                 print "K", curr_lim
+
                 #print plot_circle, plot_external
-                curr_avg_local = utils.mean_sd(plot_circle)
-                curr_avg_global =  utils.mean_sd(plot_external)
+                curr_avg_local = utils.mean_sd([v2 for v1,v2 in plot_circle])
+                curr_avg_global =  utils.mean_sd([v2 for v1,v2 in plot_external])
                 print "Circle Average", curr_avg_local
                 print "Global Average", curr_avg_global
                 local_avg.append(curr_avg_local[0])
@@ -208,3 +227,4 @@ if __name__ == "__main__":
     else:
         assert False, "Bad computation parameter"
     """
+    outf.close()

@@ -23,25 +23,27 @@ def process_nodes(partial_nodes_list, g_netdata, g_interact_type, g_klim, g_max_
         if counter % 1000 == 0:
             print "Starting", counter
         counter += 1
-        if v.get_num_interactions(g_interact_type) > 1:
+        # TEST code here: to see the effect of number of interactions
+        if v.length_train_ids >0 and v.length_test_ids > 0:# and v.get_num_interactions(g_interact_type)<30:
             r1 = recsys.CircleKNearestRecommender(v, g_netdata, interact_type=g_interact_type, K=g_klim,
                                                   max_items=g_max_recs_shown)
             ret1 = r1.recommend()
-            if ret1 is None:
+            if not ret1: # empty or is None
                 logging.warning("Error in computing local recommendations for %d" % v.uid)
                 #return (-1, -1)
             else:
                 ret_local = r1.getNDCG()
                 r2 = recsys.GlobalKNearestRecommender(v, g_netdata, interact_type=g_interact_type, K=g_klim,
                                                   max_items=g_max_recs_shown)
-                ret2 = r2.recommend()
-                if ret2 is None:
-                    logging.warning("Error in computing global recommendaitons for %d" % v.uid)
+                ret2 = r2.recommend() # empty or is None
+                if not ret2:
+                    logging.warning("Error in computing global recommendations for %d" % v.uid)
                     #return (-1, -1)
                 else:
                     ret_global = r2.getNDCG()
-                    local_ret_list.append(ret_local)
-                    global_ret_list.append(ret_global)
+                    local_ret_list.append((v.uid, ret_local))
+                    global_ret_list.append((v.uid, ret_global))
+                    
                     #      print "Circle recommendations:", v.uid,r1.recommend()
                     #print "Global recommendations", v.uid, r2.recommend()
                     #ret_local.append(r1.getNDCG())
@@ -70,7 +72,8 @@ class RecommenderAnalyzer(BasicNetworkAnalyzer):
         i = 0
         #g_interact_type = interact_type
         #g_klim = klim
-        for v in self.netdata.get_nodes_iterable(should_have_friends=True, should_have_interactions=True):
+        # all nodes that have interactions (core or non-core) should have train set
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             if v.get_num_interactions(interact_type) > 1:  # minimum required to split data in train and test set
                 #ev = recsys.RecAlgoEvaluator(v, interact_type = interact_type, split=self.traintest_split)
                 #traindata, testdata = ev.create_training_test_sets()

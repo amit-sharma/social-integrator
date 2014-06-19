@@ -40,6 +40,13 @@ class PyNetworkNode(object):
         for interact_tuple in items_list:
             self.interactions[interaction_type].append(interact_tuple)
         return len(self.interactions[interaction_type])
+    
+    def add_interactions(self, interaction_type, items_list):
+        inter_list = [v1 for v1,v2,v3 in self.interactions[interaction_type]]
+        for interact_tuple in items_list:
+            if interact_tuple[0] not in inter_list:
+                self.interactions[interaction_type].append(interact_tuple)
+        #return len(self.interactions[interaction_type])
 
     def add_friend(self, friendid, friend_node,  friendship_data):
         self.friends.append((friendid,friend_node, friendship_data))

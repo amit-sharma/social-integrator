@@ -5,7 +5,7 @@ from socintpy.networkdata.pynetwork_node import PyNetworkNode
 
 
 class NetworkDataPreparser():
-    def __init__(self, node_impl, min_interactions=5, min_friends=1):
+    def __init__(self, node_impl, min_interactions=0, min_friends=1):
         self.nodes = []
         self.items = []
         self.edges = []

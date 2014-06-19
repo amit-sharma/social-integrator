@@ -108,8 +108,8 @@ class BasicNetworkAnalyzer(object):
             if avg_circle_similarity is None:
                 print "Node has no friends to compute circle similarity. Skipping!"
                 continue
-            circle_sims.append(avg_circle_similarity)
-            global_sims.append(avg_external_similarity)
+            circle_sims.append((v.uid, avg_circle_similarity))
+            global_sims.append((v.uid, avg_external_similarity))
 
         return circle_sims, global_sims
 
@@ -186,9 +186,9 @@ class BasicNetworkAnalyzer(object):
                     print "Error in finding global %d neighbors" % klim,"for",v.uid
                     continue
                 """
-                sims_global.append(global_sim_avg)
+                sims_global.append((v.uid, global_sim_avg))
 
-                sims_local.append(local_sim_avg)
+                sims_local.append((v.uid, local_sim_avg))
                 #print(global_sim_avg, local_sim_avg)
 
             else:
@@ -202,7 +202,7 @@ class BasicNetworkAnalyzer(object):
         data_type_code = ord(data_type[0])
         for candidate_node in candidate_nodes_iterable:
             curr_sim = node.compute_node_similarity(candidate_node, interact_type, data_type_code)
-            #print curr_sim
+            #print "Current sim at basic is", curr_sim
             #curr_sim = 1
             if curr_sim is not None:
                 heapq.heappush(minheap, (curr_sim, candidate_node))

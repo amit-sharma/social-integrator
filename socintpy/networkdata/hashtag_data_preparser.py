@@ -125,18 +125,20 @@ class HashtagDataPreparser(NetworkDataPreparser):
                     node_id_dict[friendname] = self.node_index
                     self.node_index += 1
 
-                    curr_friend_id = node_id_dict[friendname]
-                    #print curr_friend_id, len(self.nodes)
-                    idata_list = []
+                curr_friend_id = node_id_dict[friendname]
+                #print curr_friend_id, len(self.nodes)
+                idata_list = []
 
-                    for i in range(1, len(cols)):
-                        if cols[i].strip("\n") == "1" and tagmap[i-1][0]=='#':
-                            itemid = self.items_dict[tagmap[i - 1]]
-                            idata = HashtagDataPreparser.InteractData(itemid, "", 1)
-                            idata_list.append(idata)
-                    self.nodes[curr_friend_id].store_interactions(HashtagDataPreparser.HASHTAG, idata_list)
-                else:
-                    curr_friend_id = node_id_dict[friendname]
+                for i in range(1, len(cols)):
+                    if cols[i].strip("\n") == "1":# and tagmap[i-1][0]=='#':
+                        itemid = self.items_dict[tagmap[i - 1]]
+                        idata = HashtagDataPreparser.InteractData(itemid, "", 1)
+                        idata_list.append(idata)
+                # new function, only for testing, wont work with cython
+                #self.nodes[curr_friend_id].add_interactions(HashtagDataPreparser.HASHTAG, idata_list)
+                self.nodes[curr_friend_id].store_interactions(HashtagDataPreparser.HASHTAG, idata_list)
+                #else:
+                #    curr_friend_id = node_id_dict[friendname]
                 fdata = HashtagDataPreparser.EdgeData(curr_friend_id)
                 friends_list.append(fdata)
             self.nodes[node_id].store_friends(friends_list)
