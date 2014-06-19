@@ -1,20 +1,21 @@
-import math
+import getopt
+import sys
+import logging
+
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
+from socintpy.networkvisualize.network_visualizer import NetworkVisualizor
 from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
-import  socintpy.util.plotter as plotter
+import socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
-import getopt,sys
-from guppy import hpy
-from pprint import pprint
-import logging
+
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
-                          'items_edge_coverage']
+                          'items_edge_coverage', 'network_draw']
 def usage():
     print "Too few or erroneous parameters"
     print 'Usage: python '+sys.argv[0]+' -d <dataset_name> -p <path> -c <computation>'
@@ -152,6 +153,10 @@ if __name__ == "__main__":
         plotter.plotHist(sorted([val for val in cov_ratio_list]), "Ratio of Edge coverage to total popularity", "Frequency", logyscale=True)
         #plotter.plotHist(sorted(items_popularity), "Item", "total popularity")
         plotter.plotCumulativePopularity(items_popularity, labelx="Item percentile", labely="Cum. percent of number of likes")
+    elif computation_cmd == "draw_network":
+        net_visualizor = NetworkVisualizor(data)
+        net_visualizor.draw()
+
     """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
