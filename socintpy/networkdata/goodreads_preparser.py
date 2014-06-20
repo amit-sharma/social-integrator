@@ -13,7 +13,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
     EdgeData = namedtuple('EdgeData', 'receiver_id')
 
-    def __init__(self, data_path, node_impl):
+    def __init__(self, data_path, node_impl, cutoff_rating):
         NetworkDataPreparser.__init__(self, node_impl)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
@@ -25,11 +25,12 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         #self.nodes = [None]*300000 # so that we can index it for smaller datasetsa
         self.node_counter = 0
         self.node_id_map = {}
+        self.cutoff_rating = cutoff_rating
 
     def get_all_data(self):
         self.read_nodes_file()
         print self.nodes[1]
-        self.read_items_file()
+        #self.read_items_file()
         self.read_edges_file()
         self.read_interactions_file()
         del self.node_id_map
@@ -73,7 +74,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             user_id = int(cols[0])
             item_id = int(cols[1])
             timestamp = cols[2]
-            if cols[3] != 'NaN':
+            if cols[3] != 'NaN' and int(cols[3]) >= self.cutoff_rating: # mimicking as if the invalid lines are not there in the file, so not reading them at all
                 rating = int(cols[3])
                 new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)
                 if prev_user is not None and prev_user != user_id:

@@ -14,6 +14,7 @@ class RecAlgoEvaluator:
         self.traintestsplit = split
         self.interact_type = interact_type
 
+    """
     #TODO adhoc step here to transfer a value to the test set. think of a better way.
     def create_training_test_sets(self):
         for item_id in self.usercircle.get_items_interacted_with(self.interact_type):
@@ -30,7 +31,8 @@ class RecAlgoEvaluator:
             self.test_likes[random_key] = elem
             
         return self.train_likes, self.test_likes
-        
+    """
+
 class Recommender:
     def __init__(self, uc, netdata, interact_type, maxitems):
         self.usercircle=uc

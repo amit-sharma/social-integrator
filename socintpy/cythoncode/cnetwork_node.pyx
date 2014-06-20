@@ -405,30 +405,30 @@ cdef class CNetworkNode:
         cdef int others_count = 0
         while i < self.c_length_list[interact_type] and j < length_others_interactions:
             if my_interactions[i].item_id < others_interactions[j].item_id:
-                if my_interactions[i].rating > cutoff_rating:
+                if my_interactions[i].rating >= cutoff_rating:
                     my_count += 1
                 i += 1
             elif my_interactions[i].item_id > others_interactions[j].item_id:
-                if others_interactions[j].rating > cutoff_rating:
+                if others_interactions[j].rating >= cutoff_rating:
                     others_count += 1
                 j+= 1
             else:
-                if my_interactions[i].rating > cutoff_rating and others_interactions[j].rating > cutoff_rating:
+                if my_interactions[i].rating >= cutoff_rating and others_interactions[j].rating >= cutoff_rating:
                     simscore +=1
 
-                if my_interactions[i].rating > cutoff_rating:
+                if my_interactions[i].rating >= cutoff_rating:
                     my_count += 1
-                if others_interactions[j].rating > cutoff_rating:
+                if others_interactions[j].rating >= cutoff_rating:
                     others_count += 1
                 i += 1
                 j += 1
         if j == length_others_interactions:
             for k in range(i,self.c_length_list[interact_type]):
-                if my_interactions[k].rating > cutoff_rating:
+                if my_interactions[k].rating >= cutoff_rating:
                     my_count += 1
         elif i == self.c_length_list[interact_type]:
             for k in range(j, length_others_interactions):
-                if others_interactions[k].rating > cutoff_rating:
+                if others_interactions[k].rating >= cutoff_rating:
                     others_count += 1
 
         if my_count == 0 or others_count == 0:
@@ -603,7 +603,7 @@ cdef class CNetworkNode:
             raise MemoryError()
 
         for i in range(self.c_length_list[interact_type]):
-            if self.c_list[interact_type][i].rating > cutoff_rating:
+            if self.c_list[interact_type][i].rating >= cutoff_rating:
                 random_num = (<float>rand())/RAND_MAX
                 if random_num < traintest_split:
                     self.c_train_ids[k1] = self.c_list[interact_type][i].item_id

@@ -103,10 +103,10 @@ class PyNetworkNode(object):
 
     def compute_nonweighted_friends_similarity(self, interact_type):
         return self.externalNonWeightedSimilarity(self.get_friends_interactions(interact_type))
-
+    """
     def compute_similarity(self, items, interact_type):
-        """ Computes cosine similarity between two item vectors.
-        """
+        # Computes cosine similarity between two item vectors.
+
         if len(self.interactions[interact_type]) == 0 or len(items) == 0:
             return None
         simscore=float(0)
@@ -116,33 +116,33 @@ class PyNetworkNode(object):
                 simscore += len(items[item_id])
         #return simscore/(len(self.interactions[interact_type])*len(self.friends))
         return simscore/ (utils.l2_norm(self.interactions[interact_type],binary=True)* utils.l2_norm(items.itervalues(), binary=False))
-
+    """
     def compute_node_similarity(self, others_interact_ids, interact_type, cutoff_rating):
         #if my_interactions is None:
-        my_interactions = self.interactions[interact_type]
+        my_interact_ids = [idata.item_id for idata in self.interactions[interact_type] if idata.rating >= cutoff_rating]
 
-        if len(my_interactions) == 0 or len(others_interact_ids) == 0:
+        if len(my_interact_ids) == 0 or len(others_interact_ids) == 0:
             return None
         sim_score = float(0)
-        for interact_tuple in my_interactions:
-            item_id = interact_tuple[0]
+        for item_id in my_interact_ids:
             if item_id in others_interact_ids:
                 sim_score += 1
-        sim_score = sim_score/ (utils.l2_norm(my_interactions, binary=True) * utils.l2_norm(others_interact_ids, binary=True))
+        sim_score = sim_score / (utils.l2_norm(my_interact_ids, binary=True) * utils.l2_norm(others_interact_ids, binary=True))
         return sim_score
 
+    """
     def externalNonWeightedSimilarity(self, items):
         simscore=float(0)
         for k,created_time in self.likes:
             if k in items:
                 simscore += 1
         return simscore/(len(self.likes))
-
+    """
     def compute_mean_similarity(self, nodes_iter, interact_type, cutoff_rating):
         mean_sim = 0
         counter = 0
         for node in nodes_iter:
-            others_interact_ids = [idata.item_id for idata in node.interactions[interact_type] if idata.rating > cutoff_rating]
+            others_interact_ids = [idata.item_id for idata in node.interactions[interact_type] if idata.rating >= cutoff_rating]
             sim = self.compute_node_similarity(others_interact_ids, interact_type, cutoff_rating)
             if sim is not None:
                 mean_sim += sim
@@ -204,7 +204,7 @@ class PyNetworkNode(object):
     def findKNearestSim(self, nodes_iter, interact_type, num, my_likes, cutoff_rating):
         minheap=[]
         for node in nodes_iter:
-            node_likes = [idata.item_id for idata in node.interactions[interact_type] if idata.rating > cutoff_rating]
+            node_likes = [idata.item_id for idata in node.interactions[interact_type] if idata.rating >= cutoff_rating]
             if len(my_likes) > 0 and len(node_likes) > 0:
                 curr_sim = utils.compute_cosine_similarity(my_likes, node_likes)
                 #heapq.heappush(minheap, (curr_sim, node))
@@ -221,7 +221,7 @@ class PyNetworkNode(object):
         return res
     """
     def compute_local_topk_similarity(self, friends_iter, interact_type, num, cutoff_rating):
-        my_likes = [interact_data.item_id for interact_data in self.interactions[interact_type] if interact_data.rating > cutoff_rating]
+        my_likes = [interact_data.item_id for interact_data in self.interactions[interact_type] if interact_data.rating >= cutoff_rating]
         sim_list = self.findKNearestSim(friends_iter, interact_type, num, my_likes, cutoff_rating)
         #return sum([self._getUserSimilarity(my_likes, uc[1].likes_only, uc[1].uid) for uc in minheap])/float(len(minheap))
         return sim_list
@@ -253,7 +253,7 @@ class PyNetworkNode(object):
 
     """
     def compute_global_topk_similarity(self,allnodes_iter, interact_type, num, cutoff_rating):
-        my_likes = [interact_data.item_id for interact_data in self.interactions[interact_type] if interact_data.rating > cutoff_rating]
+        my_likes = [interact_data.item_id for interact_data in self.interactions[interact_type] if interact_data.rating >= cutoff_rating]
         nonfriends_iter = [node for node in allnodes_iter if (node.uid not in self.get_friend_ids() and node.uid != self.uid)]
         sim_list = self.findKNearestSim(nonfriends_iter, interact_type, num, my_likes, cutoff_rating)
         #return sum([self._getUserSimilarity(my_likes, uc[1].likes_only, uc[1].uid) for uc in minheap])/float(len(minheap))

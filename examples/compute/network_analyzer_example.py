@@ -44,7 +44,7 @@ if __name__ == "__main__":
     dataset_path = None
     computation_cmd = None
     impl_type = "python"
-    cutoff_rating = -1 # sufficiently small value so that cutoff has no effect.
+    cutoff_rating = 4 # sufficiently small value so that cutoff has no effect.
     for o, a in opts:
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
     if dataset_domain=="goodreads":
-        data = GoodreadsDataPreparser(dataset_path, impl_type)
+        data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating)
 
     try:
         data.get_all_data()
@@ -84,7 +84,8 @@ if __name__ == "__main__":
     #print h.heap()
     #sys.exit(0)
     net_analyzer = BasicNetworkAnalyzer(data)
-    outf = open(computation_cmd + "_output.tsv", "w")
+    filename_prefix = computation_cmd if computation_cmd is not None else ""
+    outf = open(filename_prefix + "_output.tsv", "w")
     if computation_cmd=="basic_stats" or computation_cmd is None:
         net_analyzer.show_basic_stats()
 
@@ -153,9 +154,9 @@ if __name__ == "__main__":
         plotter.plotHist(sorted([val for val in cov_ratio_list]), "Ratio of Edge coverage to total popularity", "Frequency", logyscale=True)
         #plotter.plotHist(sorted(items_popularity), "Item", "total popularity")
         plotter.plotCumulativePopularity(items_popularity, labelx="Item percentile", labely="Cum. percent of number of likes")
-    elif computation_cmd == "draw_network":
+    elif computation_cmd == "network_draw":
         net_visualizor = NetworkVisualizor(data)
-        net_visualizor.draw()
+        net_visualizor.draw_network()
 
     """
     elif computation_cmd=="random_recommender":

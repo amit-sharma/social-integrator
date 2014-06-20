@@ -156,7 +156,7 @@ class BasicNetworkAnalyzer(object):
             if v.has_interactions(interact_type):
 
                 np_array = v.compute_local_topk_similarity(self.netdata.get_friends_nodes(v), interact_type, klim, cutoff_rating)
-                if np_array is not None:
+                if np_array is not None and len(np_array) > 0:
                     local_sim_avg = sum(np_array)/len(np_array)
                 else:
                     #print "Error in finding local %d neighbors for %s" % (klim,v.uid), localk_neighbors
@@ -195,6 +195,7 @@ class BasicNetworkAnalyzer(object):
                 print "Error in finding %d neighbors for %s:(Has no interactions)" % (klim,v.uid)
             #print sim1, sim2
         return sims_local, sims_global
+
 
     @staticmethod
     def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k, data_type="all" ):
