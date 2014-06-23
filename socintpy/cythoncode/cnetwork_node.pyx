@@ -1,5 +1,6 @@
 import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
+from cpython cimport bool
 from libc.math cimport sqrt
 from libc.stdlib cimport rand
 import scipy.sparse as sp
@@ -32,6 +33,10 @@ cdef extern from "stdlib.h":
 
 cdef extern from "stdlib.h":
     void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *))
+
+cdef extern from "Python.h":
+    object PyString_FromStringAndSize(char *, Py_ssize_t)
+    char *PyString_AsString(object)
 
 
 DTYPE = np.float
@@ -261,11 +266,15 @@ cdef class CNetworkNode:
         if self.c_list is NULL:
             raise MemoryError()
         cdef int i
+        #cdef str retval
         for i in range(len(ilist)):
             #print "In the loop %d" %i
             self.c_list[interact_type][i].item_id = ilist[i].item_id
             self.c_list[interact_type][i].rating = ilist[i].rating
             self.c_list[interact_type][i].timestamp = ilist[i].timestamp
+            # Correct way to copy a string. From http://stackoverflow.com/questions/4436857/cython-bytes-to-c-char
+            #retval = PyString_FromStringAndSize(PyString_AsString(ilist[i].timestamp), <Py_ssize_t>len(ilist[i].timestamp))
+            #self.c_list[interact_type][i].timestamp =PyString_AsString(retval) 
         self.c_length_list[interact_type] = len(ilist)
         qsort(self.c_list[interact_type], self.c_length_list[interact_type], sizeof(idata), comp_interactions)
         return self.c_length_list[interact_type]
@@ -296,12 +305,15 @@ cdef class CNetworkNode:
         for i in range(self.c_length_list[interact_type]):
             print "---", self.c_list[interact_type][i].item_id
 
-    cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=-1):
+    cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=-1, bool return_timestamp = False):
         interacted_items = set()
         cdef int i
         for i in range(self.c_length_list[interact_type]):
             if self.c_list[interact_type][i].rating > rating_cutoff:
-                interacted_items.add(self.c_list[interact_type][i].item_id)
+                if return_timestamp:
+                    interacted_items.add((self.c_list[interact_type][i].item_id, self.c_list[interact_type][i].timestamp))
+                else:
+                    interacted_items.add(self.c_list[interact_type][i].item_id)
         #print self.c_uid, len(interacted_items), interact_type
         return interacted_items
     

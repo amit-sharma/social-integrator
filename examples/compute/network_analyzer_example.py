@@ -11,11 +11,11 @@ from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
 import socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
-
+from pprint import pprint
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
-                          'items_edge_coverage', 'network_draw']
+                          'items_edge_coverage', 'network_draw', 'network_item_adopt']
 def usage():
     print "Too few or erroneous parameters"
     print 'Usage: python '+sys.argv[0]+' -d <dataset_name> -p <path> -c <computation>'
@@ -157,6 +157,9 @@ if __name__ == "__main__":
     elif computation_cmd == "network_draw":
         net_visualizor = NetworkVisualizor(data)
         net_visualizor.draw_network()
+    elif computation_cmd == "network_item_adopt":
+        net_visualizor = NetworkVisualizor(data)
+        pprint(net_visualizor.plot_item_adoption(1669118))
 
     """
     elif computation_cmd=="random_recommender":

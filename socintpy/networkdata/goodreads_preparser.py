@@ -3,7 +3,7 @@ from lxml import etree
 from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 import socintpy.util.utils as utils
 from collections import namedtuple
-
+#from datetime import datetime
 
 class GoodreadsDataPreparser(NetworkDataPreparser):
     interaction_types = range(1)
@@ -26,6 +26,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         self.node_counter = 0
         self.node_id_map = {}
         self.cutoff_rating = cutoff_rating
+        self.copy_timestamps = []
 
     def get_all_data(self):
         self.read_nodes_file()
@@ -73,10 +74,12 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             cols = line.strip(" \n\t").split(",")
             user_id = int(cols[0])
             item_id = int(cols[1])
+            #timestamp = datetime.strptime(cols[2], "%m/%d/%Y %I:%M:%S %p")
             timestamp = cols[2]
             if cols[3] != 'NaN' and int(cols[3]) >= self.cutoff_rating: # mimicking as if the invalid lines are not there in the file, so not reading them at all
                 rating = int(cols[3])
                 new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)
+                self.copy_timestamps.append(timestamp)
                 if prev_user is not None and prev_user != user_id:
                     if prev_user in self.node_id_map:
                         self.nodes[self.node_id_map[prev_user]].store_interactions(self.RATE_ACTION, ilist)
