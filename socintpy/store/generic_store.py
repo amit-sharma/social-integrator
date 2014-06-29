@@ -17,7 +17,10 @@ class GenericStore(UserDict.DictMixin):
         self.delete(key)
 
     def __contains__(self, key):
-        data = self.fetch(key)
+        try:
+            data = self.fetch(key)
+        except KeyError:
+            data = None
         if data is None:
             return False
         else:

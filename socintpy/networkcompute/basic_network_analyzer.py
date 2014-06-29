@@ -211,6 +211,11 @@ class BasicNetworkAnalyzer(object):
                     heapq.heappop(minheap)
         return minheap
 
+    
+    def get_node_details(self, node_id):
+        node = self.netdata.nodes[node_id] 
+        node.get_details(self.netdata.interaction_types[0])
+        return
     """
     def getItemPopularityInDataset(data):
         likes = {}

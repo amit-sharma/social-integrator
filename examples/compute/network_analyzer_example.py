@@ -15,7 +15,7 @@ from pprint import pprint
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
-                          'items_edge_coverage', 'network_draw', 'network_item_adopt']
+                          'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details']
 def usage():
     print "Too few or erroneous parameters"
     print 'Usage: python '+sys.argv[0]+' -d <dataset_name> -p <path> -c <computation>'
@@ -160,6 +160,10 @@ if __name__ == "__main__":
     elif computation_cmd == "network_item_adopt":
         net_visualizor = NetworkVisualizor(data)
         pprint(net_visualizor.plot_item_adoption(1669118))
+    elif computation_cmd == "node_details":
+        for node_id in open('user_ids'):
+            if node_id.strip('\n') != "User_id":
+                net_analyzer.get_node_details(int(node_id.strip('\n')))
 
     """
     elif computation_cmd=="random_recommender":
@@ -233,7 +237,4 @@ if __name__ == "__main__":
         fans_before, fans_after = computeItemGrowth(data.users, date(2010,12,31))
         plotLineY([fans_after[i]/float(fans_before[i]) for i in range(len(fans_before))], "Items", "Popularity")
 
-    else:
-        assert False, "Bad computation parameter"
-    """
-    outf.close()
+    """ 

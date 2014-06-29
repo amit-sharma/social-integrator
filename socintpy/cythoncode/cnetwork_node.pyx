@@ -662,6 +662,12 @@ cdef class CNetworkNode:
         return rec_list_ids
 
 
+    def get_details(self, interact_type):
+        print "Node Id: ", self.c_uid
+        print "Should Have Interactions", self.c_should_have_interactions
+        print "Should Have Friends", self.c_should_have_friends
+        print "Num Interactions", self.get_num_interactions(interact_type)
+        print "Num Friends", self.get_num_friends()
 
 
     property uid:
