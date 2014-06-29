@@ -18,7 +18,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
         self.node_index = 0
         self.item_index = 0
         self.itemid_dict = {} 
-        self.MAX_NODES_TO_READ = 10
+        self.MAX_NODES_TO_READ = 100
 
     def get_all_data(self):
         uid_dict = self.read_nodes()
