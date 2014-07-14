@@ -14,6 +14,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         return circle_coverages
 
     def compare_items_edge_coverage(self, interact_type, minimum_interactions):
+        #+1 because we start node_index at 1, not 0 like numpy
         items_edge_coverage = np.zeros(self.netdata.get_total_num_items()+1, dtype=np.dtype(np.uint32))
         items_total_popularity = np.zeros(self.netdata.get_total_num_items()+1, dtype=np.dtype(np.uint32))
         for node in self.netdata.get_nodes_list(should_have_friends=True, should_have_interactions=True):

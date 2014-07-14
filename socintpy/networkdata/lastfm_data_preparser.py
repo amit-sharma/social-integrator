@@ -16,9 +16,10 @@ class LastfmDataPreparser(NetworkDataPreparser):
         self.edges_db = SqliteStore(edges_store_path)
         self.interaction_types = sorted(LastfmDataPreparser.interact_types_dict.values())
         self.node_index = 0
-        self.item_index = 0
+        self.item_index = 1
+        self.items.insert(0, None)
         self.itemid_dict = {} 
-        self.MAX_NODES_TO_READ = 100
+        self.MAX_NODES_TO_READ = 300
 
     def get_all_data(self):
         uid_dict = self.read_nodes()
@@ -35,7 +36,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
                 break
             self.node_index += 1
             user_id = self.node_index
-            print temp_key#data_dict
+            #print temp_key#data_dict
             uid_dict[temp_key] = user_id
             node_data = LastfmDataPreparser.NodeData(original_uid=data_dict['name'], interaction_types=self.interaction_types)
 
@@ -70,8 +71,10 @@ class LastfmDataPreparser(NetworkDataPreparser):
             else:
                 item_id = self.item_index
                 itemid_dict[orig_item_id] = item_id
+                self.items.insert(self.item_index, (orig_item_id,)) 
                 self.item_index += 1
             ilist.append(LastfmDataPreparser.InteractData(item_id=item_id, original_item_id=trackdict['mbid'],timestamp=trackdict['date']['uts'], rating=1))
+            print "%s" %trackdict['date']['uts']
         netnode.store_interactions(interact_type, ilist)
         return
 
@@ -118,8 +121,11 @@ class LastfmDataPreparser(NetworkDataPreparser):
     
     def store_friends_interactions(self, friend_ids):
         #sfr_uids = sorted(friend_uids.iteritems(), key=lambda x: x[1] )
-        #fr_index = 0
+        counter = 0 
         for orig_friend_id, friend_id in friend_ids.iteritems():
+            if counter % 100 == 0:
+                print "Trying out friend numbered ", counter
+            counter += 1  
             if orig_friend_id in self.nodes_db:
                 data_dict = self.nodes_db[orig_friend_id]
         #for temp_key, data_dict in self.nodes_db.iteritems():

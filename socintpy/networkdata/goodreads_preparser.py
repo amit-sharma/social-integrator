@@ -6,6 +6,7 @@ from collections import namedtuple
 #from datetime import datetime
 
 class GoodreadsDataPreparser(NetworkDataPreparser):
+    interact_types_dict = {'rate': 0}
     interaction_types = range(1)
     RATE_ACTION = interaction_types[0]
     NodeData = namedtuple('NodeData', 'original_node_id interaction_types')
@@ -31,7 +32,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     def get_all_data(self):
         self.read_nodes_file()
         print self.nodes[1]
-        #self.read_items_file()
+        self.read_items_file()
         self.read_edges_file()
         self.read_interactions_file()
         del self.node_id_map

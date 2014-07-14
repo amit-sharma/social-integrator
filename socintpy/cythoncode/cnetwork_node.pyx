@@ -600,6 +600,7 @@ cdef class CNetworkNode:
 
     cpdef update_items_popularity(self, interact_type, unsigned int [:] total_popularity_view):
         item_ids = self.get_items_interacted_with(interact_type)
+        #print item_ids
         cdef int itemid
         for itemid in item_ids:
             total_popularity_view[itemid] += 1

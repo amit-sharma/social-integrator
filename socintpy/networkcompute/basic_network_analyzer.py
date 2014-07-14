@@ -5,6 +5,8 @@ from socintpy.util.utils import mean_sd
 import random
 import heapq
 
+from collections import defaultdict
+
 class BasicNetworkAnalyzer(object):
     def __init__(self, networkdata):
         self.netdata = networkdata
@@ -58,6 +60,34 @@ class BasicNetworkAnalyzer(object):
          
         return
 
+
+    def get_items_popularity(self, interact_type, rating_cutoff):
+        items_pop =  defaultdict(int)
+        for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            interacts = node.get_items_interacted_with(interact_type, rating_cutoff)
+            for item_id in interacts:
+                items_pop[item_id] += 1
+
+        return items_pop
+
+    def get_user_interacts(self, interact_type, rating_cutoff):
+        #user_interacts = []
+        for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            interacts = node.get_items_interacted_with(interact_type, rating_cutoff, return_timestamp=True)
+            for item_id, timestamp in interacts:
+                #user_interacts.append((node.uid, item_id, timestamp))
+                yield (node.uid, item_id, timestamp)
+        #return user_interacts
+
+    def get_user_friends(self):
+        #friends = []
+        for node in self.netdata.get_nodes_iterable(should_have_friends=True):
+            friends = node.get_friend_ids()
+            for friend_id in friends:
+                #friends.append((node.uid, friend_id))
+                yield (node.uid, friend_id)
+        #return friends
+
     def compare_circle_global_similarity(self, interact_type, num_random_trials, cutoff_rating):
         counter = 0
         circle_sims = []
@@ -83,6 +113,7 @@ class BasicNetworkAnalyzer(object):
             friends_list =  v.get_friend_ids()
             num_friends = v.get_num_friends()
             for i in range(num_random_trials):
+                #print all_node_ids, num_friends*2+1
                 rand_people = random.sample(all_node_ids, num_friends*2+1)
                 rand_people_iter = self.set_difference_generator(rand_people, friends_list+[v.uid], num_friends)
                     
@@ -95,7 +126,7 @@ class BasicNetworkAnalyzer(object):
                     avg += trial_global_similarity
                     count_sim_trials += 1
             if count_sim_trials == 0:
-                print "Node has no global sim", v.get_num_friends()
+                print "Node has no global sim", v.uid, v.get_num_friends()
                 continue
             avg_external_similarity = avg/float(count_sim_trials)
 

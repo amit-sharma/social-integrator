@@ -72,6 +72,7 @@ class NetworkDataPreparser():
 
     def get_total_num_items(self):
         return len(self.items)-1
+    
 
     def create_network_node(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         if self.impl_type == "cython":
