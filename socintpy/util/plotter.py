@@ -74,7 +74,7 @@ def plotCumulativePopularity(items_pop_vector, labelx="X", labely="Y"):
     plot(range(len(movies_arr)), sorted(movies_arr, reverse=True), color="green", label="Movies")
     plot(range(len(twitter_arr)), sorted(twitter_arr, reverse=True), color="red", label="Hashtags")
     """
-    plot(range(len(binned_reads)), binned_reads, "b-.", label="Goodreads")
+    plot(range(len(binned_reads)), binned_reads, "b-.", label="Last.fm")
     """
     plot(range(len(binned_music)), binned_music, "b-.", label="Artists")
     plot(range(len(binned_movies)), binned_movies, "g-", label="Movies")
@@ -82,7 +82,8 @@ def plotCumulativePopularity(items_pop_vector, labelx="X", labely="Y"):
     """
     legend(loc = "upper left", bbox_to_anchor=(0.65,0.98))
     #yscale("log")
-    show()
+    #show()
+    savefig("cum_plot.png", bbox_inches='tight')
 
 def getCumulativeArr(arr, max_val):
     running_sum =0

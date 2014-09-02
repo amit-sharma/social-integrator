@@ -5,7 +5,7 @@ from socintpy.networkdata.pynetwork_node import PyNetworkNode
 
 
 class NetworkDataPreparser():
-    def __init__(self, node_impl, min_interactions=5, min_friends=1):
+    def __init__(self, node_impl, min_interactions=0, min_friends=1):
         self.nodes = []
         self.items = []
         self.edges = []
@@ -72,6 +72,7 @@ class NetworkDataPreparser():
 
     def get_total_num_items(self):
         return len(self.items)-1
+    
 
     def create_network_node(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         if self.impl_type == "cython":

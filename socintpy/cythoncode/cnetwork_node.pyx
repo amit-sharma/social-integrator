@@ -1,5 +1,6 @@
 import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
+from cpython cimport bool
 from libc.math cimport sqrt
 from libc.stdlib cimport rand
 import scipy.sparse as sp
@@ -32,6 +33,10 @@ cdef extern from "stdlib.h":
 
 cdef extern from "stdlib.h":
     void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *))
+
+cdef extern from "Python.h":
+    object PyString_FromStringAndSize(char *, Py_ssize_t)
+    char *PyString_AsString(object)
 
 
 DTYPE = np.float
@@ -226,6 +231,8 @@ cdef class CNetworkNode:
             self.c_length_list = NULL
 
         self.c_friend_list = NULL
+        self.c_train_ids = NULL
+        self.c_test_ids = NULL
         self.c_length_friend_list = 0
         self.c_length_test_ids = 0
         self.c_length_train_ids = 0
@@ -238,30 +245,36 @@ cdef class CNetworkNode:
         self.c_should_have_interactions = kwargs['should_have_interactions']
 
     def __dealloc__(self):
+        """
         cdef int interact_type
-        if self.c_list:
+        if self.c_list is not NULL:
             for interact_type in xrange(self.c_num_interact_types):
                 PyMem_Free(self.c_list[interact_type])
 
             PyMem_Free(self.c_list)
             PyMem_Free(self.c_length_list)
-        if self.c_friend_list:
+        if self.c_friend_list is not NULL:
             PyMem_Free(self.c_friend_list)
-        if self.c_train_ids:
+        if self.c_train_ids is not NULL:
             PyMem_Free(self.c_train_ids)
             PyMem_Free(self.c_test_ids)
-
+        """
+        pass
 
     cpdef int store_interactions(self, int interact_type, ilist):
         self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
         if self.c_list is NULL:
             raise MemoryError()
         cdef int i
+        #cdef str retval
         for i in range(len(ilist)):
             #print "In the loop %d" %i
             self.c_list[interact_type][i].item_id = ilist[i].item_id
             self.c_list[interact_type][i].rating = ilist[i].rating
             self.c_list[interact_type][i].timestamp = ilist[i].timestamp
+            # Correct way to copy a string. From http://stackoverflow.com/questions/4436857/cython-bytes-to-c-char
+            #retval = PyString_FromStringAndSize(PyString_AsString(ilist[i].timestamp), <Py_ssize_t>len(ilist[i].timestamp))
+            #self.c_list[interact_type][i].timestamp =PyString_AsString(retval) 
         self.c_length_list[interact_type] = len(ilist)
         qsort(self.c_list[interact_type], self.c_length_list[interact_type], sizeof(idata), comp_interactions)
         return self.c_length_list[interact_type]
@@ -292,12 +305,15 @@ cdef class CNetworkNode:
         for i in range(self.c_length_list[interact_type]):
             print "---", self.c_list[interact_type][i].item_id
 
-    cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=-1):
+    cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=-1, bool return_timestamp = False):
         interacted_items = set()
         cdef int i
         for i in range(self.c_length_list[interact_type]):
             if self.c_list[interact_type][i].rating > rating_cutoff:
-                interacted_items.add(self.c_list[interact_type][i].item_id)
+                if return_timestamp:
+                    interacted_items.add((self.c_list[interact_type][i].item_id, self.c_list[interact_type][i].timestamp))
+                else:
+                    interacted_items.add(self.c_list[interact_type][i].item_id)
         #print self.c_uid, len(interacted_items), interact_type
         return interacted_items
     
@@ -401,30 +417,30 @@ cdef class CNetworkNode:
         cdef int others_count = 0
         while i < self.c_length_list[interact_type] and j < length_others_interactions:
             if my_interactions[i].item_id < others_interactions[j].item_id:
-                if my_interactions[i].rating > cutoff_rating:
+                if my_interactions[i].rating >= cutoff_rating:
                     my_count += 1
                 i += 1
             elif my_interactions[i].item_id > others_interactions[j].item_id:
-                if others_interactions[j].rating > cutoff_rating:
+                if others_interactions[j].rating >= cutoff_rating:
                     others_count += 1
                 j+= 1
             else:
-                if my_interactions[i].rating > cutoff_rating and others_interactions[j].rating > cutoff_rating:
+                if my_interactions[i].rating >= cutoff_rating and others_interactions[j].rating >= cutoff_rating:
                     simscore +=1
 
-                if my_interactions[i].rating > cutoff_rating:
+                if my_interactions[i].rating >= cutoff_rating:
                     my_count += 1
-                if others_interactions[j].rating > cutoff_rating:
+                if others_interactions[j].rating >= cutoff_rating:
                     others_count += 1
                 i += 1
                 j += 1
         if j == length_others_interactions:
             for k in range(i,self.c_length_list[interact_type]):
-                if my_interactions[k].rating > cutoff_rating:
+                if my_interactions[k].rating >= cutoff_rating:
                     my_count += 1
         elif i == self.c_length_list[interact_type]:
             for k in range(j, length_others_interactions):
-                if others_interactions[k].rating > cutoff_rating:
+                if others_interactions[k].rating >= cutoff_rating:
                     others_count += 1
 
         if my_count == 0 or others_count == 0:
@@ -584,6 +600,7 @@ cdef class CNetworkNode:
 
     cpdef update_items_popularity(self, interact_type, unsigned int [:] total_popularity_view):
         item_ids = self.get_items_interacted_with(interact_type)
+        #print item_ids
         cdef int itemid
         for itemid in item_ids:
             total_popularity_view[itemid] += 1
@@ -599,7 +616,7 @@ cdef class CNetworkNode:
             raise MemoryError()
 
         for i in range(self.c_length_list[interact_type]):
-            if self.c_list[interact_type][i].rating > cutoff_rating:
+            if self.c_list[interact_type][i].rating >= cutoff_rating:
                 random_num = (<float>rand())/RAND_MAX
                 if random_num < traintest_split:
                     self.c_train_ids[k1] = self.c_list[interact_type][i].item_id
@@ -646,6 +663,12 @@ cdef class CNetworkNode:
         return rec_list_ids
 
 
+    def get_details(self, interact_type):
+        print "Node Id: ", self.c_uid
+        print "Should Have Interactions", self.c_should_have_interactions
+        print "Should Have Friends", self.c_should_have_friends
+        print "Num Interactions", self.get_num_interactions(interact_type)
+        print "Num Friends", self.get_num_friends()
 
 
     property uid:
@@ -663,6 +686,11 @@ cdef class CNetworkNode:
     property length_test_ids:
         def __get__(self):
             return self.c_length_test_ids
+    
+    property length_train_ids:
+        def __get__(self):
+            return self.c_length_train_ids
+
     #property interactions:
     #    def __get__(self):
     #        return self.c_list

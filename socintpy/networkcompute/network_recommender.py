@@ -14,6 +14,7 @@ class RecAlgoEvaluator:
         self.traintestsplit = split
         self.interact_type = interact_type
 
+    """
     #TODO adhoc step here to transfer a value to the test set. think of a better way.
     def create_training_test_sets(self):
         for item_id in self.usercircle.get_items_interacted_with(self.interact_type):
@@ -30,7 +31,8 @@ class RecAlgoEvaluator:
             self.test_likes[random_key] = elem
             
         return self.train_likes, self.test_likes
-        
+    """
+
 class Recommender:
     def __init__(self, uc, netdata, interact_type, maxitems):
         self.usercircle=uc
@@ -86,15 +88,18 @@ class Recommender:
                 rel = 0
             dcg += (rel if i==1 else (rel/math.log(i,2)))
             i += 1
+        # A little redundant because rec_items are constrained to be <=max_items
         idcg_size = min(self.max_items, len(self.rec_items), self.usercircle.length_test_ids) # ideal DCG
         idcg = 0
-        #print self.max_items, self.test_likes, self.usercircle.likes
         for i in range(1,idcg_size+1):
             idcg += (1 if i==1 else (1/math.log(i,2)))
         if idcg > 0:
+            #print self.max_items, len(self.rec_items), self.usercircle.length_test_ids, dcg/float(idcg)
             return dcg/float(idcg)
         else:
             logging.error("Critical Error, how can idcg be zero!!!\n\n\n\n")
+            print("Critical Error, how can idcg be zero!!!\n")
+            print self.max_items, len(self.rec_items), self.usercircle.length_test_ids, dcg, float(idcg)
             return 0.0
         
 class CircleKNearestRecommender(Recommender):
@@ -111,6 +116,13 @@ class CircleKNearestRecommender(Recommender):
             logging.warning("Cannot find k closest friends for recommend")
             return None                                                                  
         self.rec_items = self.usercircle.compute_weighted_popular_recs(close_users,self.max_items) 
+        
+        """
+        if len(self.rec_items) == 0:
+            print "oh"
+            for sim, unode in close_users:
+                print unode.length_train_ids
+        """
         return self.rec_items
 
 class CircleRandomRecommender(Recommender):
@@ -133,10 +145,20 @@ class GlobalKNearestRecommender(Recommender):
                                                                       self.netdata.get_nonfriends_nodes(self.usercircle),
                                                                       self.interact_type, self.K, data_type="learn"
                                                                       )
+        
+        #print "Num close users", len(close_users)
         if len(close_users) < self.K:
             logging.warning("Cannot find k closest global for recommend")
             return None
         self.rec_items = self.usercircle.compute_weighted_popular_recs(close_users, self.max_items)
+       
+        """
+        Length of recs can be zero because there are so little train_interactions of the close users 
+        if len(self.rec_items) == 0:
+            print "oh"
+            for sim, unode in close_users:
+                print unode.length_train_ids
+        """
         return self.rec_items
 
 class GlobalRandomRecommender(Recommender):

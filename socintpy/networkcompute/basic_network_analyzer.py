@@ -5,6 +5,8 @@ from socintpy.util.utils import mean_sd
 import random
 import heapq
 
+from collections import defaultdict
+
 class BasicNetworkAnalyzer(object):
     def __init__(self, networkdata):
         self.netdata = networkdata
@@ -58,6 +60,34 @@ class BasicNetworkAnalyzer(object):
          
         return
 
+
+    def get_items_popularity(self, interact_type, rating_cutoff):
+        items_pop =  defaultdict(int)
+        for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            interacts = node.get_items_interacted_with(interact_type, rating_cutoff)
+            for item_id in interacts:
+                items_pop[item_id] += 1
+
+        return items_pop
+
+    def get_user_interacts(self, interact_type, rating_cutoff):
+        #user_interacts = []
+        for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            interacts = node.get_items_interacted_with(interact_type, rating_cutoff, return_timestamp=True)
+            for item_id, timestamp in interacts:
+                #user_interacts.append((node.uid, item_id, timestamp))
+                yield (node.uid, item_id, timestamp)
+        #return user_interacts
+
+    def get_user_friends(self):
+        #friends = []
+        for node in self.netdata.get_nodes_iterable(should_have_friends=True):
+            friends = node.get_friend_ids()
+            for friend_id in friends:
+                #friends.append((node.uid, friend_id))
+                yield (node.uid, friend_id)
+        #return friends
+
     def compare_circle_global_similarity(self, interact_type, num_random_trials, cutoff_rating):
         counter = 0
         circle_sims = []
@@ -83,6 +113,7 @@ class BasicNetworkAnalyzer(object):
             friends_list =  v.get_friend_ids()
             num_friends = v.get_num_friends()
             for i in range(num_random_trials):
+                #print all_node_ids, num_friends*2+1
                 rand_people = random.sample(all_node_ids, num_friends*2+1)
                 rand_people_iter = self.set_difference_generator(rand_people, friends_list+[v.uid], num_friends)
                     
@@ -95,7 +126,7 @@ class BasicNetworkAnalyzer(object):
                     avg += trial_global_similarity
                     count_sim_trials += 1
             if count_sim_trials == 0:
-                print "Node has no global sim", v.get_num_friends()
+                print "Node has no global sim", v.uid, v.get_num_friends()
                 continue
             avg_external_similarity = avg/float(count_sim_trials)
 
@@ -108,8 +139,8 @@ class BasicNetworkAnalyzer(object):
             if avg_circle_similarity is None:
                 print "Node has no friends to compute circle similarity. Skipping!"
                 continue
-            circle_sims.append(avg_circle_similarity)
-            global_sims.append(avg_external_similarity)
+            circle_sims.append((v.uid, avg_circle_similarity))
+            global_sims.append((v.uid, avg_external_similarity))
 
         return circle_sims, global_sims
 
@@ -156,7 +187,7 @@ class BasicNetworkAnalyzer(object):
             if v.has_interactions(interact_type):
 
                 np_array = v.compute_local_topk_similarity(self.netdata.get_friends_nodes(v), interact_type, klim, cutoff_rating)
-                if np_array is not None:
+                if np_array is not None and len(np_array) > 0:
                     local_sim_avg = sum(np_array)/len(np_array)
                 else:
                     #print "Error in finding local %d neighbors for %s" % (klim,v.uid), localk_neighbors
@@ -186,9 +217,9 @@ class BasicNetworkAnalyzer(object):
                     print "Error in finding global %d neighbors" % klim,"for",v.uid
                     continue
                 """
-                sims_global.append(global_sim_avg)
+                sims_global.append((v.uid, global_sim_avg))
 
-                sims_local.append(local_sim_avg)
+                sims_local.append((v.uid, local_sim_avg))
                 #print(global_sim_avg, local_sim_avg)
 
             else:
@@ -196,13 +227,14 @@ class BasicNetworkAnalyzer(object):
             #print sim1, sim2
         return sims_local, sims_global
 
+
     @staticmethod
     def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k, data_type="all" ):
         minheap=[]
         data_type_code = ord(data_type[0])
         for candidate_node in candidate_nodes_iterable:
             curr_sim = node.compute_node_similarity(candidate_node, interact_type, data_type_code)
-            #print curr_sim
+            #print "Current sim at basic is", curr_sim
             #curr_sim = 1
             if curr_sim is not None:
                 heapq.heappush(minheap, (curr_sim, candidate_node))
@@ -210,6 +242,11 @@ class BasicNetworkAnalyzer(object):
                     heapq.heappop(minheap)
         return minheap
 
+    
+    def get_node_details(self, node_id):
+        node = self.netdata.nodes[node_id] 
+        node.get_details(self.netdata.interaction_types[0])
+        return
     """
     def getItemPopularityInDataset(data):
         likes = {}
