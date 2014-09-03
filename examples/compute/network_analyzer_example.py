@@ -88,8 +88,8 @@ if __name__ == "__main__":
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
-    outf_path = "/home/asharma/datasets/processed/" + dataset_domain + "/" + filename_prefix
-    outf = open(outf_path + "_output.tsv", "w")
+    #outf_path = "/home/asharma/datasets/processed/" + dataset_domain + "/" + filename_prefix
+    #outf = open(outf_path + "_output.tsv", "w")
     if computation_cmd=="basic_stats" or computation_cmd is None:
         net_analyzer.show_basic_stats()
 
