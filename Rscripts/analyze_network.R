@@ -78,7 +78,8 @@ melt_m=as.data.table(melt(mm2,id.vars=c("user_id", "num_items", "med_rank", "med
 ggplot(melt_m[order(med_pop)], aes(med_pop, value, color=variable)) + 
   geom_point()+ scale_x_log10()
 ggplot(predict_table[order(med_pop)], aes(med_pop, (mean_circle_ndcg-mean_nonfriend_ndcg))) + geom_point()+ scale_x_log10()
-ggplot(predict_table[order(med_pop)], aes(med_pop,social_uniq_adopt_ratio,color=(mean_circle_ndcg-mean_nonfriend_ndcg>0))) + geom_point()+ scale_x_log10()
+
+ggplot(predict_table[order(med_pop)], aes(med_pop,social_uniq_adopt_ratio,color=label)) + geom_point()+ scale_x_log10()
 
 
 

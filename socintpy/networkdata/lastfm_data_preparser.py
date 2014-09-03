@@ -74,7 +74,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
                 self.items.insert(self.item_index, (orig_item_id,)) 
                 self.item_index += 1
             ilist.append(LastfmDataPreparser.InteractData(item_id=item_id, original_item_id=trackdict['mbid'],timestamp=trackdict['date']['uts'], rating=1))
-            print "%s" %trackdict['date']['uts']
+            #print "%s" %trackdict['date']['uts']
         netnode.store_interactions(interact_type, ilist)
         return
 
