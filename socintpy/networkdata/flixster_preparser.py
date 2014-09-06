@@ -14,13 +14,13 @@ class FlixsterDataPreparser(NetworkDataPreparser):
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
     EdgeData = namedtuple('EdgeData', 'receiver_id')
 
-    def __init__(self, data_path, node_impl, cutoff_rating):
-        NetworkDataPreparser.__init__(self, node_impl)
+    def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes):
+        NetworkDataPreparser.__init__(self, node_impl, max_core_nodes=max_core_nodes)
         self.datadir = data_path
-        self.nodes_filename = data_path + "links.txt"
+        self.nodes_filename = data_path + "sorted-links.txt"
         self.items_filename = data_path + "all_items.txt"
-        self.edges_filename = data_path + "links.txt"
-        self.interactions_filename = data_path + "ratings.timed.txt"
+        self.edges_filename = data_path + "sorted-links.txt"
+        self.interactions_filename = data_path + "sorted-ratings.timed.txt"
         #self.interaction_types = range(1)
         #rate = range(1)
         #self.nodes = [None]*300000 # so that we can index it for smaller datasetsa
@@ -37,6 +37,9 @@ class FlixsterDataPreparser(NetworkDataPreparser):
         self.read_items_file()
         self.read_edges_file()
         self.read_interactions_file()
+        if self.nodes_to_fetch is not None:
+            print "Yo"
+            self.select_subset_nodes()
         del self.node_id_map
 
     def read_nodes_file(self):

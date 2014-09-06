@@ -260,7 +260,7 @@ cdef class CNetworkNode:
             PyMem_Free(self.c_test_ids)
         """
         pass
-
+    
     cpdef int store_interactions(self, int interact_type, ilist):
         self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
         if self.c_list is NULL:
@@ -674,6 +674,8 @@ cdef class CNetworkNode:
     property uid:
         def __get__(self):
             return self.c_uid
+        def __set__(self, value):
+            self.c_uid = value
 
     property should_have_interactions:
         def __get__(self):
@@ -682,6 +684,8 @@ cdef class CNetworkNode:
     property should_have_friends:
         def __get__(self):
             return self.c_should_have_friends
+        def __set__(self, value):
+            self.c_should_have_friends = value
 
     property length_test_ids:
         def __get__(self):

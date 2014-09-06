@@ -1,17 +1,18 @@
 #import pyximport; pyximport.install()
 from socintpy.cythoncode.cnetwork_node import CNetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
-
+import random
 
 
 class NetworkDataPreparser():
-    def __init__(self, node_impl, min_interactions=0, min_friends=1):
+    def __init__(self, node_impl, min_interactions=0, min_friends=1, max_core_nodes=None):
         self.nodes = []
         self.items = []
         self.edges = []
         self.impl_type = node_impl
         self.min_interactions = min_interactions
         self.min_friends = min_friends
+        self.nodes_to_fetch = max_core_nodes
 
     def read_nodes(self):
         raise NotImplementedError("NetworkDataPreparser: read_nodes is not implemented.")
@@ -79,3 +80,35 @@ class NetworkDataPreparser():
             return CNetworkNode(uid, should_have_friends=should_have_friends, should_have_interactions=should_have_interactions, node_data=node_data)
         else:
             return PyNetworkNode(uid, should_have_friends, should_have_interactions, node_data)
+
+    def select_subset_nodes(self):
+        # TODO For now, we do not update self.items list
+        core_nodes = self.get_nodes_list(should_have_friends=True)
+        # array of indices of the core_nodes array. Not really node_ids.
+        selected_indices = random.sample(xrange(len(core_nodes)), self.nodes_to_fetch)        
+        selected_nodes = []
+        counter = 0
+        selected_nodes.insert(counter, None)
+        counter += 1
+        id_remap = {}
+        for index in selected_indices:
+            id_remap[core_nodes[index].uid] = counter
+            core_nodes[index].uid = counter
+            selected_nodes.insert(counter, core_nodes[index])
+            counter += 1
+
+        for node in selected_nodes[1:]:
+            friend_ids = node.get_friend_ids()
+            flist = []
+            for fr_id in friend_ids:
+                if fr_id not in id_remap:
+                    id_remap[fr_id] = counter
+                    #TODO destroy their friends!!!
+                    self.nodes[fr_id].should_have_friends = False
+                    selected_nodes.insert(counter, self.nodes[fr_id])
+                    counter += 1
+                flist.append(self.__class__.EdgeData(receiver_id=id_remap[fr_id]))
+            node.store_friends(flist)
+
+        self.nodes = selected_nodes
+

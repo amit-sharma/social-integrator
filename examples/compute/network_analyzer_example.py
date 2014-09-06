@@ -33,7 +33,8 @@ def compare_sims(fr_sim, nonfr_sim):
 if __name__ == "__main__":
     logging.basicConfig(filename="run.log", level="DEBUG")
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", "cutoffrating=", "output="])
+        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", 
+                                   "cutoffrating=", "output=", "max_core_nodes="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -47,6 +48,7 @@ if __name__ == "__main__":
     dataset_domain=None
     dataset_path = None
     computation_cmd = None
+    max_core_nodes = None
     impl_type = "python"
     cutoff_rating = None # sufficiently small value so that cutoff has no effect.
     for o, a in opts:
@@ -66,12 +68,15 @@ if __name__ == "__main__":
             impl_type = "cython"
         if o =="--cutoffrating":
             cutoff_rating = int(a)
+        if o=="--max_core_nodes":
+            max_core_nodes = int(a)
 
     if dataset_domain is None or dataset_path is None:
         usage()
         sys.exit(2)
 
     data = None
+    print max_core_nodes
     #h = hpy()
     #h.setref()
     if dataset_domain == "twitter":
@@ -79,11 +84,11 @@ if __name__ == "__main__":
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
     elif dataset_domain=="goodreads":
-        data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating)
+        data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
     elif dataset_domain=="flixster":
-        data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating)
+        data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
     elif dataset_domain=="flickr":
-        data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating=None)
+        data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
     
     try:
         data.get_all_data()
