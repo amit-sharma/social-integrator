@@ -11,11 +11,13 @@ from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
+from socintpy.networkdata.flixster_preparser import FlixsterDataPreparser
+from socintpy.networkdata.flickr_preparser import FlickrDataPreparser
 import socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 from pprint import pprint
 
-COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
+COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
                           'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset']
 def usage():
@@ -76,9 +78,13 @@ if __name__ == "__main__":
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
-    if dataset_domain=="goodreads":
+    elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating)
-
+    elif dataset_domain=="flixster":
+        data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating)
+    elif dataset_domain=="flickr":
+        data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating=None)
+    
     try:
         data.get_all_data()
     except:
