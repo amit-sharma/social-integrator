@@ -34,7 +34,8 @@ if __name__ == "__main__":
     logging.basicConfig(filename="run.log", level="DEBUG")
     try:
         opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", 
-                                   "cutoffrating=", "output=", "max_core_nodes="])
+                                   "cutoffrating=", "output=", "max_core_nodes=",
+                                   "store_dataset"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -51,6 +52,7 @@ if __name__ == "__main__":
     max_core_nodes = None
     impl_type = "python"
     cutoff_rating = None # sufficiently small value so that cutoff has no effect.
+    store_dataset = False
     for o, a in opts:
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -70,13 +72,14 @@ if __name__ == "__main__":
             cutoff_rating = int(a)
         if o=="--max_core_nodes":
             max_core_nodes = int(a)
+        if o=="--store_dataset":
+            store_dataset = True
 
     if dataset_domain is None or dataset_path is None:
         usage()
         sys.exit(2)
 
     data = None
-    print max_core_nodes
     #h = hpy()
     #h.setref()
     if dataset_domain == "twitter":
@@ -86,7 +89,8 @@ if __name__ == "__main__":
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
     elif dataset_domain=="flixster":
-        data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
+        data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, 
+                                     max_core_nodes, store_dataset)
     elif dataset_domain=="flickr":
         data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
     

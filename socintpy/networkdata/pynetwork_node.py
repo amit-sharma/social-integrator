@@ -52,6 +52,7 @@ class PyNetworkNode(object):
         self.friends.append((friendid,friend_node, friendship_data))
 
     def store_friends(self, friends_list):
+        self.friends = []
         for friend_tuple in friends_list:
             self.friends.append(friend_tuple)
         return len(self.friends)

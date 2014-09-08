@@ -14,8 +14,11 @@ class FlixsterDataPreparser(NetworkDataPreparser):
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
     EdgeData = namedtuple('EdgeData', 'receiver_id')
 
-    def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes):
-        NetworkDataPreparser.__init__(self, node_impl, max_core_nodes=max_core_nodes)
+    def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes, 
+                 store_dataset):
+        NetworkDataPreparser.__init__(self, node_impl, data_path, 
+                                      max_core_nodes=max_core_nodes, 
+                                      store_dataset=store_dataset)
         self.datadir = data_path
         self.nodes_filename = data_path + "sorted-links.txt"
         self.items_filename = data_path + "all_items.txt"
@@ -31,16 +34,26 @@ class FlixsterDataPreparser(NetworkDataPreparser):
             cutoff_rating = 0
         self.copy_timestamps = []
 
+        #globals()['InteractData'] = self.__class__.InteractData
+        globals().update(self.named_tuple_dict)
+
     def get_all_data(self):
-        self.read_nodes_file()
+        if self.load_from_saved_dataset:
+            self.load_dataset()
+            del self.node_id_map
+        else:
+            self.read_nodes_file()
         
-        self.read_items_file()
-        self.read_edges_file()
-        self.read_interactions_file()
+            self.read_items_file()
+            self.read_edges_file()
+            self.read_interactions_file()
+            del self.node_id_map
+
         if self.nodes_to_fetch is not None:
             print "Yo"
             self.select_subset_nodes()
-        del self.node_id_map
+        if self.store_dataset:
+            self.dump_dataset()
 
     def read_nodes_file(self):
         self.nodes.insert(self.node_counter, None)

@@ -2,10 +2,11 @@
 from socintpy.cythoncode.cnetwork_node import CNetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 import random
-
+import cPickle as pickle
 
 class NetworkDataPreparser():
-    def __init__(self, node_impl, min_interactions=0, min_friends=1, max_core_nodes=None):
+    def __init__(self, node_impl, data_path, min_interactions=0, min_friends=1, 
+                 max_core_nodes=None, store_dataset = False):
         self.nodes = []
         self.items = []
         self.edges = []
@@ -13,6 +14,17 @@ class NetworkDataPreparser():
         self.min_interactions = min_interactions
         self.min_friends = min_friends
         self.nodes_to_fetch = max_core_nodes
+        self.store_dataset = store_dataset
+        
+        self.load_from_saved_dataset = False
+        if data_path.endswith(".pkl"):
+            self.load_from_saved_dataset = True
+        # Workaround because namedtuple factory does not behave nicely with 
+        # nested namedtuple
+        self.named_tuple_dict = {'InteractData': self.__class__.InteractData,
+                                 'EdgeData': self.__class__.EdgeData,
+                                 'NodeData': self.__class__.NodeData,
+                                 'ItemData': self.__class__.ItemData}
 
     def read_nodes(self):
         raise NotImplementedError("NetworkDataPreparser: read_nodes is not implemented.")
@@ -105,14 +117,33 @@ class NetworkDataPreparser():
             for fr_id in friend_ids:
                 if fr_id not in id_remap:
                     id_remap[fr_id] = counter
-                    #destroy friends lists of hitherto core-nodes
+                    # change should_have_friends and destroy friends lists of 
+                    # hitherto core-nodes
+                    #print fr_id, len(self.nodes)
                     self.nodes[fr_id].remove_friends()
                     selected_nodes.insert(counter, self.nodes[fr_id])
                     counter += 1
                 flist.append(self.__class__.EdgeData(receiver_id=id_remap[fr_id]))
             node.store_friends(flist)
+        #print counter, "counter"
         for node in self.nodes[1:]:
             if node.uid not in id_remap:
                 del node
         self.nodes = selected_nodes
+ 
+    def dump_dataset(self):
+        if self.datadir.endswith('/'):
+            file_path_arr = self.datadir.rsplit('/', 2)
+        else:
+            file_path_arr = self.datadir.rsplit('/', 1)
+        file_path = file_path_arr[0]
+        filename = str(file_path + "/dataset_cutoff" + str(self.cutoff_rating) + 
+            "_maxcorenodes_" + str(self.nodes_to_fetch) + ".pkl")
+        with open(filename, 'wb') as outf:
+          pickle.dump(self.nodes, outf, -1)
+    
+    def load_dataset(self):
+        with open(self.datadir, 'rb') as pkl_file:
+            self.nodes = pickle.load(pkl_file)
+
 
