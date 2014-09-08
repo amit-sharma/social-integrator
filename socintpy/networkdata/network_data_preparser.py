@@ -86,29 +86,33 @@ class NetworkDataPreparser():
         core_nodes = self.get_nodes_list(should_have_friends=True)
         # array of indices of the core_nodes array. Not really node_ids.
         selected_indices = random.sample(xrange(len(core_nodes)), self.nodes_to_fetch)        
-        selected_nodes = []
+        selected_nodes = [] # new list that will replace self.nodes
         counter = 0
         selected_nodes.insert(counter, None)
         counter += 1
-        id_remap = {}
+        id_remap = {} # re-mapping the ids for nodes
+        # add fixed number of randomly selected core nodes
         for index in selected_indices:
             id_remap[core_nodes[index].uid] = counter
             core_nodes[index].uid = counter
             selected_nodes.insert(counter, core_nodes[index])
             counter += 1
-
+        
+        # now modifying the node-ids in the friends list of selected core nodes
         for node in selected_nodes[1:]:
             friend_ids = node.get_friend_ids()
             flist = []
             for fr_id in friend_ids:
                 if fr_id not in id_remap:
                     id_remap[fr_id] = counter
-                    #TODO destroy their friends!!!
-                    self.nodes[fr_id].should_have_friends = False
+                    #destroy friends lists of hitherto core-nodes
+                    self.nodes[fr_id].remove_friends()
                     selected_nodes.insert(counter, self.nodes[fr_id])
                     counter += 1
                 flist.append(self.__class__.EdgeData(receiver_id=id_remap[fr_id]))
             node.store_friends(flist)
-
+        for node in self.nodes[1:]:
+            if node.uid not in id_remap:
+                del node
         self.nodes = selected_nodes
 

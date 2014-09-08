@@ -245,21 +245,20 @@ cdef class CNetworkNode:
         self.c_should_have_interactions = kwargs['should_have_interactions']
 
     def __dealloc__(self):
-        """
         cdef int interact_type
         if self.c_list is not NULL:
             for interact_type in xrange(self.c_num_interact_types):
-                PyMem_Free(self.c_list[interact_type])
-
+                if self.c_length_list[interact_type] > 0:
+                    PyMem_Free(self.c_list[interact_type])
             PyMem_Free(self.c_list)
             PyMem_Free(self.c_length_list)
+        
         if self.c_friend_list is not NULL:
             PyMem_Free(self.c_friend_list)
+        
         if self.c_train_ids is not NULL:
             PyMem_Free(self.c_train_ids)
             PyMem_Free(self.c_test_ids)
-        """
-        pass
     
     cpdef int store_interactions(self, int interact_type, ilist):
         self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
@@ -290,6 +289,12 @@ cdef class CNetworkNode:
         
         qsort(self.c_friend_list, self.c_length_friend_list, sizeof(fdata), comp_friends)
         return self.c_length_friend_list
+    
+    cpdef int remove_friends(self):
+        self.c_length_friend_list = 0
+        PyMem_Free(self.c_friend_list)
+        self.c_friend_list = NULL
+        self.c_should_have_friends = False
 
     cpdef get_all_items_interacted_with(self):
         interacted_items = set()
@@ -684,8 +689,6 @@ cdef class CNetworkNode:
     property should_have_friends:
         def __get__(self):
             return self.c_should_have_friends
-        def __set__(self, value):
-            self.c_should_have_friends = value
 
     property length_test_ids:
         def __get__(self):

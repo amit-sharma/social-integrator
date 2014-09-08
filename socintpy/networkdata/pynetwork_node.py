@@ -55,6 +55,10 @@ class PyNetworkNode(object):
         for friend_tuple in friends_list:
             self.friends.append(friend_tuple)
         return len(self.friends)
+    
+    def remove_friends(self):
+        self.should_have_friends = False
+        self.friends = None
 
     def get_all_items_interacted_with(self):
         interacted_items = []
