@@ -88,6 +88,18 @@ class BasicNetworkAnalyzer(object):
                 yield (node.uid, friend_id)
         #return friends
 
+    def compare_interaction_types(self):
+        num_interacts = {}
+        for key in self.netdata.interact_types_dict.keys():
+            num_interacts[key] = []
+        for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            for key, interact_type in self.netdata.interact_types_dict.iteritems():
+                num_interacts[key].append(node.get_num_interactions(interact_type))
+
+        for arr in num_interacts.itervalues():
+            arr.sort()
+        return num_interacts
+
     def compare_circle_global_similarity(self, interact_type, num_random_trials, cutoff_rating):
         counter = 0
         circle_sims = []
@@ -247,6 +259,7 @@ class BasicNetworkAnalyzer(object):
         node = self.netdata.nodes[node_id] 
         node.get_details(self.netdata.interaction_types[0])
         return
+
     """
     def getItemPopularityInDataset(data):
         likes = {}

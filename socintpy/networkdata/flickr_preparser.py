@@ -15,8 +15,11 @@ class FlickrDataPreparser(NetworkDataPreparser):
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
     EdgeData = namedtuple('EdgeData', 'receiver_id timestamp')
 
-    def __init__(self, data_path, node_impl, cutoff_rating):
-        NetworkDataPreparser.__init__(self, node_impl)
+    def __init__(self, data_path, node_impl, cutoff_rating, 
+                 max_core_nodes, store_dataset):
+        NetworkDataPreparser.__init__(self, node_impl, data_path,
+                                      max_core_nodes=max_core_nodes, 
+                                      store_dataset=store_dataset)
         self.datadir = data_path
         self.nodes_filename = data_path + "sorted-flickr-growth.txt"
         self.items_filename = data_path + "flickr-all-photos.txt"
@@ -30,13 +33,19 @@ class FlickrDataPreparser(NetworkDataPreparser):
         self.cutoff_rating = cutoff_rating
         self.cutoff_rating = None
         self.copy_timestamps = []
+        
+        globals().update(self.named_tuple_dict)
 
     def get_all_data(self):
-        self.read_nodes_file()
-        self.read_edges_file()
-        self.read_items_file()
-        self.read_interactions_file()
-        del self.node_id_map
+        if self.load_from_saved_dataset:
+            self.load_dataset()
+            del self.node_id_map
+        else:
+            self.read_nodes_file()
+            self.read_edges_file()
+            self.read_items_file()
+            self.read_interactions_file()
+            del self.node_id_map
 
     def read_nodes_file(self):
         self.nodes.insert(self.node_counter, None)
@@ -58,7 +67,7 @@ class FlickrDataPreparser(NetworkDataPreparser):
                     self.node_id_map[uid] = self.node_counter
                     self.node_counter += 1
                 prev_uid = uid
-            print "All core nodes stored", len(self.nodes)-1, self.node_counter
+            print "All core nodes stored", len(self.nodes)-1
         return self.nodes
 
     # Item ids are unchanged. The index in the items array is NOT the item_id.

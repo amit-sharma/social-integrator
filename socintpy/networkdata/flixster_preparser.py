@@ -34,7 +34,6 @@ class FlixsterDataPreparser(NetworkDataPreparser):
             cutoff_rating = 0
         self.copy_timestamps = []
 
-        #globals()['InteractData'] = self.__class__.InteractData
         globals().update(self.named_tuple_dict)
 
     def get_all_data(self):
@@ -52,7 +51,7 @@ class FlixsterDataPreparser(NetworkDataPreparser):
         if self.nodes_to_fetch is not None:
             print "Yo"
             self.select_subset_nodes()
-        if self.store_dataset:
+        if self.store_dataset: # does not work with cython yet
             self.dump_dataset()
 
     def read_nodes_file(self):

@@ -11,7 +11,8 @@ class PyNetworkNode(object):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
     #user_sim = {}
-    #__slots__ = ('uid', 'should_have_friends', 'should_have_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
+    __slots__ = ('uid', 'should_have_friends', 'should_have_interactions',
+                 'node_data', 'interactions', 'interaction_types', 'friends')
 
     def __init__(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         self.uid = uid

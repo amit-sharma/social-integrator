@@ -19,7 +19,8 @@ from pprint import pprint
 
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
-                          'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset']
+                          'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset',
+                          'compare_interact_types']
 def usage():
     print "Too few or erroneous parameters"
     print 'Usage: python '+sys.argv[0]+' -d <dataset_name> -p <path> -c <computation>'
@@ -85,14 +86,17 @@ if __name__ == "__main__":
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
-        data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
+        data = LastfmDataPreparser(dataset_path, impl_type, cutoff_rating,
+                                   max_core_nodes, store_dataset)
     elif dataset_domain=="goodreads":
-        data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
+        data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
+                                      max_core_nodes. store_dataset)
     elif dataset_domain=="flixster":
         data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, 
                                      max_core_nodes, store_dataset)
     elif dataset_domain=="flickr":
-        data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, max_core_nodes)
+        data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, 
+                                   max_core_nodes, store_dataset)
     
     try:
         data.get_all_data()
@@ -213,6 +217,23 @@ if __name__ == "__main__":
             f.write("%s\t%s\n" %(user_id, friend_id))
         f.close()
         print "Successfully stored tsv dataset"
+    elif computation_cmd=="compare_interact_types":
+        num_interacts_dict = net_analyzer.compare_interaction_types()
+        interact_types = num_interacts_dict.keys()
+        plotter.plotLinesYY(num_interacts_dict[interact_types[0]], 
+                            num_interacts_dict[interact_types[1]],
+                            interact_types[0], interact_types[1], 
+                            display=True)
+         
+        plotter.plotLinesYY(num_interacts_dict[interact_types[1]], 
+                            num_interacts_dict[interact_types[2]],
+                            interact_types[1], interact_types[2], 
+                            display=True)
+         
+        plotter.plotLinesYY(num_interacts_dict[interact_types[0]], 
+                            num_interacts_dict[interact_types[2]],
+                            interact_types[0], interact_types[2], 
+                            display=True)
          
     """
     elif computation_cmd=="random_recommender":
