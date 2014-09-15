@@ -87,6 +87,13 @@ class BasicNetworkAnalyzer(object):
                 #friends.append((node.uid, friend_id))
                 yield (node.uid, friend_id)
         #return friends
+    def get_high_freq_items(self, items, min_freq):
+        freq_items = {}
+        for item_id, timestamp in items:
+            if item_id not in freq_items:
+                freq_items[item_id] = 0
+            freq_items[item_id] += 1
+        return [ key for key, value in freq_items if value >=min_freq]
 
     def compare_interaction_types(self):
         num_interacts = {}
@@ -94,8 +101,13 @@ class BasicNetworkAnalyzer(object):
             num_interacts[key] = []
         for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
             for key, interact_type in self.netdata.interact_types_dict.iteritems():
-                num_interacts[key].append(node.get_num_interactions(interact_type))
-
+                items = node.get_items_interacted_with(interact_type)
+                if key=="listen":
+                    num_items = self.get_high_freq_items(items, 2)
+                else:
+                    num_items = len(items)
+                num_interacts[key].append(num_items)
+        print "gfgffg"
         for arr in num_interacts.itervalues():
             arr.sort()
         return num_interacts
