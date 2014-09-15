@@ -31,12 +31,17 @@ class BasicNetworkAnalyzer(object):
         print "Number of users with zero friends", sum([1 for v in fr_arr if v == 0])
         
         items_all=[]
+        users_with_zero_interacts = 0
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             #items_all = items_all.union(v.get_items_interacted_with())
-            items_all.extend(v.get_all_items_interacted_with())
+            items_list = v.get_all_items_interacted_with()
+            if len(items_list)==0:
+                users_with_zero_interacts += 1
+            items_all.extend(items_list)
         items_all = set(items_all)
         print "Total number of items", len(items_all)
         print "Types of interactions with items", self.netdata.interaction_types
+        print "Total number of users with zero interacts (across all types)", users_with_zero_interacts
         
         items_by_interaction = []
         for interact_type in self.netdata.interaction_types:
@@ -87,27 +92,28 @@ class BasicNetworkAnalyzer(object):
                 #friends.append((node.uid, friend_id))
                 yield (node.uid, friend_id)
         #return friends
-    def get_high_freq_items(self, items, min_freq):
+     
+    def get_high_freq_items(self, items_set, min_freq):
         freq_items = {}
-        for item_id, timestamp in items:
+        for item_id, timestamp in items_set:
             if item_id not in freq_items:
                 freq_items[item_id] = 0
             freq_items[item_id] += 1
-        return [ key for key, value in freq_items if value >=min_freq]
-
+        return [key for key, value in freq_items.iteritems() if value >=min_freq]
+    
     def compare_interaction_types(self):
         num_interacts = {}
         for key in self.netdata.interact_types_dict.keys():
             num_interacts[key] = []
         for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
             for key, interact_type in self.netdata.interact_types_dict.iteritems():
-                items = node.get_items_interacted_with(interact_type)
+                items = node.get_items_interacted_with(interact_type, 
+                                                       return_timestamp=True)
                 if key=="listen":
-                    num_items = self.get_high_freq_items(items, 2)
+                    num_items = len(self.get_high_freq_items(items, 2))
                 else:
                     num_items = len(items)
                 num_interacts[key].append(num_items)
-        print "gfgffg"
         for arr in num_interacts.itervalues():
             arr.sort()
         return num_interacts

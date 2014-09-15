@@ -180,17 +180,17 @@ def compute(data, computation_cmd):
         plotter.plotLinesYY(num_interacts_dict[interact_types[0]], 
                             num_interacts_dict[interact_types[1]],
                             interact_types[0], interact_types[1], 
-                            display=True)
+                            display=True, logyscale=True)
          
         plotter.plotLinesYY(num_interacts_dict[interact_types[1]], 
                             num_interacts_dict[interact_types[2]],
                             interact_types[1], interact_types[2], 
-                            display=True)
+                            display=True, logyscale=True)
          
         plotter.plotLinesYY(num_interacts_dict[interact_types[0]], 
                             num_interacts_dict[interact_types[2]],
                             interact_types[0], interact_types[2], 
-                            display=True)
+                            display=True, logyscale=True)
          
     """
     elif computation_cmd=="random_recommender":
@@ -320,7 +320,7 @@ if __name__ == "__main__":
 
 def get_data():
     dataset_domain="lastfm"
-    dataset_path = "/mnt/data/lastfm/"
+    dataset_path = "/mnt/bigdata/lastfm/"
     computation_cmd = "basic_stats"
     max_core_nodes = None
     impl_type = "cython"

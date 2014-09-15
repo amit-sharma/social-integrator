@@ -31,7 +31,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
         self.items.insert(0, None)
         self.itemid_dict = {} 
         
-        self.MAX_NODES_TO_READ = 2
+        self.MAX_NODES_TO_READ = 100000 
         self.cutoff_rating = None
        
         self.nodes_files = []
@@ -73,8 +73,8 @@ class LastfmDataPreparser(NetworkDataPreparser):
         for temp_key, data_dict in nodes_db.iteritems():
             if self.node_index % 100 == 0:
                 print "Storing information about ", self.node_index
-            if counter_node == self.MAX_NODES_TO_READ:
-                break
+            #if counter_node == self.MAX_NODES_TO_READ:
+            #    break
             self.node_index += 1
             counter_node += 1
             user_id = self.node_index
