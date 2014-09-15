@@ -3,7 +3,7 @@ import sys
 import logging
 
 import matplotlib as mpl
-mpl.use('Agg')
+#mpl.use('Agg')
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 from socintpy.networkvisualize.network_visualizer import NetworkVisualizor
 from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
