@@ -66,6 +66,7 @@ class SqliteStore(GenericStore):
             for row in row_list:
             #for row in self.result_iter(cursor):
                 yield (row[0], cPickle.loads(str(row[1])))
+                #yield (row[0], {'name':'amit'})
 
     def keys(self):
         return [row[0] for row in self.con.execute("select key from data").fetchall()]

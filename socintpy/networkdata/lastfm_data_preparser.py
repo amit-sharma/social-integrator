@@ -77,6 +77,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
             #    break
             self.node_index += 1
             counter_node += 1
+           
             user_id = self.node_index
             #print temp_key#data_dict
             self.uid_dict[temp_key] = user_id
@@ -86,7 +87,7 @@ class LastfmDataPreparser(NetworkDataPreparser):
 
             self.nodes.insert(user_id, new_netnode)
             self.store_interactions(user_id, data_dict)
-
+            
         return self.uid_dict
 
     def read_friends(self, edge_db, max_core_node_index):
