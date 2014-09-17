@@ -10,7 +10,7 @@ from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
-from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
+from socintpy.networkdata.lastfm_data_preparser_csv import LastfmDataPreparserCSV
 from socintpy.networkdata.flixster_preparser import FlixsterDataPreparser
 from socintpy.networkdata.flickr_preparser import FlickrDataPreparser
 import socintpy.util.plotter as plotter
@@ -42,7 +42,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
-        data = LastfmDataPreparser(dataset_path, impl_type, cutoff_rating,
+        data = LastfmDataPreparserCSV(dataset_path, impl_type, cutoff_rating,
                                    max_core_nodes, store_dataset)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
