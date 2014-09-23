@@ -93,29 +93,31 @@ class BasicNetworkAnalyzer(object):
                 yield (node.uid, friend_id)
         #return friends
      
-    def get_high_freq_items(self, items_set, min_freq):
+    def get_high_freq_items(self, items_set, min_freq, return_duplicates):
         freq_items = {}
-        for item_id, timestamp in items_set:
+        for item in items_set:
+            item_id = item[0] if return_duplicates else item
             if item_id not in freq_items:
                 freq_items[item_id] = 0
             freq_items[item_id] += 1
         return [key for key, value in freq_items.iteritems() if value >=min_freq]
     
-    def compare_interaction_types(self):
+    def compare_interaction_types(self, min_exposure=1, return_duplicates=True):
         num_interacts = {}
         for key in self.netdata.interact_types_dict.keys():
             num_interacts[key] = []
         for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
             for key, interact_type in self.netdata.interact_types_dict.iteritems():
                 items = node.get_items_interacted_with(interact_type, 
-                                                       return_timestamp=True)
+                                                       return_timestamp=return_duplicates)
                 if key=="listen":
-                    num_items = len(self.get_high_freq_items(items, 2))
+                    num_items = len(self.get_high_freq_items(items, min_exposure,
+                                                             return_duplicates))
                 else:
                     num_items = len(items)
                 num_interacts[key].append(num_items)
-        for arr in num_interacts.itervalues():
-            arr.sort()
+#for arr in num_interacts.itervalues():
+#            arr.sort()
         return num_interacts
 
     def compare_circle_global_similarity(self, interact_type, num_random_trials, cutoff_rating):
@@ -200,7 +202,9 @@ class BasicNetworkAnalyzer(object):
 
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             for interact_type in self.netdata.interaction_types:
-                interactions_per_user[interact_type] += len(v.get_items_interacted_with(interact_type))
+                items = v.get_items_interacted_with(interact_type, 
+                                                       return_timestamp=True)
+                interactions_per_user[interact_type] += len(items)
         return interactions_per_user
 
     #TODO have pearson correlation instead of jaccard because these ratings are real valued. going with a cutoff now.

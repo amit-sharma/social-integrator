@@ -47,7 +47,8 @@ ctypedef np.int_t DTYPE_INT_t
 
 cdef struct idata:
     int item_id
-    char *timestamp
+    #char *timestamp
+    unsigned int timestamp
     int rating
 
 cdef struct fdata:

@@ -27,13 +27,39 @@ def plotLineY(y, labelx="X", labely="Y", logxscale=False, logyscale=False):
         yscale("log")
     show()
 
-def plotHist(vector, labelx="X", labely="Y", logyscale=False):
+def plotLinesXY(x, y, labelx="X", labely="Y", logxscale=False, logyscale=False, 
+               display=True, title_str="", ylim_val=None, xlim_val=None):
+    xlabel(labelx)
+    ylabel(labely)
+    scatter(x, y)
+    if logxscale:
+        xscale("log")
+    if logyscale:
+        yscale("log")
+    if ylim_val is not None:
+        ylim(ylim_val)
+    if xlim_val is not None:
+        xlim(xlim_val)
+    title(title_str)
+    if display:
+        show()
+
+def plotLogLog(x, y, labelx="X", labely="Y", display=True):
+    xlabel(labelx)
+    ylabel(labely)
+    plot(x,y)
+    if display:
+        show()
+
+def plotHist(vector, labelx="X", labely="Y", logyscale=False, xlim_val=None):
     hist(vector, bins=100)
     title("Title")
     xlabel(labelx)
     ylabel(labely)
     if logyscale:
         yscale("log")
+    if xlim_val is not None:
+        xlim(xlim_val)
     show()
 
 def plotCumulativePopularity(items_pop_vector, labelx="X", labely="Y"):

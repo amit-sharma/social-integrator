@@ -70,8 +70,11 @@ class PyNetworkNode(object):
         interacted_items = set(interacted_items)
         return interacted_items
     
-    def get_items_interacted_with(self, interact_type):
-        ret_val = set([val[0] for val in self.interactions[interact_type]])
+    def get_items_interacted_with(self, interact_type, return_timestamp=False):
+        if return_timestamp:
+            ret_val =[(v.item_id, v.timestamp) for v in self.interactions[interact_type]]
+        else:
+            ret_val = set([val[0] for val in self.interactions[interact_type]])
         #print self.uid, len(ret_val), interact_type
         return ret_val
 

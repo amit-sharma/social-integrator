@@ -43,7 +43,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparserCSV(dataset_path, impl_type, cutoff_rating,
-                                   max_core_nodes, store_dataset)
+                                   max_core_nodes, store_dataset, use_artists=False)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
                                       max_core_nodes. store_dataset)
