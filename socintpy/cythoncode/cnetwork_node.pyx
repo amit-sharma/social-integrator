@@ -279,6 +279,21 @@ cdef class CNetworkNode:
         qsort(self.c_list[interact_type], self.c_length_list[interact_type], sizeof(idata), comp_interactions)
         return self.c_length_list[interact_type]
 
+
+    cpdef int store_interaction_ids(self, int interact_type, ilist):
+        self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
+        if self.c_list is NULL:
+            raise MemoryError()
+        cdef int i
+        #cdef str retval
+        for i in range(len(ilist)):
+            #print "In the loop %d" %i
+            self.c_list[interact_type][i].item_id = ilist[i][0]
+            self.c_list[interact_type][i].rating = ilist[i][2]
+            self.c_list[interact_type][i].timestamp = ilist[i][1] 
+        self.c_length_list[interact_type] = len(ilist)
+        return self.c_length_list[interact_type]
+
     cpdef int store_friends(self, flist):
         self.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
         if self.c_friend_list is NULL:
@@ -291,6 +306,16 @@ cdef class CNetworkNode:
         qsort(self.c_friend_list, self.c_length_friend_list, sizeof(fdata), comp_friends)
         return self.c_length_friend_list
     
+    cpdef int store_friend_ids(self, flist):
+        self.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
+        if self.c_friend_list is NULL:
+            raise MemoryError()
+        cdef int i
+        for i in xrange(len(flist)):
+            self.c_friend_list[i].receiver_id = flist[i]
+        self.c_length_friend_list = len(flist)
+        return self.c_length_friend_list
+
     cpdef int remove_friends(self):
         self.c_length_friend_list = 0
         PyMem_Free(self.c_friend_list)

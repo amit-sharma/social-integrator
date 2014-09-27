@@ -51,8 +51,9 @@ class LastfmDataConverter(object):
             if counter % 1000 == 0:
                 print "Storing information about ", counter
                 #break
-            writer.writerow((temp_key, data_dict['name']))
+            writer.writerow((temp_key.encode('utf-8'), data_dict['name'].encode('utf-8')))
             self.store_interactions(data_dict['name'], data_dict)
+            # if orig_user_id is a user_id(numeric), instead of username
             if orig_user_id != data_dict['name']:
                 self.node_id_map[orig_user_id] = data_dict['name']
             counter += 1
@@ -75,7 +76,7 @@ class LastfmDataConverter(object):
                 target_user = data_dict['target']
             
                 
-            ewriter.writerow((source_user, target_user))
+            ewriter.writerow((source_user.encode('utf-8'), target_user.encode('utf-8')))
         
         efile.close()
     
@@ -85,31 +86,32 @@ class LastfmDataConverter(object):
        
         recent_tracks_list = [] 
         for trackdict in data_dict['tracks']:
-            if '@attr' in trackdict:
-                #pprint(trackdict)
-                if 'nowplaying' in trackdict['@attr']:
-                    logging.warn("Now playing track, ignoring %s,%s!" %(data_dict['name'], user_id))
-                    continue
-            recent_tracks_list.append(trackdict)
+            if '@attr' in trackdict and 'nowplaying' in trackdict['@attr']:
+                logging.info("Now playing track ignored for %s,%s!" %(data_dict['name'], user_id))
+            else: 
+                recent_tracks_list.append(trackdict)
         self.store_interactions_by_type(user_id, 'listen', recent_tracks_list)
 
     def store_interactions_by_type(self,netnode_id, interact_type, interactions_list):
         ilist = []
         for trackdict in interactions_list:
-            print trackdict; break
+#print trackdict; 
             orig_item_id = trackdict['mbid']
             if 'album' in trackdict:
                 album_mbid = trackdict['album']['mbid']
             else:
                 album_mbid = ''
             artist_mbid = trackdict['artist']['mbid']
-            track_url = trackdict['url']
+            # To make sure csv format is consistent
+            track_url = trackdict['url'].replace(',', "@|")
             if len(orig_item_id) <2 and len(track_url)<2:
                 pprint(trackdict)
-            ilist.append(LastfmDataConverter.InteractData(user_id=netnode_id, 
+            in_tuple = LastfmDataConverter.InteractData(user_id=netnode_id, 
                             original_item_id=orig_item_id, track_url=track_url,
                             artist_mbid = artist_mbid, album_mbid = album_mbid,
-                            timestamp=trackdict['date']['uts'], rating=1))
+                            timestamp=trackdict['date']['uts'], rating="1")
+            in_tuple = [val.encode('utf-8') for val in in_tuple]
+            ilist.append(in_tuple)
             #print "%s" %trackdict['date']['uts']
         
         self.iwriters[interact_type].writerows(ilist)
@@ -117,7 +119,7 @@ class LastfmDataConverter(object):
 
 if __name__ == "__main__":
     part_code = sys.argv[1]
-    dir_path = "/mnt/bigdata/lastfm/part" + part_code + "/"
+    dir_path = "/mnt/bigdata/" + part_code + "/"
     logging.basicConfig(filename=dir_path+"converter.log", level="DEBUG")
     ldc = LastfmDataConverter(dir_path,None, None)
     ldc.get_all_data()

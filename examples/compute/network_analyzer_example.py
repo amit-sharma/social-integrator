@@ -325,7 +325,8 @@ def get_data():
     max_core_nodes = None
     impl_type = "cython"
     cutoff_rating = None # sufficiently small value so that cutoff has no effect.
-    store_dataset = False
+    store_dataset = True
+
     data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
                                   max_core_nodes, cutoff_rating, store_dataset)
 

@@ -3,7 +3,7 @@ from socintpy.networkdata.network_node import NetworkNode
 from socintpy.store.sqlite_store import SqliteStore
 from socintpy.util.unicode_csv import unicode_csv_reader
 from collections import namedtuple
-import logging, os, csv
+import logging, os, codecs, sys, csv
 import threading
 
 def handle_os_walk(os_error):
@@ -43,21 +43,23 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
         self.use_artists = use_artists
 
     def get_all_data(self):
+        encoding = "utf-8"
         for root, dirs, files in os.walk(self.datadir, onerror=handle_os_walk):
             for filename in files:
                 fname_chunks = filename.split(".")
+                print filename
                 uname = fname_chunks[0]
                 uname_lastchunk = uname.split("_")[-1]
                 filepath = os.path.join(root, ".".join(fname_chunks))
                 if filename=="lastfm_nodes.tsv":
                     self.nodes_files.append(filepath)
-                    nodes_db_obj = unicode_csv_reader(open(filepath))
+                    nodes_db_obj = codecs.open(filepath, encoding=encoding)
                     self.nodes_db_list.append(nodes_db_obj)
                 elif filename == "lastfm_edges.tsv":
                     self.edges_files.append(filepath)
-                    self.edges_db_list.append(unicode_csv_reader(open(filepath)))
-                elif uname_lastchunk in self.interact_types_dict.keys():
-                    self.interacts_files[uname_lastchunk].append(unicode_csv_reader(open(filepath)))
+                    self.edges_db_list.append(codecs.open(filepath, encoding=encoding))
+                elif uname_lastchunk in self.interact_types_dict.keys() and filename.endswith(".tsv"):
+                    self.interacts_files[uname_lastchunk].append(codecs.open(filepath, encoding=encoding))
 
         #print self.edges_files
         #print self.nodes_files
@@ -69,6 +71,10 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
         
         # store interactions before storing edges, because we are only going to have interactions for the nodes
         # we collected
+        for edge_db in self.edges_db_list:
+            self.read_friends(edge_db, max_core_node_index)
+        print "All nodes and edges read.\nNow reading interactions..."
+        #self.remove_friendless_nodes() 
         #threads = []
         for interact_name, interact_files in self.interacts_files.iteritems():
             for ireader in interact_files:
@@ -79,17 +85,18 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                 self.store_interactions(ireader, self.interact_types_dict[interact_name])
         #for t in threads:
         #    t.join()
-
-        for edge_db in self.edges_db_list:
-            self.read_friends(edge_db, max_core_node_index)
-        print "All nodes and edges read.\nNow reading interactions..."
+        if self.store_dataset:
+            self.store_ego_dataset(self.datadir)
         return
 
     def read_nodes(self, nodes_db):
         print "reading nodes"
         counter_node = 0 
-        for row in nodes_db:
+        for line in nodes_db:
+            row = line.strip("\r\n ").split(',')
             username = row[1]
+#print username
+#            sys.exit(1)
             if self.node_index % 10000 == 0:
                 print "Storing information about ", self.node_index
             #if counter_node == self.MAX_NODES_TO_READ:
@@ -110,23 +117,50 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                             should_have_interactions=True, node_data=node_data)
 
             self.nodes.insert(user_id, new_netnode)
+        nodes_db.close()
         print "All nodes read and stored" 
 
+    # assumes each user's friends appear contiguously
     def read_friends(self, edge_db, max_core_node_index):
         flist = []
         prev_source_id = None
-        #count_nodes_stored = 0
-        for source_user, target_user in edge_db:
-            #print source_user, target_user
+        num_friends = 0
+        num_friends_with_interacts = 0
+        for line in edge_db:
+#source_user = row[0]
+#               target_user = row[1]
+            
+            try:
+                source_user, target_user = line.strip("\r\n ").split(',')
+            except:
+                print line, "Cannot parse into two columns"
+                continue
+            
+            #print source_user, target_user, self.uid_dict.keys()
             # assuming edges are always stored in same order as the nodes
             if source_user not in self.uid_dict:
-               continue
-            if self.uid_dict[source_user] > max_core_node_index:
+                print "Error: Source user not found", source_user
                 continue
+            #if self.uid_dict[source_user] > max_core_node_index:
+            #   continue
             source_id = self.uid_dict[source_user]
             
+            if prev_source_id is not None and prev_source_id != source_id:
+                if num_friends_with_interacts/float(num_friends) >= 0.9:
+                    #print prev_source_id, self.MAX_NODES_TO_READ, "Yo"
+                    self.nodes[prev_source_id].store_friends(flist)
+                    #count_nodes_stored += 1
+                else:
+                    self.nodes[prev_source_id].remove_friends()
+                flist = []
+                num_friends=0
+                num_friends_with_interacts = 0
+                    
             if target_user in self.uid_dict:
                 friend_id = self.uid_dict[target_user]
+                num_friends_with_interacts += 1
+                flist.append(LastfmDataPreparserCSV.EdgeData(receiver_id=friend_id))
+            """
             else:
                 self.node_index += 1
                 friend_id = self.node_index
@@ -137,28 +171,34 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                                                 should_have_friends=False, 
                                                 should_have_interactions=False, 
                                                 node_data=node_data))
-            
-            if prev_source_id is not None and prev_source_id != source_id:
-                #print prev_source_id, self.MAX_NODES_TO_READ, "Yo"
-                self.nodes[prev_source_id].store_friends(flist)
-                #count_nodes_stored += 1
-                flist = []
                 
             flist.append(LastfmDataPreparserCSV.EdgeData(receiver_id=friend_id))
+            """
             prev_source_id = source_id
-        
-        self.nodes[prev_source_id].store_friends(flist)
+            num_friends += 1
+        if num_friends_with_interacts/float(num_friends) >= 0.9:
+            self.nodes[prev_source_id].store_friends(flist)
+        else:
+            self.nodes[prev_source_id].store_friends([LastfmDataPreparserCSV.EdgeData(receiver_id=-1)])
+        print "Done reading Edges from", edge_db
+        edge_db.close()
+        return
     
     def store_interactions(self,interact_db, interact_type):
         prev_source_id = None
         ilist = []
-        for row in interact_db:
+        for line in interact_db:
+            row = line.strip("\n\r ").split(',')
             source_user = row[0]
             if self.use_artists:
                 orig_item_id = row[3] # if you want artists
             else:
-                orig_item_id = row[2]
-            timestamp = int(row[5])
+                orig_item_id = row[2] # url of a song
+            try:
+                timestamp = int(row[5])
+            except:
+                print line, "Timestamp not read"
+                continue
             rating = int(row[6])
             #if source_user not in self.uid_dict:
             #   continue
@@ -186,6 +226,7 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
             prev_source_id = source_id
         self.nodes[prev_source_id].store_interactions(interact_type, ilist)
         print "Read interactions for ", interact_type
+        interact_db.close()
         return
 
 

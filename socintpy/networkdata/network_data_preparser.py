@@ -2,6 +2,7 @@
 from socintpy.cythoncode.cnetwork_node import CNetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 import random
+import codecs
 import cPickle as pickle
 
 class NetworkDataPreparser():
@@ -141,7 +142,50 @@ class NetworkDataPreparser():
             "_maxcorenodes_" + str(self.nodes_to_fetch) + ".pkl")
         with open(filename, 'wb') as outf:
           pickle.dump(self.nodes, outf, -1)
-    
+   
+    def store_ego_dataset(self, filepath):
+        node_count = 0
+        f = codecs.open(filepath+'egodata_'+str(node_count)+'.tsv', encoding="utf-8", mode='w')
+        f.write("# Interacts:"+repr(self.interact_types_dict.items())+'\n')
+        for node in self.get_nodes_iterable():
+            f.write(unicode(node.uid)+' '+unicode(node.should_have_friends)+"\n")
+            
+            fids = node.get_friend_ids()
+            if len(fids)>0:
+                for fid in fids:
+                    f.write(unicode(fid)+' ')
+            else:
+                f.write('None')
+            f.write('\n')
+            
+            for interact_type in sorted(self.interact_types_dict.values()):
+                interacts = node.get_items_interacted_with(interact_type, return_timestamp=True)
+                if len(interacts) >0:
+                    for item_id, timestamp in interacts:
+                        f.write(unicode(item_id)+':'+unicode(timestamp)+' ')
+                else:
+                    f.write("None")
+                f.write('\n')
+
+            node_count += 1
+            if node_count % 10000 == 0:
+                f.close()
+                print "Wrote", node_count, "nodes"
+                f = codecs.open(filepath+'egodata_'+str(node_count)+'.tsv', encoding="utf-8", mode='w')
+        f.close()
+
+        f_nodemap = codecs.open(filepath+'nodemap'+'.tsv', encoding="utf-8", mode='w')
+        for node_name, node_id in self.uid_dict.iteritems():
+            f_nodemap.write(unicode(node_name) + ' ' + unicode(node_id) + '\n')
+        f_nodemap.close()
+        
+        f_itemmap = codecs.open(filepath+'itemmap'+'.tsv', encoding="utf-8", mode='w')
+        for item_name, item_id in self.itemid_dict.iteritems():
+            f_itemmap.write(unicode(item_name) + ' ' + unicode(item_id) + '\n')
+        f_itemmap.close()
+        return
+        
+
     def load_dataset(self):
         with open(self.datadir, 'rb') as pkl_file:
             self.nodes = pickle.load(pkl_file)

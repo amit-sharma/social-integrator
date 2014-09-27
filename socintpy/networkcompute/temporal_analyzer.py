@@ -19,7 +19,9 @@ class TemporalAnalyzer(BasicNetworkAnalyzer):
                 self.items_pop[item_id] += 1
             self.num_users_with_interactions += 1
         print [(node, item_id, timestamp) for node, item_id, timestamp in self.interactions_stream[1:10]]
-        return sorted(self.interactions_stream, key=operator.itemgetter(2))
+        self.interactions_stream = sorted(self.interactions_stream, key=operator.itemgetter(2))
+        self.show_basic_temporal_stats()
+        return 
 
     def find_early_late_adopters(self, interact_type):
         item_interactions = defaultdict(int)
@@ -66,3 +68,7 @@ class TemporalAnalyzer(BasicNetworkAnalyzer):
             freq.append(v)
         plotter.plotLinesXY(prev_users, freq, labelx="Fraction of users who have interacted before with an item", 
                 labely="Number of interactions", logyscale=True)
+    
+    def get_max_min_time(self, interact_type):
+        print "First interaction", self.interactions_stream[0][2]
+        print "Last interaction", self.interactions_stream[-1][2]
