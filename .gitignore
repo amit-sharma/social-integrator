@@ -3,6 +3,7 @@
 *.db
 *.log
 *.swp
+*.so
 *settings.py
 build-couchdb
 .idea/
