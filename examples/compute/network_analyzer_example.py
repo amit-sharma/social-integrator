@@ -11,6 +11,7 @@ from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.networkdata.lastfm_data_preparser_csv import LastfmDataPreparserCSV
+from socintpy.networkdata.lastfm_data_preparser_simple import LastfmDataPreparserSimple
 from socintpy.networkdata.flixster_preparser import FlixsterDataPreparser
 from socintpy.networkdata.flickr_preparser import FlickrDataPreparser
 import socintpy.util.plotter as plotter
@@ -43,6 +44,9 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparserCSV(dataset_path, impl_type, cutoff_rating,
+                                   max_core_nodes, store_dataset, use_artists=False)
+    elif dataset_domain== "lastfm_simple":
+        data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
                                    max_core_nodes, store_dataset, use_artists=False)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
@@ -318,9 +322,13 @@ if __name__ == "__main__":
                                   max_core_nodes, cutoff_rating, store_dataset)
     compute(data, computation_cmd)
 
-def get_data():
-    dataset_domain="lastfm"
-    dataset_path = "/mnt/bigdata/lastfm/"
+def get_data(from_raw_dataset=False):
+    if from_raw_dataset:
+        dataset_domain="lastfm"
+        dataset_path="/mnt/bigdata/lastfm/"
+    else:
+        dataset_domain="lastfm_simple"
+        dataset_path = "/mnt/bigdata/lastfm_ego/ego_songs_75_40kdata/"
     computation_cmd = "basic_stats"
     max_core_nodes = None
     impl_type = "cython"
@@ -330,7 +338,5 @@ def get_data():
     data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
                                   max_core_nodes, cutoff_rating, store_dataset)
 
-    net_analyzer = BasicNetworkAnalyzer(data)
-    net_analyzer.show_basic_stats()
     return data
 

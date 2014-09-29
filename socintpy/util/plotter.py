@@ -51,8 +51,8 @@ def plotLogLog(x, y, labelx="X", labely="Y", display=True):
     if display:
         show()
 
-def plotHist(vector, labelx="X", labely="Y", logyscale=False, xlim_val=None):
-    hist(vector, bins=100)
+def plotHist(vector, labelx="X", labely="Y", logyscale=False, xlim_val=None, bins=100):
+    hist(vector, bins=bins)
     title("Title")
     xlabel(labelx)
     ylabel(labely)

@@ -41,6 +41,7 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
         self.uid_dict = {}
         self.friend_uid_dict = {}
         self.use_artists = use_artists
+        self.min_fr_fraction = 0.75
 
     def get_all_data(self):
         encoding = "utf-8"
@@ -50,7 +51,10 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                 print filename
                 uname = fname_chunks[0]
                 uname_lastchunk = uname.split("_")[-1]
-                filepath = os.path.join(root, ".".join(fname_chunks))
+                filepath = os.path.join(root, filename)
+                if filepath.split('/')[4] >= "partae":
+                    print "Ignoring part", filepath.split('/')[4]
+                    continue
                 if filename=="lastfm_nodes.tsv":
                     self.nodes_files.append(filepath)
                     nodes_db_obj = codecs.open(filepath, encoding=encoding)
@@ -146,7 +150,7 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
             source_id = self.uid_dict[source_user]
             
             if prev_source_id is not None and prev_source_id != source_id:
-                if num_friends_with_interacts/float(num_friends) >= 0.9:
+                if num_friends_with_interacts/float(num_friends) >= self.min_fr_fraction:
                     #print prev_source_id, self.MAX_NODES_TO_READ, "Yo"
                     self.nodes[prev_source_id].store_friends(flist)
                     #count_nodes_stored += 1
@@ -155,7 +159,8 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                 flist = []
                 num_friends=0
                 num_friends_with_interacts = 0
-                    
+            # only store as a friend if it was crawled too. thus flist is a subset of 
+            # actual friends, guaranteeing atleast min_fr_fraction to be there
             if target_user in self.uid_dict:
                 friend_id = self.uid_dict[target_user]
                 num_friends_with_interacts += 1

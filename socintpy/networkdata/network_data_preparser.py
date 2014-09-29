@@ -16,7 +16,7 @@ class NetworkDataPreparser():
         self.min_friends = min_friends
         self.nodes_to_fetch = max_core_nodes
         self.store_dataset = store_dataset
-        
+        self.total_num_items = None
         self.load_from_saved_dataset = False
         if data_path.endswith(".pkl"):
             self.load_from_saved_dataset = True
@@ -72,6 +72,18 @@ class NetworkDataPreparser():
         for fid in node.get_friend_ids():
             yield self.nodes[fid]
     
+    def compute_store_total_num_items(self):
+        items_all = []
+        users_with_zero_interacts = 0
+        for v in self.get_nodes_iterable(should_have_interactions=True):
+            items_list = v.get_all_items_interacted_with()
+            if len(items_list)==0:
+                users_with_zero_interacts += 1
+            items_all.extend(items_list)
+        items_all = set(items_all)
+        print "Total number of users(including non-core) with zero interacts (across all types)", users_with_zero_interacts
+        return(items_all)    
+
     def get_friends_nodes(self, node):
         return [self.nodes[fid] for fid in node.get_friend_ids()]
 
@@ -81,11 +93,16 @@ class NetworkDataPreparser():
     def get_node_ids(self):
         return range(1,len(self.nodes))
 
+    """
     def get_item_ids(self):
         return range(1, len(self.items))
-
+    """
+    def get_max_item_id(self):
+        return max(self.item_ids_list)
+    # This is different because in some cases, the max_id may be greater than total
+    # number of items
     def get_total_num_items(self):
-        return len(self.items)-1
+        return self.total_num_items
     
 
     def create_network_node(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
@@ -172,6 +189,7 @@ class NetworkDataPreparser():
                 f.close()
                 print "Wrote", node_count, "nodes"
                 f = codecs.open(filepath+'egodata_'+str(node_count)+'.tsv', encoding="utf-8", mode='w')
+                f.write("# Interacts:"+repr(self.interact_types_dict.items())+'\n')
         f.close()
 
         f_nodemap = codecs.open(filepath+'nodemap'+'.tsv', encoding="utf-8", mode='w')

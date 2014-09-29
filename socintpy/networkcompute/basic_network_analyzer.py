@@ -30,18 +30,9 @@ class BasicNetworkAnalyzer(object):
         print "Mean, SD of number of friends per user", mean_sd(fr_arr)
         print "Number of users with zero friends", sum([1 for v in fr_arr if v == 0])
         
-        items_all=[]
-        users_with_zero_interacts = 0
-        for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
-            #items_all = items_all.union(v.get_items_interacted_with())
-            items_list = v.get_all_items_interacted_with()
-            if len(items_list)==0:
-                users_with_zero_interacts += 1
-            items_all.extend(items_list)
-        items_all = set(items_all)
-        print "Total number of items", len(items_all)
+        num_items_all = self.netdata.get_total_num_items()
+        print "Total number of items", num_items_all
         print "Types of interactions with items", self.netdata.interaction_types
-        print "Total number of users with zero interacts (across all types)", users_with_zero_interacts
         
         items_by_interaction = []
         for interact_type in self.netdata.interaction_types:
@@ -61,7 +52,7 @@ class BasicNetworkAnalyzer(object):
                    %(interact_type, total_interacts, total_interacts/float(num_interactdata_users)))
 
             print( "--Total, Mean, Max, Min of %d-type interactions per item = (%d, %f)"
-                   %(interact_type, total_interacts, total_interacts/float(len(items_all))) )
+                   %(interact_type, total_interacts, total_interacts/float(num_items_all)) )
          
         return
 
