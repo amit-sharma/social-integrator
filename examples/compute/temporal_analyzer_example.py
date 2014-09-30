@@ -1,3 +1,4 @@
+import datetime, time
 import socintpy.networkcompute.temporal_analyzer
 import socintpy.networkcompute.locality_analysis
 from socintpy.networkcompute.temporal_analyzer import TemporalAnalyzer
@@ -5,9 +6,6 @@ from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
 import socintpy.util.plotter as plotter
 import matplotlib.pyplot as plt
 
-def compare_local_global_commonlikes(ta, interact_type):
-    for node in ta.netdata.get_nodes_iterable(should_have_friends==True):
-        pass
 
 def temporal(ta):
     x = ta.create_interactions_stream(interact_type)
@@ -29,7 +27,14 @@ def locality(la):
     #####plotter.plotHist(sorted([val for val in cov_ratio_list]), "Ratio of Edge coverage to total popularity", "Frequency", logyscale=True)
     #plotter.plotHist(sorted(items_popularity), "Item", "total popularity")
     plotter.plotCumulativePopularity(items_popularity, labelx="Item percentile", labely="Cum. percent of number of likes")
+    f_out = open('plots/data/influenced_loves_ratio.tsv', 'w')
+    for i in range(len(items_cov_list)):
+        f_out.write(str(items_cov_list[i])+' '+str(items_popularity[i])+' '+str(cov_ratio_list[i])+'\n')
+    f_out.close()
 
+def influence(la):
+    split_timestamp = int(time.mktime(datetime.datetime.strptime("2013/01/01", "%Y/%m/%d").timetuple()))
+    la.estimate_influencer_effect(1, split_timestamp)
 if __name__ == "__main__":
     global data
     ta = TemporalAnalyzer(data)

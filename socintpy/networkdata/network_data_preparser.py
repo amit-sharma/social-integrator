@@ -54,6 +54,10 @@ class NetworkDataPreparser():
     def get_node_objs(self, indices):
         return [self.nodes[i] for i in indices]
 
+    def get_random_node(self):
+        index = random.randint(1, len(self.nodes)-1)
+        return self.nodes[index]
+
     def get_nonfriends_iterable(self, node):
         node_friend_ids = node.get_friend_ids()
         for v in self.nodes[1:]:
