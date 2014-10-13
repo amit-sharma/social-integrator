@@ -30,12 +30,8 @@ class BasicNetworkAnalyzer(object):
         print "Mean, SD of number of friends per user", mean_sd(fr_arr)
         print "Number of users with zero friends", sum([1 for v in fr_arr if v == 0])
         
-        items_all=[]
-        for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
-            #items_all = items_all.union(v.get_items_interacted_with())
-            items_all.extend(v.get_all_items_interacted_with())
-        items_all = set(items_all)
-        print "Total number of items", len(items_all)
+        num_items_all = self.netdata.get_total_num_items()
+        print "Total number of items", num_items_all
         print "Types of interactions with items", self.netdata.interaction_types
         
         items_by_interaction = []
@@ -56,7 +52,7 @@ class BasicNetworkAnalyzer(object):
                    %(interact_type, total_interacts, total_interacts/float(num_interactdata_users)))
 
             print( "--Total, Mean, Max, Min of %d-type interactions per item = (%d, %f)"
-                   %(interact_type, total_interacts, total_interacts/float(len(items_all))) )
+                   %(interact_type, total_interacts, total_interacts/float(num_items_all)) )
          
         return
 
@@ -87,6 +83,33 @@ class BasicNetworkAnalyzer(object):
                 #friends.append((node.uid, friend_id))
                 yield (node.uid, friend_id)
         #return friends
+     
+    def get_high_freq_items(self, items_set, min_freq, return_duplicates):
+        freq_items = {}
+        for item in items_set:
+            item_id = item[0] if return_duplicates else item
+            if item_id not in freq_items:
+                freq_items[item_id] = 0
+            freq_items[item_id] += 1
+        return [key for key, value in freq_items.iteritems() if value >=min_freq]
+    
+    def compare_interaction_types(self, min_exposure=1, return_duplicates=True):
+        num_interacts = {}
+        for key in self.netdata.interact_types_dict.keys():
+            num_interacts[key] = []
+        for node in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            for key, interact_type in self.netdata.interact_types_dict.iteritems():
+                items = node.get_items_interacted_with(interact_type, 
+                                                       return_timestamp=return_duplicates)
+                if key=="listen":
+                    num_items = len(self.get_high_freq_items(items, min_exposure,
+                                                             return_duplicates))
+                else:
+                    num_items = len(items)
+                num_interacts[key].append(num_items)
+#for arr in num_interacts.itervalues():
+#            arr.sort()
+        return num_interacts
 
     def compare_circle_global_similarity(self, interact_type, num_random_trials, cutoff_rating):
         counter = 0
@@ -170,7 +193,9 @@ class BasicNetworkAnalyzer(object):
 
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
             for interact_type in self.netdata.interaction_types:
-                interactions_per_user[interact_type] += len(v.get_items_interacted_with(interact_type))
+                items = v.get_items_interacted_with(interact_type, 
+                                                       return_timestamp=True)
+                interactions_per_user[interact_type] += len(items)
         return interactions_per_user
 
     #TODO have pearson correlation instead of jaccard because these ratings are real valued. going with a cutoff now.
@@ -247,6 +272,7 @@ class BasicNetworkAnalyzer(object):
         node = self.netdata.nodes[node_id] 
         node.get_details(self.netdata.interaction_types[0])
         return
+
     """
     def getItemPopularityInDataset(data):
         likes = {}

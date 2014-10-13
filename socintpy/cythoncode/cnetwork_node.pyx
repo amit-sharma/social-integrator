@@ -47,7 +47,8 @@ ctypedef np.int_t DTYPE_INT_t
 
 cdef struct idata:
     int item_id
-    char *timestamp
+    #char *timestamp
+    unsigned int timestamp
     int rating
 
 cdef struct fdata:
@@ -213,7 +214,9 @@ cdef class CNetworkNode:
     cdef fdata *c_friend_list
     cdef int c_length_friend_list
     cdef int *c_train_ids
+    cdef idata * c_train_data
     cdef int *c_test_ids
+    cdef idata *c_test_data
     cdef int c_length_train_ids
     cdef int c_length_test_ids
 
@@ -233,6 +236,8 @@ cdef class CNetworkNode:
         self.c_friend_list = NULL
         self.c_train_ids = NULL
         self.c_test_ids = NULL
+        self.c_train_data = NULL
+        self.c_test_data = NULL
         self.c_length_friend_list = 0
         self.c_length_test_ids = 0
         self.c_length_train_ids = 0
@@ -245,23 +250,22 @@ cdef class CNetworkNode:
         self.c_should_have_interactions = kwargs['should_have_interactions']
 
     def __dealloc__(self):
-        """
         cdef int interact_type
         if self.c_list is not NULL:
             for interact_type in xrange(self.c_num_interact_types):
-                PyMem_Free(self.c_list[interact_type])
-
+                if self.c_length_list[interact_type] > 0:
+                    PyMem_Free(self.c_list[interact_type])
             PyMem_Free(self.c_list)
             PyMem_Free(self.c_length_list)
+        
         if self.c_friend_list is not NULL:
             PyMem_Free(self.c_friend_list)
+        
         if self.c_train_ids is not NULL:
             PyMem_Free(self.c_train_ids)
             PyMem_Free(self.c_test_ids)
-        """
-        pass
-
-    cpdef int store_interactions(self, int interact_type, ilist):
+    
+    cpdef int store_interactions(self, int interact_type, ilist, do_sort=True):
         self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
         if self.c_list is NULL:
             raise MemoryError()
@@ -276,9 +280,25 @@ cdef class CNetworkNode:
             #retval = PyString_FromStringAndSize(PyString_AsString(ilist[i].timestamp), <Py_ssize_t>len(ilist[i].timestamp))
             #self.c_list[interact_type][i].timestamp =PyString_AsString(retval) 
         self.c_length_list[interact_type] = len(ilist)
-        qsort(self.c_list[interact_type], self.c_length_list[interact_type], sizeof(idata), comp_interactions)
+        if do_sort:
+            qsort(self.c_list[interact_type], self.c_length_list[interact_type], sizeof(idata), comp_interactions)
         return self.c_length_list[interact_type]
 
+    """
+    cpdef int store_interaction_ids(self, int interact_type, ilist):
+        self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
+        if self.c_list is NULL:
+            raise MemoryError()
+        cdef int i
+        #cdef str retval
+        for i in range(len(ilist)):
+            #print "In the loop %d" %i
+            self.c_list[interact_type][i].item_id = ilist[i][0]
+            self.c_list[interact_type][i].rating = ilist[i][2]
+            self.c_list[interact_type][i].timestamp = ilist[i][1] 
+        self.c_length_list[interact_type] = len(ilist)
+        return self.c_length_list[interact_type]
+    """
     cpdef int store_friends(self, flist):
         self.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
         if self.c_friend_list is NULL:
@@ -290,6 +310,22 @@ cdef class CNetworkNode:
         
         qsort(self.c_friend_list, self.c_length_friend_list, sizeof(fdata), comp_friends)
         return self.c_length_friend_list
+    
+    cpdef int store_friend_ids(self, flist):
+        self.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
+        if self.c_friend_list is NULL:
+            raise MemoryError()
+        cdef int i
+        for i in xrange(len(flist)):
+            self.c_friend_list[i].receiver_id = flist[i]
+        self.c_length_friend_list = len(flist)
+        return self.c_length_friend_list
+
+    cpdef int remove_friends(self):
+        self.c_length_friend_list = 0
+        PyMem_Free(self.c_friend_list)
+        self.c_friend_list = NULL
+        self.c_should_have_friends = False
 
     cpdef get_all_items_interacted_with(self):
         interacted_items = set()
@@ -362,6 +398,8 @@ cdef class CNetworkNode:
         l2_norm2 = l2_norm_dict(items.itervalues())
         return simscore/(l2_norm1*l2_norm2)
 
+    # change training, test to common data structure idata and simplify this function
+    # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
     cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code):
         cdef int length_my_interactions
         cdef int length_other_interactions
@@ -375,7 +413,21 @@ cdef class CNetworkNode:
             #other_interactions = self.c_node_obj.c_list[interact_type]
             length_other_interactions = c_node_obj.c_length_list[interact_type]
             if length_my_interactions > 0 and length_other_interactions > 0:
-                return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type)
+                return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, cutoff_rating=-1, data_type_code=data_type_code)
+        elif data_type_code == <int>'c':
+            #my_interactions = self.c_list[interact_type]
+            length_my_interactions = self.c_length_train_ids
+            #other_interactions = self.c_node_obj.c_list[interact_type]
+            length_other_interactions = c_node_obj.c_length_train_ids
+            if length_my_interactions > 0 and length_other_interactions > 0:
+                return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, cutoff_rating=-1, data_type_code=data_type_code)
+        elif data_type_code == <int>'i':
+            #my_interactions = self.c_list[interact_type]
+            length_my_interactions = self.c_length_test_ids
+            #other_interactions = self.c_node_obj.c_list[interact_type]
+            length_other_interactions = c_node_obj.c_length_test_ids
+            if length_my_interactions > 0 and length_other_interactions > 0:
+                return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=86400, cutoff_rating=-1, data_type_code=data_type_code)
         elif data_type_code == <int>'l':
             my_interactions = self.c_train_ids
             length_my_interactions = self.c_length_train_ids
@@ -406,16 +458,28 @@ cdef class CNetworkNode:
         return simscore/(l2_norm1*l2_norm2)
         """
 
-    cdef float compute_node_similarity_c(self, idata *others_interactions, int length_others_interactions, int interact_type, float cutoff_rating=-1):
+    cdef float compute_node_similarity_c(self, idata *others_interactions, 
+                                         int length_others_interactions, 
+                                         int interact_type, 
+                                         float cutoff_rating=-1,
+                                         int data_type_code=<int>'a'):
         cdef float l2_norm1, l2_norm2, simscore
-        cdef idata *my_interactions = self.c_list[interact_type]
+        cdef idata *my_interactions;
+        cdef int length_my_interactions;
+
+        if data_type_code == <int>'a':
+            my_interactions = self.c_list[interact_type]
+            length_my_interactions = self.c_length_list[interact_type]
+        elif data_type_code == <int>'c':
+            my_interactions = self.c_train_data
+            length_my_interactions = self.c_length_train_ids
         cdef int i, j, k
         simscore = 0
         i = 0 
         j = 0
         cdef int my_count = 0
         cdef int others_count = 0
-        while i < self.c_length_list[interact_type] and j < length_others_interactions:
+        while i < length_my_interactions and j < length_others_interactions:
             if my_interactions[i].item_id < others_interactions[j].item_id:
                 if my_interactions[i].rating >= cutoff_rating:
                     my_count += 1
@@ -435,10 +499,10 @@ cdef class CNetworkNode:
                 i += 1
                 j += 1
         if j == length_others_interactions:
-            for k in range(i,self.c_length_list[interact_type]):
+            for k in range(i,length_my_interactions):
                 if my_interactions[k].rating >= cutoff_rating:
                     my_count += 1
-        elif i == self.c_length_list[interact_type]:
+        elif i == length_my_interactions:
             for k in range(j, length_others_interactions):
                 if others_interactions[k].rating >= cutoff_rating:
                     others_count += 1
@@ -452,6 +516,64 @@ cdef class CNetworkNode:
         l2_norm2 = sqrt(others_count)
 
         return simscore/(l2_norm1*l2_norm2)
+
+    
+    cdef float compute_othernode_influence_c(self, idata *others_interactions, 
+                                         int length_others_interactions, 
+                                         int interact_type, int time_diff,
+                                         float cutoff_rating=-1, int data_type_code=<int>'i'):
+        cdef float l2_norm1, l2_norm2, simscore
+        cdef idata *my_interactions
+        cdef int length_my_interactions
+        if data_type_code==<int>'i':
+            my_interactions = self.c_test_data
+            length_my_interactions = self.c_length_test_ids
+        cdef int i, j, k
+        simscore = 0
+        i = 0 
+        j = 0       
+        # Variables to check whether my_interactions or others_interactions are empty
+        cdef int my_count = 0
+        cdef int others_count = 0
+        while i < length_my_interactions and j < length_others_interactions:
+            if my_interactions[i].item_id < others_interactions[j].item_id:
+                if my_interactions[i].rating >= cutoff_rating:
+                    my_count += 1
+                i += 1
+            elif my_interactions[i].item_id > others_interactions[j].item_id:
+                if others_interactions[j].rating >= cutoff_rating:
+                    others_count += 1
+                j+= 1
+            else:
+                if my_interactions[i].rating >= cutoff_rating and others_interactions[j].rating >= cutoff_rating:
+                    if my_interactions[i].timestamp > others_interactions[j].timestamp and my_interactions[i].timestamp-others_interactions[j].timestamp <= time_diff:
+                        simscore +=1
+
+                if my_interactions[i].rating >= cutoff_rating:
+                    my_count += 1
+                if others_interactions[j].rating >= cutoff_rating:
+                    others_count += 1
+                i += 1
+                j += 1
+
+        if j == length_others_interactions:
+            for k in range(i,length_my_interactions):
+                if my_interactions[k].rating >= cutoff_rating:
+                    my_count += 1
+        elif i == length_my_interactions:
+            for k in range(j, length_others_interactions):
+                if others_interactions[k].rating >= cutoff_rating:
+                    others_count += 1
+
+        if my_count == 0 or others_count == 0: # prevent zero division error
+            return -1
+        #l2_norm1 = sqrt(self.c_length_list[interact_type])
+        #l2_norm2 = sqrt(length_others_interactions)
+        #print self.c_length_list[interact_type], my_count, length_others_interactions, others_count
+        l2_norm1 = sqrt(my_count)
+        l2_norm2 = sqrt(others_count)
+
+        return simscore/(l2_norm2)
 
     @cython.boundscheck(False)
     cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim, float cutoff_rating):
@@ -565,9 +687,9 @@ cdef class CNetworkNode:
         delete_hashtable(all_items)
         return (<float>num_items_found)/self.c_length_list[interact_type]
 
-    cdef void update_items_edge_coverage_c(self, idata* others_interactions, int length_others_interactions, int interact_type, unsigned int [:] items_edge_coverage_view):
+    cdef int_counter *update_items_edge_coverage_c(self, idata* others_interactions, int length_others_interactions, int interact_type, int_counter *count_influencers, bool time_sensitive, int time_diff):
         cdef idata *my_interactions = self.c_list[interact_type]
-        cdef int i, j
+        cdef int i, j, valid_match
         i = 0
         j = 0
         #cdef int my_count = 0
@@ -582,27 +704,47 @@ cdef class CNetworkNode:
                 #    others_count += 1
                 j+= 1
             else:
-                #if my_interactions[i].rating > cutoff_rating and others_interactions[j].rating > cutoff_rating:
-                #    simscore +=1
-                items_edge_coverage_view[my_interactions[i].item_id] += 1
-                #if my_interactions[i].rating > cutoff_rating:
-                #    my_count += 1
-                #if others_interactions[j].rating > cutoff_rating:
-                #    others_count += 1
+                valid_match = 1
+                if time_sensitive:
+                    if not (my_interactions[i].timestamp > others_interactions[j].timestamp and
+                            my_interactions[i].timestamp - others_interactions[j].timestamp <=time_diff):
+                        valid_match = 0
+                if valid_match == 1:
+                    HASH_FIND_INT(count_influencers, &(my_interactions[i].item_id), s)
+                    if s == NULL:
+                            s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))
+                            s[0].id = my_interactions[i].item_id
+                            s[0].count = 0
+                            HASH_ADD_INT_CUSTOM(count_influencers, s)
+                    s[0].count += 1
+                            
                 i += 1
                 j += 1
-
-    cpdef update_items_edge_coverage(self, friends_iterable, int interact_type, unsigned int [:] items_edge_coverage_view):
+        return count_influencers
+    
+    cpdef update_items_edge_coverage(self, friends_iterable, int interact_type, unsigned int [:] items_edge_coverage_view, unsigned int [:] items_num_influencers, bool time_sensitive, int time_diff):
         cdef int i
+        cdef int_counter *count_influencers = NULL
+        cdef int_counter *s = NULL
         for node_obj in friends_iterable:
             c_node_obj = <CNetworkNode>node_obj
-            self.update_items_edge_coverage_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, items_edge_coverage_view)
+            count_influencers = self.update_items_edge_coverage_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, count_influencers, time_sensitive, time_diff)
+        #Now updating the numpy arrays
+        s = count_influencers
+        while s!=NULL:
+            items_num_influencers[s[0].count] += 1
+            items_edge_coverage_view[s[0].id] += 1
+            s = <int_counter *>s.hh.next
+        delete_hashtable(count_influencers)
+        return
 
     cpdef update_items_popularity(self, interact_type, unsigned int [:] total_popularity_view):
         item_ids = self.get_items_interacted_with(interact_type)
         #print item_ids
         cdef int itemid
         for itemid in item_ids:
+            #print itemid
+            #if itemid > 11626325: print "oh!"
             total_popularity_view[itemid] += 1
 
     # By construction, train test are guaranteed to be sorted too
@@ -627,6 +769,32 @@ cdef class CNetworkNode:
         self.c_length_train_ids = k1
         self.c_length_test_ids = k2
         #print "train-test numbers", self.c_length_train_ids, self.c_length_test_ids, self.uid
+    
+    cpdef create_training_test_sets_bytime(self, int interact_type, int split_timestamp, float cutoff_rating):
+        #create train and test set based on a time split
+        cdef int i
+        cdef int k1 = 0, k2 = 0
+        cdef float random_num
+        self.c_train_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.c_length_list[interact_type])
+        self.c_test_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.c_length_list[interact_type])
+        if not self.c_train_data or not self.c_test_data:
+            raise MemoryError()
+
+        for i in range(self.c_length_list[interact_type]):
+            if self.c_list[interact_type][i].rating >= cutoff_rating:
+                if self.c_list[interact_type][i].timestamp < split_timestamp:
+                    self.c_train_data[k1].item_id = self.c_list[interact_type][i].item_id
+                    self.c_train_data[k1].rating = self.c_list[interact_type][i].rating
+                    self.c_train_data[k1].timestamp = self.c_list[interact_type][i].timestamp
+                    k1 += 1
+                else:
+                    self.c_test_data[k2].item_id = self.c_list[interact_type][i].item_id
+                    self.c_test_data[k2].rating = self.c_list[interact_type][i].rating
+                    self.c_test_data[k2].timestamp = self.c_list[interact_type][i].timestamp
+                    k2 += 1
+        self.c_length_train_ids = k1
+        self.c_length_test_ids = k2
+        return
     
     def in_test_set(self, int item_id):
         cdef int i
@@ -674,6 +842,8 @@ cdef class CNetworkNode:
     property uid:
         def __get__(self):
             return self.c_uid
+        def __set__(self, value):
+            self.c_uid = value
 
     property should_have_interactions:
         def __get__(self):

@@ -11,7 +11,8 @@ class PyNetworkNode(object):
     #FRIEND_ONLY = 2
     #CORE_USER = 1
     #user_sim = {}
-    #__slots__ = ('uid', 'should_have_friends', 'should_have_interactions','node_data', 'interactions', 'interaction_types', 'friends', 'is_core')
+    __slots__ = ('uid', 'should_have_friends', 'should_have_interactions',
+                 'node_data', 'interactions', 'interaction_types', 'friends')
 
     def __init__(self, uid, should_have_friends=True, should_have_interactions=True, node_data=None):
         self.uid = uid
@@ -52,9 +53,14 @@ class PyNetworkNode(object):
         self.friends.append((friendid,friend_node, friendship_data))
 
     def store_friends(self, friends_list):
+        self.friends = []
         for friend_tuple in friends_list:
             self.friends.append(friend_tuple)
         return len(self.friends)
+    
+    def remove_friends(self):
+        self.should_have_friends = False
+        self.friends = None
 
     def get_all_items_interacted_with(self):
         interacted_items = []
@@ -64,8 +70,11 @@ class PyNetworkNode(object):
         interacted_items = set(interacted_items)
         return interacted_items
     
-    def get_items_interacted_with(self, interact_type):
-        ret_val = set([val[0] for val in self.interactions[interact_type]])
+    def get_items_interacted_with(self, interact_type, return_timestamp=False):
+        if return_timestamp:
+            ret_val =[(v.item_id, v.timestamp) for v in self.interactions[interact_type]]
+        else:
+            ret_val = set([val[0] for val in self.interactions[interact_type]])
         #print self.uid, len(ret_val), interact_type
         return ret_val
 

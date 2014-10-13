@@ -3,6 +3,9 @@
 *.db
 *.log
 *.swp
+*.so
 *settings.py
 build-couchdb
 .idea/
+examples/compute/plots/
+examples/compute/final_plots/

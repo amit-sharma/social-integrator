@@ -49,7 +49,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             self.nodes.insert(self.node_counter, nnode)
             self.node_id_map[uid] = self.node_counter
             self.node_counter += 1
-        print "All core nodes stored", len(self.nodes)
+        print "All core nodes stored", len(self.nodes)-1
         return self.nodes
 
 

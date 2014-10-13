@@ -2,7 +2,8 @@ from matplotlib.pyplot import *
 from time import gmtime, strftime
 #import math
 #import numpy as np
-def plotLinesYY(x,y, legendy1, legendy2, labelx="X", labely="Y"):
+def plotLinesYY(x,y, legendy1, legendy2, labelx="X", labely="Y", display=True, 
+                logyscale=False):
     listx, listy = (list(t) for t in zip(*sorted(zip(x,y))))
     xlabel(labelx)
     ylabel(labely)
@@ -10,7 +11,10 @@ def plotLinesYY(x,y, legendy1, legendy2, labelx="X", labely="Y"):
     plot(range(len(listx)), listx, color="blue", label=legendy1)
     plot(range(len(listx)), listy, color="green", label=legendy2)
     legend(loc="upper right")
-    show()
+    if logyscale:
+        yscale("log")
+    if display:
+        show()
     savefig('plots/'+labelx + "-" + labely + "_" + strftime("%Y-%m-%d%H:%M:%S", gmtime())+".png")
 
 def plotLineY(y, labelx="X", labely="Y", logxscale=False, logyscale=False):
@@ -23,13 +27,39 @@ def plotLineY(y, labelx="X", labely="Y", logxscale=False, logyscale=False):
         yscale("log")
     show()
 
-def plotHist(vector, labelx="X", labely="Y", logyscale=False):
-    hist(vector, bins=100)
+def plotLinesXY(x, y, labelx="X", labely="Y", logxscale=False, logyscale=False, 
+               display=True, title_str="", ylim_val=None, xlim_val=None):
+    xlabel(labelx)
+    ylabel(labely)
+    scatter(x, y)
+    if logxscale:
+        xscale("log")
+    if logyscale:
+        yscale("log")
+    if ylim_val is not None:
+        ylim(ylim_val)
+    if xlim_val is not None:
+        xlim(xlim_val)
+    title(title_str)
+    if display:
+        show()
+
+def plotLogLog(x, y, labelx="X", labely="Y", display=True):
+    xlabel(labelx)
+    ylabel(labely)
+    plot(x,y)
+    if display:
+        show()
+
+def plotHist(vector, labelx="X", labely="Y", logyscale=False, xlim_val=None, bins=100):
+    hist(vector, bins=bins)
     title("Title")
     xlabel(labelx)
     ylabel(labely)
     if logyscale:
         yscale("log")
+    if xlim_val is not None:
+        xlim(xlim_val)
     show()
 
 def plotCumulativePopularity(items_pop_vector, labelx="X", labely="Y"):

@@ -64,8 +64,15 @@ class SqliteStore(GenericStore):
             if not row_list:
                 break
             for row in row_list:
-            #for row in self.result_iter(cursor):
-                yield (row[0], cPickle.loads(str(row[1])))
+                try:
+                    datadict = cPickle.loads(str(row[1]))
+                #for row in self.result_iter(cursor):
+                    #yield (row[0], {'name':'amit'})
+ 
+                except (EOFError, cPickle.UnpicklingError):
+                    print row[0], "Could not load from cPickle (Error)"
+                    continue
+                yield (row[0], datadict)
 
     def keys(self):
         return [row[0] for row in self.con.execute("select key from data").fetchall()]

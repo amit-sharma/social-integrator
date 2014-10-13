@@ -1,23 +1,30 @@
 import getopt
-import sys
+import sys, types
 import logging
 
 import matplotlib as mpl
-mpl.use('Agg')
+#mpl.use('Agg')
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 from socintpy.networkvisualize.network_visualizer import NetworkVisualizor
 from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
-from socintpy.networkdata.lastfm_data_preparser import LastfmDataPreparser
+from socintpy.networkdata.lastfm_data_preparser_csv import LastfmDataPreparserCSV
+from socintpy.networkdata.lastfm_data_preparser_simple import LastfmDataPreparserSimple
+from socintpy.networkdata.flixster_preparser import FlixsterDataPreparser
+from socintpy.networkdata.flickr_preparser import FlickrDataPreparser
 import socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 from pprint import pprint
 
-COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads']
+
+COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
-                          'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset']
+                          'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset',
+                          'compare_interact_types']
+
+
 def usage():
     print "Too few or erroneous parameters"
     print 'Usage: python '+sys.argv[0]+' -d <dataset_name> -p <path> -c <computation>'
@@ -28,68 +35,41 @@ def compare_sims(fr_sim, nonfr_sim):
     print "Circle dominates is", sum([1 for v1,v2,v3 in diff if v3>0])
     print "non-friends dominate is", sum([1 for v1,v2,v3 in diff if v3<0])
 
-if __name__ == "__main__":
-    logging.basicConfig(filename="run.log", level="DEBUG")
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", "cutoffrating=", "output="])
-    except getopt.GetoptError as err:
-        # print help information and exit:
-        print str(err) # will print something like "option -a not recognized"
-        usage()
-        sys.exit(2)
-    if not opts:
-        usage()
-        sys.exit(2)
-
-
-    dataset_domain=None
-    dataset_path = None
-    computation_cmd = None
-    impl_type = "python"
-    cutoff_rating = None # sufficiently small value so that cutoff has no effect.
-    for o, a in opts:
-        if o =="-d":
-            if a not in COMPATIBLE_DOMAINS:
-                assert False, "Unhandled dataset domain."
-            else:
-                dataset_domain = a
-        if o =="-p":
-            dataset_path = a
-        if o == "-c":
-            if a not in AVAILABLE_COMPUTATIONS:
-                assert False, "Unhandled computation."
-            else:
-                computation_cmd = a
-        if o == "--cython":
-            impl_type = "cython"
-        if o =="--cutoffrating":
-            cutoff_rating = int(a)
-
-    if dataset_domain is None or dataset_path is None:
-        usage()
-        sys.exit(2)
-
+def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
+                                  max_core_nodes, cutoff_rating, store_dataset):
     data = None
     #h = hpy()
     #h.setref()
     if dataset_domain == "twitter":
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
-        data = LastfmDataPreparser(dataset_path+"lastfm_nodes.db", dataset_path+"lastfm_edges.db", impl_type)
-    if dataset_domain=="goodreads":
-        data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating)
-
+        data = LastfmDataPreparserCSV(dataset_path, impl_type, cutoff_rating,
+                                   max_core_nodes, store_dataset, use_artists=False)
+    elif dataset_domain== "lastfm_simple":
+        data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
+                                   max_core_nodes, store_dataset, use_artists=False)
+    elif dataset_domain=="goodreads":
+        data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
+                                      max_core_nodes. store_dataset)
+    elif dataset_domain=="flixster":
+        data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, 
+                                     max_core_nodes, store_dataset)
+    elif dataset_domain=="flickr":
+        data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, 
+                                   max_core_nodes, store_dataset)
+    
     try:
         data.get_all_data()
     except:
         raise
-    #print h.heap()
-    #sys.exit(0)
+    return data
+
+
+def compute(data, computation_cmd):
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
-    #outf_path = "/home/asharma/datasets/processed/" + dataset_domain + "/" + filename_prefix
-    #outf = open(outf_path + "_output.tsv", "w")
+
     if computation_cmd=="basic_stats" or computation_cmd is None:
         net_analyzer.show_basic_stats()
 
@@ -198,6 +178,23 @@ if __name__ == "__main__":
             f.write("%s\t%s\n" %(user_id, friend_id))
         f.close()
         print "Successfully stored tsv dataset"
+    elif computation_cmd=="compare_interact_types":
+        num_interacts_dict = net_analyzer.compare_interaction_types()
+        interact_types = num_interacts_dict.keys()
+        plotter.plotLinesYY(num_interacts_dict[interact_types[0]], 
+                            num_interacts_dict[interact_types[1]],
+                            interact_types[0], interact_types[1], 
+                            display=True, logyscale=True)
+         
+        plotter.plotLinesYY(num_interacts_dict[interact_types[1]], 
+                            num_interacts_dict[interact_types[2]],
+                            interact_types[1], interact_types[2], 
+                            display=True, logyscale=True)
+         
+        plotter.plotLinesYY(num_interacts_dict[interact_types[0]], 
+                            num_interacts_dict[interact_types[2]],
+                            interact_types[0], interact_types[2], 
+                            display=True, logyscale=True)
          
     """
     elif computation_cmd=="random_recommender":
@@ -272,3 +269,74 @@ if __name__ == "__main__":
         plotLineY([fans_after[i]/float(fans_before[i]) for i in range(len(fans_before))], "Items", "Popularity")
 
     """ 
+if __name__ == "__main__":
+    logging.basicConfig(filename="run.log", level="DEBUG")
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", 
+                                   "cutoffrating=", "output=", "max_core_nodes=",
+                                   "store_dataset"])
+    except getopt.GetoptError as err:
+        # print help information and exit:
+        print str(err) # will print something like "option -a not recognized"
+        usage()
+        sys.exit(2)
+    if not opts:
+        usage()
+        sys.exit(2)
+
+
+    dataset_domain=None
+    dataset_path = None
+    computation_cmd = None
+    max_core_nodes = None
+    impl_type = "python"
+    cutoff_rating = None # sufficiently small value so that cutoff has no effect.
+    store_dataset = False
+    for o, a in opts:
+        if o =="-d":
+            if a not in COMPATIBLE_DOMAINS:
+                assert False, "Unhandled dataset domain."
+            else:
+                dataset_domain = a
+        if o =="-p":
+            dataset_path = a
+        if o == "-c":
+            if a not in AVAILABLE_COMPUTATIONS:
+                assert False, "Unhandled computation."
+            else:
+                computation_cmd = a
+        if o == "--cython":
+            impl_type = "cython"
+        if o =="--cutoffrating":
+            cutoff_rating = int(a)
+        if o=="--max_core_nodes":
+            max_core_nodes = int(a)
+        if o=="--store_dataset":
+            store_dataset = True
+
+    if dataset_domain is None or dataset_path is None:
+        usage()
+        sys.exit(2)
+
+    data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
+                                  max_core_nodes, cutoff_rating, store_dataset)
+    compute(data, computation_cmd)
+
+def get_data(from_raw_dataset=False):
+    if from_raw_dataset:
+        dataset_domain="lastfm"
+        dataset_path="/mnt/bigdata/lastfm/"
+    else:
+        dataset_domain="lastfm_simple"
+        dataset_path = "/mnt/bigdata/lastfm_ego/ego_songs_75_40kdata/"
+    computation_cmd = "basic_stats"
+    max_core_nodes = None
+    impl_type = "cython"
+    cutoff_rating = None # sufficiently small value so that cutoff has no effect.
+    store_dataset = True
+
+    data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
+                                  max_core_nodes, cutoff_rating, store_dataset)
+
+    return data
+
