@@ -812,6 +812,7 @@ struct __pyx_t_13cnetwork_node_int_counter;
 typedef struct __pyx_t_13cnetwork_node_int_counter __pyx_t_13cnetwork_node_int_counter;
 struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_store_interactions;
 struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_get_items_interacted_with;
+struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity;
 struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity_c;
 struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c;
 
@@ -875,6 +876,18 @@ struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_get_items_interacted_with {
   int __pyx_n;
   int rating_cutoff;
   PyBoolObject *return_timestamp;
+};
+
+/* "cnetwork_node.pyx":403
+ *     # change training, test to common data structure idata and simplify this function
+ *     # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
+ *     cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code, int time_diff=-1):             # <<<<<<<<<<<<<<
+ *         cdef int length_my_interactions
+ *         cdef int length_other_interactions
+ */
+struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity {
+  int __pyx_n;
+  int time_diff;
 };
 
 /* "cnetwork_node.pyx":461
@@ -1028,7 +1041,7 @@ struct __pyx_vtabstruct_13cnetwork_node_CNetworkNode {
   PyObject *(*get_num_friends)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, int __pyx_skip_dispatch);
   PyObject *(*has_friends)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, int __pyx_skip_dispatch);
   PyObject *(*compute_similarity)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, int __pyx_skip_dispatch);
-  PyObject *(*compute_node_similarity)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, int __pyx_skip_dispatch);
+  PyObject *(*compute_node_similarity)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, int __pyx_skip_dispatch, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity *__pyx_optional_args);
   float (*compute_node_similarity_c)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, struct __pyx_t_13cnetwork_node_idata *, int, int, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity_c *__pyx_optional_args);
   float (*compute_othernode_influence_c)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, struct __pyx_t_13cnetwork_node_idata *, int, int, int, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c *__pyx_optional_args);
   PyObject *(*compute_global_topk_similarity)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, float, int __pyx_skip_dispatch);
@@ -1619,7 +1632,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_has_interactions(struct 
 static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_get_num_friends(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_has_friends(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_items, int __pyx_v_interact_type, int __pyx_v_rating_cutoff, int __pyx_skip_dispatch); /* proto*/
-static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code, int __pyx_skip_dispatch, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity *__pyx_optional_args); /* proto*/
 static float __pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity_c(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, struct __pyx_t_13cnetwork_node_idata *__pyx_v_others_interactions, int __pyx_v_length_others_interactions, int __pyx_v_interact_type, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity_c *__pyx_optional_args); /* proto*/
 static float __pyx_f_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, struct __pyx_t_13cnetwork_node_idata *__pyx_v_others_interactions, int __pyx_v_length_others_interactions, CYTHON_UNUSED int __pyx_v_interact_type, int __pyx_v_time_diff, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c *__pyx_optional_args); /* proto*/
 static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_global_topk_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_allnodes_iterable, int __pyx_v_interact_type, int __pyx_v_klim, float __pyx_v_cutoff_rating, int __pyx_skip_dispatch); /* proto*/
@@ -1832,7 +1845,7 @@ static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_24has_interactions(stru
 static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_26get_num_friends(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_28has_friends(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_30compute_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_items, int __pyx_v_interact_type, int __pyx_v_rating_cutoff); /* proto */
-static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_32compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code); /* proto */
+static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_32compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code, int __pyx_v_time_diff); /* proto */
 static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_34compute_global_topk_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_allnodes_iterable, int __pyx_v_interact_type, int __pyx_v_klim, float __pyx_v_cutoff_rating); /* proto */
 static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_36compute_global_topk_similarity_mat(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_mat, int __pyx_v_klim); /* proto */
 static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_38compute_local_topk_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_friends_iterable, int __pyx_v_interact_type, int __pyx_v_klim, float __pyx_v_cutoff_rating); /* proto */
@@ -7430,13 +7443,14 @@ static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_30compute_similarity(st
 /* "cnetwork_node.pyx":403
  *     # change training, test to common data structure idata and simplify this function
  *     # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
- *     cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code):             # <<<<<<<<<<<<<<
+ *     cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code, int time_diff=-1):             # <<<<<<<<<<<<<<
  *         cdef int length_my_interactions
  *         cdef int length_other_interactions
  */
 
 static PyObject *__pyx_pw_13cnetwork_node_12CNetworkNode_33compute_node_similarity(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code, int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code, int __pyx_skip_dispatch, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity *__pyx_optional_args) {
+  int __pyx_v_time_diff = ((int)-1);
   int __pyx_v_length_my_interactions;
   int __pyx_v_length_other_interactions;
   int *__pyx_v_my_interactions;
@@ -7450,19 +7464,25 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
-  Py_ssize_t __pyx_t_7;
-  PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
+  PyObject *__pyx_t_7 = NULL;
+  Py_ssize_t __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
   int __pyx_t_10;
-  float __pyx_t_11;
-  struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity_c __pyx_t_12;
-  int __pyx_t_13;
-  struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c __pyx_t_14;
-  int *__pyx_t_15;
+  int __pyx_t_11;
+  float __pyx_t_12;
+  struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity_c __pyx_t_13;
+  int __pyx_t_14;
+  struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c __pyx_t_15;
+  int *__pyx_t_16;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_node_similarity", 0);
+  if (__pyx_optional_args) {
+    if (__pyx_optional_args->__pyx_n > 0) {
+      __pyx_v_time_diff = __pyx_optional_args->time_diff;
+    }
+  }
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
@@ -7475,37 +7495,42 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_data_type_code); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_time_diff); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
-      __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
-      __pyx_t_7 = 0;
-      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_5))) {
-        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-        if (likely(__pyx_t_6)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-          __Pyx_INCREF(__pyx_t_6);
+      __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
+      __pyx_t_8 = 0;
+      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_6))) {
+        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
+        if (likely(__pyx_t_7)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+          __Pyx_INCREF(__pyx_t_7);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_5, function);
-          __pyx_t_7 = 1;
+          __Pyx_DECREF_SET(__pyx_t_6, function);
+          __pyx_t_8 = 1;
         }
       }
-      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_8);
-      if (__pyx_t_6) {
-        PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __Pyx_GIVEREF(__pyx_t_6); __pyx_t_6 = NULL;
+      __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_9);
+      if (__pyx_t_7) {
+        PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
       }
       __Pyx_INCREF(__pyx_v_other_node);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_other_node);
+      PyTuple_SET_ITEM(__pyx_t_9, 0+__pyx_t_8, __pyx_v_other_node);
       __Pyx_GIVEREF(__pyx_v_other_node);
-      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_3);
+      PyTuple_SET_ITEM(__pyx_t_9, 1+__pyx_t_8, __pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
-      PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_7, __pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_9, 2+__pyx_t_8, __pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_9, 3+__pyx_t_8, __pyx_t_5);
+      __Pyx_GIVEREF(__pyx_t_5);
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_r = __pyx_t_2;
       __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -7533,8 +7558,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #my_interactions = self.c_list[interact_type]
  *             length_my_interactions = self.c_length_list[interact_type]
  */
-  __pyx_t_9 = ((__pyx_v_data_type_code == ((int)'a')) != 0);
-  if (__pyx_t_9) {
+  __pyx_t_10 = ((__pyx_v_data_type_code == ((int)'a')) != 0);
+  if (__pyx_t_10) {
 
     /* "cnetwork_node.pyx":412
  *         if data_type_code == <int>'a':
@@ -7561,18 +7586,18 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *                 return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'c':
  */
-    __pyx_t_10 = ((__pyx_v_length_my_interactions > 0) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_11 = ((__pyx_v_length_my_interactions > 0) != 0);
+    if (__pyx_t_11) {
       goto __pyx_L6_next_and;
     } else {
-      __pyx_t_9 = __pyx_t_10;
+      __pyx_t_10 = __pyx_t_11;
       goto __pyx_L5_bool_binop_done;
     }
     __pyx_L6_next_and:;
-    __pyx_t_10 = ((__pyx_v_length_other_interactions > 0) != 0);
-    __pyx_t_9 = __pyx_t_10;
+    __pyx_t_11 = ((__pyx_v_length_other_interactions > 0) != 0);
+    __pyx_t_10 = __pyx_t_11;
     __pyx_L5_bool_binop_done:;
-    if (__pyx_t_9) {
+    if (__pyx_t_10) {
 
       /* "cnetwork_node.pyx":416
  *             length_other_interactions = c_node_obj.c_length_list[interact_type]
@@ -7582,11 +7607,11 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #my_interactions = self.c_list[interact_type]
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_12.__pyx_n = 2;
-      __pyx_t_12.cutoff_rating = -1.0;
-      __pyx_t_12.data_type_code = __pyx_v_data_type_code;
-      __pyx_t_11 = ((struct __pyx_vtabstruct_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->compute_node_similarity_c(__pyx_v_self, (__pyx_v_c_node_obj->c_list[__pyx_v_interact_type]), __pyx_v_length_other_interactions, __pyx_v_interact_type, &__pyx_t_12); 
-      __pyx_t_1 = PyFloat_FromDouble(__pyx_t_11); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 416; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13.__pyx_n = 2;
+      __pyx_t_13.cutoff_rating = -1.0;
+      __pyx_t_13.data_type_code = __pyx_v_data_type_code;
+      __pyx_t_12 = ((struct __pyx_vtabstruct_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->compute_node_similarity_c(__pyx_v_self, (__pyx_v_c_node_obj->c_list[__pyx_v_interact_type]), __pyx_v_length_other_interactions, __pyx_v_interact_type, &__pyx_t_13); 
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_t_12); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 416; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
@@ -7602,8 +7627,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #my_interactions = self.c_list[interact_type]
  *             length_my_interactions = self.c_length_train_ids
  */
-  __pyx_t_9 = ((__pyx_v_data_type_code == ((int)'c')) != 0);
-  if (__pyx_t_9) {
+  __pyx_t_10 = ((__pyx_v_data_type_code == ((int)'c')) != 0);
+  if (__pyx_t_10) {
 
     /* "cnetwork_node.pyx":419
  *         elif data_type_code == <int>'c':
@@ -7612,8 +7637,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_train_ids
  */
-    __pyx_t_13 = __pyx_v_self->c_length_train_ids;
-    __pyx_v_length_my_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_self->c_length_train_ids;
+    __pyx_v_length_my_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":421
  *             length_my_interactions = self.c_length_train_ids
@@ -7622,8 +7647,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             if length_my_interactions > 0 and length_other_interactions > 0:
  *                 return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, cutoff_rating=-1, data_type_code=data_type_code)
  */
-    __pyx_t_13 = __pyx_v_c_node_obj->c_length_train_ids;
-    __pyx_v_length_other_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_c_node_obj->c_length_train_ids;
+    __pyx_v_length_other_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":422
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
@@ -7632,18 +7657,18 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *                 return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'i':
  */
-    __pyx_t_10 = ((__pyx_v_length_my_interactions > 0) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_11 = ((__pyx_v_length_my_interactions > 0) != 0);
+    if (__pyx_t_11) {
       goto __pyx_L9_next_and;
     } else {
-      __pyx_t_9 = __pyx_t_10;
+      __pyx_t_10 = __pyx_t_11;
       goto __pyx_L8_bool_binop_done;
     }
     __pyx_L9_next_and:;
-    __pyx_t_10 = ((__pyx_v_length_other_interactions > 0) != 0);
-    __pyx_t_9 = __pyx_t_10;
+    __pyx_t_11 = ((__pyx_v_length_other_interactions > 0) != 0);
+    __pyx_t_10 = __pyx_t_11;
     __pyx_L8_bool_binop_done:;
-    if (__pyx_t_9) {
+    if (__pyx_t_10) {
 
       /* "cnetwork_node.pyx":423
  *             length_other_interactions = c_node_obj.c_length_train_ids
@@ -7653,11 +7678,11 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #my_interactions = self.c_list[interact_type]
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_12.__pyx_n = 2;
-      __pyx_t_12.cutoff_rating = -1.0;
-      __pyx_t_12.data_type_code = __pyx_v_data_type_code;
-      __pyx_t_11 = ((struct __pyx_vtabstruct_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->compute_node_similarity_c(__pyx_v_self, __pyx_v_c_node_obj->c_train_data, __pyx_v_length_other_interactions, __pyx_v_interact_type, &__pyx_t_12); 
-      __pyx_t_1 = PyFloat_FromDouble(__pyx_t_11); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 423; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13.__pyx_n = 2;
+      __pyx_t_13.cutoff_rating = -1.0;
+      __pyx_t_13.data_type_code = __pyx_v_data_type_code;
+      __pyx_t_12 = ((struct __pyx_vtabstruct_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->compute_node_similarity_c(__pyx_v_self, __pyx_v_c_node_obj->c_train_data, __pyx_v_length_other_interactions, __pyx_v_interact_type, &__pyx_t_13); 
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_t_12); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 423; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
@@ -7673,8 +7698,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #my_interactions = self.c_list[interact_type]
  *             length_my_interactions = self.c_length_test_ids
  */
-  __pyx_t_9 = ((__pyx_v_data_type_code == ((int)'i')) != 0);
-  if (__pyx_t_9) {
+  __pyx_t_10 = ((__pyx_v_data_type_code == ((int)'i')) != 0);
+  if (__pyx_t_10) {
 
     /* "cnetwork_node.pyx":426
  *         elif data_type_code == <int>'i':
@@ -7683,52 +7708,52 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_test_ids
  */
-    __pyx_t_13 = __pyx_v_self->c_length_test_ids;
-    __pyx_v_length_my_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_self->c_length_test_ids;
+    __pyx_v_length_my_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":428
  *             length_my_interactions = self.c_length_test_ids
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_test_ids             # <<<<<<<<<<<<<<
  *             if length_my_interactions > 0 and length_other_interactions > 0:
- *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=86400, cutoff_rating=-1, data_type_code=data_type_code)
+ *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  */
-    __pyx_t_13 = __pyx_v_c_node_obj->c_length_test_ids;
-    __pyx_v_length_other_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_c_node_obj->c_length_test_ids;
+    __pyx_v_length_other_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":429
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_test_ids
  *             if length_my_interactions > 0 and length_other_interactions > 0:             # <<<<<<<<<<<<<<
- *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=86400, cutoff_rating=-1, data_type_code=data_type_code)
+ *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'l':
  */
-    __pyx_t_10 = ((__pyx_v_length_my_interactions > 0) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_11 = ((__pyx_v_length_my_interactions > 0) != 0);
+    if (__pyx_t_11) {
       goto __pyx_L12_next_and;
     } else {
-      __pyx_t_9 = __pyx_t_10;
+      __pyx_t_10 = __pyx_t_11;
       goto __pyx_L11_bool_binop_done;
     }
     __pyx_L12_next_and:;
-    __pyx_t_10 = ((__pyx_v_length_other_interactions > 0) != 0);
-    __pyx_t_9 = __pyx_t_10;
+    __pyx_t_11 = ((__pyx_v_length_other_interactions > 0) != 0);
+    __pyx_t_10 = __pyx_t_11;
     __pyx_L11_bool_binop_done:;
-    if (__pyx_t_9) {
+    if (__pyx_t_10) {
 
       /* "cnetwork_node.pyx":430
  *             length_other_interactions = c_node_obj.c_length_test_ids
  *             if length_my_interactions > 0 and length_other_interactions > 0:
- *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=86400, cutoff_rating=-1, data_type_code=data_type_code)             # <<<<<<<<<<<<<<
+ *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)             # <<<<<<<<<<<<<<
  *         elif data_type_code == <int>'l':
  *             my_interactions = self.c_train_ids
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_14.__pyx_n = 2;
-      __pyx_t_14.cutoff_rating = -1.0;
-      __pyx_t_14.data_type_code = __pyx_v_data_type_code;
-      __pyx_t_11 = ((struct __pyx_vtabstruct_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->compute_othernode_influence_c(__pyx_v_self, __pyx_v_c_node_obj->c_test_data, __pyx_v_length_other_interactions, __pyx_v_interact_type, 86400, &__pyx_t_14); 
-      __pyx_t_1 = PyFloat_FromDouble(__pyx_t_11); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 430; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_15.__pyx_n = 2;
+      __pyx_t_15.cutoff_rating = -1.0;
+      __pyx_t_15.data_type_code = __pyx_v_data_type_code;
+      __pyx_t_12 = ((struct __pyx_vtabstruct_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->compute_othernode_influence_c(__pyx_v_self, __pyx_v_c_node_obj->c_test_data, __pyx_v_length_other_interactions, __pyx_v_interact_type, __pyx_v_time_diff, &__pyx_t_15); 
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_t_12); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 430; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
@@ -7739,23 +7764,23 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
 
   /* "cnetwork_node.pyx":431
  *             if length_my_interactions > 0 and length_other_interactions > 0:
- *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=86400, cutoff_rating=-1, data_type_code=data_type_code)
+ *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'l':             # <<<<<<<<<<<<<<
  *             my_interactions = self.c_train_ids
  *             length_my_interactions = self.c_length_train_ids
  */
-  __pyx_t_9 = ((__pyx_v_data_type_code == ((int)'l')) != 0);
-  if (__pyx_t_9) {
+  __pyx_t_10 = ((__pyx_v_data_type_code == ((int)'l')) != 0);
+  if (__pyx_t_10) {
 
     /* "cnetwork_node.pyx":432
- *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=86400, cutoff_rating=-1, data_type_code=data_type_code)
+ *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'l':
  *             my_interactions = self.c_train_ids             # <<<<<<<<<<<<<<
  *             length_my_interactions = self.c_length_train_ids
  *             other_interactions = c_node_obj.c_train_ids
  */
-    __pyx_t_15 = __pyx_v_self->c_train_ids;
-    __pyx_v_my_interactions = __pyx_t_15;
+    __pyx_t_16 = __pyx_v_self->c_train_ids;
+    __pyx_v_my_interactions = __pyx_t_16;
 
     /* "cnetwork_node.pyx":433
  *         elif data_type_code == <int>'l':
@@ -7764,8 +7789,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             other_interactions = c_node_obj.c_train_ids
  *             length_other_interactions = c_node_obj.c_length_train_ids
  */
-    __pyx_t_13 = __pyx_v_self->c_length_train_ids;
-    __pyx_v_length_my_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_self->c_length_train_ids;
+    __pyx_v_length_my_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":434
  *             my_interactions = self.c_train_ids
@@ -7774,8 +7799,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_other_interactions = c_node_obj.c_length_train_ids
  *             #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
  */
-    __pyx_t_15 = __pyx_v_c_node_obj->c_train_ids;
-    __pyx_v_other_interactions = __pyx_t_15;
+    __pyx_t_16 = __pyx_v_c_node_obj->c_train_ids;
+    __pyx_v_other_interactions = __pyx_t_16;
 
     /* "cnetwork_node.pyx":435
  *             length_my_interactions = self.c_length_train_ids
@@ -7784,8 +7809,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
  *             if length_my_interactions > 0 and length_other_interactions > 0:
  */
-    __pyx_t_13 = __pyx_v_c_node_obj->c_length_train_ids;
-    __pyx_v_length_other_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_c_node_obj->c_length_train_ids;
+    __pyx_v_length_other_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":437
  *             length_other_interactions = c_node_obj.c_length_train_ids
@@ -7794,18 +7819,18 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  *         elif data_type_code == <int>'t':
  */
-    __pyx_t_10 = ((__pyx_v_length_my_interactions > 0) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_11 = ((__pyx_v_length_my_interactions > 0) != 0);
+    if (__pyx_t_11) {
       goto __pyx_L15_next_and;
     } else {
-      __pyx_t_9 = __pyx_t_10;
+      __pyx_t_10 = __pyx_t_11;
       goto __pyx_L14_bool_binop_done;
     }
     __pyx_L15_next_and:;
-    __pyx_t_10 = ((__pyx_v_length_other_interactions > 0) != 0);
-    __pyx_t_9 = __pyx_t_10;
+    __pyx_t_11 = ((__pyx_v_length_other_interactions > 0) != 0);
+    __pyx_t_10 = __pyx_t_11;
     __pyx_L14_bool_binop_done:;
-    if (__pyx_t_9) {
+    if (__pyx_t_10) {
 
       /* "cnetwork_node.pyx":438
  *             #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
@@ -7831,8 +7856,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             my_interactions = self.c_test_ids
  *             length_my_interactions = self.c_length_test_ids
  */
-  __pyx_t_9 = ((__pyx_v_data_type_code == ((int)'t')) != 0);
-  if (__pyx_t_9) {
+  __pyx_t_10 = ((__pyx_v_data_type_code == ((int)'t')) != 0);
+  if (__pyx_t_10) {
 
     /* "cnetwork_node.pyx":440
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
@@ -7841,8 +7866,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_my_interactions = self.c_length_test_ids
  *             other_interactions = c_node_obj.c_test_ids
  */
-    __pyx_t_15 = __pyx_v_self->c_test_ids;
-    __pyx_v_my_interactions = __pyx_t_15;
+    __pyx_t_16 = __pyx_v_self->c_test_ids;
+    __pyx_v_my_interactions = __pyx_t_16;
 
     /* "cnetwork_node.pyx":441
  *         elif data_type_code == <int>'t':
@@ -7851,8 +7876,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             other_interactions = c_node_obj.c_test_ids
  *             length_other_interactions = c_node_obj.c_length_test_ids
  */
-    __pyx_t_13 = __pyx_v_self->c_length_test_ids;
-    __pyx_v_length_my_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_self->c_length_test_ids;
+    __pyx_v_length_my_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":442
  *             my_interactions = self.c_test_ids
@@ -7861,8 +7886,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_other_interactions = c_node_obj.c_length_test_ids
  *             if length_my_interactions > 0 and length_other_interactions > 0:
  */
-    __pyx_t_15 = __pyx_v_c_node_obj->c_test_ids;
-    __pyx_v_other_interactions = __pyx_t_15;
+    __pyx_t_16 = __pyx_v_c_node_obj->c_test_ids;
+    __pyx_v_other_interactions = __pyx_t_16;
 
     /* "cnetwork_node.pyx":443
  *             length_my_interactions = self.c_length_test_ids
@@ -7871,8 +7896,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             if length_my_interactions > 0 and length_other_interactions > 0:
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  */
-    __pyx_t_13 = __pyx_v_c_node_obj->c_length_test_ids;
-    __pyx_v_length_other_interactions = __pyx_t_13;
+    __pyx_t_14 = __pyx_v_c_node_obj->c_length_test_ids;
+    __pyx_v_length_other_interactions = __pyx_t_14;
 
     /* "cnetwork_node.pyx":444
  *             other_interactions = c_node_obj.c_test_ids
@@ -7881,18 +7906,18 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  *         return None
  */
-    __pyx_t_10 = ((__pyx_v_length_my_interactions > 0) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_11 = ((__pyx_v_length_my_interactions > 0) != 0);
+    if (__pyx_t_11) {
       goto __pyx_L18_next_and;
     } else {
-      __pyx_t_9 = __pyx_t_10;
+      __pyx_t_10 = __pyx_t_11;
       goto __pyx_L17_bool_binop_done;
     }
     __pyx_L18_next_and:;
-    __pyx_t_10 = ((__pyx_v_length_other_interactions > 0) != 0);
-    __pyx_t_9 = __pyx_t_10;
+    __pyx_t_11 = ((__pyx_v_length_other_interactions > 0) != 0);
+    __pyx_t_10 = __pyx_t_11;
     __pyx_L17_bool_binop_done:;
-    if (__pyx_t_9) {
+    if (__pyx_t_10) {
 
       /* "cnetwork_node.pyx":445
  *             length_other_interactions = c_node_obj.c_length_test_ids
@@ -7927,7 +7952,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   /* "cnetwork_node.pyx":403
  *     # change training, test to common data structure idata and simplify this function
  *     # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
- *     cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code):             # <<<<<<<<<<<<<<
+ *     cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code, int time_diff=-1):             # <<<<<<<<<<<<<<
  *         cdef int length_my_interactions
  *         cdef int length_other_interactions
  */
@@ -7940,7 +7965,8 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_AddTraceback("cnetwork_node.CNetworkNode.compute_node_similarity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -7956,6 +7982,7 @@ static PyObject *__pyx_pw_13cnetwork_node_12CNetworkNode_33compute_node_similari
   PyObject *__pyx_v_other_node = 0;
   int __pyx_v_interact_type;
   int __pyx_v_data_type_code;
+  int __pyx_v_time_diff;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -7963,12 +7990,13 @@ static PyObject *__pyx_pw_13cnetwork_node_12CNetworkNode_33compute_node_similari
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compute_node_similarity (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_other_node,&__pyx_n_s_interact_type,&__pyx_n_s_data_type_code,0};
-    PyObject* values[3] = {0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_other_node,&__pyx_n_s_interact_type,&__pyx_n_s_data_type_code,&__pyx_n_s_time_diff,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -7983,53 +8011,69 @@ static PyObject *__pyx_pw_13cnetwork_node_12CNetworkNode_33compute_node_similari
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_node_similarity", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_node_similarity", 0, 3, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_data_type_code)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_node_similarity", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_node_similarity", 0, 3, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_time_diff);
+          if (value) { values[3] = value; kw_args--; }
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_node_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
-      goto __pyx_L5_argtuple_error;
     } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
     }
     __pyx_v_other_node = values[0];
     __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_data_type_code = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_data_type_code == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    if (values[3]) {
+      __pyx_v_time_diff = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_time_diff == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    } else {
+      __pyx_v_time_diff = ((int)-1);
+    }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_node_similarity", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_node_similarity", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("cnetwork_node.CNetworkNode.compute_node_similarity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_13cnetwork_node_12CNetworkNode_32compute_node_similarity(((struct __pyx_obj_13cnetwork_node_CNetworkNode *)__pyx_v_self), __pyx_v_other_node, __pyx_v_interact_type, __pyx_v_data_type_code);
+  __pyx_r = __pyx_pf_13cnetwork_node_12CNetworkNode_32compute_node_similarity(((struct __pyx_obj_13cnetwork_node_CNetworkNode *)__pyx_v_self), __pyx_v_other_node, __pyx_v_interact_type, __pyx_v_data_type_code, __pyx_v_time_diff);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_32compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code) {
+static PyObject *__pyx_pf_13cnetwork_node_12CNetworkNode_32compute_node_similarity(struct __pyx_obj_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code, int __pyx_v_time_diff) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
+  struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_node_similarity", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(__pyx_v_self, __pyx_v_other_node, __pyx_v_interact_type, __pyx_v_data_type_code, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2.__pyx_n = 1;
+  __pyx_t_2.time_diff = __pyx_v_time_diff;
+  __pyx_t_1 = __pyx_vtabptr_13cnetwork_node_CNetworkNode->compute_node_similarity(__pyx_v_self, __pyx_v_other_node, __pyx_v_interact_type, __pyx_v_data_type_code, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 403; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -28476,7 +28520,7 @@ PyMODINIT_FUNC PyInit_cnetwork_node(void)
   __pyx_vtable_13cnetwork_node_CNetworkNode.get_num_friends = (PyObject *(*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, int __pyx_skip_dispatch))__pyx_f_13cnetwork_node_12CNetworkNode_get_num_friends;
   __pyx_vtable_13cnetwork_node_CNetworkNode.has_friends = (PyObject *(*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, int __pyx_skip_dispatch))__pyx_f_13cnetwork_node_12CNetworkNode_has_friends;
   __pyx_vtable_13cnetwork_node_CNetworkNode.compute_similarity = (PyObject *(*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, int __pyx_skip_dispatch))__pyx_f_13cnetwork_node_12CNetworkNode_compute_similarity;
-  __pyx_vtable_13cnetwork_node_CNetworkNode.compute_node_similarity = (PyObject *(*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, int __pyx_skip_dispatch))__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity;
+  __pyx_vtable_13cnetwork_node_CNetworkNode.compute_node_similarity = (PyObject *(*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, int __pyx_skip_dispatch, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity *__pyx_optional_args))__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity;
   __pyx_vtable_13cnetwork_node_CNetworkNode.compute_node_similarity_c = (float (*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, struct __pyx_t_13cnetwork_node_idata *, int, int, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_node_similarity_c *__pyx_optional_args))__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity_c;
   __pyx_vtable_13cnetwork_node_CNetworkNode.compute_othernode_influence_c = (float (*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, struct __pyx_t_13cnetwork_node_idata *, int, int, int, struct __pyx_opt_args_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c *__pyx_optional_args))__pyx_f_13cnetwork_node_12CNetworkNode_compute_othernode_influence_c;
   __pyx_vtable_13cnetwork_node_CNetworkNode.compute_global_topk_similarity = (PyObject *(*)(struct __pyx_obj_13cnetwork_node_CNetworkNode *, PyObject *, int, int, float, int __pyx_skip_dispatch))__pyx_f_13cnetwork_node_12CNetworkNode_compute_global_topk_similarity;

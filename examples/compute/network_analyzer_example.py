@@ -16,13 +16,14 @@ from socintpy.networkdata.flixster_preparser import FlixsterDataPreparser
 from socintpy.networkdata.flickr_preparser import FlickrDataPreparser
 import socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
+import socintpy.util.compute_functions as compute
 from pprint import pprint
 
 
-COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr']
+COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr', 'lastfm_simple']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
                           'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset',
-                          'compare_interact_types']
+                          'compare_interact_types', 'influence_test']
 
 
 def usage():
@@ -50,7 +51,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
                                    max_core_nodes, store_dataset, use_artists=False)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
-                                      max_core_nodes. store_dataset)
+                                      max_core_nodes, store_dataset)
     elif dataset_domain=="flixster":
         data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, 
                                      max_core_nodes, store_dataset)
@@ -65,7 +66,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
     return data
 
 
-def compute(data, computation_cmd):
+def run_computation(data, computation_cmd, outf):
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
@@ -195,7 +196,12 @@ def compute(data, computation_cmd):
                             num_interacts_dict[interact_types[2]],
                             interact_types[0], interact_types[2], 
                             display=True, logyscale=True)
-         
+    elif computation_cmd=="influence_test":
+        #   ta = TemporalAnalyzer(data)
+        #interact_type = data.interact_types_dict["listen"]
+        la = LocalityAnalyzer(data)
+        compute.test_influence(la)
+             
     """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
@@ -295,6 +301,7 @@ if __name__ == "__main__":
     for o, a in opts:
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
+                print a
                 assert False, "Unhandled dataset domain."
             else:
                 dataset_domain = a
@@ -318,17 +325,21 @@ if __name__ == "__main__":
         usage()
         sys.exit(2)
 
-    data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
-                                  max_core_nodes, cutoff_rating, store_dataset)
-    compute(data, computation_cmd)
-
+    # supports interactive runs. Checks if data already fetched in an earlier 
+    # run of the script. 
+    if 'data' not in globals():
+        data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
+                                        max_core_nodes, cutoff_rating, store_dataset)
+    outf=open("current_run.dat", 'w')
+    run_computation(data, computation_cmd, outf)
+    outf.close()
 def get_data(from_raw_dataset=False):
     if from_raw_dataset:
         dataset_domain="lastfm"
         dataset_path="/mnt/bigdata/lastfm/"
     else:
         dataset_domain="lastfm_simple"
-        dataset_path = "/mnt/bigdata/lastfm_ego/ego_songs_75_40kdata/"
+        dataset_path = "/mnt/bigdata/lastfm_ego/ego_songs_75_110kdata/"
     computation_cmd = "basic_stats"
     max_core_nodes = None
     impl_type = "cython"

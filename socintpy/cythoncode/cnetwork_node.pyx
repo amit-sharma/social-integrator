@@ -400,7 +400,7 @@ cdef class CNetworkNode:
 
     # change training, test to common data structure idata and simplify this function
     # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
-    cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code):
+    cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code, int time_diff=-1):
         cdef int length_my_interactions
         cdef int length_other_interactions
         cdef int *my_interactions
@@ -427,7 +427,7 @@ cdef class CNetworkNode:
             #other_interactions = self.c_node_obj.c_list[interact_type]
             length_other_interactions = c_node_obj.c_length_test_ids
             if length_my_interactions > 0 and length_other_interactions > 0:
-                return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=86400, cutoff_rating=-1, data_type_code=data_type_code)
+                return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
         elif data_type_code == <int>'l':
             my_interactions = self.c_train_ids
             length_my_interactions = self.c_length_train_ids

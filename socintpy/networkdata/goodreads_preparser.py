@@ -3,6 +3,7 @@ from lxml import etree
 from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 import socintpy.util.utils as utils
 from collections import namedtuple
+import time
 #from datetime import datetime
 
 class GoodreadsDataPreparser(NetworkDataPreparser):
@@ -14,8 +15,10 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
     EdgeData = namedtuple('EdgeData', 'receiver_id')
 
-    def __init__(self, data_path, node_impl, cutoff_rating):
-        NetworkDataPreparser.__init__(self, node_impl)
+    def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes, store_dataset):
+        NetworkDataPreparser.__init__(self, node_impl, data_path,
+                                      max_core_nodes=max_core_nodes, 
+                                      store_dataset=store_dataset)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
         self.items_filename = data_path + "goodreads.300k.items.xml"
@@ -75,8 +78,8 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
             cols = line.strip(" \n\t").split(",")
             user_id = int(cols[0])
             item_id = int(cols[1])
-            #timestamp = datetime.strptime(cols[2], "%m/%d/%Y %I:%M:%S %p")
-            timestamp = cols[2]
+            timestamp = time.mktime(time.strptime(cols[2], "%m/%d/%Y %I:%M:%S %p"))
+            #timestamp = cols[2]
             if cols[3] != 'NaN' and int(cols[3]) >= self.cutoff_rating: # mimicking as if the invalid lines are not there in the file, so not reading them at all
                 rating = int(cols[3])
                 new_interaction = GoodreadsDataPreparser.InteractData(item_id, timestamp, rating)

@@ -1,5 +1,6 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 import numpy as np
+import heapq
 
 class LocalityAnalyzer(BasicNetworkAnalyzer):
     def __init__(self, netdata):
@@ -46,18 +47,11 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                 degree_distr = items_num_influencers[0:i+1]
                 break
         return filtered_coverage,filtered_pop, ratio_arr, degree_distr
-
-    def estimate_influencer_effect(self, interact_type, split_timestamp, cutoff_rating=-1, control_divider=0.1):
-        # Create training, test sets for all users(core and non-core)
-        for node in self.netdata.get_nodes_list(should_have_interactions=True):
-            node.create_training_test_sets_bytime(interact_type, split_timestamp,
-                                                  cutoff_rating)
-        
+    
+    def compute_influence_randomselect(self, interact_type, data_type_code, control_divider):   
+        # Find similarity on training set
         triplet_nodes = []
         counter = 0
-        data_type="compare_train"
-        data_type_code=ord(data_type[0]) 
-        # Find similarity on training set
         for node in self.netdata.get_nodes_list(should_have_friends=True, 
                                                 should_have_interactions=True):
             if not node.has_interactions(interact_type) or not node.has_friends():
@@ -96,20 +90,72 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                                 break
             if counter %1000==0:
                 print "Done counter", counter
+            if counter > 10000:
+                break
             counter += 1
+        return triplet_nodes
+
+    def compute_influence_knearestselect(self, interact_type, data_type, 
+                                         control_divider, k):   
+        # Find similarity on training set
+        triplet_nodes = []
+        counter = 0
+        for node in self.netdata.get_nodes_list(should_have_friends=True, 
+                                                should_have_interactions=True):
+            if not node.has_interactions(interact_type) or not node.has_friends():
+                #print "Node has no interactions. Skipping!"
+                continue
+            num_node_interacts = node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
+            fr_knearest_nodes = self.compute_knearest_neighbors(node, self.netdata.get_friends_nodes(node), 
+                                                          interact_type, k, data_type)
+            global_candidates = self.netdata.get_nonfriends_iterable(node)
+            globalk_neighbors = self.compute_knearest_neighbors(node, global_candidates, 
+                                                                interact_type, k, data_type)
+            for i in range(min(len(globalk_neighbors), len(fr_knearest_nodes))):
+                # These are minheaps---fails when the two heap sizes dont match
+                fsim, fnode = heapq.heappop(fr_knearest_nodes)
+                gsim, gnode = heapq.heappop(globalk_neighbors)
+                triplet_nodes.append((node, fnode, gnode, 0, 0, 0, fsim, gsim))
+
+            if counter %1000==0:
+                print "Done counter", counter
+            if counter > 10000:
+                break
+            counter += 1
+        return triplet_nodes
+
+    def estimate_influencer_effect(self, interact_type, split_timestamp, time_diff,
+                                   cutoff_rating=-1, control_divider=0.1, 
+                                   selection_method="random", klim=None):
+        # Create training, test sets for all users(core and non-core)
+        for node in self.netdata.get_nodes_list(should_have_interactions=True):
+            node.create_training_test_sets_bytime(interact_type, split_timestamp,
+                                                  cutoff_rating)
+        
+        data_type="compare_train"
+        data_type_code=ord(data_type[0]) 
+        if selection_method=="random":
+            triplet_nodes = self.compute_influence_randomselect(interact_type, 
+                                                                data_type_code,
+                                                                control_divider)
+        elif selection_method=="knearest":
+            triplet_nodes = self.compute_influence_knearestselect(interact_type, 
+                                                                data_type,
+                                                                control_divider, 
+                                                                klim)
 
 
         influence_arr = []
         # Compare influencer effect on test set
         data_type="influence_effect"
         data_type_code=ord(data_type[0]) 
-        for node, fnoe, rnode, num1, num2, num3, fsim, rsim in triplet_nodes:
+        for node, fnode, rnode, num1, num2, num3, fsim, rsim in triplet_nodes:
             # this similarity is not symmetric
-            inf1 = node.compute_node_similarity(fnode, interact_type, data_type_code)
-            inf11 = fnode.compute_node_similarity(node, interact_type, data_type_code)
+            inf1 = node.compute_node_similarity(fnode, interact_type, data_type_code, time_diff)
+            inf11 = fnode.compute_node_similarity(node, interact_type, data_type_code, time_diff)
             if inf1 is not None and inf1 != -1:
-                inf2 = node.compute_node_similarity(rnode, interact_type, data_type_code)
-                inf22 = rnode.compute_node_similarity(node, interact_type, data_type_code)
+                inf2 = node.compute_node_similarity(rnode, interact_type, data_type_code, time_diff)
+                inf22 = rnode.compute_node_similarity(node, interact_type, data_type_code, time_diff)
                 if inf2 is not None and inf2 !=-1:
                     influence_arr.append((num1, num2, num3, fsim, rsim, 
                                           inf1, inf2, inf11, inf22))
