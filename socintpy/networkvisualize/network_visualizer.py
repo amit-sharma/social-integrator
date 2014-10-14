@@ -1,52 +1,129 @@
-import matplotlib.pyplot
-import networkx as nx
+import matplotlib
+matplotlib.use('Agg')
 from datetime import datetime
 
-class NetworkVisualizor(object):
+import math
+import matplotlib.pyplot as plt
+import pydot
+
+
+MAX_NODE_SIZE = 2.0
+
+
+class NetworkVisualizer(object):
     def __init__(self, networkdata):
         self.netdata = networkdata
         self.graph = None
-        self.interact_type = self.netdata.interaction_types[0] 
-        self.create_network()
+        self.interact_type = self.netdata.interaction_types[0]
 
-    def create_network(self):
-        self.graph = nx.Graph()
-        for v in self.netdata.get_nodes_iterable(should_have_friends=True):
-            self.graph.add_node(v.uid)
-            for fr_id in v.get_friend_ids():
-                self.graph.add_edge(v.uid, fr_id)
-        return self.graph
+    def find_most_interacted_items(self, min_interactions):
+        items = {}
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
+            for item_tuple in v.get_items_interacted_with(self.interact_type, return_timestamp=True):
+                count = items.get(item_tuple[0],0) + 1
+                items[item_tuple[0]] = count
+        return [(v, k) for k,v in items.iteritems() if v >= min_interactions]
 
-    def draw_network(self):
-        nx.draw(self.graph)#, pos=nx.spring_layout(self.graph))
-    
-    def plot_item_adoption(self, item_id):
-        item_interactions = {}
-        for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
-            item_tuple = v.get_items_interacted_with(self.interact_type, return_timestamp = True)
-            for curr_itemid, timestamp in item_tuple:
-                if item_id == curr_itemid:
-                    try:
-                        interact_time = datetime.strptime(timestamp, "%m/%d/%Y %I:%M:%S %p")
-                        item_interactions[interact_time] = v.uid
-                    except ValueError, ve:
-                        print timestamp
-                        print ve
+    def get_items_interactions(items, should_have_friends=False):
+        items_interactions = {}
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=should_have_friends):
+            for item_tuple in v.get_items_interacted_with(self.interact_type, return_timestamp=True):
+                if item_tuple[0] in items:
+                    interactions = items_interactions.get(items_interactions[item_tupl[0]], [])
+                    interact_time = datetime.strptime(item_tuple[1], "%m/%d/%Y %I:%M:%S %p")
+                    interactions.append((v.uid, interact_time))
+                    items_interactions[item_tuple[0]] = interactions
+        return items_interactions
 
-        sorted_interacts = sorted(item_interactions.items(), key=lambda x: x[0])
-        interact_nodes =[]
-        plot_data = []
-        for timestamp,uid in sorted_interacts:
-            min_dist = len(self.graph)
-            for node_id in interact_nodes:
-                try:
-                    dist = nx.shortest_path_length(self.graph, node_id, uid)
-                    if dist < min_dist:
-                        min_dist = dist
-                except nx.NetworkXNoPath:
-                    pass
-            if len(interact_nodes) > 0:
-                plot_data.append((timestamp, min_dist))
+    # Creates an adoption cascade for the give item_id, and writes a ps to the filename of the resulting graph
+    def plot_item_cascade(self, item_id, timestep, filename, max_time_distance=1):
+        interactions = []
+        max_friends = 0
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
+            items = v.get_items_interacted_with(self.interact_type, return_timestamp=True)
+            for item_tuple in items:
+                if item_id == item_tuple[0]:
+                    num_friends = len(v.get_friend_ids())
+                    max_friends = max(num_friends, max_friends)
+                    interactions.append((datetime.strptime(item_tuple[1], "%m/%d/%Y %I:%M:%S %p"), v, num_friends))
+        interactions = sorted(interactions)
 
-            interact_nodes.append(uid)
-        return plot_data
+        graph = pydot.Dot(graph_type='digraph')
+        graph.set_node_defaults(fontsize=60, shape='circle', label='\"\"', style='filled', fillcolor='black', pin='true')
+        graph.set_graph_defaults(outputorder='nodesfirst', labelloc='t', fontsize=100)
+        graph.set_edge_defaults(color='red', dir='none')
+
+        # Create graph levels
+        min_date = interactions[0][0]
+        max_date = min_date + timestep
+        end_date = interactions[-1][0]
+        index = 0
+        i = 0
+        levels = []
+        while min_date <= end_date:
+            level = []
+            subgraph = pydot.Subgraph()
+            subgraph.set_rank('same')
+            placeholder = pydot.Node('temp' + str(i))
+            placeholder.set_label(str(i))
+            placeholder.set_color('white')
+            placeholder.set_fillcolor('white')
+            subgraph.add_node(placeholder)
+            if i > 0:
+                edge = pydot.Edge('temp' + str(i-1), 'temp' + str(i))
+                edge.set_color('white')
+                graph.add_edge(edge)
+            i += 1
+            while index < len(interactions) and interactions[index][0] <= max_date:
+                interaction = interactions[index]
+                level.append(interaction[1])
+                index += 1
+                width = max(0.1, (math.log(interaction[2]+1, 2) * MAX_NODE_SIZE / math.log(max_friends+1, 2)))
+                node = pydot.Node(str(interaction[1].uid))
+                node.set_width(width)
+                subgraph.add_node(node)
+            graph.add_subgraph(subgraph)
+            levels.append(level)
+            min_date = max_date
+            max_date += timestep
+
+        # get edges
+        edges = set([])
+        for i, level in enumerate(levels):
+            potentials = []
+            for p in levels[i:i+1+max_time_distance]:
+                potentials.extend(p)
+            for node in level:
+                friends = node.get_friend_ids()
+                for node2 in potentials:
+                    if node2.uid in friends:
+                        edges.add((min(node2.uid,node.uid),max(node2.uid,node.uid)))
+
+        #set up graph meta-data
+        num_edges = len(edges)
+        num_nodes = sum([len(level) for level in levels])
+        label = '# Nodes: %(nodes)d, # Edges: %(edges)d' % { 'nodes': num_nodes, 'edges': num_edges }
+        graph.set_label(label)
+
+        # lay out the nodes
+        output = graph.create_dot()
+
+        # read in the new graph to lay out the edges
+        graph = pydot.graph_from_dot_data(output)
+        for edge in edges:
+            graph.add_edge(pydot.Edge(edge[0], edge[1]))
+        graph.write_ps(filename, prog=['neato', '-s', '-n'])
+
+    # histogram of users by number of friends
+    def plot_item_by_connectedness(self, item_id, filename, num_bins=100):
+        data = []
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
+            items = v.get_items_interacted_with(self.interact_type, return_timestamp=True)
+            for item_tuple in items:
+                if item_id == item_tuple[0]:
+                    num_friends = len(v.get_friend_ids())
+                    data.append(num_friends)
+        fig = plt.figure()
+        plt.hist(data,bins=num_bins,log=True)
+        plt.savefig(filename)
+        plt.close(fig)
