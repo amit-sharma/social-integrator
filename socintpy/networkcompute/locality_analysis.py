@@ -1,6 +1,78 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 import numpy as np
+import random
 import heapq
+import multiprocessing as mp
+
+def compute_influence_randomselect_parallel(netdata, nodes_list, interact_type, 
+                                            data_type_code, control_divider, 
+                                            time_diff, max_tries, q):   
+    # Find similarity on training set
+    triplet_nodes = []
+    counter = 0
+    failed_counter = 0
+    randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
+    for node in nodes_list:
+        if not node.has_interactions(interact_type) or not node.has_friends():
+            #print "Node has no interactions. Skipping!"
+            continue
+        num_node_interacts = node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
+        fnodes = netdata.get_friends_nodes(node)
+        friend_ids = node.get_friend_ids()
+        for fobj in fnodes:
+            if fobj.has_interactions(interact_type):
+                fsim = node.compute_node_similarity(fobj, interact_type, data_type_code)
+#if fsim is None:
+#                        print "Error:fsim cannot be None"
+                #print fsim
+                num_fobj_interacts = fobj.get_num_interactions(interact_type)
+                found = False
+                if fsim is not None and fsim!=-1:
+                    tries=0
+                    r_index = 0
+                    while not found and r_index < max_tries:
+                        rand_node_id = randomized_node_ids[r_index]
+                        rand_node = netdata.nodes[rand_node_id]
+                        r_index += 1
+                        if rand_node.uid in friend_ids or rand_node.uid==node.uid:
+                            continue
+                        rsim = node.compute_node_similarity(rand_node, interact_type, data_type_code)
+                        num_rnode_interacts = rand_node.get_num_interactions(interact_type)
+                        if rsim is not None and rsim!=-1:
+                            if round(fsim/control_divider)==round(rsim/control_divider):
+                                found = True
+                                triplet_nodes.append((node,fobj, rand_node,
+                                                      num_node_interacts,
+                                                      num_fobj_interacts,
+                                                      num_rnode_interacts,
+                                                      fsim, rsim))
+                        tries += 1
+                    if not found:
+                        print "Could not get random non-friend with sim", fsim, "in %d tries" %tries
+                        failed_counter += 1
+        if counter %1000==0:
+            print "Done counter", counter
+        if counter > 1000:
+            break
+        counter += 1
+    print "Number of failed nodes (cant find rnode)", failed_counter
+
+    influence_arr = []
+    # Compare influencer effect on test set
+    data_type="influence_effect"
+    data_type_code=ord(data_type[0]) 
+    for node, fnode, rnode, num1, num2, num3, fsim, rsim in triplet_nodes:
+        # this similarity is not symmetric
+        inf1 = node.compute_node_similarity(fnode, interact_type, data_type_code, time_diff)
+        inf11 = fnode.compute_node_similarity(node, interact_type, data_type_code, time_diff)
+        if inf1 is not None and inf1 != -1:
+            inf2 = node.compute_node_similarity(rnode, interact_type, data_type_code, time_diff)
+            inf22 = rnode.compute_node_similarity(node, interact_type, data_type_code, time_diff)
+            if inf2 is not None and inf2 !=-1:
+                influence_arr.append((num1, num2, num3, fsim, rsim, 
+                                      inf1, inf2, inf11, inf22))
+    q.put(influence_arr)
+    return
 
 class LocalityAnalyzer(BasicNetworkAnalyzer):
     def __init__(self, netdata):
@@ -125,15 +197,16 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         return triplet_nodes
 
     def estimate_influencer_effect(self, interact_type, split_timestamp, time_diff,
-                                   cutoff_rating=-1, control_divider=0.1, 
+                                   control_divider=0.1, 
                                    selection_method="random", klim=None):
+        cutoff_rating = self.netdata.cutoff_rating
         # Create training, test sets for all users(core and non-core)
         for node in self.netdata.get_nodes_list(should_have_interactions=True):
             node.create_training_test_sets_bytime(interact_type, split_timestamp,
                                                   cutoff_rating)
         
         data_type="compare_train"
-        data_type_code=ord(data_type[0]) 
+        data_type_code=ord(data_type[0])
         if selection_method=="random":
             triplet_nodes = self.compute_influence_randomselect(interact_type, 
                                                                 data_type_code,
@@ -161,3 +234,57 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                                           inf1, inf2, inf11, inf22))
         return influence_arr
 
+    
+
+    def estimate_influencer_effect_parallel(self, interact_type, split_timestamp, time_diff,
+                                   control_divider=0.1, 
+                                   selection_method="random", klim=None, 
+                                   max_tries=10000, num_processes=1):
+        cutoff_rating = self.netdata.cutoff_rating
+        if cutoff_rating is None:
+            cutoff_rating = -1
+        # Create training, test sets for all users(core and non-core)
+        for node in self.netdata.get_nodes_list(should_have_interactions=True):
+            node.create_training_test_sets_bytime(interact_type, split_timestamp,
+                                                  cutoff_rating)
+        
+        data_type="compare_train"
+        data_type_code=ord(data_type[0]) 
+        """
+        if selection_method=="random":
+
+            triplet = self.compute_influence_randomselect_parallel(node,interact_type, 
+                                                                data_type_code,
+                                                                control_divider)
+        elif selection_method=="knearest":
+            triplet_nodes = self.compute_influence_knearestselect(interact_type, 
+                                                                data_type,
+                                                                control_divider, 
+                                                                klim)
+        """
+
+        nodes_list = self.netdata.get_nodes_list(should_have_friends=True, should_have_interactions=True)
+        partial_num_nodes = len(nodes_list) / num_processes + 1
+        arg_list = []
+        influence_arr_all = []
+        for i in range(num_processes):
+            start_index = i * partial_num_nodes
+            end_index = min((i + 1) * partial_num_nodes, len(nodes_list))
+            arg_list.append(nodes_list[start_index:end_index])
+        
+        q = mp.Queue()
+        proc_list = []
+        for i in range(num_processes):
+            p = mp.Process(target=compute_influence_randomselect_parallel, 
+                           args=(self.netdata, arg_list[i], interact_type, data_type_code,
+                               control_divider, time_diff, max_tries, q))
+            p.start()
+            proc_list.append(p)
+        
+        for p in proc_list:
+            curr_list = q.get() # get waits on some input by a process
+            influence_arr_all.extend(curr_list)
+        # join waits on end of processes
+        for p in proc_list:
+            p.join()
+        return influence_arr_all

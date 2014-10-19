@@ -5,7 +5,7 @@ import logging
 import matplotlib as mpl
 #mpl.use('Agg')
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
-from socintpy.networkvisualize.network_visualizer import NetworkVisualizor
+#from socintpy.networkvisualize.network_visualizer import NetworkVisualizor
 from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
@@ -200,7 +200,9 @@ def run_computation(data, computation_cmd, outf):
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"]
         la = LocalityAnalyzer(data)
-        compute.test_influence(la)
+        compute.test_influence(la, interact_type=0, time_diff=90000, 
+                               split_date_str="2009/01/01", control_divider=0.1,
+                               max_tries = 300000, num_processes=2)
              
     """
     elif computation_cmd=="random_recommender":
@@ -296,7 +298,10 @@ if __name__ == "__main__":
     computation_cmd = None
     max_core_nodes = None
     impl_type = "python"
-    cutoff_rating = None # sufficiently small value so that cutoff has no effect.
+    # previously, None # i.e. cutoff has no effect. This value may be overridden 
+    # by future methods..but the filtering on cutoff has already taken place 
+    # when creating the data structure in memory
+    cutoff_rating = -1 
     store_dataset = False
     for o, a in opts:
         if o =="-d":
@@ -333,6 +338,7 @@ if __name__ == "__main__":
     outf=open("current_run.dat", 'w')
     run_computation(data, computation_cmd, outf)
     outf.close()
+
 def get_data(from_raw_dataset=False):
     if from_raw_dataset:
         dataset_domain="lastfm"
