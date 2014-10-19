@@ -3,6 +3,7 @@ from lxml import etree
 from socintpy.networkdata.network_data_preparser import NetworkDataPreparser
 import socintpy.util.utils as utils
 from collections import namedtuple
+import time
 #from datetime import datetime
 
 class FlixsterDataPreparser(NetworkDataPreparser):
@@ -139,8 +140,9 @@ class FlixsterDataPreparser(NetworkDataPreparser):
             cols = line.strip(" \n\t").split()
             user_id = int(cols[0])
             item_id = int(cols[1])
-            #timestamp = datetime.strptime(cols[2], "%m/%d/%Y %I:%M:%S %p")
-            timestamp = cols[3]
+            print line
+            timestamp = time.mktime(time.strptime(cols[3], "%Y-%m-%d"))
+            #timestamp = cols[3]
             if cols[2] != 'NaN' and int(float(cols[2])) >= self.cutoff_rating: # mimicking as if the invalid lines are not there in the file, so not reading them at all
                 rating = int(float(cols[2]))
                 new_interaction = FlixsterDataPreparser.InteractData(item_id, timestamp, rating)

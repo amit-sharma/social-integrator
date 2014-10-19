@@ -64,6 +64,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         for itemid, itemdata in items_iter:
             self.items.insert(itemid, itemdata)
         print "all items stored", len(self.items)
+        self.total_num_items = len(self.items)
         return self.items
 
     def read_interactions_file(self):
