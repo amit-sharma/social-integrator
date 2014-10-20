@@ -265,7 +265,7 @@ cdef class CNetworkNode:
             PyMem_Free(self.c_train_ids)
             PyMem_Free(self.c_test_ids)
     
-    cpdef int store_interactions(self, int interact_type, ilist, do_sort=True):
+    cpdef int store_interactions(self, int interact_type, ilist, do_sort=True) except -1:
         self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
         if self.c_list is NULL:
             raise MemoryError()
@@ -400,7 +400,7 @@ cdef class CNetworkNode:
 
     # change training, test to common data structure idata and simplify this function
     # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
-    cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code, int time_diff=-1):
+    cpdef compute_node_similarity(self, other_node, int interact_type, int data_type_code, int min_interactions_per_user=0, int time_diff=-1):
         cdef int length_my_interactions
         cdef int length_other_interactions
         cdef int *my_interactions
@@ -412,21 +412,21 @@ cdef class CNetworkNode:
             length_my_interactions = self.c_length_list[interact_type]
             #other_interactions = self.c_node_obj.c_list[interact_type]
             length_other_interactions = c_node_obj.c_length_list[interact_type]
-            if length_my_interactions > 0 and length_other_interactions > 0:
-                return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, cutoff_rating=-1, data_type_code=data_type_code)
+            if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+                return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
         elif data_type_code == <int>'c':
             #my_interactions = self.c_list[interact_type]
             length_my_interactions = self.c_length_train_ids
             #other_interactions = self.c_node_obj.c_list[interact_type]
             length_other_interactions = c_node_obj.c_length_train_ids
-            if length_my_interactions > 0 and length_other_interactions > 0:
-                return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, cutoff_rating=-1, data_type_code=data_type_code)
+            if length_my_interactions > min_interactions_per_user and length_other_interactions >min_interactions_per_user:
+                return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
         elif data_type_code == <int>'i':
             #my_interactions = self.c_list[interact_type]
             length_my_interactions = self.c_length_test_ids
             #other_interactions = self.c_node_obj.c_list[interact_type]
             length_other_interactions = c_node_obj.c_length_test_ids
-            if length_my_interactions > 0 and length_other_interactions > 0:
+            if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
         elif data_type_code == <int>'l':
             my_interactions = self.c_train_ids
@@ -434,14 +434,14 @@ cdef class CNetworkNode:
             other_interactions = c_node_obj.c_train_ids
             length_other_interactions = c_node_obj.c_length_train_ids
             #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
-            if length_my_interactions > 0 and length_other_interactions > 0:
+            if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
         elif data_type_code == <int>'t':
             my_interactions = self.c_test_ids
             length_my_interactions = self.c_length_test_ids
             other_interactions = c_node_obj.c_test_ids
             length_other_interactions = c_node_obj.c_length_test_ids
-            if length_my_interactions > 0 and length_other_interactions > 0:
+            if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
         return None
 
@@ -460,7 +460,7 @@ cdef class CNetworkNode:
 
     cdef float compute_node_similarity_c(self, idata *others_interactions, 
                                          int length_others_interactions, 
-                                         int interact_type, 
+                                         int interact_type, int time_diff=-1, 
                                          float cutoff_rating=-1,
                                          int data_type_code=<int>'a'):
         cdef float l2_norm1, l2_norm2, simscore
@@ -490,7 +490,10 @@ cdef class CNetworkNode:
                 j+= 1
             else:
                 if my_interactions[i].rating >= cutoff_rating and others_interactions[j].rating >= cutoff_rating:
-                    simscore +=1
+                    if time_diff == -1:
+                        simscore +=1
+                    elif abs(my_interactions[i].timestamp - others_interactions[j].timestamp) <= time_diff:
+                        simscore += 1
 
                 if my_interactions[i].rating >= cutoff_rating:
                     my_count += 1
@@ -567,10 +570,7 @@ cdef class CNetworkNode:
 
         if my_count == 0 or others_count == 0: # prevent zero division error
             return -1
-        #l2_norm1 = sqrt(self.c_length_list[interact_type])
-        #l2_norm2 = sqrt(length_others_interactions)
-        #print self.c_length_list[interact_type], my_count, length_others_interactions, others_count
-        l2_norm1 = sqrt(my_count)
+        #l2_norm1 = sqrt(my_count)
         l2_norm2 = sqrt(others_count)
 
         return simscore/(l2_norm2)
@@ -589,7 +589,7 @@ cdef class CNetworkNode:
             c_node_obj = <CNetworkNode>node_obj
             if c_node_obj.c_length_list[interact_type]>0:
                 if (not exists(c_node_obj.c_uid, friend_arr, self.c_length_friend_list)) and c_node_obj.c_uid != self.c_uid:
-                    sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, cutoff_rating)
+                    sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type,-1, cutoff_rating)
                     #sim=1
                     if sim > min_sim:
                         sims_vector[min_sim_index] = sim
@@ -632,7 +632,7 @@ cdef class CNetworkNode:
         for node_obj in friends_iterable:
             c_node_obj = <CNetworkNode>node_obj
             if self.c_length_list[interact_type]>0 and c_node_obj.c_length_list[interact_type]>0: 
-                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, cutoff_rating)
+                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, -1, cutoff_rating)
                 if sim > min_sim:
                     sims_vector[min_sim_index] = sim
                     min_sim = min(sims_vector, klim, &min_sim_index)
@@ -651,7 +651,7 @@ cdef class CNetworkNode:
         for node_obj in nodes_iterable:
             c_node_obj = <CNetworkNode>node_obj
             if self.c_length_list[interact_type]>0 and c_node_obj.c_length_list[interact_type]>0:
-                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, cutoff_rating)
+                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, -1, cutoff_rating)
                 if sim != -1:
                     sim_avg += sim
                     counter += 1

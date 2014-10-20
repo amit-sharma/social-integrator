@@ -32,7 +32,7 @@ class FlickrDataPreparser(NetworkDataPreparser):
         self.node_id_map = {}
         self.cutoff_rating = cutoff_rating
         self.cutoff_rating = None
-        self.copy_timestamps = []
+        #self.copy_timestamps = []
         
         globals().update(self.named_tuple_dict)
 
@@ -93,6 +93,7 @@ class FlickrDataPreparser(NetworkDataPreparser):
                         num_favorites=num_favorites)
                 self.items.insert(item_id, itemdata)
         print "All items stored (based on flickr-all-photos.txt)", len(self.items)
+        self.total_num_items = len(self.items)
         return self.items
 
     def read_edges_file(self):
@@ -153,11 +154,10 @@ class FlickrDataPreparser(NetworkDataPreparser):
             cols = line.strip(" \n\t").split()
             user_id = int(cols[0])
             item_id = int(cols[1])
-            #timestamp = datetime.strptime(cols[2], "%m/%d/%Y %I:%M:%S %p")
-            timestamp = cols[2]
+            timestamp = int(cols[2])
             rating = 1 
             new_interaction = FlickrDataPreparser.InteractData(item_id, timestamp, rating)
-            self.copy_timestamps.append(timestamp)
+            #self.copy_timestamps.append(timestamp)
             if prev_user is not None and prev_user != user_id:
                 if prev_user in self.node_id_map:
                     self.nodes[self.node_id_map[prev_user]].store_interactions(self.RATE_ACTION, ilist)

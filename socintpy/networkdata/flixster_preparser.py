@@ -5,6 +5,7 @@ import socintpy.util.utils as utils
 from collections import namedtuple
 import time
 #from datetime import datetime
+from pprint import pprint
 
 class FlixsterDataPreparser(NetworkDataPreparser):
     interact_types_dict = {'rate': 0}
@@ -84,6 +85,7 @@ class FlixsterDataPreparser(NetworkDataPreparser):
                                                           original_item_id=item_id)
                 self.items.insert(item_id, itemdata)
         print "All items stored (based on ratings.timed.txt)", len(self.items)
+        self.total_num_items = len(self.items)
         return self.items
 
     def read_edges_file(self):
@@ -140,16 +142,24 @@ class FlixsterDataPreparser(NetworkDataPreparser):
             cols = line.strip(" \n\t").split()
             user_id = int(cols[0])
             item_id = int(cols[1])
-            print line
+            #print line
             timestamp = time.mktime(time.strptime(cols[3], "%Y-%m-%d"))
             #timestamp = cols[3]
+            if timestamp < 0:
+                print line
+                continue
             if cols[2] != 'NaN' and int(float(cols[2])) >= self.cutoff_rating: # mimicking as if the invalid lines are not there in the file, so not reading them at all
                 rating = int(float(cols[2]))
                 new_interaction = FlixsterDataPreparser.InteractData(item_id, timestamp, rating)
                 self.copy_timestamps.append(timestamp)
                 if prev_user is not None and prev_user != user_id:
                     if prev_user in self.node_id_map:
-                        self.nodes[self.node_id_map[prev_user]].store_interactions(self.RATE_ACTION, ilist)
+                        try:
+                            self.nodes[self.node_id_map[prev_user]].store_interactions(self.RATE_ACTION, ilist)
+                        except:
+                            print prev_user
+                            pprint(ilist)
+                            raise
                         counter += len(ilist)
                     else:
                         ratings_but_notconnected_flag = True

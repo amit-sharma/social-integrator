@@ -200,9 +200,10 @@ def run_computation(data, computation_cmd, outf):
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"]
         la = LocalityAnalyzer(data)
-        compute.test_influence(la, interact_type=0, time_diff=90000, 
-                               split_date_str="2009/01/01", control_divider=0.1,
-                               max_tries = 300000, num_processes=2)
+        compute.test_influence(la, interact_type=0, time_diff=100000, 
+                               split_date_str="2009/01/01", control_divider=0.01,
+                               min_interactions_per_user = 5,
+                               max_tries = 300000, max_node_computes=200, num_processes=4)
              
     """
     elif computation_cmd=="random_recommender":
