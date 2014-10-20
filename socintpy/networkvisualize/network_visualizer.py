@@ -1,9 +1,11 @@
 import matplotlib
 matplotlib.use('Agg')
 from datetime import datetime
+from collections import defaultdict
 
 import math
 import matplotlib.pyplot as plt
+import os
 import pydot
 
 
@@ -127,3 +129,35 @@ class NetworkVisualizer(object):
         plt.hist(data,bins=num_bins,log=True)
         plt.savefig(filename)
         plt.close(fig)
+
+    def plot_item_adoption_by_friend_adoption(self, timestep, bin_size, directory):
+        bins = defaultdict(list)
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
+            num_friends = len(v.get_friend_ids())
+            bin = (num_friends/bin_size)*bin_size
+            friend_interactions = {}
+            for f in self.netdata.get_friends_iterable(v):
+                friend_interactions[f.uid] = f.get_items_interacted_with(
+                    self.interact_type,
+                    return_timestamp=True,
+                )
+            interactions = defaultdict(list)
+            for fid, inters in friend_interactions.iteritems():
+                for key, value in inters:
+                    interactions[key].append((fid, datetime.fromtimestamp(value)))
+            for item in v.get_items_interacted_with(self.interact_type, return_timestamp=True):
+                item_interactions = interactions[item[0]]
+                item_time = datetime.fromtimestamp(item[1])
+                count = 0
+                for f, t in item_interactions:
+                    if t < item_time and t + timestep >= item_time:
+                        count += 1
+                bins[bin].append(count)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        for bin, counts in bins.iteritems():
+            fig = plt.figure()
+            plt.hist(counts,bins=max(counts), log=True)
+            plt.savefig(directory + '/' + str(bin) + '.png')
+            plt.close(fig)
+
