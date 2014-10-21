@@ -3,7 +3,7 @@ import importlib
 import math
 from threading import Thread
 from functools import wraps
-
+import numpy as np
 
 def convert_to_utf8_str(arg):
     # written by Michael Norton (http://docondev.blogspot.com/)
@@ -27,7 +27,8 @@ def class_for_name(module_name, class_name):
 def mean_sd(data_list):
     mean_val = sum(data_list) / float(len(data_list))
     variance = sum([(val - mean_val) * (val - mean_val) for val in data_list]) / float(len(data_list))
-    return (mean_val, math.sqrt(variance))
+    median = np.median(data_list)
+    return (mean_val, math.sqrt(variance), median)
 
 
 def l2_norm(values_iter, binary=True):

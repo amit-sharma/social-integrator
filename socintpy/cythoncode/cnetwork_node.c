@@ -7588,7 +7588,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_my_interactions = self.c_length_list[interact_type]
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_list[interact_type]             # <<<<<<<<<<<<<<
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  */
     __pyx_v_length_other_interactions = (__pyx_v_c_node_obj->c_length_list[__pyx_v_interact_type]);
@@ -7596,11 +7596,11 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
     /* "cnetwork_node.pyx":415
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_list[interact_type]
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:             # <<<<<<<<<<<<<<
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:             # <<<<<<<<<<<<<<
  *                 return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'c':
  */
-    __pyx_t_12 = ((__pyx_v_length_my_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_my_interactions >= __pyx_v_min_interactions_per_user) != 0);
     if (__pyx_t_12) {
       goto __pyx_L6_next_and;
     } else {
@@ -7608,14 +7608,14 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
       goto __pyx_L5_bool_binop_done;
     }
     __pyx_L6_next_and:;
-    __pyx_t_12 = ((__pyx_v_length_other_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_other_interactions >= __pyx_v_min_interactions_per_user) != 0);
     __pyx_t_11 = __pyx_t_12;
     __pyx_L5_bool_binop_done:;
     if (__pyx_t_11) {
 
       /* "cnetwork_node.pyx":416
  *             length_other_interactions = c_node_obj.c_length_list[interact_type]
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)             # <<<<<<<<<<<<<<
  *         elif data_type_code == <int>'c':
  *             #my_interactions = self.c_list[interact_type]
@@ -7636,7 +7636,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   }
 
   /* "cnetwork_node.pyx":417
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'c':             # <<<<<<<<<<<<<<
  *             #my_interactions = self.c_list[interact_type]
@@ -7659,7 +7659,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_my_interactions = self.c_length_train_ids
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_train_ids             # <<<<<<<<<<<<<<
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions >min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  */
     __pyx_t_15 = __pyx_v_c_node_obj->c_length_train_ids;
@@ -7668,11 +7668,11 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
     /* "cnetwork_node.pyx":422
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_train_ids
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions >min_interactions_per_user:             # <<<<<<<<<<<<<<
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:             # <<<<<<<<<<<<<<
  *                 return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'i':
  */
-    __pyx_t_12 = ((__pyx_v_length_my_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_my_interactions >= __pyx_v_min_interactions_per_user) != 0);
     if (__pyx_t_12) {
       goto __pyx_L9_next_and;
     } else {
@@ -7680,14 +7680,14 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
       goto __pyx_L8_bool_binop_done;
     }
     __pyx_L9_next_and:;
-    __pyx_t_12 = ((__pyx_v_length_other_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_other_interactions >= __pyx_v_min_interactions_per_user) != 0);
     __pyx_t_11 = __pyx_t_12;
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_11) {
 
       /* "cnetwork_node.pyx":423
  *             length_other_interactions = c_node_obj.c_length_train_ids
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions >min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)             # <<<<<<<<<<<<<<
  *         elif data_type_code == <int>'i':
  *             #my_interactions = self.c_list[interact_type]
@@ -7708,7 +7708,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   }
 
   /* "cnetwork_node.pyx":424
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions >min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'i':             # <<<<<<<<<<<<<<
  *             #my_interactions = self.c_list[interact_type]
@@ -7731,7 +7731,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_my_interactions = self.c_length_test_ids
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_test_ids             # <<<<<<<<<<<<<<
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  */
     __pyx_t_15 = __pyx_v_c_node_obj->c_length_test_ids;
@@ -7740,11 +7740,11 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
     /* "cnetwork_node.pyx":429
  *             #other_interactions = self.c_node_obj.c_list[interact_type]
  *             length_other_interactions = c_node_obj.c_length_test_ids
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:             # <<<<<<<<<<<<<<
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:             # <<<<<<<<<<<<<<
  *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'l':
  */
-    __pyx_t_12 = ((__pyx_v_length_my_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_my_interactions >= __pyx_v_min_interactions_per_user) != 0);
     if (__pyx_t_12) {
       goto __pyx_L12_next_and;
     } else {
@@ -7752,14 +7752,14 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
       goto __pyx_L11_bool_binop_done;
     }
     __pyx_L12_next_and:;
-    __pyx_t_12 = ((__pyx_v_length_other_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_other_interactions >= __pyx_v_min_interactions_per_user) != 0);
     __pyx_t_11 = __pyx_t_12;
     __pyx_L11_bool_binop_done:;
     if (__pyx_t_11) {
 
       /* "cnetwork_node.pyx":430
  *             length_other_interactions = c_node_obj.c_length_test_ids
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)             # <<<<<<<<<<<<<<
  *         elif data_type_code == <int>'l':
  *             my_interactions = self.c_train_ids
@@ -7779,7 +7779,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   }
 
   /* "cnetwork_node.pyx":431
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=-1, data_type_code=data_type_code)
  *         elif data_type_code == <int>'l':             # <<<<<<<<<<<<<<
  *             my_interactions = self.c_train_ids
@@ -7823,7 +7823,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             other_interactions = c_node_obj.c_train_ids
  *             length_other_interactions = c_node_obj.c_length_train_ids             # <<<<<<<<<<<<<<
  *             #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  */
     __pyx_t_15 = __pyx_v_c_node_obj->c_length_train_ids;
     __pyx_v_length_other_interactions = __pyx_t_15;
@@ -7831,11 +7831,11 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
     /* "cnetwork_node.pyx":437
  *             length_other_interactions = c_node_obj.c_length_train_ids
  *             #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:             # <<<<<<<<<<<<<<
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:             # <<<<<<<<<<<<<<
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  *         elif data_type_code == <int>'t':
  */
-    __pyx_t_12 = ((__pyx_v_length_my_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_my_interactions >= __pyx_v_min_interactions_per_user) != 0);
     if (__pyx_t_12) {
       goto __pyx_L15_next_and;
     } else {
@@ -7843,14 +7843,14 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
       goto __pyx_L14_bool_binop_done;
     }
     __pyx_L15_next_and:;
-    __pyx_t_12 = ((__pyx_v_length_other_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_other_interactions >= __pyx_v_min_interactions_per_user) != 0);
     __pyx_t_11 = __pyx_t_12;
     __pyx_L14_bool_binop_done:;
     if (__pyx_t_11) {
 
       /* "cnetwork_node.pyx":438
  *             #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)             # <<<<<<<<<<<<<<
  *         elif data_type_code == <int>'t':
  *             my_interactions = self.c_test_ids
@@ -7866,7 +7866,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   }
 
   /* "cnetwork_node.pyx":439
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  *         elif data_type_code == <int>'t':             # <<<<<<<<<<<<<<
  *             my_interactions = self.c_test_ids
@@ -7900,7 +7900,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_my_interactions = self.c_length_test_ids
  *             other_interactions = c_node_obj.c_test_ids             # <<<<<<<<<<<<<<
  *             length_other_interactions = c_node_obj.c_length_test_ids
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  */
     __pyx_t_17 = __pyx_v_c_node_obj->c_test_ids;
     __pyx_v_other_interactions = __pyx_t_17;
@@ -7909,7 +7909,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
  *             length_my_interactions = self.c_length_test_ids
  *             other_interactions = c_node_obj.c_test_ids
  *             length_other_interactions = c_node_obj.c_length_test_ids             # <<<<<<<<<<<<<<
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  */
     __pyx_t_15 = __pyx_v_c_node_obj->c_length_test_ids;
@@ -7918,11 +7918,11 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
     /* "cnetwork_node.pyx":444
  *             other_interactions = c_node_obj.c_test_ids
  *             length_other_interactions = c_node_obj.c_length_test_ids
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:             # <<<<<<<<<<<<<<
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:             # <<<<<<<<<<<<<<
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  *         return None
  */
-    __pyx_t_12 = ((__pyx_v_length_my_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_my_interactions >= __pyx_v_min_interactions_per_user) != 0);
     if (__pyx_t_12) {
       goto __pyx_L18_next_and;
     } else {
@@ -7930,14 +7930,14 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
       goto __pyx_L17_bool_binop_done;
     }
     __pyx_L18_next_and:;
-    __pyx_t_12 = ((__pyx_v_length_other_interactions > __pyx_v_min_interactions_per_user) != 0);
+    __pyx_t_12 = ((__pyx_v_length_other_interactions >= __pyx_v_min_interactions_per_user) != 0);
     __pyx_t_11 = __pyx_t_12;
     __pyx_L17_bool_binop_done:;
     if (__pyx_t_11) {
 
       /* "cnetwork_node.pyx":445
  *             length_other_interactions = c_node_obj.c_length_test_ids
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)             # <<<<<<<<<<<<<<
  *         return None
  * 
@@ -7954,7 +7954,7 @@ static PyObject *__pyx_f_13cnetwork_node_12CNetworkNode_compute_node_similarity(
   __pyx_L3:;
 
   /* "cnetwork_node.pyx":446
- *             if length_my_interactions > min_interactions_per_user and length_other_interactions > min_interactions_per_user:
+ *             if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
  *                 return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
  *         return None             # <<<<<<<<<<<<<<
  * 

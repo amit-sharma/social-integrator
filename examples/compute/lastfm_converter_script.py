@@ -23,3 +23,10 @@ python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partawxyza &
 python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partbbcdef &
 python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partbghijk &
 wait
+python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partblmnop &
+python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partbqrstu &
+python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partbvwxyz &
+wait
+python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partcabcd &
+python ../../socintpy/networkdata/lastfm_data_converter.py lastfm/partcefg &
+wait

@@ -29,7 +29,7 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
     EdgeData= namedtuple('EdgeData', 'receiver_id')
     ItemData = namedtuple('ItemData', 'item_id') # not used currently
     def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes, 
-                 store_dataset, use_artists):
+                 store_dataset, use_artists, interact_type_val):
         NetworkDataPreparser.__init__(self, node_impl, data_path,
                                       max_core_nodes=max_core_nodes, 
                                       store_dataset=store_dataset)
@@ -49,6 +49,7 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
         for interact_name in self.interact_types_dict.keys():
             self.interacts_files[interact_name] = []
         self.use_artists = use_artists
+        self.interact_type_val = interact_type_val
         #globals().update(self.named_tuple_dict)
 
     def get_all_data(self):
@@ -83,6 +84,7 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
         items_interacted_with = self.compute_store_total_num_items()
         self.total_num_items = len(items_interacted_with)
         self.item_ids_list = self.read_all_item_ids(self.datadir+"itemmap.tsv") 
+        #self.total_num_items = len(self.item_ids_list)
         return
     
     def read_nodes(self, node_file):
@@ -111,7 +113,7 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
             
             for interact_type in self.interaction_types:
                 line= nodes_db.readline()
-                if interact_type==1:
+                if interact_type==self.interact_type_val:
                     row = line.strip("\n\r ").split(' ')
                     if row[0]!="None":
                         cells = [val.split(':') for val in row]

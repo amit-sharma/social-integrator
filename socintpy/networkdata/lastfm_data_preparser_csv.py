@@ -52,9 +52,11 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                 uname = fname_chunks[0]
                 uname_lastchunk = uname.split("_")[-1]
                 filepath = os.path.join(root, filename)
+                """
                 if filepath.split('/')[4] >= "partae":
                     print "Ignoring part", filepath.split('/')[4]
                     continue
+                """
                 if filename=="lastfm_nodes.tsv":
                     self.nodes_files.append(filepath)
                     nodes_db_obj = codecs.open(filepath, encoding=encoding)
@@ -89,6 +91,7 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                 self.store_interactions(ireader, self.interact_types_dict[interact_name])
         #for t in threads:
         #    t.join()
+        self.total_num_items = len(self.itemid_dict)
         if self.store_dataset:
             self.store_ego_dataset(self.datadir)
         return

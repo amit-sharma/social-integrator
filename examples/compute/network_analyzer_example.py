@@ -37,7 +37,8 @@ def compare_sims(fr_sim, nonfr_sim):
     print "non-friends dominate is", sum([1 for v1,v2,v3 in diff if v3<0])
 
 def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
-                                  max_core_nodes, cutoff_rating, store_dataset):
+                                  max_core_nodes, cutoff_rating, store_dataset, 
+                                  interact_type_val):
     data = None
     #h = hpy()
     #h.setref()
@@ -48,7 +49,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
                                    max_core_nodes, store_dataset, use_artists=False)
     elif dataset_domain== "lastfm_simple":
         data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
-                                   max_core_nodes, store_dataset, use_artists=False)
+                                   max_core_nodes, store_dataset, use_artists=False, interact_type_val=interact_type_val)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
                                       max_core_nodes, store_dataset)
@@ -66,7 +67,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
     return data
 
 
-def run_computation(data, computation_cmd, outf):
+def run_computation(data, computation_cmd, outf, interact_type):
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
@@ -200,10 +201,18 @@ def run_computation(data, computation_cmd, outf):
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"]
         la = LocalityAnalyzer(data)
-        compute.test_influence(la, interact_type=0, time_diff=100000, 
-                               split_date_str="2009/01/01", control_divider=0.01,
-                               min_interactions_per_user = 5,
-                               max_tries = 300000, max_node_computes=200, num_processes=4)
+        inf_tuple = compute.test_influence(la, interact_type=interact_type, 
+                               time_diff=500000, split_date_str="2012/01/01", 
+                               #time_diff=100000, split_date_str="1970/06/23", 
+                               control_divider=0.01,
+                               min_interactions_per_user = 10,
+                               max_tries = 10000, max_node_computes=20000, num_processes=4)
+        num_vals = len(inf_tuple[0])
+        f = open("influence_test", "w")
+        for i in range(num_vals):
+            f.write("%f\t%f\t%f\t%f\n" % (inf_tuple[0][i], inf_tuple[1][i], 
+                        inf_tuple[2][i], inf_tuple[3][i]))
+        f.close()
              
     """
     elif computation_cmd=="random_recommender":
@@ -283,7 +292,7 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", 
                                    "cutoffrating=", "output=", "max_core_nodes=",
-                                   "store_dataset"])
+                                   "store_dataset", "interact_type="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -304,6 +313,7 @@ if __name__ == "__main__":
     # when creating the data structure in memory
     cutoff_rating = -1 
     store_dataset = False
+    interact_type = 0
     for o, a in opts:
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -326,6 +336,8 @@ if __name__ == "__main__":
             max_core_nodes = int(a)
         if o=="--store_dataset":
             store_dataset = True
+        if o=="--interact_type":
+            interact_type = int(a)
 
     if dataset_domain is None or dataset_path is None:
         usage()
@@ -335,9 +347,10 @@ if __name__ == "__main__":
     # run of the script. 
     if 'data' not in globals():
         data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
-                                        max_core_nodes, cutoff_rating, store_dataset)
+                                        max_core_nodes, cutoff_rating, store_dataset, 
+                                        interact_type)
     outf=open("current_run.dat", 'w')
-    run_computation(data, computation_cmd, outf)
+    run_computation(data, computation_cmd, outf, interact_type)
     outf.close()
 
 def get_data(from_raw_dataset=False):
