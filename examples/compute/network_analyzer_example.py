@@ -201,10 +201,11 @@ def run_computation(data, computation_cmd, outf, interact_type):
                             display=True, logyscale=True)
     elif computation_cmd=="influence_test":
         #   ta = TemporalAnalyzer(data)
-        #interact_type = data.interact_types_dict["listen"]
+        #interact_type = data.interact_types_dict["listen"
+        # time_scale can be 'w':wallclock_time or 'o':ordinal_time
         la = LocalityAnalyzer(data)
         inf_tuple = compute.test_influence(la, interact_type=interact_type, 
-                               time_diff=500000, split_date_str="2012/01/01", 
+                               time_diff=500000, time_scale=ord('w'), split_date_str="2012/01/01", 
                                #time_diff=100000, split_date_str="1970/06/23", 
                                control_divider=0.01,
                                min_interactions_per_user = 10,
@@ -221,7 +222,7 @@ def run_computation(data, computation_cmd, outf, interact_type):
         #interact_type = data.interact_types_dict["listen"]
         la = LocalityAnalyzer(data)
         inf_tuple = compute.test_influence(la, interact_type=interact_type, 
-                               time_diff=500000, split_date_str="2011/01/01", 
+                               time_diff=100000, time_scale=ord('w'), split_date_str="2011/01/01", 
                                #time_diff=100000, split_date_str="1970/06/23", 
                                control_divider=0.01,
                                min_interactions_per_user = 10,
