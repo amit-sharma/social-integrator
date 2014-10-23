@@ -115,6 +115,62 @@ cdef compute_node_similarity_c(int* my_interactions, int *other_interactions, in
 
     return simscore/(l2_norm1*l2_norm2)
 
+cdef compute_node_susceptibility_c(idata* my_interactions, 
+                        int length_my_interactions, idata** others_interactions, 
+                        int* lengths_others_interactions, int num_other_nodes, 
+                        int interact_type, int data_type_code, 
+                        int time_diff=-1, float cutoff_rating=-1):
+    cdef float l2_norm1, l2_norm2, simscore
+
+    cdef int i, k, x, y
+    cdef int *j = <int *>PyMem_Malloc(num_other_nodes*cython.sizeof(int))
+    cdef int *sim = <int *>PyMem_Malloc(length_my_interactions*cython.sizeof(int))
+    for x in range(num_other_nodes):
+        j[x] = 0
+    for y in range(length_my_interactions):
+        sim[y] = 0
+    simscore = 0
+    i = 0 
+    cdef int my_count = 0
+    cdef int others_count = 0
+    cdef bool finished_others = False
+    while i < length_my_interactions:
+        for x in xrange(num_other_nodes): 
+#if my_interactions[i].item_id < others_interactions[x][j[x]].item_id:
+#                i += 1
+            while j[x] < lengths_others_interactions[x] and my_interactions[i].item_id > others_interactions[x][j[x]].item_id: 
+#if others_interactions[x][j[x]].rating >= cutoff_rating:
+#                    others_count += 1
+                j[x] += 1
+            if j[x] < lengths_others_interactions[x] and my_interactions[i].item_id == others_interactions[x][j[x]].item_id:
+                if my_interactions[i].rating >= cutoff_rating and others_interactions[x][j[x]].rating >= cutoff_rating:
+                    if time_diff == -1:
+                        sim[i] +=1
+                    elif my_interactions[i].timestamp >= others_interactions[x][j[x]].timestamp and (my_interactions[i].timestamp - others_interactions[x][j[x]].timestamp) <= time_diff:
+                        sim[i] += 1
+
+                if my_interactions[i].rating >= cutoff_rating:
+                    my_count += 1
+                #if others_interactions[x].rating >= cutoff_rating:
+                #    others_count += 1
+                j[x] += 1
+        i +=1
+        if my_interactions[i].rating >= cutoff_rating:
+            my_count += 1
+
+
+    if my_count == 0:
+        return -1
+    #l2_norm1 = sqrt(my_count)
+    for y in range(length_my_interactions):
+        if sim[y] > 0:
+            simscore += 1
+    PyMem_Free(j)
+    PyMem_Free(sim)
+    return simscore#/my_count
+
+
+
 cdef int comp_interactions(const void *elem1, const void *elem2):
     cdef idata *a
     cdef idata *b
@@ -397,6 +453,34 @@ cdef class CNetworkNode:
         l2_norm1 = sqrt(count_items)
         l2_norm2 = l2_norm_dict(items.itervalues())
         return simscore/(l2_norm1*l2_norm2)
+
+    cpdef compute_node_susceptibility(self, other_nodes, int length_other_nodes,
+            int interact_type, int data_type_code, 
+            int min_interactions_per_user=0, int time_diff=-1):
+        cdef int length_my_interactions
+        cdef int *lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
+        cdef idata *my_interactions
+        cdef idata **others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))
+        cdef int i
+        
+        if data_type_code == <int>'i':
+            my_interactions = self.c_test_data
+            length_my_interactions = self.c_length_test_ids
+            valid_flag = True
+            for i in range(length_other_nodes):
+                c_node_obj = <CNetworkNode>other_nodes[i]
+                lengths_others_interactions[i] = c_node_obj.c_length_test_ids
+                others_interactions[i] = c_node_obj.c_test_data
+                if lengths_others_interactions[i] < min_interactions_per_user:
+                    valid_flag = False
+
+            if length_my_interactions >= min_interactions_per_user and valid_flag:
+                return compute_node_susceptibility_c(my_interactions, 
+                        length_my_interactions, others_interactions, 
+                        lengths_others_interactions, length_other_nodes, interact_type, 
+                        data_type_code,
+                        time_diff=time_diff, cutoff_rating=-1)
+        return None
 
     # change training, test to common data structure idata and simplify this function
     # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method

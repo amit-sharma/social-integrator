@@ -2,7 +2,8 @@ import time, datetime
 import socintpy.util.utils as utils
 
 def test_influence(la, interact_type, time_diff, split_date_str, control_divider,
-                   min_interactions_per_user, max_tries, max_node_computes, num_processes):
+                   min_interactions_per_user, max_tries, max_node_computes, num_processes,
+                   method):
     split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
     #time_diff = 90000 #86400
     influence_tuples = la.estimate_influencer_effect_parallel(interact_type, split_timestamp, 
@@ -12,7 +13,8 @@ def test_influence(la, interact_type, time_diff, split_date_str, control_divider
                                                      selection_method="random",
                                                      klim=5, max_tries=max_tries,
                                                      max_node_computes=max_node_computes,
-                                                     num_processes=num_processes)
+                                                     num_processes=num_processes, 
+                                                     method=method)
     fr_inf_vals = [v[5] for v in influence_tuples]
     nonfr_inf_vals = [v[6] for v in influence_tuples]
     diff_inf_vals = [v[5]-v[6] for v in influence_tuples]

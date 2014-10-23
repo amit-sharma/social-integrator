@@ -29,10 +29,11 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
     EdgeData= namedtuple('EdgeData', 'receiver_id')
     ItemData = namedtuple('ItemData', 'item_id') # not used currently
     def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes, 
-                 store_dataset, use_artists, interact_type_val):
+                 store_dataset, use_artists, interact_type_val, min_interactions_per_user):
         NetworkDataPreparser.__init__(self, node_impl, data_path,
                                       max_core_nodes=max_core_nodes, 
-                                      store_dataset=store_dataset)
+                                      store_dataset=store_dataset,
+                                      min_interactions_per_user=min_interactions_per_user)
         self.datadir = data_path
         self.nodes_db_list = []
         self.edges_db_list = []
@@ -79,14 +80,17 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
 #proc_pool = Pool(processes=2)
         #proc_pool.map(self, self.nodes_files)
         map(self.read_nodes, self.nodes_files)
+        # filter users based on min_interaction
+        print "filtering data based on min_interactions_per_user=", self.min_interactions_per_user
+        self.filter_min_interaction_nodes(self.interact_type_val, self.min_interactions_per_user)
 #        proc_pool.close()
 #        proc_pool.join()
         items_interacted_with = self.compute_store_total_num_items()
         self.total_num_items = len(items_interacted_with)
-        self.item_ids_list = self.read_all_item_ids(self.datadir+"itemmap.tsv") 
-        #self.total_num_items = len(self.item_ids_list)
+        #self.item_ids_list = self.read_all_item_ids(self.datadir+"itemmap.tsv") 
         return
-    
+   
+    # CAUTION: Assume we read only one interact_type per run
     def read_nodes(self, node_file):
         nodes_db = codecs.open(node_file, encoding='utf-8')
         print "reading nodes", node_file
@@ -101,24 +105,29 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
             should_have_friends = bool(int(cols[1]))
 #           sys.exit(1)
             node_data = LastfmDataPreparserSimple.NodeData(original_uid=None, interaction_types=self.interaction_types)
-
+            new_netnode = None 
             new_netnode = self.create_network_node(user_id, 
                             should_have_friends=should_have_friends, 
                             should_have_interactions=True, node_data=node_data)
-            line = nodes_db.readline()
-            row = line.strip("\n\r ").split(' ')
-            if row[0]!="None":
-                fids = [int(val) for val in row]
-                new_netnode.store_friend_ids(fids)
-            
+           
+            fr_line = nodes_db.readline()
+            if new_netnode is not None:
+                row = fr_line.strip("\n\r ").split(' ')
+                if row[0]!="None":
+                    fids = [int(val) for val in row]
+                    new_netnode.store_friend_ids(fids)
+
             for interact_type in self.interaction_types:
                 line= nodes_db.readline()
                 if interact_type==self.interact_type_val:
                     row = line.strip("\n\r ").split(' ')
                     if row[0]!="None":
+                        #if len(row) >= self.min_interactions_per_user:
                         cells = [val.split(':') for val in row]
                         interact_tuples = [LastfmDataPreparserSimple.InteractData(int(item_id), None, int(timestamp), 1) for item_id, timestamp in cells]
                         new_netnode.store_interactions(interact_type, interact_tuples, do_sort=True)
+        
+                
             if counter_node % 10000 == 0:
                 print "Stored information about ", counter_node
             #if counter_node == self.MAX_NODES_TO_READ:
