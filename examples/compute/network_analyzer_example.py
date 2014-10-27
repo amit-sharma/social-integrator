@@ -23,7 +23,7 @@ from pprint import pprint
 COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr', 'lastfm_simple']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
                           'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset',
-                          'compare_interact_types', 'influence_test']
+                          'compare_interact_types', 'influence_test', 'suscept_test']
 
 
 def usage():
@@ -38,7 +38,7 @@ def compare_sims(fr_sim, nonfr_sim):
 
 def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
                                   max_core_nodes, cutoff_rating, store_dataset, 
-                                  interact_type_val):
+                                  interact_type_val, min_interacts_per_user):
     data = None
     #h = hpy()
     #h.setref()
@@ -49,7 +49,9 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
                                    max_core_nodes, store_dataset, use_artists=False)
     elif dataset_domain== "lastfm_simple":
         data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
-                                   max_core_nodes, store_dataset, use_artists=False, interact_type_val=interact_type_val)
+                                   max_core_nodes, store_dataset, use_artists=False, 
+                                   interact_type_val=interact_type_val,
+                                   min_interactions_per_user=min_interacts_per_user)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
                                       max_core_nodes, store_dataset)
@@ -199,10 +201,11 @@ def run_computation(data, computation_cmd, outf, interact_type):
                             display=True, logyscale=True)
     elif computation_cmd=="influence_test":
         #   ta = TemporalAnalyzer(data)
-        #interact_type = data.interact_types_dict["listen"]
+        #interact_type = data.interact_types_dict["listen"
+        # time_scale can be 'w':wallclock_time or 'o':ordinal_time
         la = LocalityAnalyzer(data)
         inf_tuple = compute.test_influence(la, interact_type=interact_type, 
-                               time_diff=500000, split_date_str="2012/01/01", 
+                               time_diff=500000, time_scale=ord('w'), split_date_str="2012/01/01", 
                                #time_diff=100000, split_date_str="1970/06/23", 
                                control_divider=0.01,
                                min_interactions_per_user = 10,
@@ -214,6 +217,22 @@ def run_computation(data, computation_cmd, outf, interact_type):
                         inf_tuple[2][i], inf_tuple[3][i]))
         f.close()
              
+    elif computation_cmd=="suscept_test":
+        #   ta = TemporalAnalyzer(data)
+        #interact_type = data.interact_types_dict["listen"]
+        la = LocalityAnalyzer(data)
+        inf_tuple = compute.test_influence(la, interact_type=interact_type, 
+                               time_diff=100000, time_scale=ord('w'), split_date_str="2011/01/01", 
+                               #time_diff=100000, split_date_str="1970/06/23", 
+                               control_divider=0.01,
+                               min_interactions_per_user = 10,
+                               max_tries = 10000, max_node_computes=20000, num_processes=4, 
+                               method="suscept")
+        num_vals = len(inf_tuple[0])
+        f = open("suscept_test", "w")
+        for i in range(num_vals):
+            f.write("%f\t%f\t%f\t%f\n" % (inf_tuple[0][i], inf_tuple[1][i], 
+                        inf_tuple[2][i], inf_tuple[3][i]))
     """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
@@ -292,7 +311,8 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", 
                                    "cutoffrating=", "output=", "max_core_nodes=",
-                                   "store_dataset", "interact_type="])
+                                   "store_dataset", "interact_type=", 
+                                   "min_interactions_per_user="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -314,7 +334,8 @@ if __name__ == "__main__":
     cutoff_rating = -1 
     store_dataset = False
     interact_type = 0
-    for o, a in opts:
+    min_interactions_per_user = 1
+    for o, a in opts: 
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
                 print a
@@ -338,6 +359,8 @@ if __name__ == "__main__":
             store_dataset = True
         if o=="--interact_type":
             interact_type = int(a)
+        if o=="--min_interactions_per_user":
+            min_interactions_per_user = int(a)
 
     if dataset_domain is None or dataset_path is None:
         usage()
@@ -348,7 +371,7 @@ if __name__ == "__main__":
     if 'data' not in globals():
         data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
                                         max_core_nodes, cutoff_rating, store_dataset, 
-                                        interact_type)
+                                        interact_type, min_interactions_per_user)
     outf=open("current_run.dat", 'w')
     run_computation(data, computation_cmd, outf, interact_type)
     outf.close()

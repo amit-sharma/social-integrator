@@ -7,7 +7,7 @@ import cPickle as pickle
 
 class NetworkDataPreparser():
     def __init__(self, node_impl, data_path, min_interactions=0, min_friends=1, 
-                 max_core_nodes=None, store_dataset = False):
+                 max_core_nodes=None, store_dataset = False, min_interactions_per_user=1):
         self.nodes = []
         self.items = []
         self.edges = []
@@ -16,6 +16,7 @@ class NetworkDataPreparser():
         self.min_friends = min_friends
         self.nodes_to_fetch = max_core_nodes
         self.store_dataset = store_dataset
+        self.min_interactions_per_user = min_interactions_per_user
         self.total_num_items = None
         self.load_from_saved_dataset = False
         if data_path.endswith(".pkl"):
@@ -114,6 +115,33 @@ class NetworkDataPreparser():
             return CNetworkNode(uid, should_have_friends=should_have_friends, should_have_interactions=should_have_interactions, node_data=node_data)
         else:
             return PyNetworkNode(uid, should_have_friends, should_have_interactions, node_data)
+
+    def filter_min_interaction_nodes(self, interact_type, min_interactions_per_user):
+        # TODO For now, we do not update self.items list
+        selected_nodes = [] # new list that will replace self.nodes
+        id_remap = {} # re-mapping the ids for nodes
+        counter = 0
+        selected_nodes.insert(counter, None)
+        counter += 1
+        for node in self.nodes[1:]:
+            if node.get_num_interactions(interact_type) >= min_interactions_per_user:
+                id_remap[node.uid] = counter
+                node.uid = counter
+                counter += 1
+                selected_nodes.insert(counter, node)
+            else:
+                del node
+        
+        # now modifying the node-ids in the friends list of selected core nodes
+        for node in selected_nodes[1:]:
+            friend_ids = node.get_friend_ids()
+            flist = []
+            for fr_id in friend_ids:
+                if fr_id in id_remap:
+                    flist.append(self.__class__.EdgeData(receiver_id=id_remap[fr_id]))
+            node.store_friends(flist)
+        
+        self.nodes = selected_nodes
 
     def select_subset_nodes(self):
         # TODO For now, we do not update self.items list
