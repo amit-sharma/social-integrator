@@ -3,10 +3,12 @@ matplotlib.use('Agg')
 from datetime import datetime
 from collections import defaultdict
 
+import csv
 import math
 import matplotlib.pyplot as plt
 import os
 import pydot
+import random
 import time
 import numpy as np
 
@@ -20,18 +22,18 @@ class NetworkVisualizer(object):
         self.graph = None
         self.interact_type = self.netdata.interaction_types[0]
 
-    def find_most_interacted_items(self, min_interactions):
+    def find_most_interacted_items(self, interact_type, min_interactions):
         items = {}
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
-            for item_tuple in v.get_items_interacted_with(self.interact_type, return_timestamp=True):
+            for item_tuple in v.get_items_interacted_with(interact_type, return_timestamp=True):
                 count = items.get(item_tuple[0],0) + 1
                 items[item_tuple[0]] = count
         return [(v, k) for k,v in items.iteritems() if v >= min_interactions]
 
-    def get_items_interactions(items, should_have_friends=False):
+    def get_items_interactions(self, interact_type, items, should_have_friends=False):
         items_interactions = {}
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=should_have_friends):
-            for item_tuple in v.get_items_interacted_with(self.interact_type, return_timestamp=True):
+            for item_tuple in v.get_items_interacted_with(interact_type, return_timestamp=True):
                 if item_tuple[0] in items:
                     interactions = items_interactions.get(items_interactions[item_tupl[0]], [])
                     interact_time = datetime.strptime(item_tuple[1], "%m/%d/%Y %I:%M:%S %p")
@@ -40,11 +42,11 @@ class NetworkVisualizer(object):
         return items_interactions
 
     # Creates an adoption cascade for the give item_id, and writes a ps to the filename of the resulting graph
-    def plot_item_cascade(self, item_id, timestep, filename, max_time_distance=1):
+    def plot_item_cascade(self, interact_type, item_id, timestep, filename, max_time_distance=1):
         interactions = []
         max_friends = 0
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
-            items = v.get_items_interacted_with(self.interact_type, return_timestamp=True)
+            items = v.get_items_interacted_with(interact_type, return_timestamp=True)
             for item_tuple in items:
                 if item_id == item_tuple[0]:
                     num_friends = len(v.get_friend_ids())
@@ -119,10 +121,10 @@ class NetworkVisualizer(object):
         graph.write_pdf(filename, prog=['neato', '-s', '-n'])
 
     # histogram of users by number of friends
-    def plot_item_by_connectedness(self, item_id, filename, num_bins=100):
+    def plot_item_by_connectedness(self, interact_type, item_id, filename, num_bins=100):
         data = []
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
-            items = v.get_items_interacted_with(self.interact_type, return_timestamp=True)
+            items = v.get_items_interacted_with(interact_type, return_timestamp=True)
             for item_tuple in items:
                 if item_id == item_tuple[0]:
                     num_friends = len(v.get_friend_ids())
@@ -132,7 +134,7 @@ class NetworkVisualizer(object):
         plt.savefig(filename)
         plt.close(fig)
 
-    def plot_item_adoption_by_friend_adoption(self, timestep, bin_size, directory, ignore_zero=False):
+    def plot_item_adoption_by_friend_adoption(self, interact_type, timestep, bin_size, directory, ignore_zero=False):
         bins = defaultdict(list)
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
             num_friends = len(v.get_friend_ids())
@@ -141,14 +143,14 @@ class NetworkVisualizer(object):
                 friend_interactions = {}
                 for f in self.netdata.get_friends_iterable(v):
                     friend_interactions[f.uid] = f.get_items_interacted_with(
-                        self.interact_type,
+                        interact_type,
                         return_timestamp=True,
                     )
                 interactions = defaultdict(list)
                 for fid, inters in friend_interactions.iteritems():
                     for key, value in inters:
                         interactions[key].append((fid, datetime.fromtimestamp(value)))
-                for item in v.get_items_interacted_with(self.interact_type, return_timestamp=True):
+                for item in v.get_items_interacted_with(interact_type, return_timestamp=True):
                     item_interactions = interactions[item[0]]
                     item_time = datetime.fromtimestamp(item[1])
                     count = 0
@@ -165,11 +167,11 @@ class NetworkVisualizer(object):
             plt.savefig(directory + '/' + str(bin) + '.png')
             plt.close(fig)
 
-    def plot_num_interactions_vs_num_friends(self, filename):
+    def plot_num_interactions_vs_num_friends(self, interact_type, filename):
         x = []
         y = []
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True,should_have_friends=True):
-            num_interactions = len(v.get_items_interacted_with(self.interact_type))
+            num_interactions = len(v.get_items_interacted_with(interact_type))
             num_friends = len(v.get_friend_ids())
             x.append(num_friends)
             y.append(num_interactions)
@@ -193,13 +195,13 @@ class NetworkVisualizer(object):
     # Calculates the proportion (alpha) of item adoptions that occurred after a friend adopted (within timestep)
     # alpha is measured for items after they have existed for alpha_lifetime time
     # alpha is then compared to the popularity of the item (total adoptions) after popularity_lifetime time
-    def plot_popularity_vs_alpha(self, timestep, alpha_lifetime, popularity_lifetime, filename, ignore_zero_friends=False):
+    def plot_popularity_vs_alpha(self, interact_type, timestep, alpha_lifetime, popularity_lifetime, filename, ignore_zero_friends=False, jitter=False, ignore_pop_1=False, data_filename=None):
         start = time.time()
         interactions_by_item = defaultdict(list)
         now = datetime.now()
         max_interaction_time = datetime(year=1970,month=1,day=1)
         for v in self.netdata.get_nodes_iterable(should_have_interactions=True, should_have_friends=True):
-            interactions = v.get_items_interacted_with(self.interact_type, return_timestamp=True)
+            interactions = v.get_items_interacted_with(interact_type, return_timestamp=True)
             for item in interactions:
                 date = (datetime.fromtimestamp(item[1]))
                 max_interaction_time = max(date, max_interaction_time)
@@ -232,8 +234,12 @@ class NetworkVisualizer(object):
                 if friend_adoptions + independent_adoptions > 0:
                     alpha = friend_adoptions / float(friend_adoptions + independent_adoptions)
                     popularity = len([i for i in interactions if i[0] <= max_popularity_time])
-                    popularities.append(popularity)
-                    alphas.append(alpha)
+                    if jitter:
+                        alpha += random.uniform(-0.02, 0.02)
+                        popularity += random.uniform(-0.8, 0.8)
+                    if popularity >= 2:
+                        popularities.append(popularity)
+                        alphas.append(alpha)
         fig = plt.figure()
         plt.plot(alphas, popularities, '.', label="data")
         poly = np.poly1d(np.polyfit(alphas, popularities, 1))
@@ -248,6 +254,8 @@ class NetworkVisualizer(object):
         plt.xlim([-0.1, 1.1])
         plt.savefig(filename)
         plt.close(fig)
+        if data_filename != None:
+            self._write_data(data_filename, zip(alphas, popularities))
         print time.time() - start
 
     def _r2(self, x, y, degree=1):
@@ -257,5 +265,11 @@ class NetworkVisualizer(object):
         ssreg = np.sum((yhat-ybar)**2)
         sstot = np.sum((y-ybar)**2)
         return ssreg / sstot
+
+    def _write_data(self, filename, data):
+        with open(filename, 'w') as f:
+            writer = csv.writer(f)
+            for row in data:
+                writer.writerow(row)
 
 
