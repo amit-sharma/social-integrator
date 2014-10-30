@@ -254,11 +254,14 @@ class BasicNetworkAnalyzer(object):
 
 
     @staticmethod
-    def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type, k, data_type="all" ):
+    def compute_knearest_neighbors(node, candidate_nodes_iterable, interact_type,
+            k, data_type="all", cutoff_rating=-1, min_interactions_per_user=1, time_diff=-1, time_scale=ord('w') ):
         minheap=[]
         data_type_code = ord(data_type[0])
         for candidate_node in candidate_nodes_iterable:
-            curr_sim = node.compute_node_similarity(candidate_node, interact_type, data_type_code)
+            curr_sim = node.compute_node_similarity(candidate_node, interact_type,
+                    cutoff_rating,
+                    data_type_code, min_interactions_per_user, time_diff, time_scale)
             #print "Current sim at basic is", curr_sim
             #curr_sim = 1
             if curr_sim is not None:

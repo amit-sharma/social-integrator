@@ -1,9 +1,10 @@
 import getopt
 import sys, types
 import logging
-
+import time, datetime
 import matplotlib as mpl
 #mpl.use('Agg')
+
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 #from socintpy.networkvisualize.network_visualizer import NetworkVisualizor
 from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
@@ -17,6 +18,8 @@ from socintpy.networkdata.flickr_preparser import FlickrDataPreparser
 import socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import socintpy.util.compute_functions as compute
+import socintpy.networkdata.generate_fake_data as fake_data
+from scipy.stats import ttest_rel
 from pprint import pprint
 
 
@@ -51,7 +54,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
         data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
                                    max_core_nodes, store_dataset, use_artists=False, 
                                    interact_type_val=interact_type_val,
-                                   min_interactions_per_user=min_interacts_per_user)
+                                   min_interactions_per_user=min_interacts_per_user*2)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
                                       max_core_nodes, store_dataset)
@@ -69,7 +72,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
     return data
 
 
-def run_computation(data, computation_cmd, outf, interact_type):
+def run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs):
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
@@ -203,13 +206,36 @@ def run_computation(data, computation_cmd, outf, interact_type):
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"
         # time_scale can be 'w':wallclock_time or 'o':ordinal_time
+        split_date_str = "2012/01/01"
+        t_window = -1
+        max_tries_val = 10000
+        max_node_computes_val = 100
+        max_interact_ratio_error = 0.1
+        klim_val=5
+        split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
+        # crate trainig test sets that will be used by fake geernation
+        data.create_training_test_bytime(interact_type, split_timestamp)
+        if create_fake_prefs is not None:
+            print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
+            fake_data.generate_fake_preferences(data,interact_type, split_timestamp, 
+                        time_window=t_window, method=create_fake_prefs)
+            
+            #fake_data.generate_random_preferences(data, interact_type, split_timestamp)
+            print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
+        # Need to generate again because fake data changes test data           
+        data.create_training_test_bytime(interact_type, split_timestamp)
+        
         la = LocalityAnalyzer(data)
         inf_tuple = compute.test_influence(la, interact_type=interact_type, 
-                               time_diff=500000, time_scale=ord('w'), split_date_str="2012/01/01", 
+                               time_diff=t_window, time_scale=ord('w'), split_timestamp=split_timestamp, 
                                #time_diff=100000, split_date_str="1970/06/23", 
                                control_divider=0.01,
-                               min_interactions_per_user = 10,
-                               max_tries = 10000, max_node_computes=20000, num_processes=4)
+                               min_interactions_per_user = min_interactions_per_user,
+                               max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_processes=4,
+                               max_interact_ratio_error=max_interact_ratio_error,
+                               klim=klim_val,
+                               method="influence")
+        print "t-test results", ttest_rel(inf_tuple[2], inf_tuple[3])
         num_vals = len(inf_tuple[0])
         f = open("influence_test", "w")
         for i in range(num_vals):
@@ -219,20 +245,39 @@ def run_computation(data, computation_cmd, outf, interact_type):
              
     elif computation_cmd=="suscept_test":
         #   ta = TemporalAnalyzer(data)
-        #interact_type = data.interact_types_dict["listen"]
+        #interact_type = data.interact_types_dict["listen"]a
+        split_date_str = "2013/01/01"
+        t_window = 10#100000
+        max_tries_val = 10000
+        max_node_computes_val = 1000
+        max_interact_ratio_error =0.1
+        klim_val = 5
+        split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
+        data.create_training_test_bytime(interact_type, split_timestamp)
+        if create_fake_prefs is not None:
+            print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
+            fake_data.generate_fake_preferences(data,interact_type, split_timestamp,
+                    time_window=t_window, method=create_fake_prefs)
+            print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
+        # Need to generate again because fake data changes test data           
+        data.create_training_test_bytime(interact_type, split_timestamp)
         la = LocalityAnalyzer(data)
         inf_tuple = compute.test_influence(la, interact_type=interact_type, 
-                               time_diff=100000, time_scale=ord('w'), split_date_str="2011/01/01", 
+                               time_diff=t_window, time_scale=ord('o'), split_timestamp=split_timestamp, 
                                #time_diff=100000, split_date_str="1970/06/23", 
-                               control_divider=0.01,
-                               min_interactions_per_user = 10,
-                               max_tries = 10000, max_node_computes=20000, num_processes=4, 
+                               control_divider=0.01, # not used anymore
+                               min_interactions_per_user = min_interactions_per_user,
+                               max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_processes=4,
+                               max_interact_ratio_error = max_interact_ratio_error,
+                               klim = klim_val,
                                method="suscept")
+        print "t-test results", ttest_rel(inf_tuple[2], inf_tuple[3])
         num_vals = len(inf_tuple[0])
         f = open("suscept_test", "w")
         for i in range(num_vals):
             f.write("%f\t%f\t%f\t%f\n" % (inf_tuple[0][i], inf_tuple[1][i], 
                         inf_tuple[2][i], inf_tuple[3][i]))
+        f.close()
     """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
@@ -312,7 +357,8 @@ if __name__ == "__main__":
         opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", 
                                    "cutoffrating=", "output=", "max_core_nodes=",
                                    "store_dataset", "interact_type=", 
-                                   "min_interactions_per_user="])
+                                   "min_interactions_per_user=", 
+                                   "create_fake_prefs="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -335,6 +381,7 @@ if __name__ == "__main__":
     store_dataset = False
     interact_type = 0
     min_interactions_per_user = 1
+    create_fake_prefs = None
     for o, a in opts: 
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -361,6 +408,8 @@ if __name__ == "__main__":
             interact_type = int(a)
         if o=="--min_interactions_per_user":
             min_interactions_per_user = int(a)
+        if o=="--create_fake_prefs":
+            create_fake_prefs = a
 
     if dataset_domain is None or dataset_path is None:
         usage()
@@ -373,7 +422,7 @@ if __name__ == "__main__":
                                         max_core_nodes, cutoff_rating, store_dataset, 
                                         interact_type, min_interactions_per_user)
     outf=open("current_run.dat", 'w')
-    run_computation(data, computation_cmd, outf, interact_type)
+    run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs)
     outf.close()
 
 def get_data(from_raw_dataset=False):

@@ -1,6 +1,7 @@
 #import pyximport; pyximport.install()
 from socintpy.cythoncode.cnetwork_node import CNetworkNode
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
+from collections import defaultdict
 import random
 import codecs
 import cPickle as pickle
@@ -19,7 +20,11 @@ class NetworkDataPreparser():
         self.min_interactions_per_user = min_interactions_per_user
         self.total_num_items = None
         self.load_from_saved_dataset = False
+        self.global_k_neighbors = None
+        self.min_interaction_timestamp = None
+        self.max_interaction_timestamp = None
         if data_path.endswith(".pkl"):
+            print "INFO: Loading from saved dataset"
             self.load_from_saved_dataset = True
         # Workaround because namedtuple factory does not behave nicely with 
         # nested namedtuple
@@ -38,6 +43,15 @@ class NetworkDataPreparser():
             if should_have_interactions and not v.should_have_interactions:
                 continue
             yield v
+    
+    def get_othernodes_iterable(self, node, should_have_friends=False, should_have_interactions=False):
+        for v in self.nodes[1:]:
+            if should_have_friends and not v.should_have_friends:
+                continue
+            if should_have_interactions and not v.should_have_interactions:
+                continue
+            if v.uid != node.uid:
+                yield v
 
     def get_nodes_list(self, should_have_friends=False, should_have_interactions=False):
         ret_list = []
@@ -78,15 +92,17 @@ class NetworkDataPreparser():
             yield self.nodes[fid]
     
     def compute_store_total_num_items(self):
-        items_all = []
+        items_all = defaultdict(int)
         users_with_zero_interacts = 0
         for v in self.get_nodes_iterable(should_have_interactions=True):
-            items_list = v.get_all_items_interacted_with()
-            if len(items_list)==0:
+            item_ids_list = v.get_all_items_interacted_with()
+            if len(item_ids_list)==0:
                 users_with_zero_interacts += 1
-            items_all.extend(items_list)
-        items_all = set(items_all)
+            for item_id in item_ids_list:
+                items_all[item_id] += 1
+        #tems_all = set(items_all)
         print "Total number of users(including non-core) with zero interacts (across all types)", users_with_zero_interacts
+        print "Total number of items with at least one interaction", len(items_all), max(items_all.keys()), min(items_all.keys())
         return(items_all)    
 
     def get_friends_nodes(self, node):
@@ -239,5 +255,19 @@ class NetworkDataPreparser():
     def load_dataset(self):
         with open(self.datadir, 'rb') as pkl_file:
             self.nodes = pickle.load(pkl_file)
+    
+    def print_summary(self):
+        print "INFO: Data reading complete!"
+        print "-- Total Number of nodes ", len(self.nodes) -1
+        print "-- Total number of items featuring in atleast one interaction", self.total_num_items
+        return
 
-
+    def create_training_test_bytime(self, interact_type, split_timestamp):
+        cutoff_rating = self.cutoff_rating
+        if cutoff_rating is None:
+            cutoff_rating = -1
+        # Create training, test sets for all users(core and non-core)
+        for node in self.get_nodes_list(should_have_interactions=True):
+            node.create_training_test_sets_bytime(interact_type, split_timestamp,
+                                                  cutoff_rating)
+        return
