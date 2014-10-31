@@ -208,6 +208,7 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         # time_scale can be 'w':wallclock_time or 'o':ordinal_time
         split_date_str = "2012/01/01"
         t_window = -1
+        t_scale = ord('w')
         max_tries_val = 10000
         max_node_computes_val = 100
         max_interact_ratio_error = 0.1
@@ -218,7 +219,8 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         if create_fake_prefs is not None:
             print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
             fake_data.generate_fake_preferences(data,interact_type, split_timestamp, 
-                        time_window=t_window, method=create_fake_prefs)
+                        min_interactions_per_user=min_interactions_per_user,
+                        time_window=t_window, time_scale=t_scale, method=create_fake_prefs)
             
             #fake_data.generate_random_preferences(data, interact_type, split_timestamp)
             print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
@@ -248,22 +250,24 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         #interact_type = data.interact_types_dict["listen"]a
         split_date_str = "2013/10/01"
         t_window = 10#100000
+        t_scale = ord('o')
         max_tries_val = 10000
-        max_node_computes_val = 100
+        max_node_computes_val = 200
         max_interact_ratio_error =0.1
-        klim_val = 5
+        klim_val = 10
         split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
         data.create_training_test_bytime(interact_type, split_timestamp)
         if create_fake_prefs is not None:
             print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
             fake_data.generate_fake_preferences(data,interact_type, split_timestamp,
-                    time_window=t_window, method=create_fake_prefs)
+                    min_interactions_per_user = min_interactions_per_user,
+                    time_window=t_window, time_scale=t_scale, method=create_fake_prefs)
             print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
         # Need to generate again because fake data changes test data           
         data.create_training_test_bytime(interact_type, split_timestamp)
         la = LocalityAnalyzer(data)
         inf_tuple = compute.test_influence(la, interact_type=interact_type, 
-                               time_diff=t_window, time_scale=ord('o'), split_timestamp=split_timestamp, 
+                               time_diff=t_window, time_scale=t_scale, split_timestamp=split_timestamp, 
                                #time_diff=100000, split_date_str="1970/06/23", 
                                control_divider=0.01, # not used anymore
                                min_interactions_per_user = min_interactions_per_user,

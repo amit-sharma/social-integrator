@@ -19,20 +19,20 @@ def generate_random_preferences(netdata, interact_type, split_timestamp):
         node.store_interactions(interact_type, interact_tuples, do_sort=True)
     print"Fake data generated"
 
-def select_item_dueto_influence(netdata, node, interact_type, timestamp, time_window):
+num_not_influence = 0
+def select_item_dueto_influence(netdata, node, interact_type, timestamp, time_window,
+        min_interactions_per_user):
     found = False
     new_item_id = None
     fids=[]
     tries = None
+    global num_not_influence
     fr_nodes = netdata.get_friends_iterable(node)
-    friend_nodes = [v for v in fr_nodes if v.length_test_ids >= 10 and v.length_train_ids >= 10]
-    prev_friend_actions = node.get_others_prev_actions(friend_nodes, len(friend_nodes), interact_type, timestamp, 
-            10, time_window, ord('o'))
-    if len(prev_friend_actions) > 0:
+    friend_nodes = [v for v in fr_nodes if v.length_test_ids >= min_interactions_per_user and v.length_train_ids >= min_interactions_per_user]
+    prev_friend_actions = node.get_others_prev_actions(friend_nodes, len(friend_nodes), interact_type, timestamp, min_interactions_per_user, time_window, ord('o'))
+    if prev_friend_actions is not None and len(prev_friend_actions) > 0:
         new_item_id = prev_friend_actions[random.randint(0, len(prev_friend_actions)-1)]
         found = True
-    else:
-        print "Why is no friend output"
     """
     time_window = 1000000
     fids = node.get_friend_ids()
@@ -53,26 +53,24 @@ def select_item_dueto_influence(netdata, node, interact_type, timestamp, time_wi
             tries += 1
     """
     if not found:
-        print "WARN: Not assigned by influence", found, len(fids), tries
+        #print "WARN: Not assigned by influence", found, len(fids), tries
         new_item_id = random.randint(1, netdata.total_num_items)
+        num_not_influence += 1
     return new_item_id
 
-friends_share=0; nonfriends_share=0
+friends_share=0; nonfriends_share=0; num_not_homophily=0
 def select_item_dueto_homophily(netdata, node, interact_type, timestamp, time_window,
-        globalk_neighbors_dict, k):
-    global friends_share, nonfriends_share
+        globalk_neighbors_dict, min_interactions_per_user):
+    global friends_share, nonfriends_share, num_not_homophily
     found = False
     new_item_id = None
     tries = None
     globalk_neighbors = globalk_neighbors_dict[node.uid]
-    nonfriend_nodes = [v for _,v in globalk_neighbors if v.length_test_ids >= 10 and v.length_train_ids >= 10]
-    prev_friend_actions = node.get_others_prev_actions(nonfriend_nodes, len(nonfriend_nodes), interact_type, timestamp, 
-            10, time_window, ord('o'))
-    if len(prev_friend_actions) > 0:
+    nonfriend_nodes = [v for _,v in globalk_neighbors if v.length_test_ids >= min_interactions_per_user and v.length_train_ids >= min_interactions_per_user]
+    prev_friend_actions = node.get_others_prev_actions(nonfriend_nodes, len(nonfriend_nodes), interact_type, timestamp, min_interactions_per_user, time_window, ord('o'))
+    if prev_friend_actions is not None and len(prev_friend_actions) > 0:
         new_item_id = prev_friend_actions[random.randint(0, len(prev_friend_actions)-1)]
         found = True
-    else:
-        print "Why is no friend output"
     #global_candidates = netdata.get_nonfriends_iterable(node)
     """
     data_type="compare_train"
@@ -107,8 +105,9 @@ def select_item_dueto_homophily(netdata, node, interact_type, timestamp, time_wi
         tries += 1
     """
     if not found:
-        print "WARN: Not assigned by homophily", found, len(globalk_neighbors), tries
+        #print "WARN: Not assigned by homophily", found, len(globalk_neighbors), tries
         new_item_id = random.randint(1, netdata.total_num_items)
+        num_not_homophily += 1
     return new_item_id
 
 def select_item_dueto_random(items_pop):
@@ -118,22 +117,23 @@ def select_item_dueto_random(items_pop):
     return items_pop[rand_index]
 
 
-def get_interactions_stream(nodes_iterable, interact_type, split_timestamp):
+def get_interactions_stream(nodes_iterable, interact_type, split_timestamp,
+        min_interactions_per_user):
     interactions_stream = []
     items_pop = {}
     for node in nodes_iterable: 
-        if node.has_friends() and node.length_train_ids >=10 and node.length_test_ids>=10:
+        if node.has_friends() and node.length_train_ids >=min_interactions_per_user and node.length_test_ids>=min_interactions_per_user:
             node_interacts = node.get_interactions_after(interact_type,
                     split_timestamp=split_timestamp, cutoff_rating=-1)
             new_arr = [(node, item_id, timestamp, rating) for (
                     item_id, timestamp, rating) in node_interacts] 
             interactions_stream.extend(new_arr)
-    print [(node, item_id, timestamp, rating) for node, item_id, timestamp, rating in interactions_stream[1:10]]
+    #print [(node, item_id, timestamp, rating) for node, item_id, timestamp, rating in interactions_stream[1:10]]
     interactions_stream = sorted(interactions_stream, key=operator.itemgetter(2))
     return interactions_stream
 
 # warning: assumes that train data has been made beforehand
-def compute_globalk_neighbors(netdata, all_nodes, interact_type, k):
+def compute_globalk_neighbors(netdata, all_nodes, interact_type, k, min_interactions_per_user):
     if netdata.global_k_neighbors is not None:
         print "Got precomputed global k-nearest neighbors!"
         return netdata.global_k_neighbors
@@ -149,7 +149,7 @@ def compute_globalk_neighbors(netdata, all_nodes, interact_type, k):
             globalk_neighbors = BasicNetworkAnalyzer.compute_knearest_neighbors(node, global_candidates, 
                                                                 interact_type, k, data_type=data_type, 
                                                                 cutoff_rating = -1,
-                                                                min_interactions_per_user=10,
+                                                                min_interactions_per_user=min_interactions_per_user,
                                                                 time_diff=-1, time_scale=ord('w'))
             if len(globalk_neighbors) == 0:
                 print node.uid, node.get_num_interactions(interact_type), node.length_train_ids,  k
@@ -177,18 +177,25 @@ def get_items_dup_array2(nodes, interact_type):
     return items_all
 
 # three options: random, influence or homophily
+# Caution: This function, under method homophily, stores the k-best neighbors as a 
+#           property of netdata!! Beware, do not change split_timestamp, 
+#            interact_type, min_interactions etc.  or method after that.            
 def generate_fake_preferences(netdata, interact_type, split_timestamp, 
-        time_window=None, method="random"):
+        min_interactions_per_user=1, time_window=None, time_scale=ord('o'), method="random"):
+    global num_not_influence, num_not_homophily
+    global friends_share, nonfriends_share
+    num_not_homophily = 0
+    num_not_influence = 0
     print "ALERT: Generating some fake data..."
     core_nodes = netdata.get_nodes_iterable(should_have_interactions=True,
             should_have_friends=True)
-    interactions_stream  = get_interactions_stream(core_nodes, interact_type, split_timestamp)
+    interactions_stream  = get_interactions_stream(core_nodes, interact_type, split_timestamp, min_interactions_per_user)
     print "Number of interactions to change", len(interactions_stream)
     counter = 0
     if method=="homophily":
         all_future_nodes = [v[0] for v in interactions_stream]
         globalk_neighbors_dict = compute_globalk_neighbors(netdata, all_future_nodes, 
-                interact_type, k=10)
+                interact_type, k=10, min_interactions_per_user=min_interactions_per_user)
         print "Generated k-best neighbors for all"
     elif method=="random":
         items_pop = get_items_dup_array(netdata, interact_type)
@@ -199,10 +206,11 @@ def generate_fake_preferences(netdata, interact_type, split_timestamp,
             new_item_id = select_item_dueto_random(items_pop)#.randint(1, netdata.total_num_items)
         elif method == "influence":
             new_item_id = select_item_dueto_influence(netdata, node, interact_type,
-                    timestamp, time_window)
+                    timestamp, time_window, min_interactions_per_user)
         elif method == "homophily":
             new_item_id = select_item_dueto_homophily(netdata, node, interact_type,
-                    timestamp, time_window, globalk_neighbors_dict, k=10)
+                    timestamp, time_window, globalk_neighbors_dict, 
+                    min_interactions_per_user)
         else:
             print "Invalid fake prefs method"; sys.exit(1)
         ret = node.change_interacted_item(interact_type, item_id, new_item_id, timestamp)
@@ -214,6 +222,8 @@ def generate_fake_preferences(netdata, interact_type, split_timestamp,
         if counter % 10000 == 0:
             print "Done faked", counter
     print "In homophily", friends_share, nonfriends_share 
+    print "In influence: number of interactions that were not generated by influence:", num_not_influence
+    print "In homophily: number of interactions that were not generated by influence:", num_not_homophily
     print "Fake data generated"
 
     

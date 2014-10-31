@@ -293,10 +293,11 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
             if index >= size_stream:
                 print "ERROR:Cython: Big Error, how can index of friend stream be", index
             if index <0:
-                print "This interaction is too early for others test set. Aborting..."
-                return -2 
+                print "WARN:This interaction is too early for others test set. Aborting..."
+                #return -2 
             if index+1 <time_diff:
-                print "WARN::Oh, cannot even find enough nodes to compare"
+                print "WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting..."
+                #return -3
             j=index
             while j >index-time_diff and j>=0:
                 if others_stream[j].item_id == my_interactions[i].item_id:
@@ -1231,17 +1232,20 @@ cdef class CNetworkNode:
             PyMem_Free(others_interactions)
             PyMem_Free(lengths_others_interactions)
         fr_interacts = []
-        if True:
-            index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream, 
-                        timestamp, debug=False)
-            if index < 0 or index >= self.length_fakedata_inf_fr_stream:
-                print "ERROR:Cython: Big Error, how can index of friend stream be", index
-            j=index
-            while j >index-time_diff and j>=0:
-                fr_interacts.append(self.fakedata_inf_fr_stream[j].item_id)
-                j -= 1
-            if j==0:
-                print "WARN::Oh, cannot even find enough nodes to compare"
+        index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream, 
+                    timestamp, debug=False)
+        if index <-1 or index >= self.length_fakedata_inf_fr_stream:
+            print "ERROR:Cython: Big Error, how can index of friend stream be", index
+            return None
+        elif index == -1:
+            print "WARN: Not enough interactions in others test set before this interaction"
+            return None
+        if index+1<time_diff:
+            print "WARN: Few nodes for random sample of influence"
+        j=index
+        while j >index-time_diff and j>=0:
+            fr_interacts.append(self.fakedata_inf_fr_stream[j].item_id)
+            j -= 1
 
         return fr_interacts
 

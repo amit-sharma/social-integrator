@@ -353,11 +353,11 @@ def compare_susceptibility_effect(triplet_nodes, interact_type, cutoff_rating,
     for node, fnodes, rnodes, num1, num2, num3, fsim, rsim in triplet_nodes:
         # this similarity is not symmetric
         inf1 = node.compute_node_susceptibility(fnodes, len(fnodes), interact_type, cutoff_rating, data_type_code, min_interactions_per_user, time_diff, time_scale)
-        if inf1 is not None and inf1 != -1:
+        if inf1 is not None and inf1 > -1:
             node_fnode_counter += 1
             inf2 = node.compute_node_susceptibility(rnodes, len(rnodes), interact_type, cutoff_rating, data_type_code, min_interactions_per_user, time_diff, time_scale)
 #print inf2, "\n"
-            if inf2 is not None and inf2 !=-1:
+            if inf2 is not None and inf2 > -1:
                 node_rnode_counter += 1
                 influence_arr[node.uid] = (num1, num2, num3, fsim, rsim, 
                                       inf1, inf2)
