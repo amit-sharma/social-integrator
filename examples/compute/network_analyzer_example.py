@@ -246,10 +246,10 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
     elif computation_cmd=="suscept_test":
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"]a
-        split_date_str = "2013/01/01"
+        split_date_str = "2013/10/01"
         t_window = 10#100000
         max_tries_val = 10000
-        max_node_computes_val = 1000
+        max_node_computes_val = 100
         max_interact_ratio_error =0.1
         klim_val = 5
         split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))

@@ -290,17 +290,19 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
         if my_interactions[i].rating >= cutoff_rating:
             index = binary_search_closest_temporal(others_stream, size_stream, 
                     my_interactions[i].timestamp, debug=False)
-            if index < 0 or index >= size_stream:
+            if index >= size_stream:
                 print "ERROR:Cython: Big Error, how can index of friend stream be", index
-                break
+            if index <0:
+                print "This interaction is too early for others test set. Aborting..."
+                return -2 
+            if index+1 <time_diff:
+                print "WARN::Oh, cannot even find enough nodes to compare"
             j=index
             while j >index-time_diff and j>=0:
                 if others_stream[j].item_id == my_interactions[i].item_id:
                     if others_stream[j].rating >= cutoff_rating:
                         sim[i] += 1
                 j -= 1
-            if j==0:
-                print "WARN::Oh, cannot even find enough nodes to compare"
             my_count += 1
         i += 1
 
@@ -482,6 +484,8 @@ cdef class CNetworkNode:
     cdef idata *c_test_data
     cdef int c_length_train_ids
     cdef int c_length_test_ids
+    cdef idata *fakedata_inf_fr_stream
+    cdef int length_fakedata_inf_fr_stream
 
     def __cinit__(self, *args,  **kwargs):
         cdef int a
@@ -505,7 +509,8 @@ cdef class CNetworkNode:
         self.c_length_test_ids = 0
         self.c_length_train_ids = 0
         #if kwargs['should_have_friends']:
-        #    self.c_friend_list = <fdata **>PyMem_Malloc(self.)
+        #    self.c_friend_list = <fdata **>PyMem_Malloc(self.)a
+        self.length_fakedata_inf_fr_stream = -1
     
     def __init__(self,*args, **kwargs):
         self.c_uid = int(args[0])
@@ -1198,6 +1203,48 @@ cdef class CNetworkNode:
         self.c_length_test_ids = k2
         return
     
+    cpdef get_others_prev_actions(self, other_nodes, length_other_nodes, interact_type, timestamp, min_interactions_per_user, time_diff, time_scale):
+        cdef int j, index
+        cdef int size_stream = -1
+        cdef int *lengths_others_interactions 
+        cdef idata **others_intearctions
+        cdef idata *others_stream
+        cdef int i
+        if self.length_fakedata_inf_fr_stream == -1:
+            lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
+            others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))
+            valid_flag = True
+            for i in range(length_other_nodes):
+                c_node_obj = <CNetworkNode>other_nodes[i]
+                lengths_others_interactions[i] = c_node_obj.c_length_test_ids
+                others_interactions[i] = c_node_obj.c_test_data
+                if lengths_others_interactions[i] < min_interactions_per_user:
+                    valid_flag = False
+            if not valid_flag:
+                print "ALERT: Valid flag is false!!!"
+            others_stream = create_nodes_interaction_stream(others_interactions,
+                    lengths_others_interactions, length_other_nodes, &size_stream)
+
+            self.fakedata_inf_fr_stream = others_stream
+            self.length_fakedata_inf_fr_stream = size_stream
+            #PyMem_Free(others_stream)
+            PyMem_Free(others_interactions)
+            PyMem_Free(lengths_others_interactions)
+        fr_interacts = []
+        if True:
+            index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream, 
+                        timestamp, debug=False)
+            if index < 0 or index >= self.length_fakedata_inf_fr_stream:
+                print "ERROR:Cython: Big Error, how can index of friend stream be", index
+            j=index
+            while j >index-time_diff and j>=0:
+                fr_interacts.append(self.fakedata_inf_fr_stream[j].item_id)
+                j -= 1
+            if j==0:
+                print "WARN::Oh, cannot even find enough nodes to compare"
+
+        return fr_interacts
+
     def get_train_ids_list(self, int interact_type):
         cdef int i
         itemid_arr = []
