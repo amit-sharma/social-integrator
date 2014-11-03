@@ -274,7 +274,7 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
                         int* lengths_others_interactions, int num_other_nodes, 
                         int interact_type, int data_type_code, 
                         int time_diff, float cutoff_rating,
-                        int time_scale):
+                        int time_scale, bool debug):
     cdef float simscore= 0
     cdef int i, j, y, index
     cdef int size_stream = -1
@@ -291,13 +291,16 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
             index = binary_search_closest_temporal(others_stream, size_stream, 
                     my_interactions[i].timestamp, debug=False)
             if index >= size_stream:
-                print "ERROR:Cython: Big Error, how can index of friend stream be", index
+                if debug:
+                    print "ERROR:Cython: Big Error, how can index of friend stream be", index
             if index <0:
-                print "WARN:This interaction is too early for others test set. Aborting..."
-                #return -2 
+                if debug:
+                    print "WARN:This interaction is too early for others test set. Aborting..."
+                return -2 
             if index+1 <time_diff:
-                print "WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting..."
-                #return -3
+                if debug:
+                    print "WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting..."
+                return -3
             j=index
             while j >index-time_diff and j>=0:
                 if others_stream[j].item_id == my_interactions[i].item_id:
@@ -759,7 +762,7 @@ cdef class CNetworkNode:
 
     cpdef compute_node_susceptibility(self, other_nodes, int length_other_nodes,
             int interact_type, float cutoff_rating, int data_type_code, 
-            int min_interactions_per_user, int time_diff, int time_scale):
+            int min_interactions_per_user, int time_diff, int time_scale, bool debug=False):
         cdef int length_my_interactions
         cdef int *lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
         cdef idata *my_interactions
@@ -783,7 +786,7 @@ cdef class CNetworkNode:
                             length_my_interactions, others_interactions, 
                             lengths_others_interactions, length_other_nodes, interact_type, 
                             data_type_code,
-                            time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale)
+                            time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale, debug=debug)
                    
                 else:
                     return compute_node_susceptibility_c(my_interactions, 
@@ -791,6 +794,8 @@ cdef class CNetworkNode:
                             lengths_others_interactions, length_other_nodes, interact_type, 
                             data_type_code,
                             time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale)
+        PyMem_Free(lengths_others_interactions)
+        PyMem_Free(others_interactions)
         return None
 
     # change training, test to common data structure idata and simplify this function
@@ -1183,6 +1188,10 @@ cdef class CNetworkNode:
         cdef int i
         cdef int k1 = 0, k2 = 0
         cdef float random_num
+        if self.c_train_data is not NULL:
+            PyMem_Free(self.c_train_data)
+        if self.c_test_data is not NULL:
+            PyMem_Free(self.c_test_data)
         self.c_train_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.c_length_list[interact_type])
         self.c_test_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.c_length_list[interact_type])
         if not self.c_train_data or not self.c_test_data:
@@ -1204,11 +1213,11 @@ cdef class CNetworkNode:
         self.c_length_test_ids = k2
         return
     
-    cpdef get_others_prev_actions(self, other_nodes, length_other_nodes, interact_type, timestamp, min_interactions_per_user, time_diff, time_scale):
+    cpdef get_others_prev_actions(self, other_nodes, length_other_nodes, interact_type, timestamp, min_interactions_per_user, time_diff, time_scale, debug=False):
         cdef int j, index
         cdef int size_stream = -1
         cdef int *lengths_others_interactions 
-        cdef idata **others_intearctions
+        cdef idata **others_interactions
         cdef idata *others_stream
         cdef int i
         if self.length_fakedata_inf_fr_stream == -1:
@@ -1235,13 +1244,16 @@ cdef class CNetworkNode:
         index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream, 
                     timestamp, debug=False)
         if index <-1 or index >= self.length_fakedata_inf_fr_stream:
-            print "ERROR:Cython: Big Error, how can index of friend stream be", index
+            if debug:
+                print "ERROR:Cython: Big Error, how can index of friend stream be", index
             return None
         elif index == -1:
-            print "WARN: Not enough interactions in others test set before this interaction"
+            if debug:
+                print "WARN: Not enough interactions in others test set before this interaction"
             return None
         if index+1<time_diff:
-            print "WARN: Few nodes for random sample of influence"
+            if debug:
+                print "WARN: Few nodes for random sample of influence"
         j=index
         while j >index-time_diff and j>=0:
             fr_interacts.append(self.fakedata_inf_fr_stream[j].item_id)

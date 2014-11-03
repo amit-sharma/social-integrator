@@ -49,7 +49,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparserCSV(dataset_path, impl_type, cutoff_rating,
-                                   max_core_nodes, store_dataset, use_artists=False)
+                                   max_core_nodes, store_dataset, use_artists=True)
     elif dataset_domain== "lastfm_simple":
         data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
                                    max_core_nodes, store_dataset, use_artists=False, 
@@ -57,10 +57,12 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
                                    min_interactions_per_user=min_interacts_per_user*2)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
-                                      max_core_nodes, store_dataset)
+                                      max_core_nodes, store_dataset, 
+                                      min_interactions_per_user = min_interacts_per_user*2)
     elif dataset_domain=="flixster":
         data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, 
-                                     max_core_nodes, store_dataset)
+                                     max_core_nodes, store_dataset, 
+                                     min_interactions_per_user=min_interacts_per_user*2)
     elif dataset_domain=="flickr":
         data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, 
                                    max_core_nodes, store_dataset)
@@ -247,40 +249,50 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
              
     elif computation_cmd=="suscept_test":
         #   ta = TemporalAnalyzer(data)
-        #interact_type = data.interact_types_dict["listen"]a
-        split_date_str = "2013/10/01"
-        t_window = 10#100000
+        #interact_type = data.interact_types_dict["listen"]
+        split_date_str = "2008/01/01" #"2013/10/01"
+        #t_window = 10#100000
+        M = [10]#,20,30,40,50]
         t_scale = ord('o')
         max_tries_val = 10000
-        max_node_computes_val = 200
+        max_node_computes_val = 8000
         max_interact_ratio_error =0.1
         klim_val = 10
-        split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
-        data.create_training_test_bytime(interact_type, split_timestamp)
-        if create_fake_prefs is not None:
-            print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
-            fake_data.generate_fake_preferences(data,interact_type, split_timestamp,
-                    min_interactions_per_user = min_interactions_per_user,
-                    time_window=t_window, time_scale=t_scale, method=create_fake_prefs)
-            print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
-        # Need to generate again because fake data changes test data           
-        data.create_training_test_bytime(interact_type, split_timestamp)
-        la = LocalityAnalyzer(data)
-        inf_tuple = compute.test_influence(la, interact_type=interact_type, 
-                               time_diff=t_window, time_scale=t_scale, split_timestamp=split_timestamp, 
-                               #time_diff=100000, split_date_str="1970/06/23", 
-                               control_divider=0.01, # not used anymore
-                               min_interactions_per_user = min_interactions_per_user,
-                               max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_processes=4,
-                               max_interact_ratio_error = max_interact_ratio_error,
-                               klim = klim_val,
-                               method="suscept")
-        print "t-test results", ttest_rel(inf_tuple[2], inf_tuple[3])
-        num_vals = len(inf_tuple[0])
-        f = open("suscept_test", "w")
-        for i in range(num_vals):
-            f.write("%f\t%f\t%f\t%f\n" % (inf_tuple[0][i], inf_tuple[1][i], 
-                        inf_tuple[2][i], inf_tuple[3][i]))
+        num_processes=4
+        nonfr_match = "random" #random, serial, kbest
+        num_loop = 1
+        use_artists = False
+        interact_type_val = "listen"
+        f = open("suscept_testyo"+str(create_fake_prefs)+str(num_loop)+str(interact_type_val)+str(use_artists), "w")
+        for t_window in M:
+            for h in range(num_loop):
+                print "\n\n********************ALERTINFO: STARTING ITERATION", h, t_window
+                split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
+                if create_fake_prefs is not None:
+                    data.create_training_test_bytime(interact_type, split_timestamp)
+                    #print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
+                    fake_data.generate_fake_preferences(data,interact_type, split_timestamp,
+                            min_interactions_per_user = min_interactions_per_user,
+                            time_window=t_window, time_scale=t_scale, method=create_fake_prefs)
+                    #print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
+                # Need to generate again because fake data changes test data           
+                data.create_training_test_bytime(interact_type, split_timestamp)
+                la = LocalityAnalyzer(data)
+                inf_tuple = compute.test_influence(la, interact_type=interact_type, 
+                                       time_diff=t_window, time_scale=t_scale, split_timestamp=split_timestamp, 
+                                       #time_diff=100000, split_date_str="1970/06/23", 
+                                       control_divider=0.01, # not used anymore
+                                       min_interactions_per_user = min_interactions_per_user,
+                                       max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_processes=num_processes,
+                                       max_interact_ratio_error = max_interact_ratio_error,
+                                       klim = klim_val,
+                                       nonfr_match=nonfr_match,
+                                       method="suscept")
+                print "t-test results", ttest_rel(inf_tuple[2], inf_tuple[3])
+                num_vals = len(inf_tuple[0])
+                for i in range(num_vals):
+                    f.write("%f\t%f\t%f\t%f\t%d\t%d\n" % (inf_tuple[0][i], inf_tuple[1][i], 
+                                inf_tuple[2][i], inf_tuple[3][i],h, t_window))
         f.close()
     """
     elif computation_cmd=="random_recommender":

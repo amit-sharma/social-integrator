@@ -2,7 +2,7 @@ import socintpy.util.utils as utils
 
 def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, control_divider,
                    min_interactions_per_user, max_tries, max_node_computes, num_processes,
-                   max_interact_ratio_error,klim,
+                   max_interact_ratio_error,klim, nonfr_match,
                    method):
     
     #time_diff = 90000 #86400
@@ -15,6 +15,7 @@ def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, co
                                                      max_node_computes=max_node_computes,
                                                      num_processes=num_processes,
                                                      max_interact_ratio_error=max_interact_ratio_error,
+                                                     nonfr_match = nonfr_match,
                                                      method=method)
     fr_inf_vals = [v[5] for v in influence_tuples]
     nonfr_inf_vals = [v[6] for v in influence_tuples]
