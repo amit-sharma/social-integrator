@@ -4,7 +4,8 @@ from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.util.utils import mean_sd
 import random
 import heapq
-
+from datetime import datetime
+import time
 from collections import defaultdict
 
 class BasicNetworkAnalyzer(object):
@@ -57,8 +58,35 @@ class BasicNetworkAnalyzer(object):
         for interact_type in self.netdata.interaction_types:
             user_interacts = [ v.get_num_interactions(interact_type) for v in self.netdata.get_nodes_iterable(should_have_interactions=True)]
             print("--Min, Max %d-type interacts per user= %d, %d" %(interact_type, min(user_interacts), max(user_interacts)))
+        print "Min., Max. timestamp of interactions", self.get_min_max_interact_times()
         return
 
+    def get_min_max_interact_times(self):
+        min_time = None
+        max_time = None
+        timestamp_2000 = time.mktime(datetime(2000,1,1).timetuple())
+
+        for v in self.netdata.get_nodes_iterable(should_have_interactions=True):
+            interacts = v.get_interactions(self.netdata.interact_type_val)
+            for item_id, timestamp, rating in interacts:
+                """
+                if timestamp < timestamp_2000:
+                    print "Error: wrong timestamp, how can be less than 2000/01/01: ", timestamp
+                    continue
+                """
+                if min_time is None or timestamp < min_time:
+                    min_time = timestamp
+                if max_time is None or timestamp > max_time:
+                    max_time = timestamp
+        min_t = None
+        max_t = None
+        try:
+            min_t = datetime.fromtimestamp(min_time)
+            max_t = datetime.fromtimestamp(max_time)
+        except:
+            print "Error. Cannot convert back timestamps to a date"
+
+        return (min_t, max_t, min_time, max_time)
 
     def get_items_popularity(self, interact_type, rating_cutoff):
         items_pop =  defaultdict(int)

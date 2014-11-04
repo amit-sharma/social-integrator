@@ -278,6 +278,7 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
     cdef float simscore= 0
     cdef int i, j, y, index
     cdef int size_stream = -1
+    cdef int prev_item_id = -1
     cdef idata *others_stream = create_nodes_interaction_stream(others_interactions,
             lengths_others_interactions, num_other_nodes, &size_stream)
     cdef int my_count = 0
@@ -288,26 +289,29 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
     i = 0
     while i < length_my_interactions:
         if my_interactions[i].rating >= cutoff_rating:
-            index = binary_search_closest_temporal(others_stream, size_stream, 
-                    my_interactions[i].timestamp, debug=False)
-            if index >= size_stream:
-                if debug:
-                    print "ERROR:Cython: Big Error, how can index of friend stream be", index
-            if index <0:
-                if debug:
-                    print "WARN:This interaction is too early for others test set. Aborting..."
-                return -2 
-            if index+1 <time_diff:
-                if debug:
-                    print "WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting..."
-                return -3
-            j=index
-            while j >index-time_diff and j>=0:
-                if others_stream[j].item_id == my_interactions[i].item_id:
-                    if others_stream[j].rating >= cutoff_rating:
-                        sim[i] += 1
-                j -= 1
+            # Checking for duplicates, we know my_interactions is sorted by item_id
+            if my_interactions[i].item_id !=prev_item_id:
+                index = binary_search_closest_temporal(others_stream, size_stream, 
+                        my_interactions[i].timestamp, debug=False)
+                if index >= size_stream:
+                    if debug:
+                        print "ERROR:Cython: Big Error, how can index of friend stream be", index
+                if index <0:
+                    if debug:
+                        print "WARN:This interaction is too early for others test set. Aborting..."
+                    return -2 
+                if index+1 <time_diff:
+                    if debug:
+                        print "WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting..."
+                    return -3
+                j=index
+                while j >index-time_diff and j>=0:
+                    if others_stream[j].item_id == my_interactions[i].item_id:
+                        if others_stream[j].rating >= cutoff_rating:
+                            sim[i] += 1
+                    j -= 1
             my_count += 1
+        prev_item_id = my_interactions[i].item_id
         i += 1
 
 

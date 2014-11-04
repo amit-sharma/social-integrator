@@ -65,7 +65,8 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
                                      min_interactions_per_user=min_interacts_per_user*2)
     elif dataset_domain=="flickr":
         data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, 
-                                   max_core_nodes, store_dataset)
+                                   max_core_nodes, store_dataset,
+                                   min_interactions_per_user=min_interacts_per_user*2)
     
     try:
         data.get_all_data()
@@ -250,15 +251,15 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
     elif computation_cmd=="suscept_test":
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"]
-        split_date_str = "2008/01/01" #"2013/10/01"
+        split_date_str = "2013/12/31" #"2013/10/01"
         #t_window = 10#100000
-        M = [10]#,20,30,40,50]
+        M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
         max_tries_val = 10000
-        max_node_computes_val = 8000
+        max_node_computes_val = 2000
         max_interact_ratio_error =0.1
         klim_val = 10
-        num_processes=4
+        num_processes=5
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
         use_artists = False
@@ -267,7 +268,9 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         for t_window in M:
             for h in range(num_loop):
                 print "\n\n********************ALERTINFO: STARTING ITERATION", h, t_window
+                
                 split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
+                #split_timestamp=25000000
                 if create_fake_prefs is not None:
                     data.create_training_test_bytime(interact_type, split_timestamp)
                     #print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
