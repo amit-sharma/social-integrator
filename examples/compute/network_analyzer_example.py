@@ -251,15 +251,15 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
     elif computation_cmd=="suscept_test":
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"]
-        split_date_str = "2013/12/31" #"2013/10/01"
+        split_date_str = "2012/12/31" #"2013/10/01"
         #t_window = 10#100000
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
-        max_tries_val = 10000
-        max_node_computes_val = 2000
+        max_tries_val = 50000
+        max_node_computes_val = 1000
         max_interact_ratio_error =0.1
         klim_val = 10
-        num_processes=5
+        num_processes=3
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
         use_artists = False
