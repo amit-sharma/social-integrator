@@ -8,14 +8,15 @@ import operator
 def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_type, 
                                             cutoff_rating, control_divider, min_interactions_per_user, 
                                             time_diff, time_scale, max_tries, max_node_computes,
-                                            max_interact_ratio_error, nonfr_match, q):   
+                                            max_interact_ratio_error, nonfr_match, 
+                                            allow_duplicates, q):   
     num_rand_attempts = 2.0
     final_influence = None
     for ii in range(int(num_rand_attempts)):
         influence_dict = compute_susceptibility_randomselect(netdata, nodes_list, interact_type, 
                                                 cutoff_rating, control_divider, min_interactions_per_user, 
                                                 time_diff, time_scale, max_tries, max_node_computes,
-                                                max_interact_ratio_error, nonfr_match)
+                                                max_interact_ratio_error, nonfr_match, allow_duplicates)
         if final_influence is None:
             final_influence = influence_dict
         else:
@@ -34,7 +35,8 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
 def compute_susceptibility_randomselect(netdata, nodes_list, interact_type, 
                                             cutoff_rating, control_divider, min_interactions_per_user, 
                                             time_diff, time_scale, max_tries, max_node_computes,
-                                            max_interact_ratio_error, nonfr_match):   
+                                            max_interact_ratio_error, nonfr_match,
+                                            allow_duplicates):   
     # Find similarity on training set
     max_sim_ratio_error = 0.1
     triplet_nodes = []
@@ -173,7 +175,8 @@ def compute_susceptibility_randomselect(netdata, nodes_list, interact_type,
     data_type_code=ord(data_type[0]) 
     influence_arr = compare_susceptibility_effect(triplet_nodes, interact_type, 
                                               cutoff_rating, min_interactions_per_user, 
-                                              time_diff, time_scale, data_type_code)
+                                              time_diff, time_scale, data_type_code,
+                                              allow_duplicates)
     return influence_arr
 
 
@@ -377,7 +380,7 @@ def compute_influence_zerosim_randomselect_parallel(netdata, nodes_list, interac
 
 def compare_susceptibility_effect(triplet_nodes, interact_type, cutoff_rating, 
                                  min_interactions_per_user, time_diff, time_scale,
-                                 data_type_code):
+                                 data_type_code, allow_duplicates):
     """
     new_triplet_nodes = []
     for node, fnodes, rnodes, num1, num2, num3, fsim, rsim in triplet_nodes:
@@ -391,11 +394,16 @@ def compare_susceptibility_effect(triplet_nodes, interact_type, cutoff_rating,
     node_rnode_counter = 0
     for node, fnodes, rnodes, num1, num2, num3, fsim, rsim in triplet_nodes:
         # this similarity is not symmetric
-        inf1 = node.compute_node_susceptibility(fnodes, len(fnodes), interact_type, cutoff_rating, data_type_code, min_interactions_per_user, time_diff, time_scale, debug=False)
+        inf1 = node.compute_node_susceptibility(fnodes, len(fnodes), interact_type,
+                cutoff_rating, data_type_code, min_interactions_per_user, 
+                time_diff, time_scale, allow_duplicates, debug=False)
         #print inf1
         if inf1 is not None and inf1 > -1:
             node_fnode_counter += 1
-            inf2 = node.compute_node_susceptibility(rnodes, len(rnodes), interact_type, cutoff_rating, data_type_code, min_interactions_per_user, time_diff, time_scale, debug=False)
+            inf2 = node.compute_node_susceptibility(rnodes, len(rnodes), 
+                    interact_type, cutoff_rating, data_type_code, 
+                    min_interactions_per_user, 
+                    time_diff, time_scale, allow_duplicates, debug=False)
             #print inf2, "\n"
             if inf2 is not None and inf2 > -1:
                 node_rnode_counter += 1
@@ -598,7 +606,8 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                                    max_tries=10000, max_node_computes=10000, num_processes=1,
                                    max_interact_ratio_error=0.1,
                                    nonfr_match="random",
-                                   method="influence"):
+                                   method="influence",
+                                   allow_duplicates=True):
         cutoff_rating = self.netdata.cutoff_rating
         if cutoff_rating is None:
             cutoff_rating = -1
@@ -648,7 +657,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                                    cutoff_rating, control_divider, min_interactions_per_user, 
                                    time_diff, time_scale, max_tries,
                                    max_node_computes, max_interact_ratio_error,
-                                   nonfr_match, q))
+                                   nonfr_match, allow_duplicates, q))
             p.start()
             proc_list.append(p)
         

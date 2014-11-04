@@ -255,19 +255,21 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         #t_window = 10#100000
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
-        max_tries_val = 50000
+        max_tries_val = 10000
         max_node_computes_val = 1000
         max_interact_ratio_error =0.1
         klim_val = 10
-        num_processes=3
+        num_processes=1
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
         use_artists = False
+        allow_duplicates = True
         interact_type_val = "listen"
         f = open("suscept_testyo"+str(create_fake_prefs)+str(num_loop)+str(interact_type_val)+str(use_artists), "w")
+
         for t_window in M:
             for h in range(num_loop):
-                print "\n\n********************ALERTINFO: STARTING ITERATION", h, t_window
+                print "\n\n################### ALERTINFO: STARTING ITERATION", h, t_window
                 
                 split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
                 #split_timestamp=25000000
@@ -290,7 +292,8 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
                                        max_interact_ratio_error = max_interact_ratio_error,
                                        klim = klim_val,
                                        nonfr_match=nonfr_match,
-                                       method="suscept")
+                                       method="suscept", 
+                                       allow_duplicates=allow_duplicates)
                 print "t-test results", ttest_rel(inf_tuple[2], inf_tuple[3])
                 num_vals = len(inf_tuple[0])
                 for i in range(num_vals):

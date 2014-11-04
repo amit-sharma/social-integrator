@@ -274,7 +274,7 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
                         int* lengths_others_interactions, int num_other_nodes, 
                         int interact_type, int data_type_code, 
                         int time_diff, float cutoff_rating,
-                        int time_scale, bool debug):
+                        int time_scale, bool allow_duplicates, bool debug):
     cdef float simscore= 0
     cdef int i, j, y, index
     cdef int size_stream = -1
@@ -290,7 +290,7 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
     while i < length_my_interactions:
         if my_interactions[i].rating >= cutoff_rating:
             # Checking for duplicates, we know my_interactions is sorted by item_id
-            if my_interactions[i].item_id !=prev_item_id:
+            if allow_duplicates or my_interactions[i].item_id !=prev_item_id:
                 index = binary_search_closest_temporal(others_stream, size_stream, 
                         my_interactions[i].timestamp, debug=False)
                 if index >= size_stream:
@@ -310,7 +310,7 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
                         if others_stream[j].rating >= cutoff_rating:
                             sim[i] += 1
                     j -= 1
-            my_count += 1
+                my_count += 1
         prev_item_id = my_interactions[i].item_id
         i += 1
 
@@ -766,7 +766,8 @@ cdef class CNetworkNode:
 
     cpdef compute_node_susceptibility(self, other_nodes, int length_other_nodes,
             int interact_type, float cutoff_rating, int data_type_code, 
-            int min_interactions_per_user, int time_diff, int time_scale, bool debug=False):
+            int min_interactions_per_user, int time_diff, int time_scale, 
+            bool allow_duplicates, bool debug=False):
         cdef int length_my_interactions
         cdef int *lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
         cdef idata *my_interactions
@@ -790,7 +791,8 @@ cdef class CNetworkNode:
                             length_my_interactions, others_interactions, 
                             lengths_others_interactions, length_other_nodes, interact_type, 
                             data_type_code,
-                            time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale, debug=debug)
+                            time_diff=time_diff, cutoff_rating=cutoff_rating, 
+                            time_scale=time_scale, allow_duplicates=allow_duplicates, debug=debug)
                    
                 else:
                     return compute_node_susceptibility_c(my_interactions, 

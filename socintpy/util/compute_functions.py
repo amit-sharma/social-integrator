@@ -3,7 +3,7 @@ import socintpy.util.utils as utils
 def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, control_divider,
                    min_interactions_per_user, max_tries, max_node_computes, num_processes,
                    max_interact_ratio_error,klim, nonfr_match,
-                   method):
+                   method, allow_duplicates):
     
     #time_diff = 90000 #86400
     influence_tuples = la.estimate_influencer_effect_parallel(interact_type, split_timestamp, 
@@ -16,7 +16,8 @@ def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, co
                                                      num_processes=num_processes,
                                                      max_interact_ratio_error=max_interact_ratio_error,
                                                      nonfr_match = nonfr_match,
-                                                     method=method)
+                                                     method=method, 
+                                                     allow_duplicates=allow_duplicates)
     fr_inf_vals = [v[5] for v in influence_tuples]
     nonfr_inf_vals = [v[6] for v in influence_tuples]
     diff_inf_vals = [v[5]-v[6] for v in influence_tuples]
