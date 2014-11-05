@@ -20,6 +20,7 @@ def generate_random_preferences(netdata, interact_type, split_timestamp):
     print"Fake data generated"
 
 num_not_influence = 0
+#this function uses interaction_list instead of test_data to be always up to date.
 def select_item_dueto_influence(netdata, node, interact_type, timestamp, time_window,
         min_interactions_per_user):
     found = False
@@ -29,10 +30,13 @@ def select_item_dueto_influence(netdata, node, interact_type, timestamp, time_wi
     global num_not_influence
     fr_nodes = netdata.get_friends_iterable(node)
     friend_nodes = [v for v in fr_nodes if v.length_test_ids >= min_interactions_per_user and v.length_train_ids >= min_interactions_per_user]
-    prev_friend_actions = node.get_others_prev_actions(friend_nodes, len(friend_nodes), interact_type, timestamp, min_interactions_per_user, time_window, ord('o'), debug=False)
+    prev_friend_actions = node.get_others_prev_actions(friend_nodes, 
+            len(friend_nodes), interact_type, timestamp, 
+            min_interactions_per_user, time_window, ord('o'), debug=False)
     if prev_friend_actions is not None and len(prev_friend_actions) > 0:
         new_item_id = prev_friend_actions[random.randint(0, len(prev_friend_actions)-1)]
         found = True
+
     """
     time_window = 1000000
     fids = node.get_friend_ids()
@@ -59,6 +63,7 @@ def select_item_dueto_influence(netdata, node, interact_type, timestamp, time_wi
     return new_item_id
 
 friends_share=0; nonfriends_share=0; num_not_homophily=0
+# this function is not up to date. uses past preferences from training data
 def select_item_dueto_homophily(netdata, node, interact_type, timestamp, time_window,
         globalk_neighbors_dict, min_interactions_per_user):
     global friends_share, nonfriends_share, num_not_homophily
@@ -179,7 +184,9 @@ def get_items_dup_array2(nodes, interact_type):
 # three options: random, influence or homophily
 # Caution: This function, under method homophily, stores the k-best neighbors as a 
 #           property of netdata!! Beware, do not change split_timestamp, 
-#            interact_type, min_interactions etc.  or method after that.            
+#            interact_type, min_interactions etc.  or method after that.           
+# Caution: this function, as written, also stores the prior friends interaction
+#            streams and reuses them. Dangerous!
 def generate_fake_preferences(netdata, interact_type, split_timestamp, 
         min_interactions_per_user=1, time_window=None, time_scale=ord('o'), method="random"):
     global num_not_influence, num_not_homophily

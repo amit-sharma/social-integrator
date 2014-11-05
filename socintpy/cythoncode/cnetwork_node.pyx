@@ -5,6 +5,7 @@ from libc.math cimport sqrt
 from libc.stdlib cimport rand
 from libc.string cimport memmove, memcpy
 import scipy.sparse as sp
+import sys
 import numpy as np
 cimport numpy as np
 cimport cython
@@ -306,10 +307,15 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
                     return -3
                 j=index
                 while j >index-time_diff and j>=0:
+                    #print others_stream[j].item_id,  my_interactions[i].item_id, others_stream[j].timestamp,my_interactions[i].timestamp
                     if others_stream[j].item_id == my_interactions[i].item_id:
                         if others_stream[j].rating >= cutoff_rating:
                             sim[i] += 1
                     j -= 1
+                """
+                if sim[i] == 0:
+                    print "ONO!!!", my_interactions[i].item_id, my_interactions[i].timestamp
+                """
                 my_count += 1
         prev_item_id = my_interactions[i].item_id
         i += 1
@@ -1226,14 +1232,14 @@ cdef class CNetworkNode:
         cdef idata **others_interactions
         cdef idata *others_stream
         cdef int i
-        if self.length_fakedata_inf_fr_stream == -1:
+        if True:#self.length_fakedata_inf_fr_stream == -1:
             lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
             others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))
             valid_flag = True
             for i in range(length_other_nodes):
                 c_node_obj = <CNetworkNode>other_nodes[i]
-                lengths_others_interactions[i] = c_node_obj.c_length_test_ids
-                others_interactions[i] = c_node_obj.c_test_data
+                lengths_others_interactions[i] = c_node_obj.c_length_list[interact_type]
+                others_interactions[i] = c_node_obj.c_list[interact_type]
                 if lengths_others_interactions[i] < min_interactions_per_user:
                     valid_flag = False
             if not valid_flag:
@@ -1264,7 +1270,13 @@ cdef class CNetworkNode:
         while j >index-time_diff and j>=0:
             fr_interacts.append(self.fakedata_inf_fr_stream[j].item_id)
             j -= 1
-
+        
+        """ 
+        for j in range(self.length_fakedata_inf_fr_stream):
+            sys.stdout.write(str(others_stream[j].item_id)+ ","+str(others_stream[j].timestamp)+" ")
+        print "DONEYO"
+        """
+        PyMem_Free(others_stream)
         return fr_interacts
 
     def get_train_ids_list(self, int interact_type):
