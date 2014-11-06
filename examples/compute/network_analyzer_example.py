@@ -250,24 +250,22 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         f.close()
              
     elif computation_cmd=="suscept_test":
-        #   ta = TemporalAnalyzer(data)
-        #interact_type = data.interact_types_dict["listen"]
+        allow_duplicates = True
+        use_artists = False # probably only used for naming the files
+        interact_type_str = "listen" if interact_type==0 else "love"
         split_date_str = "2013/01/01" #"2013/10/01"
-        #t_window = 10#100000
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
         max_tries_val = None#30000
-        max_node_computes_val = 100
+        max_node_computes_val = 10000
         max_interact_ratio_error =0.1
         klim_val = None # not used for influence test
-        num_processes=1
+        num_processes=4
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
-        use_artists = False # probably only used for naming the files
-        allow_duplicates = True
-        interact_type_val = "listen"
-        f = open("wed_results/suscept_test_"+dataset_domain+ str(interact_type_val)+str(
-                    use_artists)+str(allow_duplicates)+str(create_fake_prefs)+str(num_loop), "w")
+        f = open("wed_results/suscept_test_"+dataset_domain+ interact_type_str+str(
+                    use_artists)+str(allow_duplicates)+str(max_node_computes_val)+str(
+                        create_fake_prefs)+str(num_loop), "w")
 
         for t_window in M:
             for h in range(num_loop):
