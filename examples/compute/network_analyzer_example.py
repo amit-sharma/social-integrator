@@ -75,7 +75,8 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
     return data
 
 
-def run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs):
+def run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs,
+        dataset_domain):
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
@@ -251,21 +252,22 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
     elif computation_cmd=="suscept_test":
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"]
-        split_date_str = "2013/04/01" #"2013/10/01"
+        split_date_str = "2013/01/01" #"2013/10/01"
         #t_window = 10#100000
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
         max_tries_val = None#30000
         max_node_computes_val = 100
         max_interact_ratio_error =0.1
-        klim_val = 10
+        klim_val = None # not used for influence test
         num_processes=1
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
-        use_artists = False
+        use_artists = False # probably only used for naming the files
         allow_duplicates = True
         interact_type_val = "listen"
-        f = open("suscept_testyo"+str(create_fake_prefs)+str(num_loop)+str(interact_type_val)+str(use_artists), "w")
+        f = open("wed_results/suscept_test_"+dataset_domain+ str(interact_type_val)+str(
+                    use_artists)+str(allow_duplicates)+str(create_fake_prefs)+str(num_loop), "w")
 
         for t_window in M:
             for h in range(num_loop):
@@ -444,7 +446,7 @@ if __name__ == "__main__":
                                         max_core_nodes, cutoff_rating, store_dataset, 
                                         interact_type, min_interactions_per_user)
     outf=open("current_run.dat", 'w')
-    run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs)
+    run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs, dataset_domain)
     outf.close()
 
 def get_data(from_raw_dataset=False):
