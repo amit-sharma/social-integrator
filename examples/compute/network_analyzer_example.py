@@ -76,7 +76,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
 
 
 def run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs,
-        dataset_domain):
+        allow_duplicates, split_date_str, dataset_domain, dataset_path):
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
@@ -250,10 +250,8 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         f.close()
              
     elif computation_cmd=="suscept_test":
-        allow_duplicates = True
-        use_artists = False # probably only used for naming the files
+        use_artists = "songs" if "songs" in dataset_path else "artists"
         interact_type_str = "listen" if interact_type==0 else "love"
-        split_date_str = "2013/01/01" #"2013/10/01"
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
         max_tries_val = None#30000
@@ -380,7 +378,8 @@ if __name__ == "__main__":
                                    "cutoffrating=", "output=", "max_core_nodes=",
                                    "store_dataset", "interact_type=", 
                                    "min_interactions_per_user=", 
-                                   "create_fake_prefs="])
+                                   "create_fake_prefs=", "split_date=",
+                                   "no_duplicates"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -404,6 +403,8 @@ if __name__ == "__main__":
     interact_type = 0
     min_interactions_per_user = 1
     create_fake_prefs = None
+    no_duplicates = False
+    split_date_str = None
     for o, a in opts: 
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -432,7 +433,11 @@ if __name__ == "__main__":
             min_interactions_per_user = int(a)
         if o=="--create_fake_prefs":
             create_fake_prefs = a
-
+        if o=="--no_duplicates":
+            no_duplicates = True
+        if o=="--split_date":
+            split_date_str= a
+    allow_duplicates = not no_duplicates
     if dataset_domain is None or dataset_path is None:
         usage()
         sys.exit(2)
@@ -444,7 +449,8 @@ if __name__ == "__main__":
                                         max_core_nodes, cutoff_rating, store_dataset, 
                                         interact_type, min_interactions_per_user)
     outf=open("current_run.dat", 'w')
-    run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs, dataset_domain)
+    run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs,
+            allow_duplicates, split_date_str, dataset_domain, dataset_path)
     outf.close()
 
 def get_data(from_raw_dataset=False):
