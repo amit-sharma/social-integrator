@@ -67,6 +67,10 @@ grid.arrange(p0,p1,ncol=2)
 
     return(x)
 }
+
+plot_user_distr <- function(path) {
+    
+}
 Main<- function() {
     path = "../examples/compute/"
     
@@ -83,6 +87,12 @@ Main<- function() {
     grid.arrange(p_rand, p_homo, p_inf, ncol=3)
     
     sus_love_songs_dt = as.data.table(read.table(paste(path, "suscept_testNone1loveFalse", sep=""), sep="\t", header=FALSE))
+    pl_dt = sus_love_songs_dt
+    pldt_by_m = pl_dt[,by=V]
+    ggplot()
+    
+    
+    
     sus_love_songs_dt[,V7:="songs_love"]
     sus_listen_songs_dt = as.data.table(read.table(paste(path, "suscept_testlistenFalse_part", sep=""), sep="\t", header=FALSE))
     sus_listen_songs_dt[,V7:="songs_listen"]
@@ -99,6 +109,9 @@ Main<- function() {
     ggplot(melt_inf, aes(x=V7,y=value, fill=variable)) + geom_bar(stat="identity", position=position_dodge(), colour="black")
     plot_means(sus_love_songs_dt[V6==10])
     plot_means(sus_listen_artists_dt)
+    
+    dt1  = as.data.table(read.table(paste(path, "final_results/suscept_test_lastfm_simplelovesongsFalse2000None1", sep=""), 
+                                    sep="\t", header=FALSE))
 }
 
 newfn <- function(){
