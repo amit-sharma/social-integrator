@@ -1,3 +1,6 @@
+#!python
+#cython: boundscheck=False, wraparound=False, cdivision=True
+
 import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from cpython cimport bool
@@ -10,36 +13,14 @@ from itertools import izip
 import numpy as np
 cimport numpy as np
 cimport cython
-cimport c_uthash
-from libcpp.pair cimport pair
-from libcpp.map cimport map
+#cimport c_uthash
+cimport socintpy.cythoncode.data_types as data_types, socintpy.cythoncode.binary_search as binary_search
+from data_types cimport idata,fdata,int_counter
+from data_types cimport UT_hash_table, UT_hash_handle, HASH_FIND_INT, HASH_ADD_INT_CUSTOM,HASH_SORT, HASH_DEL, delete_hashtable
+from data_types cimport comp_interactions_temporal, comp_interactions, comp_friends, compare_int_counter
+from binary_search cimport binary_search_standard, binary_search_closest_temporal, binary_search_closest, binary_search_timesensitive
+from binary_search cimport exists, in_array
 
-
-cdef test_stdmap_function():
-    cdef map[pair[int,int],int] hasht
-    hasht[pair[int,int](1,2)]=2
-    print hasht[pair[int,int](1,2)]
-    return
-test_stdmap_function()
-
-cdef extern from "uthash.h":
-    ctypedef struct UT_hash_table:
-        pass
-
-    cdef struct UT_hash_handle:
-        UT_hash_table *tbl
-        void *prev
-        void *next
-        UT_hash_handle *hh_prev
-        UT_hash_handle *hh_next
-        void *key
-        unsigned keylen
-        unsigned hashv
-
-    cdef void HASH_FIND_INT(int_counter *head_ptr, int *query_id, int_counter *s)
-    cdef void HASH_ADD_INT_CUSTOM(int_counter *head_ptr, int_counter *s)
-    cdef void HASH_SORT(int_counter *head_ptr, int(const void *, const void *))
-    cdef void HASH_DEL(int_counter *head_ptr, int_counter *s)
 
 cdef extern from "stdlib.h":
     int RAND_MAX
@@ -61,294 +42,91 @@ ctypedef np.int_t DTYPE_INT_t
 DTYPE_INT32 = np.int32
 ctypedef np.int32_t DTYPE_INT32_t
 
-cdef struct idata:
-    int item_id
-    #char *timestamp
-    unsigned int timestamp
-    int rating
 
-cdef struct fdata:
-    int receiver_id
-
-ctypedef struct int_counter:
-    int id
-    int count
-    UT_hash_handle hh
-
-cdef create_allusers_interact_mat(nodes, int interact_type, int data_type,
-        int num_all_interacts):
-    rows = np.zeros(num_all_interacts, dtype=np.intc)
-    cols = np.zeros(num_all_interacts, dtype=np.intc)
-    values = np.zeros(num_all_interacts, dtype=np.double)
-    cdef int idx = 0
-    cdef int j, len_interacts
-    for node in nodes:
-        cnode = <CNetworkNode>node
-        j = 0
-        ilist = cnode.get_interactions_c(interact_type, &len_interacts, data_type)
-        for j in xrange(len_interacts):
-
-            rows[idx] = cnode.uid
-            cols[idx] = ilist[j].item_id
-            values[idx] = ilist[j].rating
-            idx += 1
-    return sp.csr_matrix((values, (rows, cols)))
-
-cdef compute_sim_mat(interactions_mat):
-    cdef int i,j,k, nrows, ncols, idx
-    cdef float t
-    nrows, ncols = interactions_mat.shape
-    """
-    size_entries = nrows*nrows
-#cdef np.ndarray[DTYPE_INT_t, ndim=1] indices = np.empty(total_interactions, dtype=DTYPE_INT)
-    rows = np.zeros(size_entries, dtype=np.intc)
-    cols = np.zeros(size_entries, dtype=np.intc)
-    values = np.zeros(size_entries, dtype=np.double)
-    int_mat = interactions_mat.tocsr()
-    idx = 0
-    for i in xrange(nrows):
-        for j in xrange(i,nrows):
-            t = 0.0
-            #for k in xrange(ncols):
-            t = int_mat[i].dot(int_mat[j].transpose()).toarray()[0][0]
-            if t!=0:
-                rows[idx] = i
-                cols[idx] = j
-                values[idx] = t
-                idx += 1
-                if j!=i:
-                    rows[idx] = j
-                    cols[idx] = i
-                    values[idx] = t
-                    idx += 1
-    return sp.coo_matrix((values, (rows, cols))) 
-    """
-    #int_mat_csr = interactions_mat.tocsr()
-    int_mat_t = interactions_mat.transpose(copy=False)
-    print "created transpose"
-    common_elements_mat =  interactions_mat * int_mat_t
-    common_elements_mat = sp.triu(common_elements_mat, k=0, format='csr')
-    print common_elements_mat[1:10,1:10]
-    print "created user-user common elements matrix", interactions_mat.getnnz(), common_elements_mat.getnnz()
-
-    cdef np.ndarray[DTYPE_INT32_t, ndim=1] sizes_arr = interactions_mat.getnnz(axis =1)
-    """
-    sizes_mat = np.matrix([np.ones(nrows, dtype=DTYPE_INT), sizes_arr])
-    sizes_mat2 = sizes_mat.copy()
-    sizes_mat_t = sizes_mat2.transpose()
-    sizes_mat_t[:,[0,1]] = sizes_mat_t[:,[1,0]]
-    print sizes_mat_t[0:5,:]
-    comb_sizes_mat = sizes_mat_t * sizes_mat
-    print comb_sizes_mat[0:5,0:10]
-   
-
-    print comb_sizes_mat.shape, common_elements_mat.shape
-    union_sizes_mat = comb_sizes_mat - common_elements_mat
-    #union_sizes_mat = 1 / union_sizes_mat
-    print union_sizes_mat[0:10,0:10]
-    sparse_union_sizes_mat = sp.csr_matrix(union_sizes_mat)
-    #np.seterr(divide='print')
-    
-    ret = common_elements_mat.multiply(sparse_union_sizes_mat)
-    print ret[0:10,0:10]
-    #ret = common_elements_mat
-    """
-    cdef int index, union_size
-    common_elements_coo_mat = common_elements_mat.tocoo(copy=False)
-    print "Got i, j indices"
+cpdef compute_node_similarity(node, other_node, int interact_type, 
+        int data_type_code, int min_interactions_per_user, 
+        int time_diff, int time_scale):
+    cdef int length_my_interactions
+    cdef int length_other_interactions
+    cdef idata *my_interactions
+    cdef idata *other_interactions
+    cdef CNetworkNode c_node1, c_node2
+    c_node2 = <CNetworkNode>other_node
+    c_node1 = <CNetworkNode>node
+    if data_type_code == <int>'a':
+        my_interactions = c_node1.c_list[interact_type]
+        length_my_interactions = c_node1.c_length_list[interact_type]
+        other_interactions = c_node2.c_list[interact_type]
+        length_other_interactions = c_node2.c_length_list[interact_type]
+    elif data_type_code == <int>'c':
+        my_interactions = c_node1.c_train_data
+        length_my_interactions = c_node1.c_length_train_ids
+        other_interactions = c_node2.c_train_data
+        length_other_interactions = c_node2.c_length_train_ids
         
-    common_elements_coo_mat.data = common_elements_coo_mat.data/(sizes_arr[[common_elements_coo_mat.row]] 
-            + sizes_arr[[common_elements_coo_mat.col]] - common_elements_coo_mat.data)
-    #common_elements_coo_mat.data[common_elements_coo_mat.data <0.0001] = 0 
-        #new_V[index] = V[index]/union_size
-        #common_elements_mat[I[index], J[index]] /= union_size
-    print "Done size computations"
-    ret = common_elements_coo_mat
-    print "ret is set"
-    return ret
-
-cdef create_efficient_lookup_structure(sim_mat):
-
-    cdef map[pair[int,int],int] hasht
-    cdef int i
-    dict_sim=sim_mat.data.copy()
-    x = sim_mat.row.copy()
-    y = sim_mat.col.copy()
-    """
-    for i in xrange(sim_mat.nnz):
-        hasht[pair[int,int](sim_mat.row[i],sim_mat.col[i])]=sim_mat.data[i]
-    """
-    """
-    dict_sim = {}
-    dict_sim.update(izip(izip(sim_mat.row,sim_mat.col), sim_mat.data))
-    """
-    return hasht
-
-def sort_coo(m):
-    """
-    tuples = izip(m.row, m.col, m.data)
-    return tuples.sort(key=lambda x: (x[0], x[1]))
-    """
-    indices = np.lexsort((m.col,m.row))
-    m.row = m.row[indices]
-    m.col = m.col[indices]
-    m.data = m.col[indices]
-    return m 
-
-cpdef compute_allpairs_sim_mat(nodes, interact_type, data_type):
-    num_all_interacts = 50000000
+    elif data_type_code == <int>'i':
+        my_interactions = c_node1.c_test_data
+        length_my_interactions = c_node1.c_length_test_ids
+        other_interactions = c_node2.c_test_data
+        length_other_interactions = c_node2.c_length_test_ids
     
-    interactions_mat = create_allusers_interact_mat(nodes, interact_type, 
-            data_type, num_all_interacts)
+    if length_my_interactions >= min_interactions_per_user and (
+            length_other_interactions >= min_interactions_per_user):
+        return compute_node_similarity_c(my_interactions, other_interactions,
+                length_my_interactions, length_other_interactions, 
+                time_diff=time_diff,
+                time_scale=time_scale)
+    else:
+        return None
 
-    print "Read all interacts into a sparse matrix"
-    sim_mat = compute_sim_mat(interactions_mat)
-    sim_mat = sort_coo(sim_mat)
-    #dict_sim = create_efficient_lookup_structure(sim_mat)
-    print "computed similarity"
-    return sim_mat
+# CAUTION: works only for wall-clock time_scale right now
+cdef float compute_node_similarity_c(idata *my_interactions, idata *others_interactions, 
+                                     int length_my_interactions,
+                                     int length_others_interactions, 
+                                     int time_diff, 
+                                     int time_scale):
+    cdef float l2_norm1, l2_norm2, simscore, union_sum
 
-cpdef get_similarity_from_mat(int uid1, int uid2, sim_mat):
-    cdef int ind1, ind2, temp, low_ind, high_ind
-    if uid1 > uid2:
-        temp = uid1
-        uid1 = uid2
-        uid2 = temp
-    ind1 = binary_search_standard(sim_mat.row, uid1)
-    if ind1 == -1:
-        return 0
-    i = ind1 - 1
-    while sim_mat.row[i] == uid1:
-        i-= 1
-    low_index = i + 1
-    i = ind1 + 1
-    while sim_mat.row[i] == uid1:
-        i += 1
-    high_index = i - 1
-    
-    ind2 = binary_search_standard(sim_mat.col[low_index:high_index+1], uid2)
-    if ind2 == -1:
-        return 0
-    return sim_mat.data[ind2]
+    cdef int i, j, k
+    simscore = 0
+    i = 0 
+    j = 0
+    cdef int my_count = 0
+    cdef int others_count = 0
+    while i < length_my_interactions and j < length_others_interactions:
+        if my_interactions[i].item_id < others_interactions[j].item_id:
+            my_count += 1
+            i += 1
+        elif my_interactions[i].item_id > others_interactions[j].item_id:
+            others_count += 1
+            j+= 1
+        else: # item ids are equal
+            if time_diff == -1 or abs(my_interactions[i].timestamp - others_interactions[j].timestamp) <= time_diff:
+                simscore += 1
+            """
+            if is_influence(my_interactions, length_my_interactions,
+                    my_interactions[i].timestamp, 
+                    others_interactions[j].timestamp, -1, #cutoffrating,toremove
+                    time_diff, time_scale, order_agnostic=True):
+                simscore +=1
+            """
 
-cdef int binary_search_standard(int [:] arr, int value, bool debug=False):
-    cdef int lower = 0
-    cdef int upper = arr.shape[0] - 1
-    cdef int mid = -1
-    cdef int item_index = -1
-    cdef int num_iter = 0
-    while lower <= upper:
-        mid = (lower+upper)/2
-        if debug:
-            print lower, mid, upper
-        if arr[mid] == value:
-            item_index = mid
-            break
-        elif arr[mid] > value:
-            upper = mid - 1
-        else:
-            lower = mid + 1
-        num_iter += 1
-    print num_iter, arr.shape[0], "Iterations to find the i or j"
-    if debug:
-        print arr[mid]
-    if item_index != -1:
-        return item_index
-    return -1
+            my_count += 1
+            others_count += 1
+            i += 1
+            j += 1
+    if j == length_others_interactions:
+        for k in range(i,length_my_interactions):
+            my_count += 1
+    elif i == length_my_interactions:
+        for k in range(j, length_others_interactions):
+            others_count += 1
 
-cdef binary_search_closest_temporal(idata *interactions, int length_interactions, 
-        int timestamp,
-        bool debug=False):
-    cdef int lower = 0
-    cdef int upper = length_interactions - 1
-    cdef int mid = -1
-    cdef int item_index = -1
-    while lower <= upper:
-        mid = (lower+upper)/2
-        if debug:
-            print lower, mid, upper
-        if interactions[mid].timestamp == timestamp:
-            item_index = mid
-            break
-        elif interactions[mid].timestamp > timestamp:
-            upper = mid - 1
-        else:
-            lower = mid + 1
-    if debug:
-        print interactions[mid].timestamp
-    if item_index != -1:
-        return item_index
-    elif upper < mid:
-        return mid - 1 
-    elif lower > mid:
-        return mid # returning the first index whose value is lesser than the item_id
-    return -1
+    if my_count == 0 or others_count == 0:
+        return -1
+    union_sum = my_count + others_count - simscore
 
-cdef binary_search_closest(idata *interactions, int length_interactions, 
-        int item_id,
-        bool debug=False):
-    cdef int lower = 0
-    cdef int upper = length_interactions - 1
-    cdef int mid = -1
-    cdef int item_index = -1
-    while lower <= upper:
-        mid = (lower+upper)/2
-        if debug:
-            print lower, mid, upper
-        if interactions[mid].item_id == item_id:
-            item_index = mid
-            break
-        elif interactions[mid].item_id > item_id:
-            upper = mid - 1
-        else:
-            lower = mid + 1
-    if debug:
-        print interactions[mid].item_id
-    if item_index != -1:
-        return item_index
-    elif upper < mid:
-        return mid
-    elif lower > mid:
-        return mid + 1 # returning the first index whose value is greater than the item_id
-    return -1
-
-cdef binary_search_timesensitive(idata *interactions, int length_interactions, int item_id, int
-        timestamp, bool debug=False):
-    cdef int lower = 0
-    cdef int upper = length_interactions - 1
-    cdef int mid = -1
-    cdef int item_index = -1
-    while lower <= upper:
-        mid = (lower+upper)/2
-        if debug:
-            print lower, mid, upper
-        if interactions[mid].item_id == item_id:
-            item_index = mid
-            break
-        elif interactions[mid].item_id > item_id:
-            upper = mid - 1
-        else:
-            lower = mid + 1
-    if debug:
-        print interactions[mid].item_id
-    if item_index != -1:
-        if interactions[item_index].timestamp == timestamp:
-            return item_index
-        else:
-            i = item_index + 1
-            while interactions[i].item_id == item_id:
-                if interactions[i].timestamp == timestamp:
-                    return i
-                i += 1
-            
-            i = item_index - 1
-            while interactions[i].item_id == item_id:
-                if interactions[i].timestamp == timestamp:
-                    return i
-                i -= 1
-        if debug:
-            print "Found but not matching timestamp"
-    return -1
+    return simscore/union_sum
 
 cdef get_num_interactions_between(idata *interactions, int length_interactions,
         int timestamp1, 
@@ -424,6 +202,7 @@ cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):
     #print cc.shape[0], cc.shape[1]
     return mat
 
+"""
 cdef compute_node_similarity_c(int* my_interactions, int *other_interactions, int length_my_interactions, int length_other_interactions):
     cdef float l2_norm1, l2_norm2, simscore
     cdef int i, j
@@ -443,6 +222,7 @@ cdef compute_node_similarity_c(int* my_interactions, int *other_interactions, in
     l2_norm2 = sqrt(length_other_interactions)
 
     return simscore/(l2_norm1*l2_norm2)
+"""
 
 cdef idata *create_nodes_interaction_stream(idata **nodes_interactions, 
         int *lengths_nodes_interactions, int num_nodes, int *size_stream):
@@ -488,7 +268,7 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
             # Checking for duplicates, we know my_interactions is sorted by item_id
             if allow_duplicates or my_interactions[i].item_id !=prev_item_id:
                 index = binary_search_closest_temporal(others_stream, size_stream, 
-                        my_interactions[i].timestamp, debug=False)
+                        my_interactions[i].timestamp, debug)
                 if index >= size_stream:
                     if debug:
                         print "ERROR:Cython: Big Error, how can index of friend stream be", index
@@ -580,39 +360,6 @@ cdef compute_node_susceptibility_c(idata* my_interactions,
     return simscore/my_count
 
 
-cdef int comp_interactions_temporal(const void *elem1, const void *elem2):
-    cdef idata *a
-    cdef idata *b
-    a = <idata *> elem1
-    b = <idata *> elem2
-    if a[0].timestamp > b[0].timestamp: return 1
-    if a[0].timestamp < b[0].timestamp: return -1
-    return 0
-
-cdef int comp_interactions(const void *elem1, const void *elem2):
-    cdef idata *a
-    cdef idata *b
-    a = <idata *> elem1
-    b = <idata *> elem2
-    if a[0].item_id > b[0].item_id: return 1
-    if a[0].item_id < b[0].item_id: return -1
-    return 0
-
-cdef int compare_int_counter(const void *elem1, const void *elem2):
-    cdef int_counter *a = <int_counter *>elem1
-    cdef int_counter *b = <int_counter *>elem2
-    if a[0].count > b[0].count: return -1
-    if a[0].count < b[0].count: return 1
-    return 0
-
-cdef int comp_friends(const void *elem1, const void *elem2):
-    cdef fdata *a
-    cdef fdata *b
-    a = <fdata *> elem1
-    b = <fdata *> elem2
-    if a[0].receiver_id > b[0].receiver_id: return 1
-    if a[0].receiver_id < b[0].receiver_id: return -1
-    return 0
 
 cdef float l2_norm_dict(dict_val_iter):
     cdef float norm = 0
@@ -623,35 +370,7 @@ cdef float l2_norm_dict(dict_val_iter):
     norm = sqrt(norm)
     return norm
 
-cdef int exists(int val, fdata *arr, int length_arr):
-    cdef int low, high, mid
-    low = 0
-    high = length_arr -1
 
-    while(low <= high):
-        mid = (low + high)/2
-        if val == arr[mid].receiver_id:
-            return 1
-        elif val > arr[mid].receiver_id:
-            low = mid+1
-        else:
-            high = mid-1
-    return 0
-
-cdef in_array(int val, int *arr, int length_arr):
-    cdef int low, high, mid
-    low = 0
-    high = length_arr -1
-
-    while(low <= high):
-        mid = (low + high)/2
-        if val == arr[mid]:
-            return 1
-        elif val > arr[mid]:
-            low = mid+1
-        else:
-            high = mid-1
-    return 0
 
 @cython.boundscheck(False)
 cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):
@@ -664,16 +383,6 @@ cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index
             min_index[0] = i
     return min_val
 
-cdef void delete_hashtable(int_counter *head_ptr):
-    cdef int_counter *s
-    cdef int_counter *tmp
-
-    s = head_ptr
-    while s != NULL:
-        HASH_DEL(head_ptr,s)
-        tmp = <int_counter *>s.hh.next
-        PyMem_Free(s)
-        s = tmp
 
 
 @cython.freelist(1024)
@@ -682,17 +391,21 @@ cdef class CNetworkNode:
     cdef int c_uid
     cdef int c_should_have_friends
     cdef int c_should_have_interactions
-    cdef idata **c_list
-    cdef int *c_length_list
-    cdef int c_num_interact_types
-    cdef fdata *c_friend_list
-    cdef int c_length_friend_list
-#   cdef int *c_train_ids
+    cdef int c_num_interact_types   # number of interactions types
+
+    cdef idata **c_list             # interactions array for each interact type
+    cdef int *c_length_list         # length of the interactions in each type
+    
+    cdef fdata *c_friend_list       # friends array
+    cdef int c_length_friend_list   # length of friends array
+    
+    # Train and testing data. Temporary buffers, used when required.
     cdef idata * c_train_data
-#cdef int *c_test_ids
     cdef idata *c_test_data
     cdef int c_length_train_ids
     cdef int c_length_test_ids
+   
+    # Additional data structures for simulation. Consider removing.
     cdef idata *fakedata_inf_fr_stream
     cdef int length_fakedata_inf_fr_stream
 
@@ -710,8 +423,6 @@ cdef class CNetworkNode:
             self.c_length_list = NULL
 
         self.c_friend_list = NULL
-        #self.c_train_ids = NULL
-        #self.c_test_ids = NULL
         self.c_train_data = NULL
         self.c_test_data = NULL
         self.c_length_friend_list = 0
@@ -747,35 +458,15 @@ cdef class CNetworkNode:
         if self.c_list is NULL:
             raise MemoryError()
         cdef int i
-        #cdef str retval
         for i in range(len(ilist)):
-            #print "In the loop %d" %i
             self.c_list[interact_type][i].item_id = ilist[i].item_id
             self.c_list[interact_type][i].rating = ilist[i].rating
             self.c_list[interact_type][i].timestamp = ilist[i].timestamp
-            # Correct way to copy a string. From http://stackoverflow.com/questions/4436857/cython-bytes-to-c-char
-            #retval = PyString_FromStringAndSize(PyString_AsString(ilist[i].timestamp), <Py_ssize_t>len(ilist[i].timestamp))
-            #self.c_list[interact_type][i].timestamp =PyString_AsString(retval) 
         self.c_length_list[interact_type] = len(ilist)
         if do_sort:
             qsort(self.c_list[interact_type], self.c_length_list[interact_type], sizeof(idata), comp_interactions)
         return self.c_length_list[interact_type]
 
-    """
-    cpdef int store_interaction_ids(self, int interact_type, ilist):
-        self.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
-        if self.c_list is NULL:
-            raise MemoryError()
-        cdef int i
-        #cdef str retval
-        for i in range(len(ilist)):
-            #print "In the loop %d" %i
-            self.c_list[interact_type][i].item_id = ilist[i][0]
-            self.c_list[interact_type][i].rating = ilist[i][2]
-            self.c_list[interact_type][i].timestamp = ilist[i][1] 
-        self.c_length_list[interact_type] = len(ilist)
-        return self.c_length_list[interact_type]
-    """
     cpdef int store_friends(self, flist):
         self.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
         if self.c_friend_list is NULL:
@@ -824,7 +515,8 @@ cdef class CNetworkNode:
         for i in range(self.c_length_list[interact_type]):
             print "---", self.c_list[interact_type][i].item_id
 
-    cpdef get_items_interacted_with(self, int interact_type, int rating_cutoff=-1, bool return_timestamp = False):
+    cpdef get_items_interacted_with(self, int interact_type, 
+            int rating_cutoff=-1, bool return_timestamp = False):
         interacted_items = set()
         cdef int i
         for i in range(self.c_length_list[interact_type]):
@@ -847,7 +539,7 @@ cdef class CNetworkNode:
                             self.c_list[interact_type][i].rating))
         return interacts
 
-    cdef idata* get_interactions_c(self, int interact_type, int *length_list, int data_type=<int>"a"):
+    cdef idata* get_interactions_c(self, int interact_type, int *length_list, int data_type):
         if data_type == <int>"a":
             length_list[0] = self.c_length_list[interact_type]
             return self.c_list[interact_type]
@@ -920,7 +612,7 @@ cdef class CNetworkNode:
     
     cpdef change_interacted_item(self, interact_type, old_item_id, new_item_id, timestamp):
         cdef int old_index = binary_search_timesensitive(self.c_list[interact_type], 
-                self.c_length_list[interact_type], old_item_id, timestamp)
+                self.c_length_list[interact_type], old_item_id, timestamp, False)
         cdef idata temp_inter
         if old_index == -1:
             for i in range(self.c_length_list[interact_type]):
@@ -928,10 +620,10 @@ cdef class CNetworkNode:
                         self.c_list[interact_type][i].timestamp == timestamp):
                     print i, old_item_id, timestamp
             return binary_search_timesensitive(self.c_list[interact_type],
-                    self.c_length_list[interact_type], old_item_id, timestamp, debug=True)
+                    self.c_length_list[interact_type], old_item_id, timestamp, True)
         else:
             new_index = binary_search_closest(self.c_list[interact_type], 
-                    self.c_length_list[interact_type], new_item_id)
+                    self.c_length_list[interact_type], new_item_id, False)
             if new_index == -1:
                 print "new_index is not correct"
                 return -1
@@ -1014,52 +706,6 @@ cdef class CNetworkNode:
 
     # change training, test to common data structure idata and simplify this function
     # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
-    cpdef compute_node_similarity(self, other_node, int interact_type, float cutoff_rating, 
-            int data_type_code, int min_interactions_per_user, 
-            int time_diff, int time_scale):
-        cdef int length_my_interactions
-        cdef int length_other_interactions
-        cdef int *my_interactions
-        cdef int *other_interactions
-        cdef CNetworkNode c_node_obj
-        c_node_obj = <CNetworkNode>other_node
-        if data_type_code == <int>'a':
-            #my_interactions = self.c_list[interact_type]
-            length_my_interactions = self.c_length_list[interact_type]
-            #other_interactions = self.c_node_obj.c_list[interact_type]
-            length_other_interactions = c_node_obj.c_length_list[interact_type]
-            if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
-                return self.compute_node_similarity_c(c_node_obj.c_list[interact_type], length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=cutoff_rating, data_type_code=data_type_code, time_scale=time_scale)
-        elif data_type_code == <int>'c':
-            #my_interactions = self.c_list[interact_type]
-            length_my_interactions = self.c_length_train_ids
-            #other_interactions = self.c_node_obj.c_list[interact_type]
-            length_other_interactions = c_node_obj.c_length_train_ids
-            if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
-                return self.compute_node_similarity_c(c_node_obj.c_train_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=cutoff_rating, data_type_code=data_type_code, time_scale=time_scale)
-        elif data_type_code == <int>'i':
-            #my_interactions = self.c_list[interact_type]
-            length_my_interactions = self.c_length_test_ids
-            #other_interactions = self.c_node_obj.c_list[interact_type]
-            length_other_interactions = c_node_obj.c_length_test_ids
-            if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
-                return self.compute_othernode_influence_c(c_node_obj.c_test_data, length_other_interactions, interact_type, time_diff=time_diff, cutoff_rating=cutoff_rating, data_type_code=data_type_code, time_scale=time_scale)
-        elif data_type_code == <int>'l':
-            #my_interactions = self.c_train_ids //change to train_data
-            length_my_interactions = self.c_length_train_ids
-            #other_interactions = c_node_obj.c_train_ids
-            length_other_interactions = c_node_obj.c_length_train_ids
-            #print "My train", length_my_interactions,"other train", length_other_interactions, c_node_obj.get_num_interactions(interact_type), "other test", c_node_obj.c_length_test_ids, "other id", c_node_obj.uid
-            if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
-                return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
-        elif data_type_code == <int>'t':
-            #my_interactions = self.c_test_ids
-            length_my_interactions = self.c_length_test_ids
-            #other_interactions = c_node_obj.c_test_ids
-            length_other_interactions = c_node_obj.c_length_test_ids
-            if length_my_interactions >= min_interactions_per_user and length_other_interactions >= min_interactions_per_user:
-                return compute_node_similarity_c(my_interactions, other_interactions, length_my_interactions, length_other_interactions)
-        return None
 
         """
         cdef float simscore = 0
@@ -1074,71 +720,6 @@ cdef class CNetworkNode:
         return simscore/(l2_norm1*l2_norm2)
         """
 
-    cdef float compute_node_similarity_c(self, idata *others_interactions, 
-                                         int length_others_interactions, 
-                                         int interact_type, int time_diff, 
-                                         float cutoff_rating,
-                                         int data_type_code, 
-                                         int time_scale):
-        cdef float l2_norm1, l2_norm2, simscore
-        cdef idata *my_interactions = NULL;
-        cdef int length_my_interactions = 0;
-
-        if data_type_code == <int>'a':
-            my_interactions = self.c_list[interact_type]
-            length_my_interactions = self.c_length_list[interact_type]
-        elif data_type_code == <int>'c':
-            my_interactions = self.c_train_data
-            length_my_interactions = self.c_length_train_ids
-        cdef int i, j, k
-        simscore = 0
-        i = 0 
-        j = 0
-        cdef int my_count = 0
-        cdef int others_count = 0
-        while i < length_my_interactions and j < length_others_interactions:
-            if my_interactions[i].item_id < others_interactions[j].item_id:
-                if my_interactions[i].rating >= cutoff_rating:
-                    my_count += 1
-                i += 1
-            elif my_interactions[i].item_id > others_interactions[j].item_id:
-                if others_interactions[j].rating >= cutoff_rating:
-                    others_count += 1
-                j+= 1
-            else: # item ids are equal
-                if my_interactions[i].rating >= cutoff_rating and others_interactions[j].rating >= cutoff_rating:
-                    if is_influence(my_interactions, length_my_interactions,
-                            my_interactions[i].timestamp, 
-                            others_interactions[j].timestamp, cutoff_rating,
-                            time_diff, time_scale, order_agnostic=True):
-                        simscore +=1
-
-
-                if my_interactions[i].rating >= cutoff_rating:
-                    my_count += 1
-                if others_interactions[j].rating >= cutoff_rating:
-                    others_count += 1
-                i += 1
-                j += 1
-        if j == length_others_interactions:
-            for k in range(i,length_my_interactions):
-                if my_interactions[k].rating >= cutoff_rating:
-                    my_count += 1
-        elif i == length_my_interactions:
-            for k in range(j, length_others_interactions):
-                if others_interactions[k].rating >= cutoff_rating:
-                    others_count += 1
-
-        if my_count == 0 or others_count == 0:
-            return -1
-        #l2_norm1 = sqrt(self.c_length_list[interact_type])
-        #l2_norm2 = sqrt(length_others_interactions)
-        #print self.c_length_list[interact_type], my_count, length_others_interactions, others_count
-        #l2_norm1 = sqrt(my_count)
-        #l2_norm2 = sqrt(others_count)
-        union_sum = my_count + others_count - simscore
-
-        return simscore/union_sum#simscore/(l2_norm1*l2_norm2)
 
     
     cdef float compute_othernode_influence_c(self, idata *others_interactions, 
@@ -1213,7 +794,7 @@ cdef class CNetworkNode:
             c_node_obj = <CNetworkNode>node_obj
             if c_node_obj.c_length_list[interact_type]>0:
                 if (not exists(c_node_obj.c_uid, friend_arr, self.c_length_friend_list)) and c_node_obj.c_uid != self.c_uid:
-                    sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type,-1, cutoff_rating, data_type_code=<int>'a', time_scale=<int>'w')
+                    sim = compute_node_similarity_c(self.c_list[interact_type], c_node_obj.c_list[interact_type], self.c_length_list[interact_type], c_node_obj.c_length_list[interact_type], -1, time_scale=<int>'w')
                     #sim=1
                     if sim > min_sim:
                         sims_vector[min_sim_index] = sim
@@ -1256,7 +837,7 @@ cdef class CNetworkNode:
         for node_obj in friends_iterable:
             c_node_obj = <CNetworkNode>node_obj
             if self.c_length_list[interact_type]>0 and c_node_obj.c_length_list[interact_type]>0: 
-                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, -1, cutoff_rating, data_type_code=<int>'a', time_scale=<int>'w')
+                sim = compute_node_similarity_c(self.c_list[interact_type], c_node_obj.c_list[interact_type], self.c_length_list[interact_type], c_node_obj.c_length_list[interact_type], -1, time_scale=<int>'w')
                 if sim > min_sim:
                     sims_vector[min_sim_index] = sim
                     min_sim = min(sims_vector, klim, &min_sim_index)
@@ -1275,7 +856,7 @@ cdef class CNetworkNode:
         for node_obj in nodes_iterable:
             c_node_obj = <CNetworkNode>node_obj
             if self.c_length_list[interact_type]>0 and c_node_obj.c_length_list[interact_type]>0:
-                sim = self.compute_node_similarity_c(c_node_obj.c_list[interact_type], c_node_obj.c_length_list[interact_type], interact_type, -1, cutoff_rating, data_type_code=<int>'a', time_scale=<int>'w')
+                sim = compute_node_similarity_c(self.c_list[interact_type], c_node_obj.c_list[interact_type],self.c_length_list[interact_type], c_node_obj.c_length_list[interact_type], -1, time_scale=<int>'w')
                 if sim != -1:
                     sim_avg += sim
                     counter += 1
@@ -1456,7 +1037,7 @@ cdef class CNetworkNode:
             PyMem_Free(lengths_others_interactions)
         fr_interacts = []
         index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream, 
-                    timestamp, debug=False)
+                    timestamp, debug)
         if index <-1 or index >= self.length_fakedata_inf_fr_stream:
             if debug:
                 print "ERROR:Cython: Big Error, how can index of friend stream be", index

@@ -82,8 +82,8 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
     filename_prefix = computation_cmd if computation_cmd is not None else ""
 
     if computation_cmd=="basic_stats" or computation_cmd is None:
-        #net_analyzer.show_basic_stats()
-        data.compute_allpairs_sim(interact_type, data_type=ord("a"))
+        net_analyzer.show_basic_stats()
+        #data.compute_allpairs_sim(interact_type, data_type=ord("a"))
 
     elif computation_cmd=="random_similarity":
         for type_name, type_index in interaction_types.iteritems():

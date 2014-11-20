@@ -1,5 +1,5 @@
 #import pyximport; pyximport.install()
-from socintpy.cythoncode.cnetwork_node import CNetworkNode, compute_allpairs_sim_mat
+from socintpy.cythoncode.cnetwork_node import CNetworkNode#, compute_allpairs_sim_mat
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 from collections import defaultdict
 import random

@@ -1,5 +1,5 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
-from socintpy.cythoncode.cnetwork_node import get_similarity_from_mat
+from socintpy.cythoncode.cnetwork_node import compute_node_similarity
 import numpy as np
 import random
 import heapq
@@ -95,7 +95,7 @@ def compute_susceptibility_randomselect_dummy_compute(netdata, nodes_list, inter
                 elif (node.uid,fobj.uid) in sim_dict:
                     fsim = sim_dict[(node.uid,fobj.uid)]
                 else:
-                    fsim = node.compute_node_similarity(fobj, interact_type, 
+                    fsim = compute_node_similarity(node, fobj, interact_type, 
                             cutoff_rating, data_type_code, 
                             min_interactions_per_user, time_diff=-1, time_scale=time_scale)
                     sim_dict[(fobj.uid, node.uid)] = fsim
@@ -190,8 +190,8 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
                 if method=="db":
                     fsim = get_similarity_from_db(node.uid, fobj.uid, netdata.sim_mat)
                 else:
-                    fsim = node.compute_node_similarity(fobj, interact_type, 
-                            cutoff_rating, data_type_code, 
+                    fsim = compute_node_similarity(node, fobj, interact_type, 
+                            data_type_code, 
                             min_interactions_per_user, time_diff=-1, time_scale=time_scale)
                 #found = False
                 if fsim is not None and fsim!=-1:
@@ -223,8 +223,8 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
                             rsim = get_similarity_from_db(rand_node.uid, node.uid, netdata.sim_mat)
                         else:
 
-                            rsim = node.compute_node_similarity(rand_node, interact_type, 
-                                                        cutoff_rating, data_type_code, min_interactions_per_user, 
+                            rsim = compute_node_similarity(node,rand_node, interact_type, 
+                                                        data_type_code, min_interactions_per_user, 
                                                         time_diff=-1, time_scale=time_scale)
                         num_rnode_interacts = rand_node.get_num_interactions(interact_type)
                         if rsim is not None and rsim!=-1: # also check for duplicate friend being selected
