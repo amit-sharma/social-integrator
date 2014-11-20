@@ -54,7 +54,8 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                 filepath = os.path.join(root, filename)
                 ## Optional, to contrl the number of nodes we store in dataset
                 #"""
-                if filepath.split('/')[4] >= "partae":
+                if filepath.split('/')[4] != "partag":
+                #if filepath.split('/')[4] >= "partae":
                     print "Ignoring part", filepath.split('/')[4]
                     continue
                 #"""

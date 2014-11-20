@@ -1,10 +1,12 @@
 #import pyximport; pyximport.install()
-from socintpy.cythoncode.cnetwork_node import CNetworkNode
+from socintpy.cythoncode.cnetwork_node import CNetworkNode, compute_allpairs_sim_mat
 from socintpy.networkdata.pynetwork_node import PyNetworkNode
 from collections import defaultdict
 import random
 import codecs
 import cPickle as pickle
+import sqlite3
+from itertools import izip
 
 class NetworkDataPreparser():
     def __init__(self, node_impl, data_path, min_interactions=0, min_friends=1, 
@@ -271,3 +273,38 @@ class NetworkDataPreparser():
             node.create_training_test_sets_bytime(interact_type, split_timestamp,
                                                   cutoff_rating)
         return
+
+    def compute_allpairs_sim(self, interact_type, data_type):
+        mat_sim = compute_allpairs_sim_mat(self.get_nodes_list(should_have_interactions=True),
+                interact_type, data_type)
+        # think of transactions, prepared statements, without rowid, pragma etc. 
+        import numpy as np
+        for dt in (np.int64, np.int32):
+            sqlite3.register_adapter(dt, long)
+       
+        conn = sqlite3.connect(':memory:')
+        c = conn.cursor()
+        print "Starting inserting data"
+        """
+        c.execute('''CREATE TABLE stocks
+                         (i integer, j integer, value real, PRIMARY KEY(i,j))''')
+        oneM = 1000000
+        for i in range(0,318000000,oneM):
+            print "Done", i
+            c.executemany("INSERT INTO stocks VALUES (?, ?, ?)", izip(mat_sim.row[i:i+oneM], mat_sim.col[i:i+oneM], mat_sim.data[i:i+oneM]))
+        """
+        c.execute('''CREATE TABLE stocks
+                         (ij integer PRIMARY KEY, value real)''')
+        oneM = 1000000
+        for i in range(0,318000000,oneM):
+            print "Done", i
+            #TODO CAUTION: this is a hack. Make sure to multiply by atleast 32 and control for overflow:would not work for 300k data 
+            row_64 = mat_sim.row[i:i+oneM].astype("int64")
+            IJ = (row_64<<32)+ mat_sim.col[i:i+oneM]
+            c.executemany("INSERT INTO stocks VALUES (?, ?)", izip(IJ, mat_sim.data[i:i+oneM]))
+        conn.commit()
+        print "Inserted data"
+
+        #conn.close()
+        self.sim_mat = conn
+        return self.sim_mat

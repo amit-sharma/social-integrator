@@ -7,7 +7,7 @@ import matplotlib as mpl
 
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 #from socintpy.networkvisualize.network_visualizer import NetworkVisualizor
-from socintpy.networkcompute.locality_analysis import LocalityAnalyzer
+from socintpy.networkcompute.locality_analysis2 import LocalityAnalyzer
 from socintpy.networkcompute.recommender_analyzer import RecommenderAnalyzer
 from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
@@ -49,7 +49,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
         data = HashtagDataPreparser(dataset_path, impl_type)
     elif dataset_domain== "lastfm":
         data = LastfmDataPreparserCSV(dataset_path, impl_type, cutoff_rating,
-                                   max_core_nodes, store_dataset, use_artists=True)
+                                   max_core_nodes, store_dataset, use_artists=False)
     elif dataset_domain== "lastfm_simple":
         data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
                                    max_core_nodes, store_dataset, use_artists=False, 
@@ -82,7 +82,8 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
     filename_prefix = computation_cmd if computation_cmd is not None else ""
 
     if computation_cmd=="basic_stats" or computation_cmd is None:
-        net_analyzer.show_basic_stats()
+        #net_analyzer.show_basic_stats()
+        data.compute_allpairs_sim(interact_type, data_type=ord("a"))
 
     elif computation_cmd=="random_similarity":
         for type_name, type_index in interaction_types.iteritems():
@@ -258,7 +259,7 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         max_node_computes_val = 3000
         max_interact_ratio_error =0.1
         klim_val = None # not used for influence test
-        num_processes=4
+        num_processes=1
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
         f = open("fri_results/suscept_test_"+dataset_domain+ interact_type_str+str(
