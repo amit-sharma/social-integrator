@@ -1,9 +1,12 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
-from socintpy.cythoncode.cnetwork_node import compute_node_similarity
+from socintpy.cythoncode.cnetwork_node import compute_susceptibility_randomselect_cfast
 import numpy as np
 import random
 import heapq
 import multiprocessing as mp
+import threading
+from threading import Thread
+from Queue import Queue
 import operator
 import time
 
@@ -14,6 +17,8 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
                                             allow_duplicates, q):   
     num_rand_attempts = 2.0
     final_influence = None
+    print threading.current_thread(), "Started process!"
+
     for ii in range(int(num_rand_attempts)):
         start= time.clock()
         influence_dict = compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type, 
@@ -190,9 +195,12 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
                 if method=="db":
                     fsim = get_similarity_from_db(node.uid, fobj.uid, netdata.sim_mat)
                 else:
+                    fsim = random.random()
+                    """
                     fsim = compute_node_similarity(node, fobj, interact_type, 
                             data_type_code, 
                             min_interactions_per_user, time_diff=-1, time_scale=time_scale)
+                    """
                 #found = False
                 if fsim is not None and fsim!=-1:
                     num_eligible_friends += 1
@@ -222,10 +230,12 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
                         if method=="db":
                             rsim = get_similarity_from_db(rand_node.uid, node.uid, netdata.sim_mat)
                         else:
-
+                            rsim = random.random()
+                            """
                             rsim = compute_node_similarity(node,rand_node, interact_type, 
                                                         data_type_code, min_interactions_per_user, 
                                                         time_diff=-1, time_scale=time_scale)
+                            """
                         num_rnode_interacts = rand_node.get_num_interactions(interact_type)
                         if rsim is not None and rsim!=-1: # also check for duplicate friend being selected
                             f_index = np.searchsorted(eligible_fr_sim_arr, rsim)
@@ -979,11 +989,12 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
             end_index = min((i + 1) * partial_num_nodes, len(nodes_list))
             arg_list.append(nodes_list[start_index:end_index])
         
-        q = mp.Queue()
+        #q = mp.Queue()
+        q = Queue()
         proc_list = []
         for i in range(num_processes):
             if method=="influence":
-                p = mp.Process(target=compute_influence_randomselect_parallel, 
+                p = Thread(target=compute_influence_randomselect_parallel, 
                                args=(self.netdata, arg_list[i], interact_type,
                                    cutoff_rating, control_divider, 
                                    min_interactions_per_user, 
@@ -991,7 +1002,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                                    max_node_computes, max_interact_ratio_error, 
                                    nonfr_match,q))
             elif method=="suscept":
-                p = mp.Process(target=compute_susceptibility_randomselect_parallel, 
+                p = Thread(target=compute_susceptibility_randomselect_parallel, 
                                args=(self.netdata, arg_list[i], interact_type,
                                    cutoff_rating, control_divider, min_interactions_per_user, 
                                    time_diff, time_scale, max_tries,

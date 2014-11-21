@@ -5,7 +5,9 @@ import cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from cpython cimport bool
 from libc.math cimport sqrt
-from libc.stdlib cimport rand
+from libc.stdlib cimport rand, abs, free, malloc
+from libc.stdio cimport printf
+from libc.math cimport fabs
 from libc.string cimport memmove, memcpy
 import scipy.sparse as sp
 import sys
@@ -15,10 +17,10 @@ cimport numpy as np
 cimport cython
 #cimport c_uthash
 cimport socintpy.cythoncode.data_types as data_types, socintpy.cythoncode.binary_search as binary_search
-from data_types cimport idata,fdata,int_counter
+from data_types cimport idata,fdata,int_counter, nodesusceptinfo, fsiminfo
 from data_types cimport UT_hash_table, UT_hash_handle, HASH_FIND_INT, HASH_ADD_INT_CUSTOM,HASH_SORT, HASH_DEL, delete_hashtable
-from data_types cimport comp_interactions_temporal, comp_interactions, comp_friends, compare_int_counter
-from binary_search cimport binary_search_standard, binary_search_closest_temporal, binary_search_closest, binary_search_timesensitive
+from data_types cimport comp_interactions_temporal, comp_interactions, comp_friends, compare_int_counter,comp_fsiminfo
+from binary_search cimport binary_search_standard, binary_search_closest_temporal, binary_search_closest, binary_search_timesensitive, binary_search_closest_fsiminfo
 from binary_search cimport exists, in_array
 
 
@@ -26,7 +28,7 @@ cdef extern from "stdlib.h":
     int RAND_MAX
 
 cdef extern from "stdlib.h":
-    void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *))
+    void qsort(void *base, size_t nmemb, size_t size, int (const void *, const void *)) nogil
 
 cdef extern from "Python.h":
     object PyString_FromStringAndSize(char *, Py_ssize_t)
@@ -43,6 +45,239 @@ DTYPE_INT32 = np.int32
 ctypedef np.int32_t DTYPE_INT32_t
 
 
+cpdef compute_susceptibility_randomselect_fast(all_nodes_list, int interact_type, 
+                                            float cutoff_rating, float control_divider, 
+                                            int min_interactions_per_user, 
+                                            int time_diff, int time_scale, 
+                                            int max_tries, int max_node_computes,
+                                            float max_interact_ratio_error,
+                                            bool allow_duplicates):   
+    cdef:
+        int counter = 0
+        int count_success = 0
+        int eligible_nodes_counter = 0
+        int edges_counter = 0
+        #triplet_nodes = []
+        float max_sim_ratio_error = 0.1
+        #data_type="compare_train"
+        int data_type_code=<int>'c' 
+        int data_type_code2=<int>'i'
+        float fsim, rsim
+        int num_eligible_friends
+        CNetworkNode fobj
+        int total_num_nodes
+        int ictr
+        int num_friends_matched, r_index, tries, f_index
+        float avg_fsim, avg_rsim, ratio_train, simdiff
+        float inf1, inf2
+        int node_fnode_counter = 0
+        int node_rnode_counter = 0
+        CNetworkNode c_node
+    cdef int len_nodes_arr = len(all_nodes_list)
+    cdef np.ndarray allnodes_nparr = np.empty(len_nodes_arr, dtype='object')
+    cdef int i
+    cdef int j
+    cdef nodesusceptinfo node_data
+    influence_arr = {}
+    for i in range(1,len_nodes_arr):
+        allnodes_nparr[i] = <CNetworkNode>all_nodes_list[i]
+        i+= 1
+    cdef void **allnodes = <void **>(allnodes_nparr.data)
+    total_num_nodes = i # this is actually number of nodes +1 
+    for i in range(1,len_nodes_arr):
+        node_data = process_one_node_susceptibility(allnodes, i, interact_type, 
+                                            cutoff_rating, control_divider, 
+                                            min_interactions_per_user, 
+                                            time_diff, time_scale, 
+                                            max_tries, 
+                                            max_interact_ratio_error, allow_duplicates)
+        if node_data.fsim != -1:
+            count_success +=1
+        if counter %100==0:
+            print "Done counter", counter
+        if counter > max_node_computes:
+            print counter, max_node_computes
+            break
+        counter += 1
+    print "\n--Number of nodes assigned to me(with interactions and friends):"#, len(nodes_list)
+    print "--Eligible nodes (with interactions > %d): " %min_interactions_per_user, eligible_nodes_counter
+    print "--Total Edges from eligible nodes:", edges_counter
+    print "--Number of  successful nodes (can find rnodes):", count_success
+    print "--Successful triplets:"#, len(triplet_nodes) 
+    print "--Nodes with eligible fnode influence measure:", node_fnode_counter
+    print "--Nodes with eligible fnode and rnode influence measure:", node_rnode_counter
+
+    PyMem_Free(allnodes)
+    return influence_arr
+
+cdef nodesusceptinfo process_one_node_susceptibility(void **allnodes, int i,
+        int interact_type, float cutoff_rating, float control_divider, 
+        int min_interactions_per_user, int time_diff, int time_scale, 
+        int max_tries, float max_interact_ratio_error, bool allow_duplicates):
+    cdef:
+        int eligible_nodes_counter = 0
+        int edges_counter = 0
+        float max_sim_ratio_error = 0.1
+        int data_type_code=<int>'c' 
+        int data_type_code2=<int>'i'
+        float fsim, rsim
+        int num_eligible_friends
+        CNetworkNode fobj
+        int total_num_nodes
+        int ictr
+        int num_friends_matched, r_index, tries, f_index
+        float avg_fsim, avg_rsim, ratio_train, simdiff
+        float inf1, inf2
+        int node_fnode_counter = 0
+        int node_rnode_counter = 0
+        CNetworkNode c_node
+    cdef int *friend_uids = NULL
+    cdef fsiminfo *frsim_data_arr = NULL
+    cdef int *control_nonfr_nodes = NULL
+    cdef int *selected_friends = NULL
+    cdef int j
+    cdef nodesusceptinfo node_data
+    node_data.fsim = -1
+    
+    c_node = <CNetworkNode>allnodes[i]
+    #TODO remove this
+    num_node_interacts = c_node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
+    if c_node.length_train_ids < min_interactions_per_user or c_node.length_test_ids <min_interactions_per_user or not c_node.has_friends():
+        return node_data
+    eligible_nodes_counter += 1
+    num_eligible_friends = 0
+    friend_uids = <int *>malloc(c_node.c_length_friend_list*cython.sizeof(int))
+    for j in range(c_node.c_length_friend_list):
+        friend_uids[j] = c_node.c_friend_list[j].receiver_id
+
+    frsim_data_arr = <fsiminfo *>malloc(c_node.c_length_friend_list*cython.sizeof(fsiminfo))
+    edges_counter += c_node.c_length_friend_list
+    ictr = 0
+    for j in range(c_node.c_length_friend_list):
+        fobj = <CNetworkNode>allnodes[friend_uids[j]]
+        #TODO remove
+        num_fobj_interacts = fobj.get_num_interactions(interact_type)
+        if fobj.length_train_ids >=min_interactions_per_user and fobj.length_test_ids >=min_interactions_per_user:
+            fsim = compute_node_similarity(c_node, fobj, interact_type, 
+                    data_type_code, 
+                    min_interactions_per_user, time_diff=-1, time_scale=time_scale)
+            if fsim !=-1:#TODO check cannot be None
+                num_eligible_friends += 1
+                frsim_data_arr[ictr].sim = fsim
+                frsim_data_arr[ictr].uid = fobj.uid
+                ictr += 1
+    qsort(frsim_data_arr, num_eligible_friends, cython.sizeof(fsiminfo), comp_fsiminfo) 
+    #eligible_fr_sim_arr = fr_sim_arr[:num_eligible_friends]
+    max_tries = total_num_nodes
+    #randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
+    num_friends_matched = 0
+    r_index = 0
+    tries = 0
+    avg_fsim = 0
+    avg_rsim = 0
+    #found_ids = {} #TODO think of ways to avoid duplicates and ensure every non-friend is tried once, also how to free memory
+    control_nonfr_nodes = <int *>malloc(num_eligible_friends*cython.sizeof(int))
+    selected_friends = <int *>malloc(num_eligible_friends*cython.sizeof(int))
+    while num_friends_matched < num_eligible_friends and r_index < max_tries:
+        rand_node_id = (rand() % (max_tries-1)) + 1 # TODO does not cover all non-friends
+        r_index += 1
+        rand_node = <CNetworkNode>allnodes[rand_node_id]
+        if rand_node.length_train_ids >=min_interactions_per_user and rand_node.length_test_ids >=min_interactions_per_user:
+            if True:
+                #if rand_node.uid not in friend_ids and 
+                if rand_node.uid!=c_node.uid:
+                    rsim = compute_node_similarity(c_node,rand_node, interact_type, 
+                                                    data_type_code, min_interactions_per_user, 
+                                                    time_diff=-1, time_scale=time_scale)
+                    num_rnode_interacts = rand_node.get_num_interactions(interact_type)
+                    if rsim !=-1: # also check for duplicate friend being selected
+                        f_index = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, 0)
+                        if f_index == num_eligible_friends:
+                            f_index = f_index - 1
+                        fsim = frsim_data_arr[f_index].sim
+                        fobj = <CNetworkNode>allnodes[frsim_data_arr[f_index].uid]
+                        sim_diff = fabs(rsim-fsim)
+                        ratio_train = abs(rand_node.length_train_ids-fobj.length_train_ids)/<float>(fobj.length_train_ids)
+                        if ratio_train <= max_interact_ratio_error: 
+            
+                            if (fsim==0 and sim_diff<=0.00001) or (fsim>0 and
+                                sim_diff/fsim <= max_sim_ratio_error):# and (fsim2 >0 and abs(rsim2-fsim2)/fsim2<=max_sim_ratio_error)):
+                                avg_fsim += fsim
+                                avg_rsim += rsim
+                                control_nonfr_nodes[num_friends_matched] = rand_node_id
+                                selected_friends[num_friends_matched] = frsim_data_arr[f_index].uid
+                                num_friends_matched += 1
+        tries += 1
+    
+    if num_eligible_friends >0 and num_friends_matched >= 1*num_eligible_friends:
+        avg_fsim = avg_fsim/float(num_friends_matched)
+        avg_rsim = avg_rsim/float(num_friends_matched)
+    
+    inf1 = compute_node_susceptibility(c_node,selected_friends, allnodes, num_friends_matched, interact_type,
+            cutoff_rating, data_type_code2, min_interactions_per_user, 
+            time_diff, time_scale, allow_duplicates, debug=False)
+    #print inf1
+    if inf1 > -1: #TODO check for none, remove default argument debug
+        node_fnode_counter += 1
+        inf2 = compute_node_susceptibility(c_node,control_nonfr_nodes, allnodes, num_friends_matched, 
+                interact_type, cutoff_rating, data_type_code, 
+                min_interactions_per_user, 
+                time_diff, time_scale, allow_duplicates, debug=False)
+        #print node.uid, inf1, inf2, "\n"
+        if inf2 > -1:
+            node_rnode_counter += 1
+            #influence_arr[c_node.uid] = (0,0,0, avg_fsim, avg_rsim, inf1, inf2)
+            node_data.fsim = avg_fsim
+            node_data.rsim = avg_rsim
+            node_data.fsusc = inf1
+            node_data.rsusc = inf2
+    free(friend_uids)
+    free(control_nonfr_nodes)
+    free(selected_friends)
+    return node_data
+
+cdef float compute_node_susceptibility(CNetworkNode my_node, int *other_node_ids,
+        void **allnodes, int length_other_nodes,
+        int interact_type, float cutoff_rating, int data_type_code, 
+        int min_interactions_per_user, int time_diff, int time_scale, 
+        bool allow_duplicates, bool debug=False):
+    cdef int length_my_interactions
+    cdef int *lengths_others_interactions = <int *>malloc(length_other_nodes*cython.sizeof(int))
+    cdef idata *my_interactions
+    cdef idata **others_interactions = <idata **>malloc(length_other_nodes*sizeof(idata *))
+    cdef int i
+    
+    if data_type_code == <int>'i':
+        my_interactions = my_node.c_test_data
+        length_my_interactions = my_node.c_length_test_ids
+        valid_flag = True
+        for i in range(length_other_nodes):
+            c_node_obj = <CNetworkNode>allnodes[other_node_ids[i]]
+            lengths_others_interactions[i] = c_node_obj.c_length_test_ids
+            others_interactions[i] = c_node_obj.c_test_data
+            if lengths_others_interactions[i] < min_interactions_per_user:
+                valid_flag = False
+
+        if length_my_interactions >= min_interactions_per_user and valid_flag:
+            if time_scale == <int>'o':
+                return compute_node_susceptibility_ordinal_c(my_interactions, 
+                        length_my_interactions, others_interactions, 
+                        lengths_others_interactions, length_other_nodes, interact_type, 
+                        data_type_code,
+                        time_diff=time_diff, cutoff_rating=cutoff_rating, 
+                        time_scale=time_scale, allow_duplicates=allow_duplicates, debug=debug)
+               
+            else:
+                return compute_node_susceptibility_c(my_interactions, 
+                        length_my_interactions, others_interactions, 
+                        lengths_others_interactions, length_other_nodes, interact_type, 
+                        data_type_code,
+                        time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale)
+    free(lengths_others_interactions)
+    free(others_interactions)
+    return -1
+
+
 cpdef compute_node_similarity(node, other_node, int interact_type, 
         int data_type_code, int min_interactions_per_user, 
         int time_diff, int time_scale):
@@ -53,6 +288,7 @@ cpdef compute_node_similarity(node, other_node, int interact_type,
     cdef CNetworkNode c_node1, c_node2
     c_node2 = <CNetworkNode>other_node
     c_node1 = <CNetworkNode>node
+    cdef float sim = -1
     if data_type_code == <int>'a':
         my_interactions = c_node1.c_list[interact_type]
         length_my_interactions = c_node1.c_length_list[interact_type]
@@ -69,22 +305,21 @@ cpdef compute_node_similarity(node, other_node, int interact_type,
         length_my_interactions = c_node1.c_length_test_ids
         other_interactions = c_node2.c_test_data
         length_other_interactions = c_node2.c_length_test_ids
-    
-    if length_my_interactions >= min_interactions_per_user and (
-            length_other_interactions >= min_interactions_per_user):
-        return compute_node_similarity_c(my_interactions, other_interactions,
-                length_my_interactions, length_other_interactions, 
-                time_diff=time_diff,
-                time_scale=time_scale)
-    else:
-        return None
+    with nogil: 
+        if length_my_interactions >= min_interactions_per_user and (
+                length_other_interactions >= min_interactions_per_user):
+            sim = compute_node_similarity_c(my_interactions, other_interactions,
+                    length_my_interactions, length_other_interactions, 
+                    time_diff=time_diff,
+                    time_scale=time_scale)
+    return sim
 
 # CAUTION: works only for wall-clock time_scale right now
 cdef float compute_node_similarity_c(idata *my_interactions, idata *others_interactions, 
                                      int length_my_interactions,
                                      int length_others_interactions, 
                                      int time_diff, 
-                                     int time_scale):
+                                     int time_scale) nogil:
     cdef float l2_norm1, l2_norm2, simscore, union_sum
 
     cdef int i, j, k
@@ -128,9 +363,9 @@ cdef float compute_node_similarity_c(idata *my_interactions, idata *others_inter
 
     return simscore/union_sum
 
-cdef get_num_interactions_between(idata *interactions, int length_interactions,
+cdef int get_num_interactions_between(idata *interactions, int length_interactions,
         int timestamp1, 
-        int timestamp2, float cutoff_rating, bool order_agnostic=True):
+        int timestamp2, float cutoff_rating, bint order_agnostic=True) nogil:
     cdef int i 
     cdef int num_interacts_between = 0
     for i in range(length_interactions):
@@ -142,25 +377,25 @@ cdef get_num_interactions_between(idata *interactions, int length_interactions,
                     num_interacts_between += 1
     return num_interacts_between
 
-cdef is_influence(idata *my_interactions, int length_my_interactions, 
+cdef bint is_influence(idata *my_interactions, int length_my_interactions, 
         int my_timestamp, int others_timestamp, float cutoff_rating,
-        int time_diff, int time_scale, bool order_agnostic):
-    cdef bool inf = False
+        int time_diff, int time_scale, bint order_agnostic) nogil:
+    cdef bint inf = 0
     
     if time_diff == -1:
-        inf = True
+        inf = 1
     elif time_scale==<int>'w':
         if order_agnostic:
             if abs(my_timestamp - others_timestamp) <= time_diff:
-                inf = True
+                inf = 1
         else:
             if my_timestamp > others_timestamp and (my_timestamp - others_timestamp) <= time_diff:
-                inf = True
+                inf = 1
     elif time_scale==<int>'o':
         if get_num_interactions_between(my_interactions, length_my_interactions,
                 others_timestamp, my_timestamp, 
                 cutoff_rating, order_agnostic=order_agnostic) <=time_diff:
-            inf = True
+            inf = 1
 
     return inf
 
@@ -225,15 +460,16 @@ cdef compute_node_similarity_c(int* my_interactions, int *other_interactions, in
 """
 
 cdef idata *create_nodes_interaction_stream(idata **nodes_interactions, 
-        int *lengths_nodes_interactions, int num_nodes, int *size_stream):
+        int *lengths_nodes_interactions, int num_nodes, int *size_stream) nogil:
     cdef int total_interactions = 0
     cdef int i,  curr_ptr
     cdef idata *interaction_stream = NULL
     for i in range(num_nodes):
         total_interactions += lengths_nodes_interactions[i]
-    interaction_stream = <idata *>PyMem_Malloc(total_interactions*cython.sizeof(idata))
+    interaction_stream = <idata *>malloc(total_interactions*cython.sizeof(idata))
     if interaction_stream is NULL:
-        raise MemoryError()
+        #raise MemoryError()
+        printf("ERROR:Cannot allocate memory for interaction stream!!!\n\n")
    
     curr_ptr = 0
     #print num_nodes, "num nodes"
@@ -245,12 +481,12 @@ cdef idata *create_nodes_interaction_stream(idata **nodes_interactions,
     return interaction_stream
 
 # CAUTIONL only works for ordinal scale time
-cdef compute_node_susceptibility_ordinal_c(idata* my_interactions, 
+cdef float compute_node_susceptibility_ordinal_c(idata* my_interactions, 
                         int length_my_interactions, idata** others_interactions, 
                         int* lengths_others_interactions, int num_other_nodes, 
                         int interact_type, int data_type_code, 
                         int time_diff, float cutoff_rating,
-                        int time_scale, bool allow_duplicates, bool debug):
+                        int time_scale, bint allow_duplicates, bint debug) nogil:
     cdef float simscore= 0
     cdef int i, j, y, index
     cdef int size_stream = -1
@@ -259,7 +495,7 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
             lengths_others_interactions, num_other_nodes, &size_stream)
     cdef int my_count = 0
     cdef int others_count = 0
-    cdef int *sim = <int *>PyMem_Malloc(length_my_interactions*cython.sizeof(int))
+    cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))
     for y in range(length_my_interactions):
         sim[y] = 0
     i = 0
@@ -271,14 +507,14 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
                         my_interactions[i].timestamp, debug)
                 if index >= size_stream:
                     if debug:
-                        print "ERROR:Cython: Big Error, how can index of friend stream be", index
+                        printf("ERROR:Cython: Big Error, how can index of friend stream be %d", index)
                 if index <0:
                     if debug:
-                        print "WARN:This interaction is too early for others test set. Aborting..."
+                        printf("WARN:This interaction is too early for others test set. Aborting...")
                     return -2 
                 if index+1 <time_diff:
                     if debug:
-                        print "WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting..."
+                        printf("WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting...")
                     return -3
                 j=index
                 while j >index-time_diff and j>=0:
@@ -302,21 +538,21 @@ cdef compute_node_susceptibility_ordinal_c(idata* my_interactions,
     for y in range(length_my_interactions):
         if sim[y] > 0:
             simscore += 1
-    PyMem_Free(others_stream)
-    PyMem_Free(sim)
+    free(others_stream)
+    free(sim)
     return simscore/my_count
 
-cdef compute_node_susceptibility_c(idata* my_interactions, 
+cdef float compute_node_susceptibility_c(idata* my_interactions, 
                         int length_my_interactions, idata** others_interactions, 
                         int* lengths_others_interactions, int num_other_nodes, 
                         int interact_type, int data_type_code, 
                         int time_diff, float cutoff_rating,
-                        int time_scale):
+                        int time_scale) nogil:
     cdef float l2_norm1, l2_norm2, simscore
 
     cdef int i, k, x, y
-    cdef int *j = <int *>PyMem_Malloc(num_other_nodes*cython.sizeof(int))
-    cdef int *sim = <int *>PyMem_Malloc(length_my_interactions*cython.sizeof(int))
+    cdef int *j = <int *>malloc(num_other_nodes*cython.sizeof(int))
+    cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))
     for x in range(num_other_nodes):
         j[x] = 0
     for y in range(length_my_interactions):
@@ -325,7 +561,7 @@ cdef compute_node_susceptibility_c(idata* my_interactions,
     i = 0 
     cdef int my_count = 0
     cdef int others_count = 0
-    cdef bool finished_others = False
+    cdef bint finished_others = False
     while i < length_my_interactions:
         for x in xrange(num_other_nodes): 
 #if my_interactions[i].item_id < others_interactions[x][j[x]].item_id:
@@ -355,8 +591,8 @@ cdef compute_node_susceptibility_c(idata* my_interactions,
     for y in range(length_my_interactions):
         if sim[y] > 0:
             simscore += 1
-    PyMem_Free(j)
-    PyMem_Free(sim)
+    free(j)
+    free(sim)
     return simscore/my_count
 
 
@@ -383,16 +619,8 @@ cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index
             min_index[0] = i
     return min_val
 
-
-
-@cython.freelist(1024)
-@cython.no_gc_clear
-cdef class CNetworkNode:
+cdef struct netnodedata:
     cdef int c_uid
-    cdef int c_should_have_friends
-    cdef int c_should_have_interactions
-    cdef int c_num_interact_types   # number of interactions types
-
     cdef idata **c_list             # interactions array for each interact type
     cdef int *c_length_list         # length of the interactions in each type
     
@@ -404,6 +632,16 @@ cdef class CNetworkNode:
     cdef idata *c_test_data
     cdef int c_length_train_ids
     cdef int c_length_test_ids
+
+
+@cython.freelist(1024)
+@cython.no_gc_clear
+cdef class CNetworkNode:
+    cdef netnodedata ndata
+    cdef int c_should_have_friends
+    cdef int c_should_have_interactions
+    cdef int c_num_interact_types   # number of interactions types
+
    
     # Additional data structures for simulation. Consider removing.
     cdef idata *fakedata_inf_fr_stream
@@ -591,7 +829,7 @@ cdef class CNetworkNode:
             id_list.append(self.c_friend_list[i].receiver_id)
         return id_list
     
-
+    
     cpdef get_num_interactions(self, int interact_type):
         if self.c_list is NULL:
             return 0
@@ -664,48 +902,7 @@ cdef class CNetworkNode:
         l2_norm2 = l2_norm_dict(items.itervalues())
         return simscore/(l2_norm1*l2_norm2)
 
-    cpdef compute_node_susceptibility(self, other_nodes, int length_other_nodes,
-            int interact_type, float cutoff_rating, int data_type_code, 
-            int min_interactions_per_user, int time_diff, int time_scale, 
-            bool allow_duplicates, bool debug=False):
-        cdef int length_my_interactions
-        cdef int *lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
-        cdef idata *my_interactions
-        cdef idata **others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))
-        cdef int i
-        
-        if data_type_code == <int>'i':
-            my_interactions = self.c_test_data
-            length_my_interactions = self.c_length_test_ids
-            valid_flag = True
-            for i in range(length_other_nodes):
-                c_node_obj = <CNetworkNode>other_nodes[i]
-                lengths_others_interactions[i] = c_node_obj.c_length_test_ids
-                others_interactions[i] = c_node_obj.c_test_data
-                if lengths_others_interactions[i] < min_interactions_per_user:
-                    valid_flag = False
 
-            if length_my_interactions >= min_interactions_per_user and valid_flag:
-                if time_scale == <int>'o':
-                    return compute_node_susceptibility_ordinal_c(my_interactions, 
-                            length_my_interactions, others_interactions, 
-                            lengths_others_interactions, length_other_nodes, interact_type, 
-                            data_type_code,
-                            time_diff=time_diff, cutoff_rating=cutoff_rating, 
-                            time_scale=time_scale, allow_duplicates=allow_duplicates, debug=debug)
-                   
-                else:
-                    return compute_node_susceptibility_c(my_interactions, 
-                            length_my_interactions, others_interactions, 
-                            lengths_others_interactions, length_other_nodes, interact_type, 
-                            data_type_code,
-                            time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale)
-        PyMem_Free(lengths_others_interactions)
-        PyMem_Free(others_interactions)
-        return None
-
-    # change training, test to common data structure idata and simplify this function
-    # refactor, clearly broken code. have a single c-similarity, pref. as a function, not method
 
         """
         cdef float simscore = 0
