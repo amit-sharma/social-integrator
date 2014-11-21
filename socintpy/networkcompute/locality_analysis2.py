@@ -21,10 +21,10 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
 
     for ii in range(int(num_rand_attempts)):
         start= time.clock()
-        influence_dict = compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type, 
+        influence_dict = compute_susceptibility_randomselect_cfast(nodes_list, interact_type, 
                                                 cutoff_rating, control_divider, min_interactions_per_user, 
                                                 time_diff, time_scale, max_tries, max_node_computes,
-                                                max_interact_ratio_error, nonfr_match, allow_duplicates, method="compute")
+                                                max_interact_ratio_error, int(allow_duplicates))
         end = time.clock()
         print('Computation took %.03f seconds' % (end-start))
       
@@ -981,6 +981,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         """
 
         nodes_list = self.netdata.get_nodes_list(should_have_friends=True, should_have_interactions=True)
+        """
         partial_num_nodes = len(nodes_list) / num_processes + 1
         arg_list = []
         influence_arr_all = []
@@ -989,8 +990,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
             end_index = min((i + 1) * partial_num_nodes, len(nodes_list))
             arg_list.append(nodes_list[start_index:end_index])
         
-        #q = mp.Queue()
-        q = Queue()
+        q = mp.Queue()
         proc_list = []
         for i in range(num_processes):
             if method=="influence":
@@ -1017,6 +1017,14 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         # join waits on end of processes
         for p in proc_list:
             p.join()
+        """
+        q = Queue()
+        influence_arr_all = compute_susceptibility_randomselect_parallel (
+                self.netdata, nodes_list, interact_type,
+                           cutoff_rating, control_divider, min_interactions_per_user, 
+                           time_diff, time_scale, max_tries,
+                           max_node_computes, max_interact_ratio_error,
+                           nonfr_match, allow_duplicates, q)
         return influence_arr_all
 
 
