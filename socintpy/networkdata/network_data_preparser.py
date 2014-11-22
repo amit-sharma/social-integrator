@@ -152,12 +152,13 @@ class NetworkDataPreparser():
         
         # now modifying the node-ids in the friends list of selected core nodes
         for node in selected_nodes[1:]:
-            friend_ids = node.get_friend_ids()
-            flist = []
-            for fr_id in friend_ids:
-                if fr_id in id_remap:
-                    flist.append(self.__class__.EdgeData(receiver_id=id_remap[fr_id]))
-            node.store_friends(flist)
+            if node.should_have_friends:
+                friend_ids = node.get_friend_ids()
+                flist = []
+                for fr_id in friend_ids:
+                    if fr_id in id_remap:
+                        flist.append(self.__class__.EdgeData(receiver_id=id_remap[fr_id]))
+                node.store_friends(flist)
         
         self.nodes = selected_nodes
 

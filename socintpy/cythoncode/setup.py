@@ -8,9 +8,15 @@ mainfiles = ["cnetwork_node.pyx"]
 auxfiles = ["data_types.pyx", "binary_search.pyx"]
 extensions = [
     Extension("cnetwork_node", mainfiles, #language='c++',
-        include_dirs=[np.get_include()]),    
-    Extension("data_types", ["data_types.pyx"]),
-    Extension("binary_search", ["binary_search.pyx"]),
+        include_dirs=[np.get_include()],
+        extra_compile_args=['-fopenmp'],
+        extra_link_args=['-fopenmp']),    
+    Extension("data_types", ["data_types.pyx"],
+        extra_compile_args=['-fopenmp'],
+        extra_link_args=['-fopenmp']),    
+    Extension("binary_search", ["binary_search.pyx"],
+        extra_compile_args=['-fopenmp'],
+        extra_link_args=['-fopenmp'])    
 ]
 setup(
     name="MyApp",

@@ -1,5 +1,5 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
-from socintpy.cythoncode.cnetwork_node import compute_susceptibility_randomselect_cfast
+import socintpy.cythoncode.cnetwork_node as cycode
 import numpy as np
 import random
 import heapq
@@ -15,20 +15,22 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
                                             time_diff, time_scale, max_tries, max_node_computes,
                                             max_interact_ratio_error, nonfr_match, 
                                             allow_duplicates, q):   
-    num_rand_attempts = 2.0
+    num_rand_attempts = 1.0
     final_influence = None
+    if max_tries is None:
+        max_tries = netdata.get_total_num_nodes()
     print threading.current_thread(), "Started process!"
 
     for ii in range(int(num_rand_attempts)):
         start= time.clock()
-        influence_dict = compute_susceptibility_randomselect_cfast(nodes_list, interact_type, 
+        influence_dict = cycode.compute_susceptibility_randomselect_cfast(netdata.nodes, interact_type, 
                                                 cutoff_rating, control_divider, min_interactions_per_user, 
                                                 time_diff, time_scale, max_tries, max_node_computes,
-                                                max_interact_ratio_error, int(allow_duplicates))
+                                                max_interact_ratio_error, allow_duplicates)
         end = time.clock()
         print('Computation took %.03f seconds' % (end-start))
       
-        """  
+        """ 
         start= time.clock()
         influence_dict = compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type, 
                                                 cutoff_rating, control_divider, min_interactions_per_user, 
@@ -50,8 +52,8 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
     final_influence_arr = [tuple(val/num_rand_attempts for val in val_tuple) for (
             val_tuple) in final_influence.itervalues() if val_tuple is not None]
 
-    q.put(final_influence_arr)
-    return
+    #q.put(final_influence_arr)
+    return final_influence_arr
 
 def compute_susceptibility_randomselect_dummy_compute(netdata, nodes_list, interact_type, 
                                             cutoff_rating, control_divider, min_interactions_per_user, 
@@ -178,6 +180,12 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
     for node in nodes_list:
         num_node_interacts = node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
         if node.length_train_ids < min_interactions_per_user or node.length_test_ids <min_interactions_per_user or not node.has_friends():
+            if counter %100==0:
+                print "Done counter", counter
+            if max_node_computes is not None:
+                if counter > max_node_computes:
+                    print counter, max_node_computes
+                    break
             counter +=1
             continue
         eligible_nodes_counter += 1
@@ -195,12 +203,10 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
                 if method=="db":
                     fsim = get_similarity_from_db(node.uid, fobj.uid, netdata.sim_mat)
                 else:
-                    fsim = random.random()
-                    """
-                    fsim = compute_node_similarity(node, fobj, interact_type, 
+                    #fsim = random.random()
+                    fsim = cycode.compute_node_similarity_pywrapper(node, fobj, interact_type, 
                             data_type_code, 
                             min_interactions_per_user, time_diff=-1, time_scale=time_scale)
-                    """
                 #found = False
                 if fsim is not None and fsim!=-1:
                     num_eligible_friends += 1
@@ -230,12 +236,10 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
                         if method=="db":
                             rsim = get_similarity_from_db(rand_node.uid, node.uid, netdata.sim_mat)
                         else:
-                            rsim = random.random()
-                            """
-                            rsim = compute_node_similarity(node,rand_node, interact_type, 
+                            #rsim = random.random()
+                            rsim = cycode.compute_node_similarity_pywrapper(node,rand_node, interact_type, 
                                                         data_type_code, min_interactions_per_user, 
                                                         time_diff=-1, time_scale=time_scale)
-                            """
                         num_rnode_interacts = rand_node.get_num_interactions(interact_type)
                         if rsim is not None and rsim!=-1: # also check for duplicate friend being selected
                             f_index = np.searchsorted(eligible_fr_sim_arr, rsim)
@@ -270,9 +274,9 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
             if len(control_nonfr_nodes) != num_eligible_friends:
                 print "WARN: Cannot match all eligible friends", num_eligible_friends, len(control_nonfr_nodes)
 #print node.uid, [fr.uid for fr in selected_friends]
-        triplet_nodes.append((node, selected_friends, control_nonfr_nodes, 
+            triplet_nodes.append((node, selected_friends, control_nonfr_nodes, 
                      0, 0, 0, avg_fsim, avg_rsim))
-        count_success +=1
+            count_success +=1
         if counter %100==0:
             print "Done counter", counter
         if max_node_computes is not None:
@@ -281,6 +285,7 @@ def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type,
                 break
         counter += 1
     print "\n--Number of nodes assigned to me(with interactions and friends):", len(nodes_list)
+    print "--Number of nodes I looped over:", counter
     print "--Eligible nodes (with interactions > %d): " %min_interactions_per_user, eligible_nodes_counter
     print "--Total Edges from eligible nodes:", edges_counter
     print "--Number of  successful nodes (can find rnodes):", count_success
@@ -743,13 +748,13 @@ def compare_susceptibility_effect(triplet_nodes, interact_type, cutoff_rating,
     node_rnode_counter = 0
     for node, fnodes, rnodes, num1, num2, num3, fsim, rsim in triplet_nodes:
         # this similarity is not symmetric
-        inf1 = node.compute_node_susceptibility(fnodes, len(fnodes), interact_type,
+        inf1 = cycode.compute_node_susceptibility_pywrapper(node, fnodes, len(fnodes), interact_type,
                 cutoff_rating, data_type_code, min_interactions_per_user, 
                 time_diff, time_scale, allow_duplicates, debug=False)
         #print inf1
         if inf1 is not None and inf1 > -1:
             node_fnode_counter += 1
-            inf2 = node.compute_node_susceptibility(rnodes, len(rnodes), 
+            inf2 = cycode.compute_node_susceptibility_pywrapper(node, rnodes, len(rnodes), 
                     interact_type, cutoff_rating, data_type_code, 
                     min_interactions_per_user, 
                     time_diff, time_scale, allow_duplicates, debug=False)
@@ -1025,6 +1030,8 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                            time_diff, time_scale, max_tries,
                            max_node_computes, max_interact_ratio_error,
                            nonfr_match, allow_duplicates, q)
+        print len(influence_arr_all)
+        print influence_arr_all[0:10]
         return influence_arr_all
 
 
