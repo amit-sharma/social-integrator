@@ -23,12 +23,14 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
 
     for ii in range(int(num_rand_attempts)):
         start= time.clock()
+        start2 = time.time()
         influence_dict = cycode.compute_susceptibility_randomselect_cfast(netdata.nodes, interact_type, 
                                                 cutoff_rating, control_divider, min_interactions_per_user, 
                                                 time_diff, time_scale, max_tries, max_node_computes,
                                                 max_interact_ratio_error, allow_duplicates)
         end = time.clock()
-        print('Computation took %.03f seconds' % (end-start))
+        end2 = time.time()
+        print('Computation took %.03f CPU seconds and %.03f wall-clock seconds' % (end-start, end2-start2))
       
         """ 
         start= time.clock()

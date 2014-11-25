@@ -22,5 +22,5 @@ setup(
     name="MyApp",
     #cmdclass = {'build_ext': build_ext},
     #include_dirs =[np.get_include()],
-    ext_modules = cythonize(extensions),
+    ext_modules = cythonize(extensions, gdb_debug=True, output_dir="."),
 )

@@ -262,7 +262,7 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         num_processes=1
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
-        f = open("fri_results/suscept_test_"+dataset_domain+ interact_type_str+str(
+        f = open("suscept_test_"+dataset_domain+ interact_type_str+str(
                     use_artists)+str(allow_duplicates)+str(max_node_computes_val)+str(
                         create_fake_prefs)+str(num_loop), "w")
 
