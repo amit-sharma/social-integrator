@@ -48,6 +48,12 @@ cdef int comp_fsiminfo(const void *elem1, const void *elem2):
     b = <fsiminfo *>elem2
     return <int>(a[0].sim - b[0].sim)
 
+cdef inline void swap_elements(int *a, int *b) nogil:
+    cdef int t = a[0]
+    a[0]=b[0]
+    b[0]=t
+    return
+
 cdef void delete_hashtable(int_counter *head_ptr):
     cdef int_counter *s
     cdef int_counter *tmp

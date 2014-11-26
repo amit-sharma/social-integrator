@@ -78,5 +78,6 @@ cdef int comp_fsiminfo(const void *, const void *)
 
     
 cdef inline int int_min(int a, int b) nogil: return a if a <= b else b
+cdef inline void swap_elements(int *, int *) nogil
 
 cdef void delete_hashtable(int_counter *)

@@ -23,7 +23,8 @@ from itertools import izip
 cimport socintpy.cythoncode.data_types as data_types
 cimport socintpy.cythoncode.binary_search as binary_search
 from data_types cimport netnodedata, idata,fdata,int_counter, nodesusceptinfo, fsiminfo
-from data_types cimport loopvars, compfrnonfr, int_min
+from data_types cimport loopvars, compfrnonfr
+from data_types cimport swap_elements, int_min
 from data_types cimport UT_hash_table, UT_hash_handle, HASH_FIND_INT, HASH_ADD_INT_CUSTOM,HASH_SORT, HASH_DEL, delete_hashtable
 from data_types cimport comp_interactions_temporal, comp_interactions, comp_friends, compare_int_counter,comp_fsiminfo
 from binary_search cimport binary_search_standard, binary_search_closest_temporal, binary_search_closest, binary_search_timesensitive, binary_search_closest_fsiminfo
@@ -214,7 +215,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
         float fsim, rsim
         int num_eligible_friends = 0
         int ictr
-        int num_friends_matched, r_index, tries, f_index, r_index2
+        int num_friends_matched, r_index, tries, f_index, r_index2, rand_id
         float avg_fsim, avg_rsim, ratio_train, simdiff
         float inf1, inf2
         netnodedata  fobj
@@ -244,7 +245,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
     qsort(frsim_data_arr, num_eligible_friends, cython.sizeof(fsiminfo), comp_fsiminfo) 
     
     #eligible_fr_sim_arr = fr_sim_arr[:num_eligible_friends]
-    max_tries = total_num_nodes #TODO change, do it in python
+    max_tries = total_num_nodes - 1 #TODO change, do it in python, -1 because allnodes starts with [1:]
     #randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
     num_friends_matched = 0
     r_index = 0
@@ -258,10 +259,12 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
 
     rand_node_ids = <int *>malloc(max_tries*sizeof(int))
     for j in range(max_tries): 
-        rand_node_ids[j] = (rand() % (max_tries-1)) + 1 # TODO does not cover all non-friends
+        rand_node_ids[j] = j+1
     
-    for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):
-        rand_node = (<netnodedata *>allnodes[rand_node_ids[r_index]])[0]
+    for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):        
+        rand_id = (rand() % (max_tries-r_index))
+        swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
+        rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]
         frnonfr_data =  compare_friend_nonfriend(c_node, rand_node, allnodes,
             num_eligible_friends, frsim_data_arr,interact_type, 
             min_interactions_per_user, data_type_code,
@@ -304,6 +307,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
     free(control_nonfr_nodes)
     free(selected_friends)
     free(frsim_data_arr)
+    free(rand_node_ids)
     return node_data
 
 
