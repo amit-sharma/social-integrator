@@ -1,5 +1,5 @@
 #!python
-#cython: boundscheck=True, wraparound=True, cdivision=False
+#cython: boundscheck=False, wraparound=False, cdivision=True
 
 cimport cython
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
@@ -23,6 +23,7 @@ from itertools import izip
 cimport socintpy.cythoncode.data_types as data_types
 cimport socintpy.cythoncode.binary_search as binary_search
 from data_types cimport netnodedata, idata,fdata,int_counter, nodesusceptinfo, fsiminfo
+from data_types cimport loopvars, compfrnonfr, int_min
 from data_types cimport UT_hash_table, UT_hash_handle, HASH_FIND_INT, HASH_ADD_INT_CUSTOM,HASH_SORT, HASH_DEL, delete_hashtable
 from data_types cimport comp_interactions_temporal, comp_interactions, comp_friends, compare_int_counter,comp_fsiminfo
 from binary_search cimport binary_search_standard, binary_search_closest_temporal, binary_search_closest, binary_search_timesensitive, binary_search_closest_fsiminfo
@@ -55,6 +56,17 @@ def compute_node_susceptibility_pywrapper(my_node, other_nodes,
         int interact_type, float cutoff_rating, int data_type_code, 
         int min_interactions_per_user, int time_diff, int time_scale, 
         bint allow_duplicates, bint debug=False):
+    """ Compute the susceptibility of a node to a set of other_nodes.
+
+        Wrapper for a C function. Accepts Python objects
+
+        Args:
+            my_node: single node 
+            other_nodes: a list of nodes
+            ...
+        Returns:
+            susceptibility of the my_node to interactions from other_nodes
+    """
     cdef int i
     cdef float ret
     cdef netnodedata **other_nodes_ndata = <netnodedata **>malloc(length_other_nodes*sizeof(netnodedata *))
@@ -69,16 +81,30 @@ def compute_node_susceptibility_pywrapper(my_node, other_nodes,
 def compute_node_similarity_pywrapper(node, other_node, int interact_type, 
         int data_type_code, int min_interactions_per_user, 
         int time_diff, int time_scale):
-    return compute_node_similarity((<CNetworkNode>node).ndata, (<CNetworkNode>other_node).ndata, interact_type,
+    """ Compute the similarity between two instances (python objects) of CNetworkNode.
+       
+        Wrapper for a C function.
+        Args:
+            node: first node
+            other_node: second node
+            interact_type: the interact_type to compare similarity for (some 
+                    datasets have multiple interact types) = {0,1,2...}
+            data_type_code:  what subset of interaction data to compare. Three 
+                    codes are supported-ord('a') for all, ord('c') for comparing 
+                    train data, and ord('i') for comparing test data
+            min_interactions_per_user: if any of the two nodes have lesser
+                    interactions than this, then return -1
+            time_diff: If not -1, then only common interactions within the 
+                    time_diff units of time are considered a match.
+            time_scale: the scale of time. Can be ord('w')=wall clock seconds, 
+                    or ord('o'): ordinal time. 
+        Returns:
+            Jaccard similarity between the interactions of the two nodes, as
+            specified by the above parameters.
+    """
+    return compute_node_similarity((<CNetworkNode>node).ndata, 
+            (<CNetworkNode>other_node).ndata, interact_type,
             data_type_code, min_interactions_per_user, time_diff, time_scale)
-
-cdef struct loopvars:
-    int counter
-    int counter2
-    int count_success
-    int eligible_nodes_counter
-    int node_fnode_counter
-    int node_rnode_counter
 
 cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_type, 
                                             float cutoff_rating, float control_divider, 
@@ -164,13 +190,7 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
 
 
 
-cdef struct compfrnonfr:
-    float fsim
-    float rsim
-    netnodedata fnode
-    netnodedata rnode
 
-cdef inline int int_min(int a, int b) nogil: return a if a <= b else b
 
 cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, netnodedata c_node,
         int interact_type, float cutoff_rating, float control_divider, 

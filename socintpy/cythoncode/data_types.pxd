@@ -56,6 +56,20 @@ cdef struct fsiminfo:
     float sim
     int uid
 
+cdef struct loopvars:
+    int counter
+    int counter2
+    int count_success
+    int eligible_nodes_counter
+    int node_fnode_counter
+    int node_rnode_counter
+
+cdef struct compfrnonfr:
+    float fsim
+    float rsim
+    netnodedata fnode
+    netnodedata rnode
+
 cdef int comp_interactions_temporal(const void *, const void *)
 cdef int comp_interactions(const void *, const void *)
 cdef int compare_int_counter(const void *, const void *)
@@ -63,4 +77,6 @@ cdef int comp_friends(const void *, const void *)
 cdef int comp_fsiminfo(const void *, const void *)
 
     
+cdef inline int int_min(int a, int b) nogil: return a if a <= b else b
+
 cdef void delete_hashtable(int_counter *)
