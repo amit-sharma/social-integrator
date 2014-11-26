@@ -23,7 +23,7 @@ from itertools import izip
 cimport socintpy.cythoncode.data_types as data_types
 cimport socintpy.cythoncode.binary_search as binary_search
 from data_types cimport netnodedata, idata,fdata,int_counter, nodesusceptinfo, fsiminfo
-from data_types cimport loopvars, compfrnonfr
+from data_types cimport loopvars, compfrnonfr, twoints
 from data_types cimport swap_elements, int_min
 from data_types cimport UT_hash_table, UT_hash_handle, HASH_FIND_INT, HASH_ADD_INT_CUSTOM,HASH_SORT, HASH_DEL, delete_hashtable
 from data_types cimport comp_interactions_temporal, comp_interactions, comp_friends, compare_int_counter,comp_fsiminfo
@@ -133,7 +133,7 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
     for i in range(1,len_nodes_arr):
         allnodes[i] = &((<CNetworkNode>all_nodes_list[i]).ndata)
         i+= 1
-    total_num_nodes = i # this is actually number of nodes +1 
+    total_num_nodes = i-1 # because index starts from 1 
     counter = 0
     counter2 = 0
     cdef loopvars *buf
@@ -189,10 +189,6 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
     PyMem_Free(allnodes)
     return influence_arr
 
-
-
-
-
 cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, netnodedata c_node,
         int interact_type, float cutoff_rating, float control_divider, 
         int min_interactions_per_user, int time_diff, int time_scale, 
@@ -245,7 +241,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
     qsort(frsim_data_arr, num_eligible_friends, cython.sizeof(fsiminfo), comp_fsiminfo) 
     
     #eligible_fr_sim_arr = fr_sim_arr[:num_eligible_friends]
-    max_tries = total_num_nodes - 1 #TODO change, do it in python, -1 because allnodes starts with [1:]
+    max_tries = total_num_nodes #TODO change, do it in python, remember allnodes starts with [1:]
     #randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
     num_friends_matched = 0
     r_index = 0
@@ -319,34 +315,47 @@ cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_n
     cdef:
         float rsim, fsim, sim_diff
         float ratio_train
-        int f_index
+        twoints f_indices
+        int loop_i, i
+        bint valid_rand
         netnodedata fobj
         compfrnonfr ret
+        int *done_friends
+
     ret.fsim = -1
+    done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
+    for i in range(num_eligible_friends):
+        done_friends[i] = 0
     if rand_node.c_length_train_ids >=min_interactions_per_user and rand_node.c_length_test_ids >=min_interactions_per_user:
         if True:
             #if rand_node.uid not in friend_ids and 
             if rand_node.c_uid!=c_node.c_uid:
-                #TODO check that rand_node is non-friend and also return multiple rsim from binary search
                 rsim = compute_node_similarity(c_node,rand_node, interact_type, 
                                                 data_type_code, min_interactions_per_user, 
                                                 time_diff=-1, time_scale=time_scale)
                 if rsim > -0.5: # also check for duplicate friend being selected
-                    f_index = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, 0)
-                    if f_index == num_eligible_friends:
-                        f_index = f_index - 1
-                    fsim = frsim_data_arr[f_index].sim
-                    fobj = (<netnodedata *>allnodes[frsim_data_arr[f_index].uid])[0]
-                    sim_diff = fabs(rsim-fsim)
-                    ratio_train = abs(rand_node.c_length_train_ids-fobj.c_length_train_ids)/<float>(fobj.c_length_train_ids)
-                    if ratio_train <= max_interact_ratio_error: 
-        
-                        if (fsim< 0.000001 and rsim<0.000001) or (fsim>0 and
-                            sim_diff/fsim <= max_sim_ratio_error):
-                                ret.fsim = fsim
-                                ret.rsim = rsim
-                                ret.fnode = fobj
-                                ret.rnode = rand_node
+                    f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, 0)
+                    if f_indices.val1 != -1:
+                        # first filtering out if rand_node is a friend of user
+                        valid_rand = True
+                        for loop_i in range(f_indices.val1, f_indices.val2+1):
+                            if frsim_data_arr[loop_i].uid == rand_node.c_uid:
+                                valid_rand = False
+                        if valid_rand:
+                            for loop_i in range(f_indices.val1, f_indices.val2+1):
+                                fsim = frsim_data_arr[loop_i].sim
+                                fobj = (<netnodedata *>allnodes[frsim_data_arr[loop_i].uid])[0]
+                                ratio_train = abs(rand_node.c_length_train_ids-fobj.c_length_train_ids)/<float>(fobj.c_length_train_ids)
+                                if ratio_train <= max_interact_ratio_error: 
+                                    # checking that no friend is added twice
+                                    #TODO do not check for fsim==0 in binary_search above. check if needed
+                                    if done_friends[loop_i] == 0:#(fsim< 0.000001 and rsim<0.000001) or (fsim>0 and sim_diff/fsim <= max_sim_ratio_error):
+                                            ret.fsim = fsim
+                                            ret.rsim = rsim
+                                            ret.fnode = fobj
+                                            ret.rnode = rand_node
+                                            done_friends[loop_i] = 1
+                                            break
     return ret
 
 cdef float compute_node_susceptibility(netnodedata my_node, netnodedata **other_nodes,

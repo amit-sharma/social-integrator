@@ -113,18 +113,21 @@ cdef int binary_search_closest(idata *interactions, int length_interactions,
     return -1
 
 #TODO return the lower one, or check all
-cdef int binary_search_closest_fsiminfo(fsiminfo *interactions, int length_interactions, 
-        float sim,
-        bint debug) nogil:
+cdef twoints binary_search_closest_fsiminfo(fsiminfo *interactions, int length_interactions, 
+        float sim, float max_sim_ratio_error, bint debug) nogil:
     cdef int lower = 0
     cdef int upper = length_interactions - 1
     cdef int mid = -1
     cdef int item_index = -1
+    cdef int i
+    cdef twoints ret
+    ret.val1 = -1
+    ret.val2 = -1
     while lower <= upper:
         mid = (lower+upper)/2
         if debug:
             printf("%d %d %d", lower, mid, upper)
-        if interactions[mid].sim == sim:
+        if fabs(interactions[mid].sim -sim)/interactions[mid].sim <= max_sim_ratio_error:
             item_index = mid
             break
         elif interactions[mid].sim > sim:
@@ -134,12 +137,15 @@ cdef int binary_search_closest_fsiminfo(fsiminfo *interactions, int length_inter
     if debug:
         printf("%f", interactions[mid].sim)
     if item_index != -1:
-        return item_index
-    elif upper < mid:
-        return mid
-    elif lower > mid:
-        return mid + 1 # returning the first index whose value is greater than the item_id
-    return -1
+        i = item_index - 1
+        while i >=0 and fabs(interactions[i].sim -sim)/interactions[i].sim <= max_sim_ratio_error:
+            i -= 1
+        ret.val1 = i+1
+        i = item_index + 1
+        while i <length_interactions and fabs(interactions[i].sim -sim)/interactions[i].sim <= max_sim_ratio_error:
+            i += 1
+        ret.val2 = i-1
+    return ret
 
 
 cdef int binary_search_timesensitive(idata *interactions, int length_interactions, int item_id, int

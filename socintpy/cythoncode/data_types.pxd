@@ -70,6 +70,10 @@ cdef struct compfrnonfr:
     netnodedata fnode
     netnodedata rnode
 
+cdef struct twoints:
+    int val1
+    int val2
+
 cdef int comp_interactions_temporal(const void *, const void *)
 cdef int comp_interactions(const void *, const void *)
 cdef int compare_int_counter(const void *, const void *)
