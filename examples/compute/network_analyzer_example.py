@@ -256,7 +256,7 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
         max_tries_val = None#30000
-        max_node_computes_val = 10000
+        max_node_computes_val = 1000
         max_interact_ratio_error =0.1
         klim_val = None # not used for influence test
         num_processes=1

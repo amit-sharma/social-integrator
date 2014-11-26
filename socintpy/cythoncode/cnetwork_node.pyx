@@ -327,6 +327,7 @@ cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_n
         if True:
             #if rand_node.uid not in friend_ids and 
             if rand_node.c_uid!=c_node.c_uid:
+                #TODO check that rand_node is non-friend and also return multiple rsim from binary search
                 rsim = compute_node_similarity(c_node,rand_node, interact_type, 
                                                 data_type_code, min_interactions_per_user, 
                                                 time_diff=-1, time_scale=time_scale)
