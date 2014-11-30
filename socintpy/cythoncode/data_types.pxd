@@ -61,6 +61,7 @@ cdef struct loopvars:
     int counter2
     int count_success
     int eligible_nodes_counter
+    int rnodes_found_counter
     int node_fnode_counter
     int node_rnode_counter
 

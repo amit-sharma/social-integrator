@@ -13,7 +13,10 @@ import time
 def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_type, 
                                             cutoff_rating, control_divider, min_interactions_per_user, 
                                             time_diff, time_scale, max_tries, max_node_computes,
-                                            max_interact_ratio_error, nonfr_match, 
+                                            max_interact_ratio_error, 
+                                            max_sim_ratio_error, 
+                                            min_friends_match_ratio, nonfr_match, 
+                                            num_parallel_threads,
                                             allow_duplicates, q):   
     num_rand_attempts = 1.0
     final_influence = None
@@ -27,7 +30,9 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
         influence_dict = cycode.compute_susceptibility_randomselect_cfast(netdata.nodes, interact_type, 
                                                 cutoff_rating, control_divider, min_interactions_per_user, 
                                                 time_diff, time_scale, max_tries, max_node_computes,
-                                                max_interact_ratio_error, allow_duplicates)
+                                                max_interact_ratio_error, max_sim_ratio_error,
+                                                min_friends_match_ratio,
+                                                num_parallel_threads, allow_duplicates)
         end = time.clock()
         end2 = time.time()
         print('Computation took %.03f CPU seconds and %.03f wall-clock seconds' % (end-start, end2-start2))
@@ -959,8 +964,10 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
     def estimate_influencer_effect_parallel(self, interact_type, split_timestamp, time_diff,
                                    time_scale, control_divider=0.1, min_interactions_per_user=0, 
                                    selection_method="random", klim=None, 
-                                   max_tries=10000, max_node_computes=10000, num_processes=1,
+                                   max_tries=10000, max_node_computes=10000, num_threads=1,
                                    max_interact_ratio_error=0.1,
+                                   max_sim_ratio_error=0.1,
+                                   min_friends_match_ratio=0.9,
                                    nonfr_match="random",
                                    method="influence",
                                    allow_duplicates=True):
@@ -1031,7 +1038,8 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                            cutoff_rating, control_divider, min_interactions_per_user, 
                            time_diff, time_scale, max_tries,
                            max_node_computes, max_interact_ratio_error,
-                           nonfr_match, allow_duplicates, q)
+                           max_sim_ratio_error, min_friends_match_ratio,
+                           nonfr_match, num_threads, allow_duplicates, q)
         print len(influence_arr_all)
         print influence_arr_all[0:10]
         return influence_arr_all

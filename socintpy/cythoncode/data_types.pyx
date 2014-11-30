@@ -46,7 +46,10 @@ cdef int comp_fsiminfo(const void *elem1, const void *elem2):
     cdef fsiminfo *b
     a = <fsiminfo *>elem1
     b = <fsiminfo *>elem2
-    return <int>(a[0].sim - b[0].sim)
+    if a[0].sim > b[0].sim: return 1
+    if a[0].sim < b[0].sim: return -1
+    return 0
+    #return <int>(a[0].sim - b[0].sim)
 
 cdef inline void swap_elements(int *a, int *b) nogil:
     cdef int t = a[0]

@@ -927,11 +927,12 @@ struct __pyx_t_8socintpy_10cythoncode_10data_types_loopvars {
   int counter2;
   int count_success;
   int eligible_nodes_counter;
+  int rnodes_found_counter;
   int node_fnode_counter;
   int node_rnode_counter;
 };
 
-/* "socintpy/cythoncode/data_types.pxd":67
+/* "socintpy/cythoncode/data_types.pxd":68
  *     int node_rnode_counter
  * 
  * cdef struct compfrnonfr:             # <<<<<<<<<<<<<<
@@ -945,7 +946,7 @@ struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr {
   struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata rnode;
 };
 
-/* "socintpy/cythoncode/data_types.pxd":73
+/* "socintpy/cythoncode/data_types.pxd":74
  *     netnodedata rnode
  * 
  * cdef struct twoints:             # <<<<<<<<<<<<<<
@@ -966,7 +967,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_
 struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_interactions_between;
 struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_others_prev_actions;
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":490
+/* "socintpy/cythoncode/cnetwork_node.pyx":517
  *     return simscore/union_sum
  * 
  * cdef int get_num_interactions_between(idata *interactions, int length_interactions,             # <<<<<<<<<<<<<<
@@ -978,7 +979,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_get_num_interaction
   int order_agnostic;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":805
+/* "socintpy/cythoncode/cnetwork_node.pyx":832
  *             PyMem_Free(self.ndata.c_test_data)
  * 
  *     cpdef int store_interactions(self, int interact_type, ilist, do_sort=True) except -1:             # <<<<<<<<<<<<<<
@@ -990,7 +991,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_stor
   PyObject *do_sort;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":846
+/* "socintpy/cythoncode/cnetwork_node.pyx":873
  *         return 1
  * 
  *     cpdef int remove_friends(self, change_should_have_friends=True):             # <<<<<<<<<<<<<<
@@ -1002,7 +1003,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remo
   PyObject *change_should_have_friends;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":867
+/* "socintpy/cythoncode/cnetwork_node.pyx":894
  *             print "---", self.ndata.c_list[interact_type][i].item_id
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,             # <<<<<<<<<<<<<<
@@ -1015,7 +1016,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_
   PyBoolObject *return_timestamp;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":881
+/* "socintpy/cythoncode/cnetwork_node.pyx":908
  * 
  * 
  *     cpdef get_interactions(self, int interact_type, int cutoff_rating=-1):             # <<<<<<<<<<<<<<
@@ -1027,7 +1028,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_
   int cutoff_rating;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":898
+/* "socintpy/cythoncode/cnetwork_node.pyx":925
  *             print "woow"
  * 
  *     cpdef get_interactions_before(self, int interact_type, int split_timestamp,             # <<<<<<<<<<<<<<
@@ -1039,7 +1040,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_
   int cutoff_rating;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":910
+/* "socintpy/cythoncode/cnetwork_node.pyx":937
  *         return interacts
  * 
  *     cpdef get_interactions_after(self, int interact_type, int split_timestamp,             # <<<<<<<<<<<<<<
@@ -1051,7 +1052,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_
   int cutoff_rating;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":922
+/* "socintpy/cythoncode/cnetwork_node.pyx":949
  *         return interacts
  * 
  *     cpdef get_interactions_between(self, int interact_type, int start_timestamp,             # <<<<<<<<<<<<<<
@@ -1063,7 +1064,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_
   int cutoff_rating;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1319
+/* "socintpy/cythoncode/cnetwork_node.pyx":1346
  *         return
  * 
  *     cpdef get_others_prev_actions(self, other_nodes, length_other_nodes, interact_type, timestamp, min_interactions_per_user, time_diff, time_scale, debug=False):             # <<<<<<<<<<<<<<
@@ -1075,7 +1076,7 @@ struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_
   PyObject *debug;
 };
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":750
+/* "socintpy/cythoncode/cnetwork_node.pyx":777
  * @cython.freelist(1024)
  * @cython.no_gc_clear
  * cdef class CNetworkNode:             # <<<<<<<<<<<<<<
@@ -1171,7 +1172,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":750
+/* "socintpy/cythoncode/cnetwork_node.pyx":777
  * @cython.freelist(1024)
  * @cython.no_gc_clear
  * cdef class CNetworkNode:             # <<<<<<<<<<<<<<
@@ -1943,10 +1944,10 @@ static PyObject *strided = 0;
 static PyObject *indirect = 0;
 static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
-static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_susceptibility_randomselect_cfast(PyObject *, int, float, float, int, int, int, int, int, float, int, int __pyx_skip_dispatch); /*proto*/
-static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_f_8socintpy_10cythoncode_13cnetwork_node_process_one_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, int, float, float, int, int, int, int, float, int, int, int *, int *, int *); /*proto*/
-static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compare_friend_nonfriend(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **, int, struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo *, int, int, int, int, int, float, float); /*proto*/
-static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **, int, int, float, int, int, int, int, int, int); /*proto*/
+static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_susceptibility_randomselect_cfast(PyObject *, int, float, float, int, int, int, int, int, float, float, float, int, int, int __pyx_skip_dispatch); /*proto*/
+static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_f_8socintpy_10cythoncode_13cnetwork_node_process_one_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, int, float, float, int, int, int, int, float, float, float, int, int, int *, int *, int *, int *); /*proto*/
+static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compare_friend_nonfriend(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **, int, struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo *, int, int, int, int, int, float, float, int *); /*proto*/
+static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *, int, int, float, int, int, int, int, int, int); /*proto*/
 static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similarity(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata, int, int, int, int, int); /*proto*/
 static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similarity_c(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *, struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *, int, int, int, int); /*proto*/
 static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_between(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *, int, int, int, float, struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_between *__pyx_optional_args); /*proto*/
@@ -2008,7 +2009,7 @@ static PyObject *__pyx_builtin_id;
 static PyObject *__pyx_builtin_IndexError;
 static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility_pywrapper(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_my_node, PyObject *__pyx_v_other_nodes, int __pyx_v_length_other_nodes, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, int __pyx_v_data_type_code, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_allow_duplicates, int __pyx_v_debug); /* proto */
 static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_2compute_node_similarity_pywrapper(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node, PyObject *__pyx_v_other_node, int __pyx_v_interact_type, int __pyx_v_data_type_code, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale); /* proto */
-static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_susceptibility_randomselect_cfast(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_all_nodes_list, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, int __pyx_v_max_node_computes, float __pyx_v_max_interact_ratio_error, int __pyx_v_allow_duplicates); /* proto */
+static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_susceptibility_randomselect_cfast(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_all_nodes_list, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, int __pyx_v_max_node_computes, float __pyx_v_max_interact_ratio_error, float __pyx_v_max_sim_ratio_error, float __pyx_v_min_friends_match_ratio, int __pyx_v_num_parallel_threads, int __pyx_v_allow_duplicates); /* proto */
 static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_6compute_global_topk_similarity(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_all_nodes, PyObject *__pyx_v_interact_type, PyObject *__pyx_v_klim); /* proto */
 static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cinit__(struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs); /* proto */
 static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_2__init__(struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs); /* proto */
@@ -2232,10 +2233,11 @@ static char __pyx_k_length_other_nodes[] = "length_other_nodes";
 static char __pyx_k_store_interactions[] = "store_interactions";
 static char __pyx_k_strided_and_direct[] = "<strided and direct>";
 static char __pyx_k_Should_Have_Friends[] = "Should Have Friends";
-static char __pyx_k_Successful_triplets[] = "--Successful triplets:";
+static char __pyx_k_max_sim_ratio_error[] = "max_sim_ratio_error";
 static char __pyx_k_remove_interactions[] = "remove_interactions";
 static char __pyx_k_should_have_friends[] = "should_have_friends";
 static char __pyx_k_get_num_interactions[] = "get_num_interactions";
+static char __pyx_k_num_parallel_threads[] = "num_parallel_threads";
 static char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
 static char __pyx_k_items_num_influencers[] = "items_num_influencers";
@@ -2250,9 +2252,11 @@ static char __pyx_k_compute_mean_similarity[] = "compute_mean_similarity";
 static char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static char __pyx_k_get_interactions_before[] = "get_interactions_before";
 static char __pyx_k_get_others_prev_actions[] = "get_others_prev_actions";
+static char __pyx_k_min_friends_match_ratio[] = "min_friends_match_ratio";
 static char __pyx_k_update_items_popularity[] = "update_items_popularity";
 static char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '%s'";
 static char __pyx_k_Should_Have_Interactions[] = "Should Have Interactions";
+static char __pyx_k_Successful_final_nodes_d[] = "--Successful final nodes: %d\n";
 static char __pyx_k_get_interactions_between[] = "get_interactions_between";
 static char __pyx_k_getbuffer_obj_view_flags[] = "getbuffer(obj, view, flags)";
 static char __pyx_k_items_edge_coverage_view[] = "items_edge_coverage_view";
@@ -2430,9 +2434,11 @@ static PyObject *__pyx_n_s_mat;
 static PyObject *__pyx_n_s_max_friends;
 static PyObject *__pyx_n_s_max_interact_ratio_error;
 static PyObject *__pyx_n_s_max_node_computes;
+static PyObject *__pyx_n_s_max_sim_ratio_error;
 static PyObject *__pyx_n_s_max_tries;
 static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_min_friends;
+static PyObject *__pyx_n_s_min_friends_match_ratio;
 static PyObject *__pyx_n_s_min_interactions_per_user;
 static PyObject *__pyx_n_s_mode;
 static PyObject *__pyx_n_s_my_node;
@@ -2447,6 +2453,7 @@ static PyObject *__pyx_n_s_node;
 static PyObject *__pyx_n_s_node_data;
 static PyObject *__pyx_n_s_nodes_iterable;
 static PyObject *__pyx_n_s_np;
+static PyObject *__pyx_n_s_num_parallel_threads;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_old_item_id;
@@ -2711,12 +2718,13 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_1compute_node_s
 static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility_pywrapper(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_my_node, PyObject *__pyx_v_other_nodes, int __pyx_v_length_other_nodes, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, int __pyx_v_data_type_code, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_allow_duplicates, int __pyx_v_debug) {
   int __pyx_v_i;
   float __pyx_v_ret;
-  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_other_nodes_ndata;
+  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *__pyx_v_other_nodes_ndata;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
+  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_t_4;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2725,17 +2733,17 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_compute_node_su
   /* "socintpy/cythoncode/cnetwork_node.pyx":73
  *     cdef int i
  *     cdef float ret
- *     cdef netnodedata **other_nodes_ndata = <netnodedata **>malloc(length_other_nodes*sizeof(netnodedata *))             # <<<<<<<<<<<<<<
+ *     cdef netnodedata *other_nodes_ndata = <netnodedata *>malloc(length_other_nodes*sizeof(netnodedata))             # <<<<<<<<<<<<<<
  *     for i in range(length_other_nodes):
- *         other_nodes_ndata[i] = &((<CNetworkNode>other_nodes[i]).ndata)
+ *         other_nodes_ndata[i] = (<CNetworkNode>other_nodes[i]).ndata
  */
-  __pyx_v_other_nodes_ndata = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **)malloc((__pyx_v_length_other_nodes * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)))));
+  __pyx_v_other_nodes_ndata = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)malloc((__pyx_v_length_other_nodes * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata)))));
 
   /* "socintpy/cythoncode/cnetwork_node.pyx":74
  *     cdef float ret
- *     cdef netnodedata **other_nodes_ndata = <netnodedata **>malloc(length_other_nodes*sizeof(netnodedata *))
+ *     cdef netnodedata *other_nodes_ndata = <netnodedata *>malloc(length_other_nodes*sizeof(netnodedata))
  *     for i in range(length_other_nodes):             # <<<<<<<<<<<<<<
- *         other_nodes_ndata[i] = &((<CNetworkNode>other_nodes[i]).ndata)
+ *         other_nodes_ndata[i] = (<CNetworkNode>other_nodes[i]).ndata
  *     ret = compute_node_susceptibility((<CNetworkNode>my_node).ndata, other_nodes_ndata,
  */
   __pyx_t_1 = __pyx_v_length_other_nodes;
@@ -2743,21 +2751,22 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_compute_node_su
     __pyx_v_i = __pyx_t_2;
 
     /* "socintpy/cythoncode/cnetwork_node.pyx":75
- *     cdef netnodedata **other_nodes_ndata = <netnodedata **>malloc(length_other_nodes*sizeof(netnodedata *))
+ *     cdef netnodedata *other_nodes_ndata = <netnodedata *>malloc(length_other_nodes*sizeof(netnodedata))
  *     for i in range(length_other_nodes):
- *         other_nodes_ndata[i] = &((<CNetworkNode>other_nodes[i]).ndata)             # <<<<<<<<<<<<<<
+ *         other_nodes_ndata[i] = (<CNetworkNode>other_nodes[i]).ndata             # <<<<<<<<<<<<<<
  *     ret = compute_node_susceptibility((<CNetworkNode>my_node).ndata, other_nodes_ndata,
  *             length_other_nodes, interact_type, cutoff_rating, data_type_code,
  */
     __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_other_nodes, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 75; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_3);
-    (__pyx_v_other_nodes_ndata[__pyx_v_i]) = (&((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_3)->ndata);
+    __pyx_t_4 = ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_3)->ndata;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    (__pyx_v_other_nodes_ndata[__pyx_v_i]) = __pyx_t_4;
   }
 
   /* "socintpy/cythoncode/cnetwork_node.pyx":76
  *     for i in range(length_other_nodes):
- *         other_nodes_ndata[i] = &((<CNetworkNode>other_nodes[i]).ndata)
+ *         other_nodes_ndata[i] = (<CNetworkNode>other_nodes[i]).ndata
  *     ret = compute_node_susceptibility((<CNetworkNode>my_node).ndata, other_nodes_ndata,             # <<<<<<<<<<<<<<
  *             length_other_nodes, interact_type, cutoff_rating, data_type_code,
  *             min_interactions_per_user, time_diff, time_scale, allow_duplicates, debug)
@@ -2981,11 +2990,10 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_2compute_node_s
  */
 
 static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_5compute_susceptibility_randomselect_cfast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_susceptibility_randomselect_cfast(PyObject *__pyx_v_all_nodes_list, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, int __pyx_v_max_node_computes, float __pyx_v_max_interact_ratio_error, int __pyx_v_allow_duplicates, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_susceptibility_randomselect_cfast(PyObject *__pyx_v_all_nodes_list, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, int __pyx_v_max_node_computes, float __pyx_v_max_interact_ratio_error, float __pyx_v_max_sim_ratio_error, float __pyx_v_min_friends_match_ratio, int __pyx_v_num_parallel_threads, int __pyx_v_allow_duplicates, CYTHON_UNUSED int __pyx_skip_dispatch) {
   CYTHON_UNUSED int __pyx_v_counter;
   CYTHON_UNUSED int __pyx_v_counter2;
   int __pyx_v_edges_counter;
-  CYTHON_UNUSED float __pyx_v_max_sim_ratio_error;
   int __pyx_v_total_num_nodes;
   CYTHON_UNUSED int __pyx_v_node_fnode_counter;
   CYTHON_UNUSED int __pyx_v_node_rnode_counter;
@@ -3017,25 +3025,16 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_susceptibility_randomselect_cfast", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":121
+  /* "socintpy/cythoncode/cnetwork_node.pyx":124
  *         int count_success
  *         int eligible_nodes_counter
  *         int edges_counter = 0             # <<<<<<<<<<<<<<
- *         float max_sim_ratio_error = 0.1
- *         float fsim, rsim
- */
-  __pyx_v_edges_counter = 0;
-
-  /* "socintpy/cythoncode/cnetwork_node.pyx":122
- *         int eligible_nodes_counter
- *         int edges_counter = 0
- *         float max_sim_ratio_error = 0.1             # <<<<<<<<<<<<<<
  *         float fsim, rsim
  *         int num_eligible_friends
  */
-  __pyx_v_max_sim_ratio_error = 0.1;
+  __pyx_v_edges_counter = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":126
+  /* "socintpy/cythoncode/cnetwork_node.pyx":128
  *         int num_eligible_friends
  *         int total_num_nodes
  *         int node_fnode_counter = 0             # <<<<<<<<<<<<<<
@@ -3044,7 +3043,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
   __pyx_v_node_fnode_counter = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":127
+  /* "socintpy/cythoncode/cnetwork_node.pyx":129
  *         int total_num_nodes
  *         int node_fnode_counter = 0
  *         int node_rnode_counter = 0             # <<<<<<<<<<<<<<
@@ -3053,17 +3052,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
   __pyx_v_node_rnode_counter = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":129
+  /* "socintpy/cythoncode/cnetwork_node.pyx":131
  *         int node_rnode_counter = 0
  *         int i,j
  *     cdef int len_nodes_arr = len(all_nodes_list)             # <<<<<<<<<<<<<<
  *     cdef netnodedata **allnodes = <netnodedata **>malloc(len_nodes_arr*sizeof(netnodedata *))
  *     cdef nodesusceptinfo node_data
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_all_nodes_list); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyObject_Length(__pyx_v_all_nodes_list); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_len_nodes_arr = __pyx_t_1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":130
+  /* "socintpy/cythoncode/cnetwork_node.pyx":132
  *         int i,j
  *     cdef int len_nodes_arr = len(all_nodes_list)
  *     cdef netnodedata **allnodes = <netnodedata **>malloc(len_nodes_arr*sizeof(netnodedata *))             # <<<<<<<<<<<<<<
@@ -3072,19 +3071,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
   __pyx_v_allnodes = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **)malloc((__pyx_v_len_nodes_arr * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":132
+  /* "socintpy/cythoncode/cnetwork_node.pyx":134
  *     cdef netnodedata **allnodes = <netnodedata **>malloc(len_nodes_arr*sizeof(netnodedata *))
  *     cdef nodesusceptinfo node_data
  *     influence_arr = {}             # <<<<<<<<<<<<<<
  *     for i in range(1,len_nodes_arr):
  *         allnodes[i] = &((<CNetworkNode>all_nodes_list[i]).ndata)
  */
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_influence_arr = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":133
+  /* "socintpy/cythoncode/cnetwork_node.pyx":135
  *     cdef nodesusceptinfo node_data
  *     influence_arr = {}
  *     for i in range(1,len_nodes_arr):             # <<<<<<<<<<<<<<
@@ -3095,19 +3094,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
   for (__pyx_t_4 = 1; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":134
+    /* "socintpy/cythoncode/cnetwork_node.pyx":136
  *     influence_arr = {}
  *     for i in range(1,len_nodes_arr):
  *         allnodes[i] = &((<CNetworkNode>all_nodes_list[i]).ndata)             # <<<<<<<<<<<<<<
  *         i+= 1
  *     total_num_nodes = i-1 # because index starts from 1
  */
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_all_nodes_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_all_nodes_list, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
     (__pyx_v_allnodes[__pyx_v_i]) = (&((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_2)->ndata);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":135
+    /* "socintpy/cythoncode/cnetwork_node.pyx":137
  *     for i in range(1,len_nodes_arr):
  *         allnodes[i] = &((<CNetworkNode>all_nodes_list[i]).ndata)
  *         i+= 1             # <<<<<<<<<<<<<<
@@ -3117,7 +3116,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":136
+  /* "socintpy/cythoncode/cnetwork_node.pyx":138
  *         allnodes[i] = &((<CNetworkNode>all_nodes_list[i]).ndata)
  *         i+= 1
  *     total_num_nodes = i-1 # because index starts from 1             # <<<<<<<<<<<<<<
@@ -3126,7 +3125,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
   __pyx_v_total_num_nodes = (__pyx_v_i - 1);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":137
+  /* "socintpy/cythoncode/cnetwork_node.pyx":139
  *         i+= 1
  *     total_num_nodes = i-1 # because index starts from 1
  *     counter = 0             # <<<<<<<<<<<<<<
@@ -3135,7 +3134,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
   __pyx_v_counter = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":138
+  /* "socintpy/cythoncode/cnetwork_node.pyx":140
  *     total_num_nodes = i-1 # because index starts from 1
  *     counter = 0
  *     counter2 = 0             # <<<<<<<<<<<<<<
@@ -3144,19 +3143,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
   __pyx_v_counter2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":141
+  /* "socintpy/cythoncode/cnetwork_node.pyx":143
  *     cdef loopvars *buf
  *     cdef netnodedata *loc_allnodes
  *     cdef int tid = 0             # <<<<<<<<<<<<<<
- *     with nogil, parallel(num_threads=2):
+ *     with nogil, parallel(num_threads=num_parallel_threads):
  *         buf = <loopvars *>malloc(1*sizeof(loopvars))
  */
   __pyx_v_tid = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":142
+  /* "socintpy/cythoncode/cnetwork_node.pyx":144
  *     cdef netnodedata *loc_allnodes
  *     cdef int tid = 0
- *     with nogil, parallel(num_threads=2):             # <<<<<<<<<<<<<<
+ *     with nogil, parallel(num_threads=num_parallel_threads):             # <<<<<<<<<<<<<<
  *         buf = <loopvars *>malloc(1*sizeof(loopvars))
  *         buf[0].counter = 0
  */
@@ -3178,7 +3177,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                 #define unlikely(x) (x)
             #endif
             #ifdef _OPENMP
-            #pragma omp parallel private(__pyx_v_buf) private(__pyx_t_5, __pyx_t_4, __pyx_t_6, __pyx_t_9, __pyx_t_7, __pyx_t_8, __pyx_t_3) firstprivate(__pyx_t_12, __pyx_t_10, __pyx_t_2, __pyx_t_11, __pyx_t_13) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb) num_threads(2)
+            #pragma omp parallel private(__pyx_v_buf) private(__pyx_t_5, __pyx_t_4, __pyx_t_6, __pyx_t_9, __pyx_t_7, __pyx_t_8, __pyx_t_3) firstprivate(__pyx_t_12, __pyx_t_10, __pyx_t_2, __pyx_t_11, __pyx_t_13) private(__pyx_filename, __pyx_lineno, __pyx_clineno) shared(__pyx_parallel_why, __pyx_parallel_exc_type, __pyx_parallel_exc_value, __pyx_parallel_exc_tb) num_threads(__pyx_v_num_parallel_threads)
             #endif /* _OPENMP */
             {
                 #ifdef _OPENMP
@@ -3190,17 +3189,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                 /* Initialize private variables to invalid values */
                 __pyx_v_buf = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_loopvars *)1);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":143
+                /* "socintpy/cythoncode/cnetwork_node.pyx":145
  *     cdef int tid = 0
- *     with nogil, parallel(num_threads=2):
+ *     with nogil, parallel(num_threads=num_parallel_threads):
  *         buf = <loopvars *>malloc(1*sizeof(loopvars))             # <<<<<<<<<<<<<<
  *         buf[0].counter = 0
  *         buf[0].counter2 = 0
  */
                 __pyx_v_buf = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_loopvars *)malloc((1 * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_loopvars)))));
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":144
- *     with nogil, parallel(num_threads=2):
+                /* "socintpy/cythoncode/cnetwork_node.pyx":146
+ *     with nogil, parallel(num_threads=num_parallel_threads):
  *         buf = <loopvars *>malloc(1*sizeof(loopvars))
  *         buf[0].counter = 0             # <<<<<<<<<<<<<<
  *         buf[0].counter2 = 0
@@ -3208,7 +3207,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                 (__pyx_v_buf[0]).counter = 0;
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":145
+                /* "socintpy/cythoncode/cnetwork_node.pyx":147
  *         buf = <loopvars *>malloc(1*sizeof(loopvars))
  *         buf[0].counter = 0
  *         buf[0].counter2 = 0             # <<<<<<<<<<<<<<
@@ -3217,7 +3216,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                 (__pyx_v_buf[0]).counter2 = 0;
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":146
+                /* "socintpy/cythoncode/cnetwork_node.pyx":148
  *         buf[0].counter = 0
  *         buf[0].counter2 = 0
  *         buf[0].eligible_nodes_counter = 0             # <<<<<<<<<<<<<<
@@ -3226,7 +3225,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                 (__pyx_v_buf[0]).eligible_nodes_counter = 0;
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":147
+                /* "socintpy/cythoncode/cnetwork_node.pyx":149
  *         buf[0].counter2 = 0
  *         buf[0].eligible_nodes_counter = 0
  *         buf[0].count_success = 0             # <<<<<<<<<<<<<<
@@ -3235,27 +3234,36 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                 (__pyx_v_buf[0]).count_success = 0;
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":148
+                /* "socintpy/cythoncode/cnetwork_node.pyx":150
  *         buf[0].eligible_nodes_counter = 0
  *         buf[0].count_success = 0
  *         buf[0].node_fnode_counter = 0             # <<<<<<<<<<<<<<
  *         buf[0].node_rnode_counter = 0
- *         for i in prange(1,len_nodes_arr,schedule='dynamic'):
+ *         buf[0].rnodes_found_counter = 0
  */
                 (__pyx_v_buf[0]).node_fnode_counter = 0;
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":149
+                /* "socintpy/cythoncode/cnetwork_node.pyx":151
  *         buf[0].count_success = 0
  *         buf[0].node_fnode_counter = 0
  *         buf[0].node_rnode_counter = 0             # <<<<<<<<<<<<<<
+ *         buf[0].rnodes_found_counter = 0
  *         for i in prange(1,len_nodes_arr,schedule='dynamic'):
- *         #for i in range(1,len_nodes_arr):
  */
                 (__pyx_v_buf[0]).node_rnode_counter = 0;
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":150
+                /* "socintpy/cythoncode/cnetwork_node.pyx":152
  *         buf[0].node_fnode_counter = 0
  *         buf[0].node_rnode_counter = 0
+ *         buf[0].rnodes_found_counter = 0             # <<<<<<<<<<<<<<
+ *         for i in prange(1,len_nodes_arr,schedule='dynamic'):
+ *         #for i in range(1,len_nodes_arr):
+ */
+                (__pyx_v_buf[0]).rnodes_found_counter = 0;
+
+                /* "socintpy/cythoncode/cnetwork_node.pyx":153
+ *         buf[0].node_rnode_counter = 0
+ *         buf[0].rnodes_found_counter = 0
  *         for i in prange(1,len_nodes_arr,schedule='dynamic'):             # <<<<<<<<<<<<<<
  *         #for i in range(1,len_nodes_arr):
  *             one_nodeinfo = (<netnodedata *>allnodes[i])[0]
@@ -3275,7 +3283,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                     if (__pyx_t_6 > 0)
                     {
                         #ifdef _OPENMP
-                        #pragma omp for lastprivate(__pyx_v_one_nodeinfo) lastprivate(__pyx_v_tid) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_node_data) schedule(dynamic)
+                        #pragma omp for lastprivate(__pyx_v_one_nodeinfo) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_tid) lastprivate(__pyx_v_node_data) schedule(dynamic)
                         #endif /* _OPENMP */
                         for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_6; __pyx_t_5++){
                             if (__pyx_parallel_why < 2)
@@ -3284,7 +3292,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                 /* Initialize private variables to invalid values */
                                 __pyx_v_tid = ((int)0xbad0bad0);
 
-                                /* "socintpy/cythoncode/cnetwork_node.pyx":152
+                                /* "socintpy/cythoncode/cnetwork_node.pyx":155
  *         for i in prange(1,len_nodes_arr,schedule='dynamic'):
  *         #for i in range(1,len_nodes_arr):
  *             one_nodeinfo = (<netnodedata *>allnodes[i])[0]             # <<<<<<<<<<<<<<
@@ -3293,7 +3301,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                                 __pyx_v_one_nodeinfo = (((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)(__pyx_v_allnodes[__pyx_v_i]))[0]);
 
-                                /* "socintpy/cythoncode/cnetwork_node.pyx":153
+                                /* "socintpy/cythoncode/cnetwork_node.pyx":156
  *         #for i in range(1,len_nodes_arr):
  *             one_nodeinfo = (<netnodedata *>allnodes[i])[0]
  *             if one_nodeinfo.c_list is not NULL and one_nodeinfo.c_friend_list is not NULL:             # <<<<<<<<<<<<<<
@@ -3311,16 +3319,16 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                 __pyx_L17_bool_binop_done:;
                                 if (__pyx_t_7) {
 
-                                  /* "socintpy/cythoncode/cnetwork_node.pyx":154
+                                  /* "socintpy/cythoncode/cnetwork_node.pyx":157
  *             one_nodeinfo = (<netnodedata *>allnodes[i])[0]
  *             if one_nodeinfo.c_list is not NULL and one_nodeinfo.c_friend_list is not NULL:
  *                 node_data = process_one_node_susceptibility(allnodes, one_nodeinfo, interact_type,             # <<<<<<<<<<<<<<
  *                                             cutoff_rating, control_divider,
  *                                             min_interactions_per_user,
  */
-                                  __pyx_v_node_data = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_process_one_node_susceptibility(__pyx_v_allnodes, __pyx_v_one_nodeinfo, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_control_divider, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_tries, __pyx_v_max_interact_ratio_error, __pyx_v_allow_duplicates, __pyx_v_total_num_nodes, (&(__pyx_v_buf[0]).eligible_nodes_counter), (&(__pyx_v_buf[0]).node_fnode_counter), (&(__pyx_v_buf[0]).node_rnode_counter));
+                                  __pyx_v_node_data = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_process_one_node_susceptibility(__pyx_v_allnodes, __pyx_v_one_nodeinfo, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_control_divider, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_tries, __pyx_v_max_interact_ratio_error, __pyx_v_max_sim_ratio_error, __pyx_v_min_friends_match_ratio, __pyx_v_allow_duplicates, __pyx_v_total_num_nodes, (&(__pyx_v_buf[0]).eligible_nodes_counter), (&(__pyx_v_buf[0]).rnodes_found_counter), (&(__pyx_v_buf[0]).node_fnode_counter), (&(__pyx_v_buf[0]).node_rnode_counter));
 
-                                  /* "socintpy/cythoncode/cnetwork_node.pyx":163
+                                  /* "socintpy/cythoncode/cnetwork_node.pyx":169
  *                                             &(buf[0].node_fnode_counter), &(buf[0].node_rnode_counter))
  * 
  *                 if node_data.fsim > -0.5:# !=-1 but equality not well-defined for float             # <<<<<<<<<<<<<<
@@ -3330,7 +3338,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                   __pyx_t_7 = ((__pyx_v_node_data.fsim > -0.5) != 0);
                                   if (__pyx_t_7) {
 
-                                    /* "socintpy/cythoncode/cnetwork_node.pyx":164
+                                    /* "socintpy/cythoncode/cnetwork_node.pyx":170
  * 
  *                 if node_data.fsim > -0.5:# !=-1 but equality not well-defined for float
  *                     buf[0].count_success +=1             # <<<<<<<<<<<<<<
@@ -3340,7 +3348,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                     __pyx_t_9 = 0;
                                     (__pyx_v_buf[__pyx_t_9]).count_success = ((__pyx_v_buf[__pyx_t_9]).count_success + 1);
 
-                                    /* "socintpy/cythoncode/cnetwork_node.pyx":166
+                                    /* "socintpy/cythoncode/cnetwork_node.pyx":172
  *                     buf[0].count_success +=1
  * 
  *                     with gil:             # <<<<<<<<<<<<<<
@@ -3353,30 +3361,30 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                         #endif
                                         /*try:*/ {
 
-                                          /* "socintpy/cythoncode/cnetwork_node.pyx":168
+                                          /* "socintpy/cythoncode/cnetwork_node.pyx":174
  *                     with gil:
  *                         influence_arr[one_nodeinfo.c_uid] = (0, 0, 0,
  *                            node_data.fsim, node_data.rsim,node_data.fsusc, node_data.rsusc)             # <<<<<<<<<<<<<<
  *                         #printf("%d: %f", one_nodeinfo.c_uid,node_data.fsim)#, node_data.rsim, node_data.fsusc, node_data.rsusc)
  * 
  */
-                                          __pyx_t_2 = PyFloat_FromDouble(__pyx_v_node_data.fsim); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
+                                          __pyx_t_2 = PyFloat_FromDouble(__pyx_v_node_data.fsim); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
                                           __Pyx_GOTREF(__pyx_t_2);
-                                          __pyx_t_10 = PyFloat_FromDouble(__pyx_v_node_data.rsim); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
+                                          __pyx_t_10 = PyFloat_FromDouble(__pyx_v_node_data.rsim); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
                                           __Pyx_GOTREF(__pyx_t_10);
-                                          __pyx_t_11 = PyFloat_FromDouble(__pyx_v_node_data.fsusc); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
+                                          __pyx_t_11 = PyFloat_FromDouble(__pyx_v_node_data.fsusc); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
                                           __Pyx_GOTREF(__pyx_t_11);
-                                          __pyx_t_12 = PyFloat_FromDouble(__pyx_v_node_data.rsusc); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
+                                          __pyx_t_12 = PyFloat_FromDouble(__pyx_v_node_data.rsusc); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
                                           __Pyx_GOTREF(__pyx_t_12);
 
-                                          /* "socintpy/cythoncode/cnetwork_node.pyx":167
+                                          /* "socintpy/cythoncode/cnetwork_node.pyx":173
  * 
  *                     with gil:
  *                         influence_arr[one_nodeinfo.c_uid] = (0, 0, 0,             # <<<<<<<<<<<<<<
  *                            node_data.fsim, node_data.rsim,node_data.fsusc, node_data.rsusc)
  *                         #printf("%d: %f", one_nodeinfo.c_uid,node_data.fsim)#, node_data.rsim, node_data.fsusc, node_data.rsusc)
  */
-                                          __pyx_t_13 = PyTuple_New(7); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
+                                          __pyx_t_13 = PyTuple_New(7); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
                                           __Pyx_GOTREF(__pyx_t_13);
                                           __Pyx_INCREF(__pyx_int_0);
                                           PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_int_0);
@@ -3399,14 +3407,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                           __pyx_t_10 = 0;
                                           __pyx_t_11 = 0;
                                           __pyx_t_12 = 0;
-                                          __pyx_t_12 = __Pyx_PyInt_From_int(__pyx_v_one_nodeinfo.c_uid); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
+                                          __pyx_t_12 = __Pyx_PyInt_From_int(__pyx_v_one_nodeinfo.c_uid); if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
                                           __Pyx_GOTREF(__pyx_t_12);
-                                          if (unlikely(PyDict_SetItem(__pyx_v_influence_arr, __pyx_t_12, __pyx_t_13) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
+                                          if (unlikely(PyDict_SetItem(__pyx_v_influence_arr, __pyx_t_12, __pyx_t_13) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
                                           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
                                           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
                                         }
 
-                                        /* "socintpy/cythoncode/cnetwork_node.pyx":166
+                                        /* "socintpy/cythoncode/cnetwork_node.pyx":172
  *                     buf[0].count_success +=1
  * 
  *                     with gil:             # <<<<<<<<<<<<<<
@@ -3433,7 +3441,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                   }
                                   __pyx_L19:;
 
-                                  /* "socintpy/cythoncode/cnetwork_node.pyx":172
+                                  /* "socintpy/cythoncode/cnetwork_node.pyx":178
  * 
  * 
  *                 buf[0].counter2 += 1             # <<<<<<<<<<<<<<
@@ -3443,7 +3451,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                   __pyx_t_9 = 0;
                                   (__pyx_v_buf[__pyx_t_9]).counter2 = ((__pyx_v_buf[__pyx_t_9]).counter2 + 1);
 
-                                  /* "socintpy/cythoncode/cnetwork_node.pyx":173
+                                  /* "socintpy/cythoncode/cnetwork_node.pyx":179
  * 
  *                 buf[0].counter2 += 1
  *                 tid = threadid()             # <<<<<<<<<<<<<<
@@ -3457,7 +3465,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                   #endif
                                   __pyx_v_tid = __pyx_t_4;
 
-                                  /* "socintpy/cythoncode/cnetwork_node.pyx":174
+                                  /* "socintpy/cythoncode/cnetwork_node.pyx":180
  *                 buf[0].counter2 += 1
  *                 tid = threadid()
  *                 if buf[0].counter2 %100==0:             # <<<<<<<<<<<<<<
@@ -3467,7 +3475,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                   __pyx_t_7 = ((((__pyx_v_buf[0]).counter2 % 100) == 0) != 0);
                                   if (__pyx_t_7) {
 
-                                    /* "socintpy/cythoncode/cnetwork_node.pyx":175
+                                    /* "socintpy/cythoncode/cnetwork_node.pyx":181
  *                 tid = threadid()
  *                 if buf[0].counter2 %100==0:
  *                     printf("Thread %d: Done counter %d\n", tid, buf[0].counter2)             # <<<<<<<<<<<<<<
@@ -3479,7 +3487,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                   }
                                   __pyx_L25:;
 
-                                  /* "socintpy/cythoncode/cnetwork_node.pyx":176
+                                  /* "socintpy/cythoncode/cnetwork_node.pyx":182
  *                 if buf[0].counter2 %100==0:
  *                     printf("Thread %d: Done counter %d\n", tid, buf[0].counter2)
  *                 if buf[0].counter2 > max_node_computes:             # <<<<<<<<<<<<<<
@@ -3489,7 +3497,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                   __pyx_t_7 = (((__pyx_v_buf[0]).counter2 > __pyx_v_max_node_computes) != 0);
                                   if (__pyx_t_7) {
 
-                                    /* "socintpy/cythoncode/cnetwork_node.pyx":177
+                                    /* "socintpy/cythoncode/cnetwork_node.pyx":183
  *                     printf("Thread %d: Done counter %d\n", tid, buf[0].counter2)
  *                 if buf[0].counter2 > max_node_computes:
  *                     printf("%d, %d", buf[0].counter2, max_node_computes)             # <<<<<<<<<<<<<<
@@ -3498,7 +3506,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                                     printf(__pyx_k_d_d, (__pyx_v_buf[0]).counter2, __pyx_v_max_node_computes);
 
-                                    /* "socintpy/cythoncode/cnetwork_node.pyx":178
+                                    /* "socintpy/cythoncode/cnetwork_node.pyx":184
  *                 if buf[0].counter2 > max_node_computes:
  *                     printf("%d, %d", buf[0].counter2, max_node_computes)
  *                     break             # <<<<<<<<<<<<<<
@@ -3511,7 +3519,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                 }
                                 __pyx_L16:;
 
-                                /* "socintpy/cythoncode/cnetwork_node.pyx":179
+                                /* "socintpy/cythoncode/cnetwork_node.pyx":185
  *                     printf("%d, %d", buf[0].counter2, max_node_computes)
  *                     break
  *             buf[0].counter += 1             # <<<<<<<<<<<<<<
@@ -3549,8 +3557,8 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                                 #endif /* _OPENMP */
                                 {
                                     __pyx_parallel_temp0 = __pyx_v_one_nodeinfo;
-                                    __pyx_parallel_temp1 = __pyx_v_tid;
-                                    __pyx_parallel_temp2 = __pyx_v_i;
+                                    __pyx_parallel_temp1 = __pyx_v_i;
+                                    __pyx_parallel_temp2 = __pyx_v_tid;
                                     __pyx_parallel_temp3 = __pyx_v_node_data;
                                 }
                                 __pyx_L28:;
@@ -3566,8 +3574,8 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                     }
                     if (__pyx_parallel_why) {
                       __pyx_v_one_nodeinfo = __pyx_parallel_temp0;
-                      __pyx_v_tid = __pyx_parallel_temp1;
-                      __pyx_v_i = __pyx_parallel_temp2;
+                      __pyx_v_i = __pyx_parallel_temp1;
+                      __pyx_v_tid = __pyx_parallel_temp2;
                       __pyx_v_node_data = __pyx_parallel_temp3;
                       switch (__pyx_parallel_why) {
                             case 3: goto __pyx_L11_return;
@@ -3588,7 +3596,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
                     }
                 }
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":180
+                /* "socintpy/cythoncode/cnetwork_node.pyx":186
  *                     break
  *             buf[0].counter += 1
  *         printf("\n--Number of nodes I looped through: %d\n", buf[0].counter)             # <<<<<<<<<<<<<<
@@ -3597,7 +3605,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                 printf(__pyx_k_Number_of_nodes_I_looped_throug, (__pyx_v_buf[0]).counter);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":181
+                /* "socintpy/cythoncode/cnetwork_node.pyx":187
  *             buf[0].counter += 1
  *         printf("\n--Number of nodes I looped through: %d\n", buf[0].counter)
  *         printf("--Number of nodes I lod through(with interactions AND friends): %d\n", buf[0].counter2)             # <<<<<<<<<<<<<<
@@ -3606,65 +3614,65 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
  */
                 printf(__pyx_k_Number_of_nodes_I_lod_through_w, (__pyx_v_buf[0]).counter2);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":182
+                /* "socintpy/cythoncode/cnetwork_node.pyx":188
  *         printf("\n--Number of nodes I looped through: %d\n", buf[0].counter)
  *         printf("--Number of nodes I lod through(with interactions AND friends): %d\n", buf[0].counter2)
  *         printf("--Eligible nodes (with interactions > %d): %d\n" ,min_interactions_per_user, buf[0].eligible_nodes_counter)             # <<<<<<<<<<<<<<
  *         printf("--Total Edges from eligible nodes: %d\n", edges_counter)
- *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].count_success)
+ *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].rnodes_found_counter)
  */
                 printf(__pyx_k_Eligible_nodes_with_interaction, __pyx_v_min_interactions_per_user, (__pyx_v_buf[0]).eligible_nodes_counter);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":183
+                /* "socintpy/cythoncode/cnetwork_node.pyx":189
  *         printf("--Number of nodes I lod through(with interactions AND friends): %d\n", buf[0].counter2)
  *         printf("--Eligible nodes (with interactions > %d): %d\n" ,min_interactions_per_user, buf[0].eligible_nodes_counter)
  *         printf("--Total Edges from eligible nodes: %d\n", edges_counter)             # <<<<<<<<<<<<<<
- *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].count_success)
- *         printf("--Successful triplets:")#, len(triplet_nodes)
+ *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].rnodes_found_counter)
+ *         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)
  */
                 printf(__pyx_k_Total_Edges_from_eligible_nodes, __pyx_v_edges_counter);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":184
+                /* "socintpy/cythoncode/cnetwork_node.pyx":190
  *         printf("--Eligible nodes (with interactions > %d): %d\n" ,min_interactions_per_user, buf[0].eligible_nodes_counter)
  *         printf("--Total Edges from eligible nodes: %d\n", edges_counter)
- *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].count_success)             # <<<<<<<<<<<<<<
- *         printf("--Successful triplets:")#, len(triplet_nodes)
- *         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)
- */
-                printf(__pyx_k_Number_of_successful_nodes_can, (__pyx_v_buf[0]).count_success);
-
-                /* "socintpy/cythoncode/cnetwork_node.pyx":185
- *         printf("--Total Edges from eligible nodes: %d\n", edges_counter)
- *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].count_success)
- *         printf("--Successful triplets:")#, len(triplet_nodes)             # <<<<<<<<<<<<<<
+ *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].rnodes_found_counter)             # <<<<<<<<<<<<<<
  *         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)
  *         printf("--Nodes with eligible fnode and rnode influence measure: %d\n", buf[0].node_rnode_counter)
  */
-                printf(__pyx_k_Successful_triplets);
+                printf(__pyx_k_Number_of_successful_nodes_can, (__pyx_v_buf[0]).rnodes_found_counter);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":186
- *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].count_success)
- *         printf("--Successful triplets:")#, len(triplet_nodes)
+                /* "socintpy/cythoncode/cnetwork_node.pyx":191
+ *         printf("--Total Edges from eligible nodes: %d\n", edges_counter)
+ *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].rnodes_found_counter)
  *         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)             # <<<<<<<<<<<<<<
  *         printf("--Nodes with eligible fnode and rnode influence measure: %d\n", buf[0].node_rnode_counter)
- *         free(buf)
+ *         printf("--Successful final nodes: %d\n", buf[0].count_success)
  */
                 printf(__pyx_k_Nodes_with_eligible_fnode_influ, (__pyx_v_buf[0]).node_fnode_counter);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":187
- *         printf("--Successful triplets:")#, len(triplet_nodes)
+                /* "socintpy/cythoncode/cnetwork_node.pyx":192
+ *         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].rnodes_found_counter)
  *         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)
  *         printf("--Nodes with eligible fnode and rnode influence measure: %d\n", buf[0].node_rnode_counter)             # <<<<<<<<<<<<<<
+ *         printf("--Successful final nodes: %d\n", buf[0].count_success)
  *         free(buf)
- *     PyMem_Free(allnodes)
  */
                 printf(__pyx_k_Nodes_with_eligible_fnode_and_r, (__pyx_v_buf[0]).node_rnode_counter);
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":188
+                /* "socintpy/cythoncode/cnetwork_node.pyx":193
  *         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)
  *         printf("--Nodes with eligible fnode and rnode influence measure: %d\n", buf[0].node_rnode_counter)
+ *         printf("--Successful final nodes: %d\n", buf[0].count_success)             # <<<<<<<<<<<<<<
+ *         free(buf)
+ *     free(allnodes)
+ */
+                printf(__pyx_k_Successful_final_nodes_d, (__pyx_v_buf[0]).count_success);
+
+                /* "socintpy/cythoncode/cnetwork_node.pyx":194
+ *         printf("--Nodes with eligible fnode and rnode influence measure: %d\n", buf[0].node_rnode_counter)
+ *         printf("--Successful final nodes: %d\n", buf[0].count_success)
  *         free(buf)             # <<<<<<<<<<<<<<
- *     PyMem_Free(allnodes)
+ *     free(allnodes)
  *     return influence_arr
  */
                 free(__pyx_v_buf);
@@ -3749,10 +3757,10 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
         #endif
       }
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":142
+      /* "socintpy/cythoncode/cnetwork_node.pyx":144
  *     cdef netnodedata *loc_allnodes
  *     cdef int tid = 0
- *     with nogil, parallel(num_threads=2):             # <<<<<<<<<<<<<<
+ *     with nogil, parallel(num_threads=num_parallel_threads):             # <<<<<<<<<<<<<<
  *         buf = <loopvars *>malloc(1*sizeof(loopvars))
  *         buf[0].counter = 0
  */
@@ -3779,18 +3787,18 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_suscepti
       }
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":189
- *         printf("--Nodes with eligible fnode and rnode influence measure: %d\n", buf[0].node_rnode_counter)
+  /* "socintpy/cythoncode/cnetwork_node.pyx":195
+ *         printf("--Successful final nodes: %d\n", buf[0].count_success)
  *         free(buf)
- *     PyMem_Free(allnodes)             # <<<<<<<<<<<<<<
+ *     free(allnodes)             # <<<<<<<<<<<<<<
  *     return influence_arr
  * 
  */
-  PyMem_Free(__pyx_v_allnodes);
+  free(__pyx_v_allnodes);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":190
+  /* "socintpy/cythoncode/cnetwork_node.pyx":196
  *         free(buf)
- *     PyMem_Free(allnodes)
+ *     free(allnodes)
  *     return influence_arr             # <<<<<<<<<<<<<<
  * 
  * cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, netnodedata c_node,
@@ -3837,6 +3845,9 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_5compute_suscep
   int __pyx_v_max_tries;
   int __pyx_v_max_node_computes;
   float __pyx_v_max_interact_ratio_error;
+  float __pyx_v_max_sim_ratio_error;
+  float __pyx_v_min_friends_match_ratio;
+  int __pyx_v_num_parallel_threads;
   int __pyx_v_allow_duplicates;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -3845,12 +3856,15 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_5compute_suscep
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compute_susceptibility_randomselect_cfast (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_all_nodes_list,&__pyx_n_s_interact_type,&__pyx_n_s_cutoff_rating,&__pyx_n_s_control_divider,&__pyx_n_s_min_interactions_per_user,&__pyx_n_s_time_diff,&__pyx_n_s_time_scale,&__pyx_n_s_max_tries,&__pyx_n_s_max_node_computes,&__pyx_n_s_max_interact_ratio_error,&__pyx_n_s_allow_duplicates,0};
-    PyObject* values[11] = {0,0,0,0,0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_all_nodes_list,&__pyx_n_s_interact_type,&__pyx_n_s_cutoff_rating,&__pyx_n_s_control_divider,&__pyx_n_s_min_interactions_per_user,&__pyx_n_s_time_diff,&__pyx_n_s_time_scale,&__pyx_n_s_max_tries,&__pyx_n_s_max_node_computes,&__pyx_n_s_max_interact_ratio_error,&__pyx_n_s_max_sim_ratio_error,&__pyx_n_s_min_friends_match_ratio,&__pyx_n_s_num_parallel_threads,&__pyx_n_s_allow_duplicates,0};
+    PyObject* values[14] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case 14: values[13] = PyTuple_GET_ITEM(__pyx_args, 13);
+        case 13: values[12] = PyTuple_GET_ITEM(__pyx_args, 12);
+        case 12: values[11] = PyTuple_GET_ITEM(__pyx_args, 11);
         case 11: values[10] = PyTuple_GET_ITEM(__pyx_args, 10);
         case 10: values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
         case  9: values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
@@ -3873,58 +3887,73 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_5compute_suscep
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff_rating)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_control_divider)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_min_interactions_per_user)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_time_diff)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  6:
         if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_time_scale)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  7:
         if (likely((values[7] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_max_tries)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 7); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 7); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  8:
         if (likely((values[8] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_max_node_computes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 8); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 8); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  9:
         if (likely((values[9] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_max_interact_ratio_error)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 9); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 9); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case 10:
-        if (likely((values[10] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_allow_duplicates)) != 0)) kw_args--;
+        if (likely((values[10] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_max_sim_ratio_error)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, 10); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 10); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+        case 11:
+        if (likely((values[11] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_min_friends_match_ratio)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 11); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+        case 12:
+        if (likely((values[12] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_num_parallel_threads)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 12); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        }
+        case 13:
+        if (likely((values[13] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_allow_duplicates)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, 13); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_susceptibility_randomselect_cfast") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 11) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 14) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -3938,6 +3967,9 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_5compute_suscep
       values[8] = PyTuple_GET_ITEM(__pyx_args, 8);
       values[9] = PyTuple_GET_ITEM(__pyx_args, 9);
       values[10] = PyTuple_GET_ITEM(__pyx_args, 10);
+      values[11] = PyTuple_GET_ITEM(__pyx_args, 11);
+      values[12] = PyTuple_GET_ITEM(__pyx_args, 12);
+      values[13] = PyTuple_GET_ITEM(__pyx_args, 13);
     }
     __pyx_v_all_nodes_list = values[0];
     __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
@@ -3949,24 +3981,27 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_5compute_suscep
     __pyx_v_max_tries = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_max_tries == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_max_node_computes = __Pyx_PyInt_As_int(values[8]); if (unlikely((__pyx_v_max_node_computes == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_max_interact_ratio_error = __pyx_PyFloat_AsFloat(values[9]); if (unlikely((__pyx_v_max_interact_ratio_error == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_allow_duplicates = __Pyx_PyObject_IsTrue(values[10]); if (unlikely((__pyx_v_allow_duplicates == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 116; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_max_sim_ratio_error = __pyx_PyFloat_AsFloat(values[10]); if (unlikely((__pyx_v_max_sim_ratio_error == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 116; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_min_friends_match_ratio = __pyx_PyFloat_AsFloat(values[11]); if (unlikely((__pyx_v_min_friends_match_ratio == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_num_parallel_threads = __Pyx_PyInt_As_int(values[12]); if (unlikely((__pyx_v_num_parallel_threads == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 118; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_allow_duplicates = __Pyx_PyObject_IsTrue(values[13]); if (unlikely((__pyx_v_allow_duplicates == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 11, 11, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_susceptibility_randomselect_cfast", 1, 14, 14, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.compute_susceptibility_randomselect_cfast", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_susceptibility_randomselect_cfast(__pyx_self, __pyx_v_all_nodes_list, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_control_divider, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_tries, __pyx_v_max_node_computes, __pyx_v_max_interact_ratio_error, __pyx_v_allow_duplicates);
+  __pyx_r = __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_susceptibility_randomselect_cfast(__pyx_self, __pyx_v_all_nodes_list, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_control_divider, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_tries, __pyx_v_max_node_computes, __pyx_v_max_interact_ratio_error, __pyx_v_max_sim_ratio_error, __pyx_v_min_friends_match_ratio, __pyx_v_num_parallel_threads, __pyx_v_allow_duplicates);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_susceptibility_randomselect_cfast(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_all_nodes_list, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, int __pyx_v_max_node_computes, float __pyx_v_max_interact_ratio_error, int __pyx_v_allow_duplicates) {
+static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_susceptibility_randomselect_cfast(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_all_nodes_list, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, int __pyx_v_max_node_computes, float __pyx_v_max_interact_ratio_error, float __pyx_v_max_sim_ratio_error, float __pyx_v_min_friends_match_ratio, int __pyx_v_num_parallel_threads, int __pyx_v_allow_duplicates) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3975,7 +4010,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_suscep
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_susceptibility_randomselect_cfast", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_susceptibility_randomselect_cfast(__pyx_v_all_nodes_list, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_control_divider, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_tries, __pyx_v_max_node_computes, __pyx_v_max_interact_ratio_error, __pyx_v_allow_duplicates, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_susceptibility_randomselect_cfast(__pyx_v_all_nodes_list, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_control_divider, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_tries, __pyx_v_max_node_computes, __pyx_v_max_interact_ratio_error, __pyx_v_max_sim_ratio_error, __pyx_v_min_friends_match_ratio, __pyx_v_num_parallel_threads, __pyx_v_allow_duplicates, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3992,7 +4027,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_suscep
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":192
+/* "socintpy/cythoncode/cnetwork_node.pyx":198
  *     return influence_arr
  * 
  * cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, netnodedata c_node,             # <<<<<<<<<<<<<<
@@ -4000,11 +4035,9 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_4compute_suscep
  *         int min_interactions_per_user, int time_diff, int time_scale,
  */
 
-static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_f_8socintpy_10cythoncode_13cnetwork_node_process_one_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_allnodes, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_c_node, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, CYTHON_UNUSED float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, float __pyx_v_max_interact_ratio_error, int __pyx_v_allow_duplicates, int __pyx_v_total_num_nodes, int *__pyx_v_ptr_eligible_nodes_counter, int *__pyx_v_ptr_node_fnode_counter, int *__pyx_v_ptr_node_rnode_counter) {
+static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_f_8socintpy_10cythoncode_13cnetwork_node_process_one_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_allnodes, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_c_node, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, CYTHON_UNUSED float __pyx_v_control_divider, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_max_tries, float __pyx_v_max_interact_ratio_error, float __pyx_v_max_sim_ratio_error, float __pyx_v_min_friends_match_ratio, int __pyx_v_allow_duplicates, int __pyx_v_total_num_nodes, int *__pyx_v_ptr_eligible_nodes_counter, int *__pyx_v_ptr_rnodes_found, int *__pyx_v_ptr_node_fnode_counter, int *__pyx_v_ptr_node_rnode_counter) {
   struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_v_node_data;
-  float __pyx_v_min_friends_match_ratio;
   int __pyx_v_edges_counter;
-  float __pyx_v_max_sim_ratio_error;
   int __pyx_v_data_type_code;
   int __pyx_v_data_type_code2;
   float __pyx_v_fsim;
@@ -4021,9 +4054,11 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   float __pyx_v_inf2;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_fobj;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo *__pyx_v_frsim_data_arr;
-  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_control_nonfr_nodes;
-  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_selected_friends;
+  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *__pyx_v_control_nonfr_nodes;
+  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *__pyx_v_selected_friends;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_v_frnonfr_data;
+  int *__pyx_v_done_friends;
+  int __pyx_v_i;
   int __pyx_v_j;
   int *__pyx_v_rand_node_ids;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_rand_node;
@@ -4034,8 +4069,9 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   int __pyx_t_4;
   int __pyx_t_5;
   int __pyx_t_6;
+  struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_t_7;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":199
+  /* "socintpy/cythoncode/cnetwork_node.pyx":208
  *         int *ptr_node_fnode_counter, int *ptr_node_rnode_counter) nogil:
  *     cdef nodesusceptinfo node_data
  *     node_data.fsim = -1             # <<<<<<<<<<<<<<
@@ -4044,7 +4080,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_node_data.fsim = -1.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":201
+  /* "socintpy/cythoncode/cnetwork_node.pyx":210
  *     node_data.fsim = -1
  * 
  *     if c_node.c_length_train_ids < min_interactions_per_user or c_node.c_length_test_ids <min_interactions_per_user or c_node.c_length_friend_list == 0:             # <<<<<<<<<<<<<<
@@ -4068,7 +4104,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":202
+    /* "socintpy/cythoncode/cnetwork_node.pyx":211
  * 
  *     if c_node.c_length_train_ids < min_interactions_per_user or c_node.c_length_test_ids <min_interactions_per_user or c_node.c_length_friend_list == 0:
  *         return node_data             # <<<<<<<<<<<<<<
@@ -4079,7 +4115,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":203
+  /* "socintpy/cythoncode/cnetwork_node.pyx":212
  *     if c_node.c_length_train_ids < min_interactions_per_user or c_node.c_length_test_ids <min_interactions_per_user or c_node.c_length_friend_list == 0:
  *         return node_data
  *     ptr_eligible_nodes_counter[0] += 1             # <<<<<<<<<<<<<<
@@ -4089,44 +4125,26 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   __pyx_t_3 = 0;
   (__pyx_v_ptr_eligible_nodes_counter[__pyx_t_3]) = ((__pyx_v_ptr_eligible_nodes_counter[__pyx_t_3]) + 1);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":206
+  /* "socintpy/cythoncode/cnetwork_node.pyx":215
  * 
  *     cdef:
- *         float min_friends_match_ratio = 0.9             # <<<<<<<<<<<<<<
- *         int edges_counter = 0
- *         float max_sim_ratio_error = 0.1
- */
-  __pyx_v_min_friends_match_ratio = 0.9;
-
-  /* "socintpy/cythoncode/cnetwork_node.pyx":207
- *     cdef:
- *         float min_friends_match_ratio = 0.9
  *         int edges_counter = 0             # <<<<<<<<<<<<<<
- *         float max_sim_ratio_error = 0.1
- *         int data_type_code=<int>'c'
- */
-  __pyx_v_edges_counter = 0;
-
-  /* "socintpy/cythoncode/cnetwork_node.pyx":208
- *         float min_friends_match_ratio = 0.9
- *         int edges_counter = 0
- *         float max_sim_ratio_error = 0.1             # <<<<<<<<<<<<<<
  *         int data_type_code=<int>'c'
  *         int data_type_code2=<int>'i'
  */
-  __pyx_v_max_sim_ratio_error = 0.1;
+  __pyx_v_edges_counter = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":209
+  /* "socintpy/cythoncode/cnetwork_node.pyx":216
+ *     cdef:
  *         int edges_counter = 0
- *         float max_sim_ratio_error = 0.1
  *         int data_type_code=<int>'c'             # <<<<<<<<<<<<<<
  *         int data_type_code2=<int>'i'
  *         float fsim, rsim
  */
   __pyx_v_data_type_code = ((int)'c');
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":210
- *         float max_sim_ratio_error = 0.1
+  /* "socintpy/cythoncode/cnetwork_node.pyx":217
+ *         int edges_counter = 0
  *         int data_type_code=<int>'c'
  *         int data_type_code2=<int>'i'             # <<<<<<<<<<<<<<
  *         float fsim, rsim
@@ -4134,7 +4152,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_data_type_code2 = ((int)'i');
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":212
+  /* "socintpy/cythoncode/cnetwork_node.pyx":219
  *         int data_type_code2=<int>'i'
  *         float fsim, rsim
  *         int num_eligible_friends = 0             # <<<<<<<<<<<<<<
@@ -4143,35 +4161,35 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_num_eligible_friends = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":218
+  /* "socintpy/cythoncode/cnetwork_node.pyx":225
  *         float inf1, inf2
  *         netnodedata  fobj
  *         fsiminfo *frsim_data_arr = NULL             # <<<<<<<<<<<<<<
- *         netnodedata **control_nonfr_nodes = NULL
- *         netnodedata **selected_friends = NULL
+ *         netnodedata *control_nonfr_nodes = NULL
+ *         netnodedata *selected_friends = NULL
  */
   __pyx_v_frsim_data_arr = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":219
+  /* "socintpy/cythoncode/cnetwork_node.pyx":226
  *         netnodedata  fobj
  *         fsiminfo *frsim_data_arr = NULL
- *         netnodedata **control_nonfr_nodes = NULL             # <<<<<<<<<<<<<<
- *         netnodedata **selected_friends = NULL
+ *         netnodedata *control_nonfr_nodes = NULL             # <<<<<<<<<<<<<<
+ *         netnodedata *selected_friends = NULL
  *         compfrnonfr frnonfr_data
  */
   __pyx_v_control_nonfr_nodes = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":220
+  /* "socintpy/cythoncode/cnetwork_node.pyx":227
  *         fsiminfo *frsim_data_arr = NULL
- *         netnodedata **control_nonfr_nodes = NULL
- *         netnodedata **selected_friends = NULL             # <<<<<<<<<<<<<<
+ *         netnodedata *control_nonfr_nodes = NULL
+ *         netnodedata *selected_friends = NULL             # <<<<<<<<<<<<<<
  *         compfrnonfr frnonfr_data
- *         int j
+ *         int *done_friends
  */
   __pyx_v_selected_friends = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":224
- *         int j
+  /* "socintpy/cythoncode/cnetwork_node.pyx":232
+ *         int i,j
  * 
  *     frsim_data_arr = <fsiminfo *>malloc(c_node.c_length_friend_list*cython.sizeof(fsiminfo))             # <<<<<<<<<<<<<<
  *     edges_counter += c_node.c_length_friend_list
@@ -4179,7 +4197,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_frsim_data_arr = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo *)malloc((__pyx_v_c_node.c_length_friend_list * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":225
+  /* "socintpy/cythoncode/cnetwork_node.pyx":233
  * 
  *     frsim_data_arr = <fsiminfo *>malloc(c_node.c_length_friend_list*cython.sizeof(fsiminfo))
  *     edges_counter += c_node.c_length_friend_list             # <<<<<<<<<<<<<<
@@ -4188,7 +4206,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_edges_counter = (__pyx_v_edges_counter + __pyx_v_c_node.c_length_friend_list);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":226
+  /* "socintpy/cythoncode/cnetwork_node.pyx":234
  *     frsim_data_arr = <fsiminfo *>malloc(c_node.c_length_friend_list*cython.sizeof(fsiminfo))
  *     edges_counter += c_node.c_length_friend_list
  *     ictr = 0             # <<<<<<<<<<<<<<
@@ -4197,7 +4215,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_ictr = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":228
+  /* "socintpy/cythoncode/cnetwork_node.pyx":236
  *     ictr = 0
  * 
  *     for j in range(c_node.c_length_friend_list):             # <<<<<<<<<<<<<<
@@ -4208,7 +4226,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_j = __pyx_t_5;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":229
+    /* "socintpy/cythoncode/cnetwork_node.pyx":237
  * 
  *     for j in range(c_node.c_length_friend_list):
  *         fobj = (<netnodedata *>allnodes[c_node.c_friend_list[j].receiver_id])[0]             # <<<<<<<<<<<<<<
@@ -4217,7 +4235,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
     __pyx_v_fobj = (((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)(__pyx_v_allnodes[(__pyx_v_c_node.c_friend_list[__pyx_v_j]).receiver_id]))[0]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":231
+    /* "socintpy/cythoncode/cnetwork_node.pyx":239
  *         fobj = (<netnodedata *>allnodes[c_node.c_friend_list[j].receiver_id])[0]
  *         #printf("%d %d \n", fobj.c_uid, c_node.c_friend_list[j].receiver_id)
  *         if fobj.c_length_train_ids >=min_interactions_per_user and fobj.c_length_test_ids >=min_interactions_per_user:             # <<<<<<<<<<<<<<
@@ -4235,7 +4253,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
     __pyx_L10_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":232
+      /* "socintpy/cythoncode/cnetwork_node.pyx":240
  *         #printf("%d %d \n", fobj.c_uid, c_node.c_friend_list[j].receiver_id)
  *         if fobj.c_length_train_ids >=min_interactions_per_user and fobj.c_length_test_ids >=min_interactions_per_user:
  *             fsim = compute_node_similarity(c_node, fobj, interact_type,             # <<<<<<<<<<<<<<
@@ -4244,7 +4262,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
       __pyx_v_fsim = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similarity(__pyx_v_c_node, __pyx_v_fobj, __pyx_v_interact_type, __pyx_v_data_type_code, __pyx_v_min_interactions_per_user, -1, __pyx_v_time_scale);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":236
+      /* "socintpy/cythoncode/cnetwork_node.pyx":244
  *                     min_interactions_per_user, time_diff=-1, time_scale=time_scale)
  *             #fsim = 1
  *             if fsim >-0.5:#TODO check cannot be None             # <<<<<<<<<<<<<<
@@ -4254,7 +4272,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
       __pyx_t_1 = ((__pyx_v_fsim > -0.5) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":237
+        /* "socintpy/cythoncode/cnetwork_node.pyx":245
  *             #fsim = 1
  *             if fsim >-0.5:#TODO check cannot be None
  *                 num_eligible_friends += 1             # <<<<<<<<<<<<<<
@@ -4263,7 +4281,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
         __pyx_v_num_eligible_friends = (__pyx_v_num_eligible_friends + 1);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":238
+        /* "socintpy/cythoncode/cnetwork_node.pyx":246
  *             if fsim >-0.5:#TODO check cannot be None
  *                 num_eligible_friends += 1
  *                 frsim_data_arr[ictr].sim = fsim             # <<<<<<<<<<<<<<
@@ -4272,7 +4290,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
         (__pyx_v_frsim_data_arr[__pyx_v_ictr]).sim = __pyx_v_fsim;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":239
+        /* "socintpy/cythoncode/cnetwork_node.pyx":247
  *                 num_eligible_friends += 1
  *                 frsim_data_arr[ictr].sim = fsim
  *                 frsim_data_arr[ictr].uid = fobj.c_uid             # <<<<<<<<<<<<<<
@@ -4282,12 +4300,12 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
         __pyx_t_6 = __pyx_v_fobj.c_uid;
         (__pyx_v_frsim_data_arr[__pyx_v_ictr]).uid = __pyx_t_6;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":240
+        /* "socintpy/cythoncode/cnetwork_node.pyx":248
  *                 frsim_data_arr[ictr].sim = fsim
  *                 frsim_data_arr[ictr].uid = fobj.c_uid
  *                 ictr += 1             # <<<<<<<<<<<<<<
  *     qsort(frsim_data_arr, num_eligible_friends, cython.sizeof(fsiminfo), comp_fsiminfo)
- * 
+ *     """
  */
         __pyx_v_ictr = (__pyx_v_ictr + 1);
         goto __pyx_L12;
@@ -4298,17 +4316,17 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
     __pyx_L9:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":241
+  /* "socintpy/cythoncode/cnetwork_node.pyx":249
  *                 frsim_data_arr[ictr].uid = fobj.c_uid
  *                 ictr += 1
  *     qsort(frsim_data_arr, num_eligible_friends, cython.sizeof(fsiminfo), comp_fsiminfo)             # <<<<<<<<<<<<<<
- * 
- *     #eligible_fr_sim_arr = fr_sim_arr[:num_eligible_friends]
+ *     """
+ *     for j in range(num_eligible_friends):
  */
   qsort(__pyx_v_frsim_data_arr, __pyx_v_num_eligible_friends, (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo)), __pyx_f_8socintpy_10cythoncode_10data_types_comp_fsiminfo);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":244
- * 
+  /* "socintpy/cythoncode/cnetwork_node.pyx":256
+ *     """
  *     #eligible_fr_sim_arr = fr_sim_arr[:num_eligible_friends]
  *     max_tries = total_num_nodes #TODO change, do it in python, remember allnodes starts with [1:]             # <<<<<<<<<<<<<<
  *     #randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
@@ -4316,7 +4334,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_max_tries = __pyx_v_total_num_nodes;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":246
+  /* "socintpy/cythoncode/cnetwork_node.pyx":258
  *     max_tries = total_num_nodes #TODO change, do it in python, remember allnodes starts with [1:]
  *     #randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
  *     num_friends_matched = 0             # <<<<<<<<<<<<<<
@@ -4325,7 +4343,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_num_friends_matched = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":247
+  /* "socintpy/cythoncode/cnetwork_node.pyx":259
  *     #randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
  *     num_friends_matched = 0
  *     r_index = 0             # <<<<<<<<<<<<<<
@@ -4334,7 +4352,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_r_index = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":248
+  /* "socintpy/cythoncode/cnetwork_node.pyx":260
  *     num_friends_matched = 0
  *     r_index = 0
  *     r_index2 = 0             # <<<<<<<<<<<<<<
@@ -4343,7 +4361,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_r_index2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":249
+  /* "socintpy/cythoncode/cnetwork_node.pyx":261
  *     r_index = 0
  *     r_index2 = 0
  *     tries = 0             # <<<<<<<<<<<<<<
@@ -4352,7 +4370,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_tries = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":250
+  /* "socintpy/cythoncode/cnetwork_node.pyx":262
  *     r_index2 = 0
  *     tries = 0
  *     avg_fsim = 0             # <<<<<<<<<<<<<<
@@ -4361,35 +4379,35 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_avg_fsim = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":251
+  /* "socintpy/cythoncode/cnetwork_node.pyx":263
  *     tries = 0
  *     avg_fsim = 0
  *     avg_rsim = 0             # <<<<<<<<<<<<<<
  *     #found_ids = {} #TODO think of ways to avoid duplicates and ensure every non-friend is tried once, also how to free memory
- *     control_nonfr_nodes = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))
+ *     control_nonfr_nodes = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))
  */
   __pyx_v_avg_rsim = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":253
+  /* "socintpy/cythoncode/cnetwork_node.pyx":265
  *     avg_rsim = 0
  *     #found_ids = {} #TODO think of ways to avoid duplicates and ensure every non-friend is tried once, also how to free memory
- *     control_nonfr_nodes = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))             # <<<<<<<<<<<<<<
- *     selected_friends = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))
+ *     control_nonfr_nodes = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))             # <<<<<<<<<<<<<<
+ *     selected_friends = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))
  * 
  */
-  __pyx_v_control_nonfr_nodes = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **)malloc((__pyx_v_num_eligible_friends * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)))));
+  __pyx_v_control_nonfr_nodes = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)malloc((__pyx_v_num_eligible_friends * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":254
+  /* "socintpy/cythoncode/cnetwork_node.pyx":266
  *     #found_ids = {} #TODO think of ways to avoid duplicates and ensure every non-friend is tried once, also how to free memory
- *     control_nonfr_nodes = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))
- *     selected_friends = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))             # <<<<<<<<<<<<<<
+ *     control_nonfr_nodes = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))
+ *     selected_friends = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))             # <<<<<<<<<<<<<<
  * 
  *     rand_node_ids = <int *>malloc(max_tries*sizeof(int))
  */
-  __pyx_v_selected_friends = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **)malloc((__pyx_v_num_eligible_friends * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)))));
+  __pyx_v_selected_friends = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)malloc((__pyx_v_num_eligible_friends * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":256
- *     selected_friends = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))
+  /* "socintpy/cythoncode/cnetwork_node.pyx":268
+ *     selected_friends = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))
  * 
  *     rand_node_ids = <int *>malloc(max_tries*sizeof(int))             # <<<<<<<<<<<<<<
  *     for j in range(max_tries):
@@ -4397,7 +4415,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   __pyx_v_rand_node_ids = ((int *)malloc((__pyx_v_max_tries * (sizeof(int)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":257
+  /* "socintpy/cythoncode/cnetwork_node.pyx":269
  * 
  *     rand_node_ids = <int *>malloc(max_tries*sizeof(int))
  *     for j in range(max_tries):             # <<<<<<<<<<<<<<
@@ -4408,66 +4426,96 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_j = __pyx_t_5;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":258
+    /* "socintpy/cythoncode/cnetwork_node.pyx":270
  *     rand_node_ids = <int *>malloc(max_tries*sizeof(int))
  *     for j in range(max_tries):
  *         rand_node_ids[j] = j+1             # <<<<<<<<<<<<<<
  * 
- *     for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):
+ *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
  */
     (__pyx_v_rand_node_ids[__pyx_v_j]) = (__pyx_v_j + 1);
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":260
+  /* "socintpy/cythoncode/cnetwork_node.pyx":272
  *         rand_node_ids[j] = j+1
+ * 
+ *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))             # <<<<<<<<<<<<<<
+ *     for i in range(num_eligible_friends):
+ *         done_friends[i] = 0
+ */
+  __pyx_v_done_friends = ((int *)malloc((__pyx_v_num_eligible_friends * (sizeof(int)))));
+
+  /* "socintpy/cythoncode/cnetwork_node.pyx":273
+ * 
+ *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
+ *     for i in range(num_eligible_friends):             # <<<<<<<<<<<<<<
+ *         done_friends[i] = 0
+ * 
+ */
+  __pyx_t_4 = __pyx_v_num_eligible_friends;
+  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+    __pyx_v_i = __pyx_t_5;
+
+    /* "socintpy/cythoncode/cnetwork_node.pyx":274
+ *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
+ *     for i in range(num_eligible_friends):
+ *         done_friends[i] = 0             # <<<<<<<<<<<<<<
+ * 
+ *     for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):
+ */
+    (__pyx_v_done_friends[__pyx_v_i]) = 0;
+  }
+
+  /* "socintpy/cythoncode/cnetwork_node.pyx":276
+ *         done_friends[i] = 0
  * 
  *     for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):             # <<<<<<<<<<<<<<
  *         rand_id = (rand() % (max_tries-r_index))
- *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
+ *         rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]
  */
   __pyx_t_4 = __pyx_v_max_tries;
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_r_index = __pyx_t_5;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":261
+    /* "socintpy/cythoncode/cnetwork_node.pyx":277
  * 
  *     for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):
  *         rand_id = (rand() % (max_tries-r_index))             # <<<<<<<<<<<<<<
- *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
  *         rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]
+ *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
  */
     __pyx_v_rand_id = (rand() % (__pyx_v_max_tries - __pyx_v_r_index));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":262
+    /* "socintpy/cythoncode/cnetwork_node.pyx":278
  *     for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):
  *         rand_id = (rand() % (max_tries-r_index))
- *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))             # <<<<<<<<<<<<<<
- *         rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]
- *         frnonfr_data =  compare_friend_nonfriend(c_node, rand_node, allnodes,
- */
-    __pyx_f_8socintpy_10cythoncode_10data_types_swap_elements((&(__pyx_v_rand_node_ids[__pyx_v_rand_id])), (&(__pyx_v_rand_node_ids[((__pyx_v_max_tries - __pyx_v_r_index) - 1)])));
-
-    /* "socintpy/cythoncode/cnetwork_node.pyx":263
- *         rand_id = (rand() % (max_tries-r_index))
- *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
  *         rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]             # <<<<<<<<<<<<<<
+ *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
  *         frnonfr_data =  compare_friend_nonfriend(c_node, rand_node, allnodes,
- *             num_eligible_friends, frsim_data_arr,interact_type,
  */
     __pyx_v_rand_node = (((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)(__pyx_v_allnodes[(__pyx_v_rand_node_ids[__pyx_v_rand_id])]))[0]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":264
- *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
+    /* "socintpy/cythoncode/cnetwork_node.pyx":279
+ *         rand_id = (rand() % (max_tries-r_index))
  *         rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]
+ *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))             # <<<<<<<<<<<<<<
+ *         frnonfr_data =  compare_friend_nonfriend(c_node, rand_node, allnodes,
+ *             num_eligible_friends, frsim_data_arr,interact_type,
+ */
+    __pyx_f_8socintpy_10cythoncode_10data_types_swap_elements((&(__pyx_v_rand_node_ids[__pyx_v_rand_id])), (&(__pyx_v_rand_node_ids[((__pyx_v_max_tries - __pyx_v_r_index) - 1)])));
+
+    /* "socintpy/cythoncode/cnetwork_node.pyx":280
+ *         rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]
+ *         swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
  *         frnonfr_data =  compare_friend_nonfriend(c_node, rand_node, allnodes,             # <<<<<<<<<<<<<<
  *             num_eligible_friends, frsim_data_arr,interact_type,
  *             min_interactions_per_user, data_type_code,
  */
-    __pyx_v_frnonfr_data = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compare_friend_nonfriend(__pyx_v_c_node, __pyx_v_rand_node, __pyx_v_allnodes, __pyx_v_num_eligible_friends, __pyx_v_frsim_data_arr, __pyx_v_interact_type, __pyx_v_min_interactions_per_user, __pyx_v_data_type_code, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_sim_ratio_error, __pyx_v_max_interact_ratio_error);
+    __pyx_v_frnonfr_data = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compare_friend_nonfriend(__pyx_v_c_node, __pyx_v_rand_node, __pyx_v_allnodes, __pyx_v_num_eligible_friends, __pyx_v_frsim_data_arr, __pyx_v_interact_type, __pyx_v_min_interactions_per_user, __pyx_v_data_type_code, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_max_sim_ratio_error, __pyx_v_max_interact_ratio_error, __pyx_v_done_friends);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":268
- *             min_interactions_per_user, data_type_code,
- *             time_diff, time_scale, max_sim_ratio_error, max_interact_ratio_error)
+    /* "socintpy/cythoncode/cnetwork_node.pyx":285
+ *             time_diff, time_scale, max_sim_ratio_error, max_interact_ratio_error,
+ *             done_friends)
  *         if frnonfr_data.fsim > -0.5: # workaround for float equality             # <<<<<<<<<<<<<<
  *                 if num_friends_matched < num_eligible_friends:
  *                     avg_fsim += frnonfr_data.fsim
@@ -4475,8 +4523,8 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
     __pyx_t_1 = ((__pyx_v_frnonfr_data.fsim > -0.5) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":269
- *             time_diff, time_scale, max_sim_ratio_error, max_interact_ratio_error)
+      /* "socintpy/cythoncode/cnetwork_node.pyx":286
+ *             done_friends)
  *         if frnonfr_data.fsim > -0.5: # workaround for float equality
  *                 if num_friends_matched < num_eligible_friends:             # <<<<<<<<<<<<<<
  *                     avg_fsim += frnonfr_data.fsim
@@ -4485,108 +4533,120 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
       __pyx_t_1 = ((__pyx_v_num_friends_matched < __pyx_v_num_eligible_friends) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":270
+        /* "socintpy/cythoncode/cnetwork_node.pyx":287
  *         if frnonfr_data.fsim > -0.5: # workaround for float equality
  *                 if num_friends_matched < num_eligible_friends:
  *                     avg_fsim += frnonfr_data.fsim             # <<<<<<<<<<<<<<
  *                     avg_rsim += frnonfr_data.rsim
- *                     control_nonfr_nodes[num_friends_matched] = &(frnonfr_data.rnode)
+ *                     control_nonfr_nodes[num_friends_matched] = frnonfr_data.rnode
  */
         __pyx_v_avg_fsim = (__pyx_v_avg_fsim + __pyx_v_frnonfr_data.fsim);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":271
+        /* "socintpy/cythoncode/cnetwork_node.pyx":288
  *                 if num_friends_matched < num_eligible_friends:
  *                     avg_fsim += frnonfr_data.fsim
  *                     avg_rsim += frnonfr_data.rsim             # <<<<<<<<<<<<<<
- *                     control_nonfr_nodes[num_friends_matched] = &(frnonfr_data.rnode)
- *                     selected_friends[num_friends_matched] = &(frnonfr_data.fnode)
+ *                     control_nonfr_nodes[num_friends_matched] = frnonfr_data.rnode
+ *                     selected_friends[num_friends_matched] = frnonfr_data.fnode
  */
         __pyx_v_avg_rsim = (__pyx_v_avg_rsim + __pyx_v_frnonfr_data.rsim);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":272
+        /* "socintpy/cythoncode/cnetwork_node.pyx":289
  *                     avg_fsim += frnonfr_data.fsim
  *                     avg_rsim += frnonfr_data.rsim
- *                     control_nonfr_nodes[num_friends_matched] = &(frnonfr_data.rnode)             # <<<<<<<<<<<<<<
- *                     selected_friends[num_friends_matched] = &(frnonfr_data.fnode)
- *                     num_friends_matched += 1
+ *                     control_nonfr_nodes[num_friends_matched] = frnonfr_data.rnode             # <<<<<<<<<<<<<<
+ *                     selected_friends[num_friends_matched] = frnonfr_data.fnode
+ *                     #printf("%d,%d ",frnonfr_data.rnode.c_uid, frnonfr_data.fnode.c_uid)
  */
-        (__pyx_v_control_nonfr_nodes[__pyx_v_num_friends_matched]) = (&__pyx_v_frnonfr_data.rnode);
+        __pyx_t_7 = __pyx_v_frnonfr_data.rnode;
+        (__pyx_v_control_nonfr_nodes[__pyx_v_num_friends_matched]) = __pyx_t_7;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":273
+        /* "socintpy/cythoncode/cnetwork_node.pyx":290
  *                     avg_rsim += frnonfr_data.rsim
- *                     control_nonfr_nodes[num_friends_matched] = &(frnonfr_data.rnode)
- *                     selected_friends[num_friends_matched] = &(frnonfr_data.fnode)             # <<<<<<<<<<<<<<
+ *                     control_nonfr_nodes[num_friends_matched] = frnonfr_data.rnode
+ *                     selected_friends[num_friends_matched] = frnonfr_data.fnode             # <<<<<<<<<<<<<<
+ *                     #printf("%d,%d ",frnonfr_data.rnode.c_uid, frnonfr_data.fnode.c_uid)
  *                     num_friends_matched += 1
- *                 else:
  */
-        (__pyx_v_selected_friends[__pyx_v_num_friends_matched]) = (&__pyx_v_frnonfr_data.fnode);
+        __pyx_t_7 = __pyx_v_frnonfr_data.fnode;
+        (__pyx_v_selected_friends[__pyx_v_num_friends_matched]) = __pyx_t_7;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":274
- *                     control_nonfr_nodes[num_friends_matched] = &(frnonfr_data.rnode)
- *                     selected_friends[num_friends_matched] = &(frnonfr_data.fnode)
+        /* "socintpy/cythoncode/cnetwork_node.pyx":292
+ *                     selected_friends[num_friends_matched] = frnonfr_data.fnode
+ *                     #printf("%d,%d ",frnonfr_data.rnode.c_uid, frnonfr_data.fnode.c_uid)
  *                     num_friends_matched += 1             # <<<<<<<<<<<<<<
  *                 else:
  *                     break
  */
         __pyx_v_num_friends_matched = (__pyx_v_num_friends_matched + 1);
-        goto __pyx_L18;
+        goto __pyx_L20;
       }
       /*else*/ {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":276
+        /* "socintpy/cythoncode/cnetwork_node.pyx":294
  *                     num_friends_matched += 1
  *                 else:
  *                     break             # <<<<<<<<<<<<<<
  *                     #printf("We got a matching!! %f %f", fsim, rsim)
- * 
+ *     #printf("\n")
  */
-        goto __pyx_L16_break;
+        goto __pyx_L18_break;
       }
-      __pyx_L18:;
-      goto __pyx_L17;
+      __pyx_L20:;
+      goto __pyx_L19;
     }
-    __pyx_L17:;
+    __pyx_L19:;
   }
-  __pyx_L16_break:;
+  __pyx_L18_break:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":279
+  /* "socintpy/cythoncode/cnetwork_node.pyx":297
  *                     #printf("We got a matching!! %f %f", fsim, rsim)
- * 
+ *     #printf("\n")
  *     tries += 1             # <<<<<<<<<<<<<<
- *     #printf("Eligible friends and matched: %d %d\n`", num_eligible_friends, num_friends_matched)
- *     if num_eligible_friends >0 and num_friends_matched >= min_friends_match_ratio*num_eligible_friends:
+ *     """
+ *     printf("Eligible friends and matched: %d %d\n`", num_eligible_friends, num_friends_matched)
  */
   __pyx_v_tries = (__pyx_v_tries + 1);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":281
- *     tries += 1
- *     #printf("Eligible friends and matched: %d %d\n`", num_eligible_friends, num_friends_matched)
+  /* "socintpy/cythoncode/cnetwork_node.pyx":304
+ *     printf("\n")
+ *     """
  *     if num_eligible_friends >0 and num_friends_matched >= min_friends_match_ratio*num_eligible_friends:             # <<<<<<<<<<<<<<
+ *         ptr_rnodes_found[0] += 1
  *         avg_fsim = avg_fsim/float(num_friends_matched)
- *         avg_rsim = avg_rsim/float(num_friends_matched)
  */
   __pyx_t_2 = ((__pyx_v_num_eligible_friends > 0) != 0);
   if (__pyx_t_2) {
   } else {
     __pyx_t_1 = __pyx_t_2;
-    goto __pyx_L20_bool_binop_done;
+    goto __pyx_L22_bool_binop_done;
   }
   __pyx_t_2 = ((__pyx_v_num_friends_matched >= (__pyx_v_min_friends_match_ratio * __pyx_v_num_eligible_friends)) != 0);
   __pyx_t_1 = __pyx_t_2;
-  __pyx_L20_bool_binop_done:;
+  __pyx_L22_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":282
- *     #printf("Eligible friends and matched: %d %d\n`", num_eligible_friends, num_friends_matched)
+    /* "socintpy/cythoncode/cnetwork_node.pyx":305
+ *     """
  *     if num_eligible_friends >0 and num_friends_matched >= min_friends_match_ratio*num_eligible_friends:
+ *         ptr_rnodes_found[0] += 1             # <<<<<<<<<<<<<<
+ *         avg_fsim = avg_fsim/float(num_friends_matched)
+ *         avg_rsim = avg_rsim/float(num_friends_matched)
+ */
+    __pyx_t_3 = 0;
+    (__pyx_v_ptr_rnodes_found[__pyx_t_3]) = ((__pyx_v_ptr_rnodes_found[__pyx_t_3]) + 1);
+
+    /* "socintpy/cythoncode/cnetwork_node.pyx":306
+ *     if num_eligible_friends >0 and num_friends_matched >= min_friends_match_ratio*num_eligible_friends:
+ *         ptr_rnodes_found[0] += 1
  *         avg_fsim = avg_fsim/float(num_friends_matched)             # <<<<<<<<<<<<<<
  *         avg_rsim = avg_rsim/float(num_friends_matched)
  *     #TODO even this struct c_node should be referenced, not copy for fn call
  */
     __pyx_v_avg_fsim = (__pyx_v_avg_fsim / ((double)__pyx_v_num_friends_matched));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":283
- *     if num_eligible_friends >0 and num_friends_matched >= min_friends_match_ratio*num_eligible_friends:
+    /* "socintpy/cythoncode/cnetwork_node.pyx":307
+ *         ptr_rnodes_found[0] += 1
  *         avg_fsim = avg_fsim/float(num_friends_matched)
  *         avg_rsim = avg_rsim/float(num_friends_matched)             # <<<<<<<<<<<<<<
  *     #TODO even this struct c_node should be referenced, not copy for fn call
@@ -4594,7 +4654,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
     __pyx_v_avg_rsim = (__pyx_v_avg_rsim / ((double)__pyx_v_num_friends_matched));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":285
+    /* "socintpy/cythoncode/cnetwork_node.pyx":309
  *         avg_rsim = avg_rsim/float(num_friends_matched)
  *     #TODO even this struct c_node should be referenced, not copy for fn call
  *         inf1 = compute_node_susceptibility(c_node,selected_friends, num_friends_matched, interact_type,             # <<<<<<<<<<<<<<
@@ -4603,7 +4663,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
     __pyx_v_inf1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility(__pyx_v_c_node, __pyx_v_selected_friends, __pyx_v_num_friends_matched, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_data_type_code2, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_allow_duplicates, 0);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":289
+    /* "socintpy/cythoncode/cnetwork_node.pyx":313
  *                 time_diff, time_scale, allow_duplicates, False)
  *         #print inf1
  *         if inf1 > -1: #TODO check for none, remove default argument debug             # <<<<<<<<<<<<<<
@@ -4613,7 +4673,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
     __pyx_t_1 = ((__pyx_v_inf1 > -1.0) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":290
+      /* "socintpy/cythoncode/cnetwork_node.pyx":314
  *         #print inf1
  *         if inf1 > -1: #TODO check for none, remove default argument debug
  *             ptr_node_fnode_counter[0] += 1             # <<<<<<<<<<<<<<
@@ -4623,7 +4683,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
       __pyx_t_3 = 0;
       (__pyx_v_ptr_node_fnode_counter[__pyx_t_3]) = ((__pyx_v_ptr_node_fnode_counter[__pyx_t_3]) + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":291
+      /* "socintpy/cythoncode/cnetwork_node.pyx":315
  *         if inf1 > -1: #TODO check for none, remove default argument debug
  *             ptr_node_fnode_counter[0] += 1
  *             inf2 = compute_node_susceptibility(c_node,control_nonfr_nodes, num_friends_matched,             # <<<<<<<<<<<<<<
@@ -4632,7 +4692,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
       __pyx_v_inf2 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility(__pyx_v_c_node, __pyx_v_control_nonfr_nodes, __pyx_v_num_friends_matched, __pyx_v_interact_type, __pyx_v_cutoff_rating, __pyx_v_data_type_code2, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, __pyx_v_allow_duplicates, 0);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":296
+      /* "socintpy/cythoncode/cnetwork_node.pyx":320
  *                     time_diff, time_scale, allow_duplicates, False)
  *         #print node.uid, inf1, inf2, "\n"
  *             if inf2 > -1:             # <<<<<<<<<<<<<<
@@ -4642,7 +4702,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
       __pyx_t_1 = ((__pyx_v_inf2 > -1.0) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":297
+        /* "socintpy/cythoncode/cnetwork_node.pyx":321
  *         #print node.uid, inf1, inf2, "\n"
  *             if inf2 > -1:
  *                 ptr_node_rnode_counter[0] += 1             # <<<<<<<<<<<<<<
@@ -4652,7 +4712,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
         __pyx_t_3 = 0;
         (__pyx_v_ptr_node_rnode_counter[__pyx_t_3]) = ((__pyx_v_ptr_node_rnode_counter[__pyx_t_3]) + 1);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":298
+        /* "socintpy/cythoncode/cnetwork_node.pyx":322
  *             if inf2 > -1:
  *                 ptr_node_rnode_counter[0] += 1
  *                 node_data.fsim = avg_fsim             # <<<<<<<<<<<<<<
@@ -4661,7 +4721,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
         __pyx_v_node_data.fsim = __pyx_v_avg_fsim;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":299
+        /* "socintpy/cythoncode/cnetwork_node.pyx":323
  *                 ptr_node_rnode_counter[0] += 1
  *                 node_data.fsim = avg_fsim
  *                 node_data.rsim = avg_rsim             # <<<<<<<<<<<<<<
@@ -4670,7 +4730,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
         __pyx_v_node_data.rsim = __pyx_v_avg_rsim;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":300
+        /* "socintpy/cythoncode/cnetwork_node.pyx":324
  *                 node_data.fsim = avg_fsim
  *                 node_data.rsim = avg_rsim
  *                 node_data.fsusc = inf1             # <<<<<<<<<<<<<<
@@ -4679,35 +4739,35 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
         __pyx_v_node_data.fsusc = __pyx_v_inf1;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":301
+        /* "socintpy/cythoncode/cnetwork_node.pyx":325
  *                 node_data.rsim = avg_rsim
  *                 node_data.fsusc = inf1
  *                 node_data.rsusc = inf2             # <<<<<<<<<<<<<<
  *     #printf("Good node %d",node_rnode_counter)
- *     free(control_nonfr_nodes)
+ * 
  */
         __pyx_v_node_data.rsusc = __pyx_v_inf2;
-        goto __pyx_L23;
+        goto __pyx_L25;
       }
-      __pyx_L23:;
-      goto __pyx_L22;
+      __pyx_L25:;
+      goto __pyx_L24;
     }
-    __pyx_L22:;
-    goto __pyx_L19;
+    __pyx_L24:;
+    goto __pyx_L21;
   }
-  __pyx_L19:;
+  __pyx_L21:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":303
- *                 node_data.rsusc = inf2
+  /* "socintpy/cythoncode/cnetwork_node.pyx":328
  *     #printf("Good node %d",node_rnode_counter)
+ * 
  *     free(control_nonfr_nodes)             # <<<<<<<<<<<<<<
  *     free(selected_friends)
  *     free(frsim_data_arr)
  */
   free(__pyx_v_control_nonfr_nodes);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":304
- *     #printf("Good node %d",node_rnode_counter)
+  /* "socintpy/cythoncode/cnetwork_node.pyx":329
+ * 
  *     free(control_nonfr_nodes)
  *     free(selected_friends)             # <<<<<<<<<<<<<<
  *     free(frsim_data_arr)
@@ -4715,27 +4775,36 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  */
   free(__pyx_v_selected_friends);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":305
+  /* "socintpy/cythoncode/cnetwork_node.pyx":330
  *     free(control_nonfr_nodes)
  *     free(selected_friends)
  *     free(frsim_data_arr)             # <<<<<<<<<<<<<<
  *     free(rand_node_ids)
- *     return node_data
+ *     free(done_friends)
  */
   free(__pyx_v_frsim_data_arr);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":306
+  /* "socintpy/cythoncode/cnetwork_node.pyx":331
  *     free(selected_friends)
  *     free(frsim_data_arr)
  *     free(rand_node_ids)             # <<<<<<<<<<<<<<
+ *     free(done_friends)
  *     return node_data
- * 
  */
   free(__pyx_v_rand_node_ids);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":307
+  /* "socintpy/cythoncode/cnetwork_node.pyx":332
  *     free(frsim_data_arr)
  *     free(rand_node_ids)
+ *     free(done_friends)             # <<<<<<<<<<<<<<
+ *     return node_data
+ * 
+ */
+  free(__pyx_v_done_friends);
+
+  /* "socintpy/cythoncode/cnetwork_node.pyx":333
+ *     free(rand_node_ids)
+ *     free(done_friends)
  *     return node_data             # <<<<<<<<<<<<<<
  * 
  * 
@@ -4743,7 +4812,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   __pyx_r = __pyx_v_node_data;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":192
+  /* "socintpy/cythoncode/cnetwork_node.pyx":198
  *     return influence_arr
  * 
  * cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, netnodedata c_node,             # <<<<<<<<<<<<<<
@@ -4756,7 +4825,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":310
+/* "socintpy/cythoncode/cnetwork_node.pyx":336
  * 
  * 
  * cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_node,             # <<<<<<<<<<<<<<
@@ -4764,93 +4833,60 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_nodesusceptinfo __pyx_
  *         int num_eligible_friends, fsiminfo *frsim_data_arr,int interact_type,
  */
 
-static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compare_friend_nonfriend(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_c_node, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_rand_node, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_allnodes, int __pyx_v_num_eligible_friends, struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo *__pyx_v_frsim_data_arr, int __pyx_v_interact_type, int __pyx_v_min_interactions_per_user, int __pyx_v_data_type_code, CYTHON_UNUSED int __pyx_v_time_diff, int __pyx_v_time_scale, float __pyx_v_max_sim_ratio_error, float __pyx_v_max_interact_ratio_error) {
+static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compare_friend_nonfriend(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_c_node, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_rand_node, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_allnodes, int __pyx_v_num_eligible_friends, struct __pyx_t_8socintpy_10cythoncode_10data_types_fsiminfo *__pyx_v_frsim_data_arr, int __pyx_v_interact_type, int __pyx_v_min_interactions_per_user, int __pyx_v_data_type_code, CYTHON_UNUSED int __pyx_v_time_diff, int __pyx_v_time_scale, float __pyx_v_max_sim_ratio_error, float __pyx_v_max_interact_ratio_error, int *__pyx_v_done_friends) {
   float __pyx_v_rsim;
   float __pyx_v_fsim;
   float __pyx_v_ratio_train;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_twoints __pyx_v_f_indices;
   int __pyx_v_loop_i;
-  int __pyx_v_i;
   int __pyx_v_valid_rand;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_fobj;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_v_ret;
-  int *__pyx_v_done_friends;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_r;
   int __pyx_t_1;
   int __pyx_t_2;
-  int __pyx_t_3;
+  long __pyx_t_3;
   int __pyx_t_4;
-  long __pyx_t_5;
-  float __pyx_t_6;
+  float __pyx_t_5;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":325
- *         int *done_friends
+  /* "socintpy/cythoncode/cnetwork_node.pyx":351
+ *         compfrnonfr ret
  * 
  *     ret.fsim = -1             # <<<<<<<<<<<<<<
- *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
- *     for i in range(num_eligible_friends):
- */
-  __pyx_v_ret.fsim = -1.0;
-
-  /* "socintpy/cythoncode/cnetwork_node.pyx":326
- * 
- *     ret.fsim = -1
- *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))             # <<<<<<<<<<<<<<
- *     for i in range(num_eligible_friends):
- *         done_friends[i] = 0
- */
-  __pyx_v_done_friends = ((int *)malloc((__pyx_v_num_eligible_friends * (sizeof(int)))));
-
-  /* "socintpy/cythoncode/cnetwork_node.pyx":327
- *     ret.fsim = -1
- *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
- *     for i in range(num_eligible_friends):             # <<<<<<<<<<<<<<
- *         done_friends[i] = 0
- *     if rand_node.c_length_train_ids >=min_interactions_per_user and rand_node.c_length_test_ids >=min_interactions_per_user:
- */
-  __pyx_t_1 = __pyx_v_num_eligible_friends;
-  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
-    __pyx_v_i = __pyx_t_2;
-
-    /* "socintpy/cythoncode/cnetwork_node.pyx":328
- *     done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
- *     for i in range(num_eligible_friends):
- *         done_friends[i] = 0             # <<<<<<<<<<<<<<
  *     if rand_node.c_length_train_ids >=min_interactions_per_user and rand_node.c_length_test_ids >=min_interactions_per_user:
  *         if True:
  */
-    (__pyx_v_done_friends[__pyx_v_i]) = 0;
-  }
+  __pyx_v_ret.fsim = -1.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":329
- *     for i in range(num_eligible_friends):
- *         done_friends[i] = 0
+  /* "socintpy/cythoncode/cnetwork_node.pyx":352
+ * 
+ *     ret.fsim = -1
  *     if rand_node.c_length_train_ids >=min_interactions_per_user and rand_node.c_length_test_ids >=min_interactions_per_user:             # <<<<<<<<<<<<<<
  *         if True:
  *             #if rand_node.uid not in friend_ids and
  */
-  __pyx_t_4 = ((__pyx_v_rand_node.c_length_train_ids >= __pyx_v_min_interactions_per_user) != 0);
-  if (__pyx_t_4) {
+  __pyx_t_2 = ((__pyx_v_rand_node.c_length_train_ids >= __pyx_v_min_interactions_per_user) != 0);
+  if (__pyx_t_2) {
   } else {
-    __pyx_t_3 = __pyx_t_4;
-    goto __pyx_L6_bool_binop_done;
+    __pyx_t_1 = __pyx_t_2;
+    goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_4 = ((__pyx_v_rand_node.c_length_test_ids >= __pyx_v_min_interactions_per_user) != 0);
-  __pyx_t_3 = __pyx_t_4;
-  __pyx_L6_bool_binop_done:;
-  if (__pyx_t_3) {
+  __pyx_t_2 = ((__pyx_v_rand_node.c_length_test_ids >= __pyx_v_min_interactions_per_user) != 0);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":332
+    /* "socintpy/cythoncode/cnetwork_node.pyx":355
  *         if True:
  *             #if rand_node.uid not in friend_ids and
  *             if rand_node.c_uid!=c_node.c_uid:             # <<<<<<<<<<<<<<
  *                 rsim = compute_node_similarity(c_node,rand_node, interact_type,
  *                                                 data_type_code, min_interactions_per_user,
  */
-    __pyx_t_3 = ((__pyx_v_rand_node.c_uid != __pyx_v_c_node.c_uid) != 0);
-    if (__pyx_t_3) {
+    __pyx_t_1 = ((__pyx_v_rand_node.c_uid != __pyx_v_c_node.c_uid) != 0);
+    if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":333
+      /* "socintpy/cythoncode/cnetwork_node.pyx":356
  *             #if rand_node.uid not in friend_ids and
  *             if rand_node.c_uid!=c_node.c_uid:
  *                 rsim = compute_node_similarity(c_node,rand_node, interact_type,             # <<<<<<<<<<<<<<
@@ -4859,36 +4895,36 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8s
  */
       __pyx_v_rsim = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similarity(__pyx_v_c_node, __pyx_v_rand_node, __pyx_v_interact_type, __pyx_v_data_type_code, __pyx_v_min_interactions_per_user, -1, __pyx_v_time_scale);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":336
- *                                                 data_type_code, min_interactions_per_user,
- *                                                 time_diff=-1, time_scale=time_scale)
+      /* "socintpy/cythoncode/cnetwork_node.pyx":363
+ *                     printf("%f ", rsim)
+ *                 """
  *                 if rsim > -0.5: # also check for duplicate friend being selected             # <<<<<<<<<<<<<<
- *                     f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, 0)
+ *                     f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, False)
  *                     if f_indices.val1 != -1:
  */
-      __pyx_t_3 = ((__pyx_v_rsim > -0.5) != 0);
-      if (__pyx_t_3) {
+      __pyx_t_1 = ((__pyx_v_rsim > -0.5) != 0);
+      if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":337
- *                                                 time_diff=-1, time_scale=time_scale)
+        /* "socintpy/cythoncode/cnetwork_node.pyx":364
+ *                 """
  *                 if rsim > -0.5: # also check for duplicate friend being selected
- *                     f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, 0)             # <<<<<<<<<<<<<<
+ *                     f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, False)             # <<<<<<<<<<<<<<
  *                     if f_indices.val1 != -1:
  *                         # first filtering out if rand_node is a friend of user
  */
         __pyx_v_f_indices = __pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_closest_fsiminfo(__pyx_v_frsim_data_arr, __pyx_v_num_eligible_friends, __pyx_v_rsim, __pyx_v_max_sim_ratio_error, 0);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":338
+        /* "socintpy/cythoncode/cnetwork_node.pyx":365
  *                 if rsim > -0.5: # also check for duplicate friend being selected
- *                     f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, 0)
+ *                     f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, False)
  *                     if f_indices.val1 != -1:             # <<<<<<<<<<<<<<
  *                         # first filtering out if rand_node is a friend of user
  *                         valid_rand = True
  */
-        __pyx_t_3 = ((__pyx_v_f_indices.val1 != -1) != 0);
-        if (__pyx_t_3) {
+        __pyx_t_1 = ((__pyx_v_f_indices.val1 != -1) != 0);
+        if (__pyx_t_1) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":340
+          /* "socintpy/cythoncode/cnetwork_node.pyx":367
  *                     if f_indices.val1 != -1:
  *                         # first filtering out if rand_node is a friend of user
  *                         valid_rand = True             # <<<<<<<<<<<<<<
@@ -4897,28 +4933,28 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8s
  */
           __pyx_v_valid_rand = 1;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":341
+          /* "socintpy/cythoncode/cnetwork_node.pyx":368
  *                         # first filtering out if rand_node is a friend of user
  *                         valid_rand = True
  *                         for loop_i in range(f_indices.val1, f_indices.val2+1):             # <<<<<<<<<<<<<<
  *                             if frsim_data_arr[loop_i].uid == rand_node.c_uid:
  *                                 valid_rand = False
  */
-          __pyx_t_5 = (__pyx_v_f_indices.val2 + 1);
-          for (__pyx_t_1 = __pyx_v_f_indices.val1; __pyx_t_1 < __pyx_t_5; __pyx_t_1+=1) {
-            __pyx_v_loop_i = __pyx_t_1;
+          __pyx_t_3 = (__pyx_v_f_indices.val2 + 1);
+          for (__pyx_t_4 = __pyx_v_f_indices.val1; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+            __pyx_v_loop_i = __pyx_t_4;
 
-            /* "socintpy/cythoncode/cnetwork_node.pyx":342
+            /* "socintpy/cythoncode/cnetwork_node.pyx":369
  *                         valid_rand = True
  *                         for loop_i in range(f_indices.val1, f_indices.val2+1):
  *                             if frsim_data_arr[loop_i].uid == rand_node.c_uid:             # <<<<<<<<<<<<<<
  *                                 valid_rand = False
  *                         if valid_rand:
  */
-            __pyx_t_3 = (((__pyx_v_frsim_data_arr[__pyx_v_loop_i]).uid == __pyx_v_rand_node.c_uid) != 0);
-            if (__pyx_t_3) {
+            __pyx_t_1 = (((__pyx_v_frsim_data_arr[__pyx_v_loop_i]).uid == __pyx_v_rand_node.c_uid) != 0);
+            if (__pyx_t_1) {
 
-              /* "socintpy/cythoncode/cnetwork_node.pyx":343
+              /* "socintpy/cythoncode/cnetwork_node.pyx":370
  *                         for loop_i in range(f_indices.val1, f_indices.val2+1):
  *                             if frsim_data_arr[loop_i].uid == rand_node.c_uid:
  *                                 valid_rand = False             # <<<<<<<<<<<<<<
@@ -4926,43 +4962,43 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8s
  *                             for loop_i in range(f_indices.val1, f_indices.val2+1):
  */
               __pyx_v_valid_rand = 0;
-              goto __pyx_L13;
+              goto __pyx_L11;
             }
-            __pyx_L13:;
+            __pyx_L11:;
           }
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":344
+          /* "socintpy/cythoncode/cnetwork_node.pyx":371
  *                             if frsim_data_arr[loop_i].uid == rand_node.c_uid:
  *                                 valid_rand = False
  *                         if valid_rand:             # <<<<<<<<<<<<<<
  *                             for loop_i in range(f_indices.val1, f_indices.val2+1):
  *                                 fsim = frsim_data_arr[loop_i].sim
  */
-          __pyx_t_3 = (__pyx_v_valid_rand != 0);
-          if (__pyx_t_3) {
+          __pyx_t_1 = (__pyx_v_valid_rand != 0);
+          if (__pyx_t_1) {
 
-            /* "socintpy/cythoncode/cnetwork_node.pyx":345
+            /* "socintpy/cythoncode/cnetwork_node.pyx":372
  *                                 valid_rand = False
  *                         if valid_rand:
  *                             for loop_i in range(f_indices.val1, f_indices.val2+1):             # <<<<<<<<<<<<<<
  *                                 fsim = frsim_data_arr[loop_i].sim
  *                                 fobj = (<netnodedata *>allnodes[frsim_data_arr[loop_i].uid])[0]
  */
-            __pyx_t_5 = (__pyx_v_f_indices.val2 + 1);
-            for (__pyx_t_1 = __pyx_v_f_indices.val1; __pyx_t_1 < __pyx_t_5; __pyx_t_1+=1) {
-              __pyx_v_loop_i = __pyx_t_1;
+            __pyx_t_3 = (__pyx_v_f_indices.val2 + 1);
+            for (__pyx_t_4 = __pyx_v_f_indices.val1; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+              __pyx_v_loop_i = __pyx_t_4;
 
-              /* "socintpy/cythoncode/cnetwork_node.pyx":346
+              /* "socintpy/cythoncode/cnetwork_node.pyx":373
  *                         if valid_rand:
  *                             for loop_i in range(f_indices.val1, f_indices.val2+1):
  *                                 fsim = frsim_data_arr[loop_i].sim             # <<<<<<<<<<<<<<
  *                                 fobj = (<netnodedata *>allnodes[frsim_data_arr[loop_i].uid])[0]
  *                                 ratio_train = abs(rand_node.c_length_train_ids-fobj.c_length_train_ids)/<float>(fobj.c_length_train_ids)
  */
-              __pyx_t_6 = (__pyx_v_frsim_data_arr[__pyx_v_loop_i]).sim;
-              __pyx_v_fsim = __pyx_t_6;
+              __pyx_t_5 = (__pyx_v_frsim_data_arr[__pyx_v_loop_i]).sim;
+              __pyx_v_fsim = __pyx_t_5;
 
-              /* "socintpy/cythoncode/cnetwork_node.pyx":347
+              /* "socintpy/cythoncode/cnetwork_node.pyx":374
  *                             for loop_i in range(f_indices.val1, f_indices.val2+1):
  *                                 fsim = frsim_data_arr[loop_i].sim
  *                                 fobj = (<netnodedata *>allnodes[frsim_data_arr[loop_i].uid])[0]             # <<<<<<<<<<<<<<
@@ -4971,7 +5007,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8s
  */
               __pyx_v_fobj = (((struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *)(__pyx_v_allnodes[(__pyx_v_frsim_data_arr[__pyx_v_loop_i]).uid]))[0]);
 
-              /* "socintpy/cythoncode/cnetwork_node.pyx":348
+              /* "socintpy/cythoncode/cnetwork_node.pyx":375
  *                                 fsim = frsim_data_arr[loop_i].sim
  *                                 fobj = (<netnodedata *>allnodes[frsim_data_arr[loop_i].uid])[0]
  *                                 ratio_train = abs(rand_node.c_length_train_ids-fobj.c_length_train_ids)/<float>(fobj.c_length_train_ids)             # <<<<<<<<<<<<<<
@@ -4980,112 +5016,112 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8s
  */
               __pyx_v_ratio_train = (abs((__pyx_v_rand_node.c_length_train_ids - __pyx_v_fobj.c_length_train_ids)) / ((float)__pyx_v_fobj.c_length_train_ids));
 
-              /* "socintpy/cythoncode/cnetwork_node.pyx":349
+              /* "socintpy/cythoncode/cnetwork_node.pyx":376
  *                                 fobj = (<netnodedata *>allnodes[frsim_data_arr[loop_i].uid])[0]
  *                                 ratio_train = abs(rand_node.c_length_train_ids-fobj.c_length_train_ids)/<float>(fobj.c_length_train_ids)
  *                                 if ratio_train <= max_interact_ratio_error:             # <<<<<<<<<<<<<<
  *                                     # checking that no friend is added twice
- *                                     #TODO do not check for fsim==0 in binary_search above. check if needed
+ *                                     #TODO  I do not check for fsim==0 in binary_search above. check if needed
  */
-              __pyx_t_3 = ((__pyx_v_ratio_train <= __pyx_v_max_interact_ratio_error) != 0);
-              if (__pyx_t_3) {
+              __pyx_t_1 = ((__pyx_v_ratio_train <= __pyx_v_max_interact_ratio_error) != 0);
+              if (__pyx_t_1) {
 
-                /* "socintpy/cythoncode/cnetwork_node.pyx":352
+                /* "socintpy/cythoncode/cnetwork_node.pyx":379
  *                                     # checking that no friend is added twice
- *                                     #TODO do not check for fsim==0 in binary_search above. check if needed
+ *                                     #TODO  I do not check for fsim==0 in binary_search above. check if needed
  *                                     if done_friends[loop_i] == 0:#(fsim< 0.000001 and rsim<0.000001) or (fsim>0 and sim_diff/fsim <= max_sim_ratio_error):             # <<<<<<<<<<<<<<
- *                                             ret.fsim = fsim
- *                                             ret.rsim = rsim
+ *                                         ret.fsim = fsim
+ *                                         ret.rsim = rsim
  */
-                __pyx_t_3 = (((__pyx_v_done_friends[__pyx_v_loop_i]) == 0) != 0);
-                if (__pyx_t_3) {
+                __pyx_t_1 = (((__pyx_v_done_friends[__pyx_v_loop_i]) == 0) != 0);
+                if (__pyx_t_1) {
 
-                  /* "socintpy/cythoncode/cnetwork_node.pyx":353
- *                                     #TODO do not check for fsim==0 in binary_search above. check if needed
+                  /* "socintpy/cythoncode/cnetwork_node.pyx":380
+ *                                     #TODO  I do not check for fsim==0 in binary_search above. check if needed
  *                                     if done_friends[loop_i] == 0:#(fsim< 0.000001 and rsim<0.000001) or (fsim>0 and sim_diff/fsim <= max_sim_ratio_error):
- *                                             ret.fsim = fsim             # <<<<<<<<<<<<<<
- *                                             ret.rsim = rsim
- *                                             ret.fnode = fobj
+ *                                         ret.fsim = fsim             # <<<<<<<<<<<<<<
+ *                                         ret.rsim = rsim
+ *                                         ret.fnode = fobj
  */
                   __pyx_v_ret.fsim = __pyx_v_fsim;
 
-                  /* "socintpy/cythoncode/cnetwork_node.pyx":354
+                  /* "socintpy/cythoncode/cnetwork_node.pyx":381
  *                                     if done_friends[loop_i] == 0:#(fsim< 0.000001 and rsim<0.000001) or (fsim>0 and sim_diff/fsim <= max_sim_ratio_error):
- *                                             ret.fsim = fsim
- *                                             ret.rsim = rsim             # <<<<<<<<<<<<<<
- *                                             ret.fnode = fobj
- *                                             ret.rnode = rand_node
+ *                                         ret.fsim = fsim
+ *                                         ret.rsim = rsim             # <<<<<<<<<<<<<<
+ *                                         ret.fnode = fobj
+ *                                         ret.rnode = rand_node
  */
                   __pyx_v_ret.rsim = __pyx_v_rsim;
 
-                  /* "socintpy/cythoncode/cnetwork_node.pyx":355
- *                                             ret.fsim = fsim
- *                                             ret.rsim = rsim
- *                                             ret.fnode = fobj             # <<<<<<<<<<<<<<
- *                                             ret.rnode = rand_node
- *                                             done_friends[loop_i] = 1
+                  /* "socintpy/cythoncode/cnetwork_node.pyx":382
+ *                                         ret.fsim = fsim
+ *                                         ret.rsim = rsim
+ *                                         ret.fnode = fobj             # <<<<<<<<<<<<<<
+ *                                         ret.rnode = rand_node
+ *                                         done_friends[loop_i] = 1
  */
                   __pyx_v_ret.fnode = __pyx_v_fobj;
 
-                  /* "socintpy/cythoncode/cnetwork_node.pyx":356
- *                                             ret.rsim = rsim
- *                                             ret.fnode = fobj
- *                                             ret.rnode = rand_node             # <<<<<<<<<<<<<<
- *                                             done_friends[loop_i] = 1
- *                                             break
+                  /* "socintpy/cythoncode/cnetwork_node.pyx":383
+ *                                         ret.rsim = rsim
+ *                                         ret.fnode = fobj
+ *                                         ret.rnode = rand_node             # <<<<<<<<<<<<<<
+ *                                         done_friends[loop_i] = 1
+ *                                         break
  */
                   __pyx_v_ret.rnode = __pyx_v_rand_node;
 
-                  /* "socintpy/cythoncode/cnetwork_node.pyx":357
- *                                             ret.fnode = fobj
- *                                             ret.rnode = rand_node
- *                                             done_friends[loop_i] = 1             # <<<<<<<<<<<<<<
- *                                             break
+                  /* "socintpy/cythoncode/cnetwork_node.pyx":384
+ *                                         ret.fnode = fobj
+ *                                         ret.rnode = rand_node
+ *                                         done_friends[loop_i] = 1             # <<<<<<<<<<<<<<
+ *                                         break
  *     return ret
  */
                   (__pyx_v_done_friends[__pyx_v_loop_i]) = 1;
 
-                  /* "socintpy/cythoncode/cnetwork_node.pyx":358
- *                                             ret.rnode = rand_node
- *                                             done_friends[loop_i] = 1
- *                                             break             # <<<<<<<<<<<<<<
+                  /* "socintpy/cythoncode/cnetwork_node.pyx":385
+ *                                         ret.rnode = rand_node
+ *                                         done_friends[loop_i] = 1
+ *                                         break             # <<<<<<<<<<<<<<
  *     return ret
  * 
  */
-                  goto __pyx_L16_break;
+                  goto __pyx_L14_break;
                 }
-                goto __pyx_L17;
+                goto __pyx_L15;
               }
-              __pyx_L17:;
+              __pyx_L15:;
             }
-            __pyx_L16_break:;
-            goto __pyx_L14;
+            __pyx_L14_break:;
+            goto __pyx_L12;
           }
-          __pyx_L14:;
-          goto __pyx_L10;
+          __pyx_L12:;
+          goto __pyx_L8;
         }
-        __pyx_L10:;
-        goto __pyx_L9;
+        __pyx_L8:;
+        goto __pyx_L7;
       }
-      __pyx_L9:;
-      goto __pyx_L8;
+      __pyx_L7:;
+      goto __pyx_L6;
     }
-    __pyx_L8:;
-    goto __pyx_L5;
+    __pyx_L6:;
+    goto __pyx_L3;
   }
-  __pyx_L5:;
+  __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":359
- *                                             done_friends[loop_i] = 1
- *                                             break
+  /* "socintpy/cythoncode/cnetwork_node.pyx":386
+ *                                         done_friends[loop_i] = 1
+ *                                         break
  *     return ret             # <<<<<<<<<<<<<<
  * 
- * cdef float compute_node_susceptibility(netnodedata my_node, netnodedata **other_nodes,
+ * cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_nodes,
  */
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":310
+  /* "socintpy/cythoncode/cnetwork_node.pyx":336
  * 
  * 
  * cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_node,             # <<<<<<<<<<<<<<
@@ -5098,15 +5134,15 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_compfrnonfr __pyx_f_8s
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":361
+/* "socintpy/cythoncode/cnetwork_node.pyx":388
  *     return ret
  * 
- * cdef float compute_node_susceptibility(netnodedata my_node, netnodedata **other_nodes,             # <<<<<<<<<<<<<<
+ * cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_nodes,             # <<<<<<<<<<<<<<
  *         int length_other_nodes,
  *         int interact_type, float cutoff_rating, int data_type_code,
  */
 
-static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_my_node, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata **__pyx_v_other_nodes, int __pyx_v_length_other_nodes, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, int __pyx_v_data_type_code, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_allow_duplicates, int __pyx_v_debug) {
+static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_susceptibility(struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata __pyx_v_my_node, struct __pyx_t_8socintpy_10cythoncode_10data_types_netnodedata *__pyx_v_other_nodes, int __pyx_v_length_other_nodes, int __pyx_v_interact_type, float __pyx_v_cutoff_rating, int __pyx_v_data_type_code, int __pyx_v_min_interactions_per_user, int __pyx_v_time_diff, int __pyx_v_time_scale, int __pyx_v_allow_duplicates, int __pyx_v_debug) {
   int __pyx_v_length_my_interactions;
   int *__pyx_v_lengths_others_interactions;
   struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_v_my_interactions;
@@ -5123,7 +5159,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   int __pyx_t_5;
   int __pyx_t_6;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":367
+  /* "socintpy/cythoncode/cnetwork_node.pyx":394
  *         bint allow_duplicates, bint debug) nogil:
  *     cdef int length_my_interactions
  *     cdef int *lengths_others_interactions = <int *>malloc(length_other_nodes*cython.sizeof(int))             # <<<<<<<<<<<<<<
@@ -5132,7 +5168,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_lengths_others_interactions = ((int *)malloc((__pyx_v_length_other_nodes * (sizeof(int)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":369
+  /* "socintpy/cythoncode/cnetwork_node.pyx":396
  *     cdef int *lengths_others_interactions = <int *>malloc(length_other_nodes*cython.sizeof(int))
  *     cdef idata *my_interactions
  *     cdef idata **others_interactions = <idata **>malloc(length_other_nodes*sizeof(idata *))             # <<<<<<<<<<<<<<
@@ -5141,7 +5177,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_others_interactions = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_idata **)malloc((__pyx_v_length_other_nodes * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":371
+  /* "socintpy/cythoncode/cnetwork_node.pyx":398
  *     cdef idata **others_interactions = <idata **>malloc(length_other_nodes*sizeof(idata *))
  *     cdef int i
  *     cdef float ret = -1             # <<<<<<<<<<<<<<
@@ -5150,7 +5186,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_ret = -1.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":373
+  /* "socintpy/cythoncode/cnetwork_node.pyx":400
  *     cdef float ret = -1
  * 
  *     if data_type_code == <int>'i':             # <<<<<<<<<<<<<<
@@ -5160,7 +5196,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   __pyx_t_1 = ((__pyx_v_data_type_code == ((int)'i')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":374
+    /* "socintpy/cythoncode/cnetwork_node.pyx":401
  * 
  *     if data_type_code == <int>'i':
  *         my_interactions = my_node.c_test_data             # <<<<<<<<<<<<<<
@@ -5170,7 +5206,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_2 = __pyx_v_my_node.c_test_data;
     __pyx_v_my_interactions = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":375
+    /* "socintpy/cythoncode/cnetwork_node.pyx":402
  *     if data_type_code == <int>'i':
  *         my_interactions = my_node.c_test_data
  *         length_my_interactions = my_node.c_length_test_ids             # <<<<<<<<<<<<<<
@@ -5180,38 +5216,38 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_3 = __pyx_v_my_node.c_length_test_ids;
     __pyx_v_length_my_interactions = __pyx_t_3;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":376
+    /* "socintpy/cythoncode/cnetwork_node.pyx":403
  *         my_interactions = my_node.c_test_data
  *         length_my_interactions = my_node.c_length_test_ids
  *         valid_flag = True             # <<<<<<<<<<<<<<
  *         for i in range(length_other_nodes):
- *             c_node_obj = other_nodes[i][0]
+ *             c_node_obj = other_nodes[i]
  */
     __pyx_v_valid_flag = 1;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":377
+    /* "socintpy/cythoncode/cnetwork_node.pyx":404
  *         length_my_interactions = my_node.c_length_test_ids
  *         valid_flag = True
  *         for i in range(length_other_nodes):             # <<<<<<<<<<<<<<
- *             c_node_obj = other_nodes[i][0]
+ *             c_node_obj = other_nodes[i]
  *             lengths_others_interactions[i] = c_node_obj.c_length_test_ids
  */
     __pyx_t_3 = __pyx_v_length_other_nodes;
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_i = __pyx_t_4;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":378
+      /* "socintpy/cythoncode/cnetwork_node.pyx":405
  *         valid_flag = True
  *         for i in range(length_other_nodes):
- *             c_node_obj = other_nodes[i][0]             # <<<<<<<<<<<<<<
+ *             c_node_obj = other_nodes[i]             # <<<<<<<<<<<<<<
  *             lengths_others_interactions[i] = c_node_obj.c_length_test_ids
  *             others_interactions[i] = c_node_obj.c_test_data
  */
-      __pyx_v_c_node_obj = ((__pyx_v_other_nodes[__pyx_v_i])[0]);
+      __pyx_v_c_node_obj = (__pyx_v_other_nodes[__pyx_v_i]);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":379
+      /* "socintpy/cythoncode/cnetwork_node.pyx":406
  *         for i in range(length_other_nodes):
- *             c_node_obj = other_nodes[i][0]
+ *             c_node_obj = other_nodes[i]
  *             lengths_others_interactions[i] = c_node_obj.c_length_test_ids             # <<<<<<<<<<<<<<
  *             others_interactions[i] = c_node_obj.c_test_data
  *             if lengths_others_interactions[i] < min_interactions_per_user:
@@ -5219,8 +5255,8 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       __pyx_t_5 = __pyx_v_c_node_obj.c_length_test_ids;
       (__pyx_v_lengths_others_interactions[__pyx_v_i]) = __pyx_t_5;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":380
- *             c_node_obj = other_nodes[i][0]
+      /* "socintpy/cythoncode/cnetwork_node.pyx":407
+ *             c_node_obj = other_nodes[i]
  *             lengths_others_interactions[i] = c_node_obj.c_length_test_ids
  *             others_interactions[i] = c_node_obj.c_test_data             # <<<<<<<<<<<<<<
  *             if lengths_others_interactions[i] < min_interactions_per_user:
@@ -5229,7 +5265,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       __pyx_t_2 = __pyx_v_c_node_obj.c_test_data;
       (__pyx_v_others_interactions[__pyx_v_i]) = __pyx_t_2;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":381
+      /* "socintpy/cythoncode/cnetwork_node.pyx":408
  *             lengths_others_interactions[i] = c_node_obj.c_length_test_ids
  *             others_interactions[i] = c_node_obj.c_test_data
  *             if lengths_others_interactions[i] < min_interactions_per_user:             # <<<<<<<<<<<<<<
@@ -5239,7 +5275,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       __pyx_t_1 = (((__pyx_v_lengths_others_interactions[__pyx_v_i]) < __pyx_v_min_interactions_per_user) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":382
+        /* "socintpy/cythoncode/cnetwork_node.pyx":409
  *             others_interactions[i] = c_node_obj.c_test_data
  *             if lengths_others_interactions[i] < min_interactions_per_user:
  *                 valid_flag = False             # <<<<<<<<<<<<<<
@@ -5248,7 +5284,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
         __pyx_v_valid_flag = 0;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":383
+        /* "socintpy/cythoncode/cnetwork_node.pyx":410
  *             if lengths_others_interactions[i] < min_interactions_per_user:
  *                 valid_flag = False
  *                 break             # <<<<<<<<<<<<<<
@@ -5260,7 +5296,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     }
     __pyx_L5_break:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":384
+    /* "socintpy/cythoncode/cnetwork_node.pyx":411
  *                 valid_flag = False
  *                 break
  *         if length_my_interactions >= min_interactions_per_user and valid_flag:             # <<<<<<<<<<<<<<
@@ -5278,7 +5314,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":385
+      /* "socintpy/cythoncode/cnetwork_node.pyx":412
  *                 break
  *         if length_my_interactions >= min_interactions_per_user and valid_flag:
  *             if time_scale == <int>'o':             # <<<<<<<<<<<<<<
@@ -5288,7 +5324,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       __pyx_t_1 = ((__pyx_v_time_scale == ((int)'o')) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":386
+        /* "socintpy/cythoncode/cnetwork_node.pyx":413
  *         if length_my_interactions >= min_interactions_per_user and valid_flag:
  *             if time_scale == <int>'o':
  *                 ret = compute_node_susceptibility_ordinal_c(my_interactions,             # <<<<<<<<<<<<<<
@@ -5300,7 +5336,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       }
       /*else*/ {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":393
+        /* "socintpy/cythoncode/cnetwork_node.pyx":420
  *                         time_scale=time_scale, allow_duplicates=allow_duplicates, debug=debug)
  *             else:
  *                 ret = compute_node_susceptibility_c(my_interactions,             # <<<<<<<<<<<<<<
@@ -5317,7 +5353,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   }
   /*else*/ {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":399
+    /* "socintpy/cythoncode/cnetwork_node.pyx":426
  *                         time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale)
  *     else:
  *         printf("Error: data_type_code invalid for computing susceptibility")             # <<<<<<<<<<<<<<
@@ -5328,7 +5364,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":400
+  /* "socintpy/cythoncode/cnetwork_node.pyx":427
  *     else:
  *         printf("Error: data_type_code invalid for computing susceptibility")
  *     free(lengths_others_interactions)             # <<<<<<<<<<<<<<
@@ -5337,7 +5373,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   free(__pyx_v_lengths_others_interactions);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":401
+  /* "socintpy/cythoncode/cnetwork_node.pyx":428
  *         printf("Error: data_type_code invalid for computing susceptibility")
  *     free(lengths_others_interactions)
  *     free(others_interactions)             # <<<<<<<<<<<<<<
@@ -5346,7 +5382,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   free(__pyx_v_others_interactions);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":402
+  /* "socintpy/cythoncode/cnetwork_node.pyx":429
  *     free(lengths_others_interactions)
  *     free(others_interactions)
  *     return ret             # <<<<<<<<<<<<<<
@@ -5356,10 +5392,10 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":361
+  /* "socintpy/cythoncode/cnetwork_node.pyx":388
  *     return ret
  * 
- * cdef float compute_node_susceptibility(netnodedata my_node, netnodedata **other_nodes,             # <<<<<<<<<<<<<<
+ * cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_nodes,             # <<<<<<<<<<<<<<
  *         int length_other_nodes,
  *         int interact_type, float cutoff_rating, int data_type_code,
  */
@@ -5369,7 +5405,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":405
+/* "socintpy/cythoncode/cnetwork_node.pyx":432
  * 
  * 
  * cdef float compute_node_similarity(netnodedata node, netnodedata other_node, int interact_type,             # <<<<<<<<<<<<<<
@@ -5391,7 +5427,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   int __pyx_t_3;
   int __pyx_t_4;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":413
+  /* "socintpy/cythoncode/cnetwork_node.pyx":440
  *     cdef idata *other_interactions
  *     cdef netnodedata c_node1, c_node2
  *     c_node2 = other_node             # <<<<<<<<<<<<<<
@@ -5400,7 +5436,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_c_node2 = __pyx_v_other_node;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":414
+  /* "socintpy/cythoncode/cnetwork_node.pyx":441
  *     cdef netnodedata c_node1, c_node2
  *     c_node2 = other_node
  *     c_node1 = node             # <<<<<<<<<<<<<<
@@ -5409,7 +5445,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_c_node1 = __pyx_v_node;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":415
+  /* "socintpy/cythoncode/cnetwork_node.pyx":442
  *     c_node2 = other_node
  *     c_node1 = node
  *     cdef float sim = -1             # <<<<<<<<<<<<<<
@@ -5418,7 +5454,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_sim = -1.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":416
+  /* "socintpy/cythoncode/cnetwork_node.pyx":443
  *     c_node1 = node
  *     cdef float sim = -1
  *     if data_type_code == <int>'a':             # <<<<<<<<<<<<<<
@@ -5428,7 +5464,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_t_1 = ((__pyx_v_data_type_code == ((int)'a')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":417
+    /* "socintpy/cythoncode/cnetwork_node.pyx":444
  *     cdef float sim = -1
  *     if data_type_code == <int>'a':
  *         my_interactions = c_node1.c_list[interact_type]             # <<<<<<<<<<<<<<
@@ -5437,7 +5473,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
     __pyx_v_my_interactions = (__pyx_v_c_node1.c_list[__pyx_v_interact_type]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":418
+    /* "socintpy/cythoncode/cnetwork_node.pyx":445
  *     if data_type_code == <int>'a':
  *         my_interactions = c_node1.c_list[interact_type]
  *         length_my_interactions = c_node1.c_length_list[interact_type]             # <<<<<<<<<<<<<<
@@ -5446,7 +5482,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
     __pyx_v_length_my_interactions = (__pyx_v_c_node1.c_length_list[__pyx_v_interact_type]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":419
+    /* "socintpy/cythoncode/cnetwork_node.pyx":446
  *         my_interactions = c_node1.c_list[interact_type]
  *         length_my_interactions = c_node1.c_length_list[interact_type]
  *         other_interactions = c_node2.c_list[interact_type]             # <<<<<<<<<<<<<<
@@ -5455,7 +5491,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
     __pyx_v_other_interactions = (__pyx_v_c_node2.c_list[__pyx_v_interact_type]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":420
+    /* "socintpy/cythoncode/cnetwork_node.pyx":447
  *         length_my_interactions = c_node1.c_length_list[interact_type]
  *         other_interactions = c_node2.c_list[interact_type]
  *         length_other_interactions = c_node2.c_length_list[interact_type]             # <<<<<<<<<<<<<<
@@ -5466,7 +5502,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     goto __pyx_L3;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":421
+  /* "socintpy/cythoncode/cnetwork_node.pyx":448
  *         other_interactions = c_node2.c_list[interact_type]
  *         length_other_interactions = c_node2.c_length_list[interact_type]
  *     elif data_type_code == <int>'c':             # <<<<<<<<<<<<<<
@@ -5476,7 +5512,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_t_1 = ((__pyx_v_data_type_code == ((int)'c')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":422
+    /* "socintpy/cythoncode/cnetwork_node.pyx":449
  *         length_other_interactions = c_node2.c_length_list[interact_type]
  *     elif data_type_code == <int>'c':
  *         my_interactions = c_node1.c_train_data             # <<<<<<<<<<<<<<
@@ -5486,7 +5522,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_2 = __pyx_v_c_node1.c_train_data;
     __pyx_v_my_interactions = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":423
+    /* "socintpy/cythoncode/cnetwork_node.pyx":450
  *     elif data_type_code == <int>'c':
  *         my_interactions = c_node1.c_train_data
  *         length_my_interactions = c_node1.c_length_train_ids             # <<<<<<<<<<<<<<
@@ -5496,7 +5532,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_3 = __pyx_v_c_node1.c_length_train_ids;
     __pyx_v_length_my_interactions = __pyx_t_3;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":424
+    /* "socintpy/cythoncode/cnetwork_node.pyx":451
  *         my_interactions = c_node1.c_train_data
  *         length_my_interactions = c_node1.c_length_train_ids
  *         other_interactions = c_node2.c_train_data             # <<<<<<<<<<<<<<
@@ -5506,7 +5542,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_2 = __pyx_v_c_node2.c_train_data;
     __pyx_v_other_interactions = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":425
+    /* "socintpy/cythoncode/cnetwork_node.pyx":452
  *         length_my_interactions = c_node1.c_length_train_ids
  *         other_interactions = c_node2.c_train_data
  *         length_other_interactions = c_node2.c_length_train_ids             # <<<<<<<<<<<<<<
@@ -5518,7 +5554,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     goto __pyx_L3;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":427
+  /* "socintpy/cythoncode/cnetwork_node.pyx":454
  *         length_other_interactions = c_node2.c_length_train_ids
  * 
  *     elif data_type_code == <int>'i':             # <<<<<<<<<<<<<<
@@ -5528,7 +5564,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_t_1 = ((__pyx_v_data_type_code == ((int)'i')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":428
+    /* "socintpy/cythoncode/cnetwork_node.pyx":455
  * 
  *     elif data_type_code == <int>'i':
  *         my_interactions = c_node1.c_test_data             # <<<<<<<<<<<<<<
@@ -5538,7 +5574,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_2 = __pyx_v_c_node1.c_test_data;
     __pyx_v_my_interactions = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":429
+    /* "socintpy/cythoncode/cnetwork_node.pyx":456
  *     elif data_type_code == <int>'i':
  *         my_interactions = c_node1.c_test_data
  *         length_my_interactions = c_node1.c_length_test_ids             # <<<<<<<<<<<<<<
@@ -5548,7 +5584,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_3 = __pyx_v_c_node1.c_length_test_ids;
     __pyx_v_length_my_interactions = __pyx_t_3;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":430
+    /* "socintpy/cythoncode/cnetwork_node.pyx":457
  *         my_interactions = c_node1.c_test_data
  *         length_my_interactions = c_node1.c_length_test_ids
  *         other_interactions = c_node2.c_test_data             # <<<<<<<<<<<<<<
@@ -5558,7 +5594,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_2 = __pyx_v_c_node2.c_test_data;
     __pyx_v_other_interactions = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":431
+    /* "socintpy/cythoncode/cnetwork_node.pyx":458
  *         length_my_interactions = c_node1.c_length_test_ids
  *         other_interactions = c_node2.c_test_data
  *         length_other_interactions = c_node2.c_length_test_ids             # <<<<<<<<<<<<<<
@@ -5571,7 +5607,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":433
+  /* "socintpy/cythoncode/cnetwork_node.pyx":460
  *         length_other_interactions = c_node2.c_length_test_ids
  *     #with nogil:
  *     if length_my_interactions >= min_interactions_per_user and (             # <<<<<<<<<<<<<<
@@ -5585,7 +5621,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     goto __pyx_L5_bool_binop_done;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":434
+  /* "socintpy/cythoncode/cnetwork_node.pyx":461
  *     #with nogil:
  *     if length_my_interactions >= min_interactions_per_user and (
  *             length_other_interactions >= min_interactions_per_user):             # <<<<<<<<<<<<<<
@@ -5597,7 +5633,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":435
+    /* "socintpy/cythoncode/cnetwork_node.pyx":462
  *     if length_my_interactions >= min_interactions_per_user and (
  *             length_other_interactions >= min_interactions_per_user):
  *         sim = compute_node_similarity_c(my_interactions, other_interactions,             # <<<<<<<<<<<<<<
@@ -5609,7 +5645,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   }
   __pyx_L4:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":439
+  /* "socintpy/cythoncode/cnetwork_node.pyx":466
  *                 time_diff=time_diff,
  *                 time_scale=time_scale)
  *     return sim             # <<<<<<<<<<<<<<
@@ -5619,7 +5655,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_r = __pyx_v_sim;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":405
+  /* "socintpy/cythoncode/cnetwork_node.pyx":432
  * 
  * 
  * cdef float compute_node_similarity(netnodedata node, netnodedata other_node, int interact_type,             # <<<<<<<<<<<<<<
@@ -5632,7 +5668,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":442
+/* "socintpy/cythoncode/cnetwork_node.pyx":469
  * 
  * # CAUTION: works only for wall-clock time_scale right now
  * cdef float compute_node_similarity_c(idata *my_interactions, idata *others_interactions,             # <<<<<<<<<<<<<<
@@ -5654,7 +5690,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   int __pyx_t_3;
   int __pyx_t_4;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":450
+  /* "socintpy/cythoncode/cnetwork_node.pyx":477
  * 
  *     cdef int i, j, k
  *     simscore = 0             # <<<<<<<<<<<<<<
@@ -5663,7 +5699,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_simscore = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":451
+  /* "socintpy/cythoncode/cnetwork_node.pyx":478
  *     cdef int i, j, k
  *     simscore = 0
  *     i = 0             # <<<<<<<<<<<<<<
@@ -5672,7 +5708,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_i = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":452
+  /* "socintpy/cythoncode/cnetwork_node.pyx":479
  *     simscore = 0
  *     i = 0
  *     j = 0             # <<<<<<<<<<<<<<
@@ -5681,7 +5717,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_j = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":453
+  /* "socintpy/cythoncode/cnetwork_node.pyx":480
  *     i = 0
  *     j = 0
  *     cdef int my_count = 0             # <<<<<<<<<<<<<<
@@ -5690,7 +5726,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_my_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":454
+  /* "socintpy/cythoncode/cnetwork_node.pyx":481
  *     j = 0
  *     cdef int my_count = 0
  *     cdef int others_count = 0             # <<<<<<<<<<<<<<
@@ -5699,7 +5735,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_others_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":455
+  /* "socintpy/cythoncode/cnetwork_node.pyx":482
  *     cdef int my_count = 0
  *     cdef int others_count = 0
  *     while i < length_my_interactions and j < length_others_interactions:             # <<<<<<<<<<<<<<
@@ -5718,7 +5754,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_L5_bool_binop_done:;
     if (!__pyx_t_1) break;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":456
+    /* "socintpy/cythoncode/cnetwork_node.pyx":483
  *     cdef int others_count = 0
  *     while i < length_my_interactions and j < length_others_interactions:
  *         if my_interactions[i].item_id < others_interactions[j].item_id:             # <<<<<<<<<<<<<<
@@ -5728,7 +5764,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).item_id < (__pyx_v_others_interactions[__pyx_v_j]).item_id) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":457
+      /* "socintpy/cythoncode/cnetwork_node.pyx":484
  *     while i < length_my_interactions and j < length_others_interactions:
  *         if my_interactions[i].item_id < others_interactions[j].item_id:
  *             my_count += 1             # <<<<<<<<<<<<<<
@@ -5737,7 +5773,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
       __pyx_v_my_count = (__pyx_v_my_count + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":458
+      /* "socintpy/cythoncode/cnetwork_node.pyx":485
  *         if my_interactions[i].item_id < others_interactions[j].item_id:
  *             my_count += 1
  *             i += 1             # <<<<<<<<<<<<<<
@@ -5748,7 +5784,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
       goto __pyx_L7;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":459
+    /* "socintpy/cythoncode/cnetwork_node.pyx":486
  *             my_count += 1
  *             i += 1
  *         elif my_interactions[i].item_id > others_interactions[j].item_id:             # <<<<<<<<<<<<<<
@@ -5758,7 +5794,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).item_id > (__pyx_v_others_interactions[__pyx_v_j]).item_id) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":460
+      /* "socintpy/cythoncode/cnetwork_node.pyx":487
  *             i += 1
  *         elif my_interactions[i].item_id > others_interactions[j].item_id:
  *             others_count += 1             # <<<<<<<<<<<<<<
@@ -5767,7 +5803,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
       __pyx_v_others_count = (__pyx_v_others_count + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":461
+      /* "socintpy/cythoncode/cnetwork_node.pyx":488
  *         elif my_interactions[i].item_id > others_interactions[j].item_id:
  *             others_count += 1
  *             j+= 1             # <<<<<<<<<<<<<<
@@ -5779,7 +5815,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     }
     /*else*/ {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":463
+      /* "socintpy/cythoncode/cnetwork_node.pyx":490
  *             j+= 1
  *         else: # item ids are equal
  *             if time_diff == -1 or abs(my_interactions[i].timestamp - others_interactions[j].timestamp) <= time_diff:             # <<<<<<<<<<<<<<
@@ -5797,7 +5833,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
       __pyx_L9_bool_binop_done:;
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":464
+        /* "socintpy/cythoncode/cnetwork_node.pyx":491
  *         else: # item ids are equal
  *             if time_diff == -1 or abs(my_interactions[i].timestamp - others_interactions[j].timestamp) <= time_diff:
  *                 simscore += 1             # <<<<<<<<<<<<<<
@@ -5809,7 +5845,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
       }
       __pyx_L8:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":473
+      /* "socintpy/cythoncode/cnetwork_node.pyx":500
  *             """
  * 
  *             my_count += 1             # <<<<<<<<<<<<<<
@@ -5818,7 +5854,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
       __pyx_v_my_count = (__pyx_v_my_count + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":474
+      /* "socintpy/cythoncode/cnetwork_node.pyx":501
  * 
  *             my_count += 1
  *             others_count += 1             # <<<<<<<<<<<<<<
@@ -5827,7 +5863,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
       __pyx_v_others_count = (__pyx_v_others_count + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":475
+      /* "socintpy/cythoncode/cnetwork_node.pyx":502
  *             my_count += 1
  *             others_count += 1
  *             i += 1             # <<<<<<<<<<<<<<
@@ -5836,7 +5872,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
       __pyx_v_i = (__pyx_v_i + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":476
+      /* "socintpy/cythoncode/cnetwork_node.pyx":503
  *             others_count += 1
  *             i += 1
  *             j += 1             # <<<<<<<<<<<<<<
@@ -5848,7 +5884,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     __pyx_L7:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":477
+  /* "socintpy/cythoncode/cnetwork_node.pyx":504
  *             i += 1
  *             j += 1
  *     if j == length_others_interactions:             # <<<<<<<<<<<<<<
@@ -5858,7 +5894,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_t_1 = ((__pyx_v_j == __pyx_v_length_others_interactions) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":478
+    /* "socintpy/cythoncode/cnetwork_node.pyx":505
  *             j += 1
  *     if j == length_others_interactions:
  *         for k in range(i,length_my_interactions):             # <<<<<<<<<<<<<<
@@ -5869,7 +5905,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     for (__pyx_t_4 = __pyx_v_i; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_k = __pyx_t_4;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":479
+      /* "socintpy/cythoncode/cnetwork_node.pyx":506
  *     if j == length_others_interactions:
  *         for k in range(i,length_my_interactions):
  *             my_count += 1             # <<<<<<<<<<<<<<
@@ -5881,7 +5917,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     goto __pyx_L11;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":480
+  /* "socintpy/cythoncode/cnetwork_node.pyx":507
  *         for k in range(i,length_my_interactions):
  *             my_count += 1
  *     elif i == length_my_interactions:             # <<<<<<<<<<<<<<
@@ -5891,7 +5927,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_t_1 = ((__pyx_v_i == __pyx_v_length_my_interactions) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":481
+    /* "socintpy/cythoncode/cnetwork_node.pyx":508
  *             my_count += 1
  *     elif i == length_my_interactions:
  *         for k in range(j, length_others_interactions):             # <<<<<<<<<<<<<<
@@ -5902,7 +5938,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     for (__pyx_t_4 = __pyx_v_j; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_k = __pyx_t_4;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":482
+      /* "socintpy/cythoncode/cnetwork_node.pyx":509
  *     elif i == length_my_interactions:
  *         for k in range(j, length_others_interactions):
  *             others_count += 1             # <<<<<<<<<<<<<<
@@ -5915,7 +5951,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   }
   __pyx_L11:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":484
+  /* "socintpy/cythoncode/cnetwork_node.pyx":511
  *             others_count += 1
  * 
  *     if my_count == 0 or others_count == 0:             # <<<<<<<<<<<<<<
@@ -5933,7 +5969,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_L17_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":485
+    /* "socintpy/cythoncode/cnetwork_node.pyx":512
  * 
  *     if my_count == 0 or others_count == 0:
  *         return -1             # <<<<<<<<<<<<<<
@@ -5944,7 +5980,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":486
+  /* "socintpy/cythoncode/cnetwork_node.pyx":513
  *     if my_count == 0 or others_count == 0:
  *         return -1
  *     union_sum = my_count + others_count - simscore             # <<<<<<<<<<<<<<
@@ -5953,7 +5989,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
  */
   __pyx_v_union_sum = ((__pyx_v_my_count + __pyx_v_others_count) - __pyx_v_simscore);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":488
+  /* "socintpy/cythoncode/cnetwork_node.pyx":515
  *     union_sum = my_count + others_count - simscore
  * 
  *     return simscore/union_sum             # <<<<<<<<<<<<<<
@@ -5963,7 +5999,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   __pyx_r = (__pyx_v_simscore / __pyx_v_union_sum);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":442
+  /* "socintpy/cythoncode/cnetwork_node.pyx":469
  * 
  * # CAUTION: works only for wall-clock time_scale right now
  * cdef float compute_node_similarity_c(idata *my_interactions, idata *others_interactions,             # <<<<<<<<<<<<<<
@@ -5976,7 +6012,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":490
+/* "socintpy/cythoncode/cnetwork_node.pyx":517
  *     return simscore/union_sum
  * 
  * cdef int get_num_interactions_between(idata *interactions, int length_interactions,             # <<<<<<<<<<<<<<
@@ -5986,7 +6022,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similar
 
 static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_between(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_v_interactions, int __pyx_v_length_interactions, int __pyx_v_timestamp1, int __pyx_v_timestamp2, float __pyx_v_cutoff_rating, struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_between *__pyx_optional_args) {
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":492
+  /* "socintpy/cythoncode/cnetwork_node.pyx":519
  * cdef int get_num_interactions_between(idata *interactions, int length_interactions,
  *         int timestamp1,
  *         int timestamp2, float cutoff_rating, bint order_agnostic=True) nogil:             # <<<<<<<<<<<<<<
@@ -6007,7 +6043,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
     }
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":494
+  /* "socintpy/cythoncode/cnetwork_node.pyx":521
  *         int timestamp2, float cutoff_rating, bint order_agnostic=True) nogil:
  *     cdef int i
  *     cdef int num_interacts_between = 0             # <<<<<<<<<<<<<<
@@ -6016,7 +6052,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
  */
   __pyx_v_num_interacts_between = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":495
+  /* "socintpy/cythoncode/cnetwork_node.pyx":522
  *     cdef int i
  *     cdef int num_interacts_between = 0
  *     for i in range(length_interactions):             # <<<<<<<<<<<<<<
@@ -6027,7 +6063,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":496
+    /* "socintpy/cythoncode/cnetwork_node.pyx":523
  *     cdef int num_interacts_between = 0
  *     for i in range(length_interactions):
  *         if interactions[i].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -6037,7 +6073,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
     __pyx_t_3 = (((__pyx_v_interactions[__pyx_v_i]).rating >= __pyx_v_cutoff_rating) != 0);
     if (__pyx_t_3) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":497
+      /* "socintpy/cythoncode/cnetwork_node.pyx":524
  *     for i in range(length_interactions):
  *         if interactions[i].rating >= cutoff_rating:
  *             if interactions[i].timestamp >timestamp1 and interactions[i].timestamp <=timestamp2:             # <<<<<<<<<<<<<<
@@ -6055,7 +6091,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
       __pyx_L7_bool_binop_done:;
       if (__pyx_t_3) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":498
+        /* "socintpy/cythoncode/cnetwork_node.pyx":525
  *         if interactions[i].rating >= cutoff_rating:
  *             if interactions[i].timestamp >timestamp1 and interactions[i].timestamp <=timestamp2:
  *                 num_interacts_between += 1             # <<<<<<<<<<<<<<
@@ -6066,7 +6102,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
         goto __pyx_L6;
       }
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":499
+      /* "socintpy/cythoncode/cnetwork_node.pyx":526
  *             if interactions[i].timestamp >timestamp1 and interactions[i].timestamp <=timestamp2:
  *                 num_interacts_between += 1
  *             elif order_agnostic:             # <<<<<<<<<<<<<<
@@ -6076,7 +6112,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
       __pyx_t_3 = (__pyx_v_order_agnostic != 0);
       if (__pyx_t_3) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":500
+        /* "socintpy/cythoncode/cnetwork_node.pyx":527
  *                 num_interacts_between += 1
  *             elif order_agnostic:
  *                 if interactions[i].timestamp >=timestamp2 and interactions[i].timestamp <timestamp1:             # <<<<<<<<<<<<<<
@@ -6094,7 +6130,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
         __pyx_L10_bool_binop_done:;
         if (__pyx_t_3) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":501
+          /* "socintpy/cythoncode/cnetwork_node.pyx":528
  *             elif order_agnostic:
  *                 if interactions[i].timestamp >=timestamp2 and interactions[i].timestamp <timestamp1:
  *                     num_interacts_between += 1             # <<<<<<<<<<<<<<
@@ -6113,7 +6149,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":502
+  /* "socintpy/cythoncode/cnetwork_node.pyx":529
  *                 if interactions[i].timestamp >=timestamp2 and interactions[i].timestamp <timestamp1:
  *                     num_interacts_between += 1
  *     return num_interacts_between             # <<<<<<<<<<<<<<
@@ -6123,7 +6159,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
   __pyx_r = __pyx_v_num_interacts_between;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":490
+  /* "socintpy/cythoncode/cnetwork_node.pyx":517
  *     return simscore/union_sum
  * 
  * cdef int get_num_interactions_between(idata *interactions, int length_interactions,             # <<<<<<<<<<<<<<
@@ -6136,7 +6172,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_b
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":504
+/* "socintpy/cythoncode/cnetwork_node.pyx":531
  *     return num_interacts_between
  * 
  * cdef bint is_influence(idata *my_interactions, int length_my_interactions,             # <<<<<<<<<<<<<<
@@ -6152,7 +6188,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
   int __pyx_t_3;
   struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_between __pyx_t_4;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":507
+  /* "socintpy/cythoncode/cnetwork_node.pyx":534
  *         int my_timestamp, int others_timestamp, float cutoff_rating,
  *         int time_diff, int time_scale, bint order_agnostic) nogil:
  *     cdef bint inf = 0             # <<<<<<<<<<<<<<
@@ -6161,7 +6197,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
  */
   __pyx_v_inf = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":509
+  /* "socintpy/cythoncode/cnetwork_node.pyx":536
  *     cdef bint inf = 0
  * 
  *     if time_diff == -1:             # <<<<<<<<<<<<<<
@@ -6171,7 +6207,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
   __pyx_t_1 = ((__pyx_v_time_diff == -1) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":510
+    /* "socintpy/cythoncode/cnetwork_node.pyx":537
  * 
  *     if time_diff == -1:
  *         inf = 1             # <<<<<<<<<<<<<<
@@ -6182,7 +6218,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
     goto __pyx_L3;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":511
+  /* "socintpy/cythoncode/cnetwork_node.pyx":538
  *     if time_diff == -1:
  *         inf = 1
  *     elif time_scale==<int>'w':             # <<<<<<<<<<<<<<
@@ -6192,7 +6228,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
   __pyx_t_1 = ((__pyx_v_time_scale == ((int)'w')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":512
+    /* "socintpy/cythoncode/cnetwork_node.pyx":539
  *         inf = 1
  *     elif time_scale==<int>'w':
  *         if order_agnostic:             # <<<<<<<<<<<<<<
@@ -6202,7 +6238,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
     __pyx_t_1 = (__pyx_v_order_agnostic != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":513
+      /* "socintpy/cythoncode/cnetwork_node.pyx":540
  *     elif time_scale==<int>'w':
  *         if order_agnostic:
  *             if abs(my_timestamp - others_timestamp) <= time_diff:             # <<<<<<<<<<<<<<
@@ -6212,7 +6248,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
       __pyx_t_1 = ((abs((__pyx_v_my_timestamp - __pyx_v_others_timestamp)) <= __pyx_v_time_diff) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":514
+        /* "socintpy/cythoncode/cnetwork_node.pyx":541
  *         if order_agnostic:
  *             if abs(my_timestamp - others_timestamp) <= time_diff:
  *                 inf = 1             # <<<<<<<<<<<<<<
@@ -6227,7 +6263,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
     }
     /*else*/ {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":516
+      /* "socintpy/cythoncode/cnetwork_node.pyx":543
  *                 inf = 1
  *         else:
  *             if my_timestamp > others_timestamp and (my_timestamp - others_timestamp) <= time_diff:             # <<<<<<<<<<<<<<
@@ -6245,7 +6281,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
       __pyx_L7_bool_binop_done:;
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":517
+        /* "socintpy/cythoncode/cnetwork_node.pyx":544
  *         else:
  *             if my_timestamp > others_timestamp and (my_timestamp - others_timestamp) <= time_diff:
  *                 inf = 1             # <<<<<<<<<<<<<<
@@ -6261,7 +6297,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
     goto __pyx_L3;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":518
+  /* "socintpy/cythoncode/cnetwork_node.pyx":545
  *             if my_timestamp > others_timestamp and (my_timestamp - others_timestamp) <= time_diff:
  *                 inf = 1
  *     elif time_scale==<int>'o':             # <<<<<<<<<<<<<<
@@ -6271,7 +6307,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
   __pyx_t_1 = ((__pyx_v_time_scale == ((int)'o')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":519
+    /* "socintpy/cythoncode/cnetwork_node.pyx":546
  *                 inf = 1
  *     elif time_scale==<int>'o':
  *         if get_num_interactions_between(my_interactions, length_my_interactions,             # <<<<<<<<<<<<<<
@@ -6282,7 +6318,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
     __pyx_t_4.order_agnostic = __pyx_v_order_agnostic;
     __pyx_t_3 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_get_num_interactions_between(__pyx_v_my_interactions, __pyx_v_length_my_interactions, __pyx_v_others_timestamp, __pyx_v_my_timestamp, __pyx_v_cutoff_rating, &__pyx_t_4); 
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":521
+    /* "socintpy/cythoncode/cnetwork_node.pyx":548
  *         if get_num_interactions_between(my_interactions, length_my_interactions,
  *                 others_timestamp, my_timestamp,
  *                 cutoff_rating, order_agnostic=order_agnostic) <=time_diff:             # <<<<<<<<<<<<<<
@@ -6292,7 +6328,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
     __pyx_t_1 = ((__pyx_t_3 <= __pyx_v_time_diff) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":522
+      /* "socintpy/cythoncode/cnetwork_node.pyx":549
  *                 others_timestamp, my_timestamp,
  *                 cutoff_rating, order_agnostic=order_agnostic) <=time_diff:
  *             inf = 1             # <<<<<<<<<<<<<<
@@ -6307,7 +6343,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":524
+  /* "socintpy/cythoncode/cnetwork_node.pyx":551
  *             inf = 1
  * 
  *     return inf             # <<<<<<<<<<<<<<
@@ -6317,7 +6353,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
   __pyx_r = __pyx_v_inf;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":504
+  /* "socintpy/cythoncode/cnetwork_node.pyx":531
  *     return num_interacts_between
  * 
  * cdef bint is_influence(idata *my_interactions, int length_my_interactions,             # <<<<<<<<<<<<<<
@@ -6330,7 +6366,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(struct __
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":528
+/* "socintpy/cythoncode/cnetwork_node.pyx":555
  * 
  * 
  * cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):             # <<<<<<<<<<<<<<
@@ -6394,7 +6430,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   __pyx_pybuffernd_indptr.data = NULL;
   __pyx_pybuffernd_indptr.rcbuffer = &__pyx_pybuffer_indptr;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":530
+  /* "socintpy/cythoncode/cnetwork_node.pyx":557
  * cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):
  *     cdef CNetworkNode c_node_obj
  *     cdef int total_interactions = 0             # <<<<<<<<<<<<<<
@@ -6403,7 +6439,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  */
   __pyx_v_total_interactions = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":531
+  /* "socintpy/cythoncode/cnetwork_node.pyx":558
  *     cdef CNetworkNode c_node_obj
  *     cdef int total_interactions = 0
  *     cdef int total_nodes = 0             # <<<<<<<<<<<<<<
@@ -6412,7 +6448,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  */
   __pyx_v_total_nodes = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":532
+  /* "socintpy/cythoncode/cnetwork_node.pyx":559
  *     cdef int total_interactions = 0
  *     cdef int total_nodes = 0
  *     for node_obj in all_nodes:             # <<<<<<<<<<<<<<
@@ -6423,25 +6459,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
     __pyx_t_1 = __pyx_v_all_nodes; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_all_nodes); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_all_nodes); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 559; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 559; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 559; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 559; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 559; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 559; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -6450,7 +6486,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 532; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 559; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -6459,7 +6495,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
     __Pyx_XDECREF_SET(__pyx_v_node_obj, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":533
+    /* "socintpy/cythoncode/cnetwork_node.pyx":560
  *     cdef int total_nodes = 0
  *     for node_obj in all_nodes:
  *         c_node_obj = <CNetworkNode>node_obj             # <<<<<<<<<<<<<<
@@ -6471,17 +6507,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_4));
     __pyx_t_4 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":534
+    /* "socintpy/cythoncode/cnetwork_node.pyx":561
  *     for node_obj in all_nodes:
  *         c_node_obj = <CNetworkNode>node_obj
  *         total_interactions += c_node_obj.ndata.c_length_list[interact_type]             # <<<<<<<<<<<<<<
  *         total_nodes += 1
  * 
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 534; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 561; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_total_interactions = (__pyx_v_total_interactions + (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_t_5]));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":535
+    /* "socintpy/cythoncode/cnetwork_node.pyx":562
  *         c_node_obj = <CNetworkNode>node_obj
  *         total_interactions += c_node_obj.ndata.c_length_list[interact_type]
  *         total_nodes += 1             # <<<<<<<<<<<<<<
@@ -6490,7 +6526,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  */
     __pyx_v_total_nodes = (__pyx_v_total_nodes + 1);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":532
+    /* "socintpy/cythoncode/cnetwork_node.pyx":559
  *     cdef int total_interactions = 0
  *     cdef int total_nodes = 0
  *     for node_obj in all_nodes:             # <<<<<<<<<<<<<<
@@ -6500,43 +6536,43 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":537
+  /* "socintpy/cythoncode/cnetwork_node.pyx":564
  *         total_nodes += 1
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=1] data = np.empty(total_interactions, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indices = np.empty(total_interactions, dtype=DTYPE_INT)
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indptr = np.empty(total_nodes+1+1, dtype=DTYPE_INT)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_total_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_total_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_8 = ((PyArrayObject *)__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_data.rcbuffer->pybuffer, (PyObject*)__pyx_t_8, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_data = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_data.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 537; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 564; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_data.diminfo[0].strides = __pyx_pybuffernd_data.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data.diminfo[0].shape = __pyx_pybuffernd_data.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -6544,43 +6580,43 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   __pyx_v_data = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":538
+  /* "socintpy/cythoncode/cnetwork_node.pyx":565
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=1] data = np.empty(total_interactions, dtype=DTYPE)
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indices = np.empty(total_interactions, dtype=DTYPE_INT)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indptr = np.empty(total_nodes+1+1, dtype=DTYPE_INT)
  *     cdef int curr_index = 0
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_total_interactions); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_total_interactions); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_7);
   __pyx_t_7 = 0;
-  __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE_INT); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE_INT); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_dtype, __pyx_t_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_9 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_indices.rcbuffer->pybuffer, (PyObject*)__pyx_t_9, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_INT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_indices = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_indices.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 538; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 565; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_indices.diminfo[0].strides = __pyx_pybuffernd_indices.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_indices.diminfo[0].shape = __pyx_pybuffernd_indices.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -6588,43 +6624,43 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   __pyx_v_indices = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":539
+  /* "socintpy/cythoncode/cnetwork_node.pyx":566
  *     cdef np.ndarray[DTYPE_t, ndim=1] data = np.empty(total_interactions, dtype=DTYPE)
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indices = np.empty(total_interactions, dtype=DTYPE_INT)
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indptr = np.empty(total_nodes+1+1, dtype=DTYPE_INT)             # <<<<<<<<<<<<<<
  *     cdef int curr_index = 0
  *     cdef DTYPE_t l2_norm
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_empty); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_empty); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyInt_From_long(((__pyx_v_total_nodes + 1) + 1)); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyInt_From_long(((__pyx_v_total_nodes + 1) + 1)); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE_INT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE_INT); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_10 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_indptr.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_INT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_indptr = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_indptr.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 539; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_indptr.diminfo[0].strides = __pyx_pybuffernd_indptr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_indptr.diminfo[0].shape = __pyx_pybuffernd_indptr.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -6632,7 +6668,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   __pyx_v_indptr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":540
+  /* "socintpy/cythoncode/cnetwork_node.pyx":567
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indices = np.empty(total_interactions, dtype=DTYPE_INT)
  *     cdef np.ndarray[DTYPE_INT_t, ndim=1] indptr = np.empty(total_nodes+1+1, dtype=DTYPE_INT)
  *     cdef int curr_index = 0             # <<<<<<<<<<<<<<
@@ -6641,7 +6677,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  */
   __pyx_v_curr_index = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":543
+  /* "socintpy/cythoncode/cnetwork_node.pyx":570
  *     cdef DTYPE_t l2_norm
  *     cdef int i,j
  *     i = 0             # <<<<<<<<<<<<<<
@@ -6650,16 +6686,16 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  */
   __pyx_v_i = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":544
+  /* "socintpy/cythoncode/cnetwork_node.pyx":571
  *     cdef int i,j
  *     i = 0
  *     indptr[0:2]=0             # <<<<<<<<<<<<<<
  *     i+=1
  *     for node_obj in all_nodes:
  */
-  if (__Pyx_PyObject_SetSlice(((PyObject *)__pyx_v_indptr), __pyx_int_0, 0, 2, NULL, NULL, &__pyx_slice_, 1, 1, 0) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 544; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PyObject_SetSlice(((PyObject *)__pyx_v_indptr), __pyx_int_0, 0, 2, NULL, NULL, &__pyx_slice_, 1, 1, 0) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 571; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":545
+  /* "socintpy/cythoncode/cnetwork_node.pyx":572
  *     i = 0
  *     indptr[0:2]=0
  *     i+=1             # <<<<<<<<<<<<<<
@@ -6668,7 +6704,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  */
   __pyx_v_i = (__pyx_v_i + 1);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":546
+  /* "socintpy/cythoncode/cnetwork_node.pyx":573
  *     indptr[0:2]=0
  *     i+=1
  *     for node_obj in all_nodes:             # <<<<<<<<<<<<<<
@@ -6679,25 +6715,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
     __pyx_t_1 = __pyx_v_all_nodes; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_all_nodes); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 546; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_all_nodes); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 573; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 546; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 573; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 546; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 573; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 546; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 573; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 546; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 573; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 546; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 573; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -6706,7 +6742,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 546; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 573; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -6715,7 +6751,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
     __Pyx_XDECREF_SET(__pyx_v_node_obj, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":547
+    /* "socintpy/cythoncode/cnetwork_node.pyx":574
  *     i+=1
  *     for node_obj in all_nodes:
  *         c_node_obj = <CNetworkNode>node_obj             # <<<<<<<<<<<<<<
@@ -6727,7 +6763,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_4));
     __pyx_t_4 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":548
+    /* "socintpy/cythoncode/cnetwork_node.pyx":575
  *     for node_obj in all_nodes:
  *         c_node_obj = <CNetworkNode>node_obj
  *         i+=1             # <<<<<<<<<<<<<<
@@ -6736,29 +6772,29 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  */
     __pyx_v_i = (__pyx_v_i + 1);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":549
+    /* "socintpy/cythoncode/cnetwork_node.pyx":576
  *         c_node_obj = <CNetworkNode>node_obj
  *         i+=1
  *         l2_norm = sqrt(c_node_obj.ndata.c_length_list[interact_type])             # <<<<<<<<<<<<<<
  *         for j in range(c_node_obj.ndata.c_length_list[interact_type]):
  *             data[curr_index] = 1/l2_norm
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 549; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 576; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_l2_norm = sqrt((__pyx_v_c_node_obj->ndata.c_length_list[__pyx_t_5]));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":550
+    /* "socintpy/cythoncode/cnetwork_node.pyx":577
  *         i+=1
  *         l2_norm = sqrt(c_node_obj.ndata.c_length_list[interact_type])
  *         for j in range(c_node_obj.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
  *             data[curr_index] = 1/l2_norm
  *             indices[curr_index] = c_node_obj.ndata.c_list[interact_type][j].item_id
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 550; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 577; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_11 = (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_t_5]);
     for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
       __pyx_v_j = __pyx_t_12;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":551
+      /* "socintpy/cythoncode/cnetwork_node.pyx":578
  *         l2_norm = sqrt(c_node_obj.ndata.c_length_list[interact_type])
  *         for j in range(c_node_obj.ndata.c_length_list[interact_type]):
  *             data[curr_index] = 1/l2_norm             # <<<<<<<<<<<<<<
@@ -6768,19 +6804,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
       __pyx_t_13 = __pyx_v_curr_index;
       *__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t *, __pyx_pybuffernd_data.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_data.diminfo[0].strides) = (1.0 / __pyx_v_l2_norm);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":552
+      /* "socintpy/cythoncode/cnetwork_node.pyx":579
  *         for j in range(c_node_obj.ndata.c_length_list[interact_type]):
  *             data[curr_index] = 1/l2_norm
  *             indices[curr_index] = c_node_obj.ndata.c_list[interact_type][j].item_id             # <<<<<<<<<<<<<<
  *             curr_index += 1
  *         indptr[i] = indptr[i-1] + c_node_obj.ndata.c_length_list[interact_type]
  */
-      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 552; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 579; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_t_14 = ((__pyx_v_c_node_obj->ndata.c_list[__pyx_t_5])[__pyx_v_j]).item_id;
       __pyx_t_15 = __pyx_v_curr_index;
       *__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_INT_t *, __pyx_pybuffernd_indices.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_indices.diminfo[0].strides) = __pyx_t_14;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":553
+      /* "socintpy/cythoncode/cnetwork_node.pyx":580
  *             data[curr_index] = 1/l2_norm
  *             indices[curr_index] = c_node_obj.ndata.c_list[interact_type][j].item_id
  *             curr_index += 1             # <<<<<<<<<<<<<<
@@ -6790,7 +6826,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
       __pyx_v_curr_index = (__pyx_v_curr_index + 1);
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":554
+    /* "socintpy/cythoncode/cnetwork_node.pyx":581
  *             indices[curr_index] = c_node_obj.ndata.c_list[interact_type][j].item_id
  *             curr_index += 1
  *         indptr[i] = indptr[i-1] + c_node_obj.ndata.c_length_list[interact_type]             # <<<<<<<<<<<<<<
@@ -6798,11 +6834,11 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
  *     mat = sp.csr_matrix((data, indices, indptr))
  */
     __pyx_t_16 = (__pyx_v_i - 1);
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 554; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 581; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_11 = __pyx_v_i;
     *__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_INT_t *, __pyx_pybuffernd_indptr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_indptr.diminfo[0].strides) = ((*__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_INT_t *, __pyx_pybuffernd_indptr.rcbuffer->pybuffer.buf, __pyx_t_16, __pyx_pybuffernd_indptr.diminfo[0].strides)) + (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_t_5]));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":546
+    /* "socintpy/cythoncode/cnetwork_node.pyx":573
  *     indptr[0:2]=0
  *     i+=1
  *     for node_obj in all_nodes:             # <<<<<<<<<<<<<<
@@ -6812,19 +6848,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":556
+  /* "socintpy/cythoncode/cnetwork_node.pyx":583
  *         indptr[i] = indptr[i-1] + c_node_obj.ndata.c_length_list[interact_type]
  * 
  *     mat = sp.csr_matrix((data, indices, indptr))             # <<<<<<<<<<<<<<
  *     #cc = mat * mat.transpose()
  *     #print mat[6,346165], mat[1,1], mat[1,1669118]
  */
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_sp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 556; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_sp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 583; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_csr_matrix); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 556; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_csr_matrix); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 583; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 556; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 583; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(((PyObject *)__pyx_v_data));
   PyTuple_SET_ITEM(__pyx_t_4, 0, ((PyObject *)__pyx_v_data));
@@ -6846,17 +6882,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
     }
   }
   if (!__pyx_t_7) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 556; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 583; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_17 = PyTuple_New(1+1); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 556; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_17 = PyTuple_New(1+1); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 583; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_17);
     PyTuple_SET_ITEM(__pyx_t_17, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
     PyTuple_SET_ITEM(__pyx_t_17, 0+1, __pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_17, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 556; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_17, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 583; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
   }
@@ -6864,7 +6900,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   __pyx_v_mat = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":562
+  /* "socintpy/cythoncode/cnetwork_node.pyx":589
  *     #print mat.shape[0], mat.shape[1]
  *     #print cc.shape[0], cc.shape[1]
  *     return mat             # <<<<<<<<<<<<<<
@@ -6876,7 +6912,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_t
   __pyx_r = __pyx_v_mat;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":528
+  /* "socintpy/cythoncode/cnetwork_node.pyx":555
  * 
  * 
  * cpdef compute_global_topk_similarity(all_nodes, interact_type, klim):             # <<<<<<<<<<<<<<
@@ -6949,16 +6985,16 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_7compute_global
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 528; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 555; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_klim)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 528; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 555; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_global_topk_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 528; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_global_topk_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 555; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -6973,7 +7009,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_7compute_global
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 528; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 555; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.compute_global_topk_similarity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6995,7 +7031,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_6compute_global
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_global_topk_similarity", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_topk_similarity(__pyx_v_all_nodes, __pyx_v_interact_type, __pyx_v_klim, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 528; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_global_topk_similarity(__pyx_v_all_nodes, __pyx_v_interact_type, __pyx_v_klim, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 555; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7012,7 +7048,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_6compute_global
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":586
+/* "socintpy/cythoncode/cnetwork_node.pyx":613
  * """
  * 
  * cdef idata *create_nodes_interaction_stream(idata **nodes_interactions,             # <<<<<<<<<<<<<<
@@ -7030,7 +7066,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   int __pyx_t_2;
   int __pyx_t_3;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":588
+  /* "socintpy/cythoncode/cnetwork_node.pyx":615
  * cdef idata *create_nodes_interaction_stream(idata **nodes_interactions,
  *         int *lengths_nodes_interactions, int num_nodes, int *size_stream) nogil:
  *     cdef int total_interactions = 0             # <<<<<<<<<<<<<<
@@ -7039,7 +7075,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
   __pyx_v_total_interactions = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":590
+  /* "socintpy/cythoncode/cnetwork_node.pyx":617
  *     cdef int total_interactions = 0
  *     cdef int i,  curr_ptr
  *     cdef idata *interaction_stream = NULL             # <<<<<<<<<<<<<<
@@ -7048,7 +7084,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
   __pyx_v_interaction_stream = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":591
+  /* "socintpy/cythoncode/cnetwork_node.pyx":618
  *     cdef int i,  curr_ptr
  *     cdef idata *interaction_stream = NULL
  *     for i in range(num_nodes):             # <<<<<<<<<<<<<<
@@ -7059,7 +7095,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":592
+    /* "socintpy/cythoncode/cnetwork_node.pyx":619
  *     cdef idata *interaction_stream = NULL
  *     for i in range(num_nodes):
  *         total_interactions += lengths_nodes_interactions[i]             # <<<<<<<<<<<<<<
@@ -7069,7 +7105,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
     __pyx_v_total_interactions = (__pyx_v_total_interactions + (__pyx_v_lengths_nodes_interactions[__pyx_v_i]));
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":593
+  /* "socintpy/cythoncode/cnetwork_node.pyx":620
  *     for i in range(num_nodes):
  *         total_interactions += lengths_nodes_interactions[i]
  *     interaction_stream = <idata *>malloc(total_interactions*cython.sizeof(idata))             # <<<<<<<<<<<<<<
@@ -7078,7 +7114,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
   __pyx_v_interaction_stream = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *)malloc((__pyx_v_total_interactions * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":594
+  /* "socintpy/cythoncode/cnetwork_node.pyx":621
  *         total_interactions += lengths_nodes_interactions[i]
  *     interaction_stream = <idata *>malloc(total_interactions*cython.sizeof(idata))
  *     if interaction_stream is NULL:             # <<<<<<<<<<<<<<
@@ -7088,7 +7124,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   __pyx_t_3 = ((__pyx_v_interaction_stream == NULL) != 0);
   if (__pyx_t_3) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":596
+    /* "socintpy/cythoncode/cnetwork_node.pyx":623
  *     if interaction_stream is NULL:
  *         #raise MemoryError()
  *         printf("ERROR:Cannot allocate memory for interaction stream!!!\n\n")             # <<<<<<<<<<<<<<
@@ -7100,7 +7136,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   }
   __pyx_L5:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":598
+  /* "socintpy/cythoncode/cnetwork_node.pyx":625
  *         printf("ERROR:Cannot allocate memory for interaction stream!!!\n\n")
  * 
  *     curr_ptr = 0             # <<<<<<<<<<<<<<
@@ -7109,7 +7145,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
   __pyx_v_curr_ptr = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":600
+  /* "socintpy/cythoncode/cnetwork_node.pyx":627
  *     curr_ptr = 0
  *     #print num_nodes, "num nodes"
  *     for i in range(num_nodes):             # <<<<<<<<<<<<<<
@@ -7120,7 +7156,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":601
+    /* "socintpy/cythoncode/cnetwork_node.pyx":628
  *     #print num_nodes, "num nodes"
  *     for i in range(num_nodes):
  *         memcpy(&(interaction_stream[curr_ptr]), nodes_interactions[i], lengths_nodes_interactions[i]*cython.sizeof(idata))             # <<<<<<<<<<<<<<
@@ -7129,7 +7165,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
     memcpy((&(__pyx_v_interaction_stream[__pyx_v_curr_ptr])), (__pyx_v_nodes_interactions[__pyx_v_i]), ((__pyx_v_lengths_nodes_interactions[__pyx_v_i]) * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata))));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":602
+    /* "socintpy/cythoncode/cnetwork_node.pyx":629
  *     for i in range(num_nodes):
  *         memcpy(&(interaction_stream[curr_ptr]), nodes_interactions[i], lengths_nodes_interactions[i]*cython.sizeof(idata))
  *         curr_ptr += lengths_nodes_interactions[i]             # <<<<<<<<<<<<<<
@@ -7139,7 +7175,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
     __pyx_v_curr_ptr = (__pyx_v_curr_ptr + (__pyx_v_lengths_nodes_interactions[__pyx_v_i]));
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":603
+  /* "socintpy/cythoncode/cnetwork_node.pyx":630
  *         memcpy(&(interaction_stream[curr_ptr]), nodes_interactions[i], lengths_nodes_interactions[i]*cython.sizeof(idata))
  *         curr_ptr += lengths_nodes_interactions[i]
  *     qsort(interaction_stream, total_interactions, cython.sizeof(idata), comp_interactions_temporal)             # <<<<<<<<<<<<<<
@@ -7148,7 +7184,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
   qsort(__pyx_v_interaction_stream, __pyx_v_total_interactions, (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata)), __pyx_f_8socintpy_10cythoncode_10data_types_comp_interactions_temporal);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":604
+  /* "socintpy/cythoncode/cnetwork_node.pyx":631
  *         curr_ptr += lengths_nodes_interactions[i]
  *     qsort(interaction_stream, total_interactions, cython.sizeof(idata), comp_interactions_temporal)
  *     size_stream[0] = total_interactions             # <<<<<<<<<<<<<<
@@ -7157,7 +7193,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
   (__pyx_v_size_stream[0]) = __pyx_v_total_interactions;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":605
+  /* "socintpy/cythoncode/cnetwork_node.pyx":632
  *     qsort(interaction_stream, total_interactions, cython.sizeof(idata), comp_interactions_temporal)
  *     size_stream[0] = total_interactions
  *     return interaction_stream             # <<<<<<<<<<<<<<
@@ -7167,7 +7203,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   __pyx_r = __pyx_v_interaction_stream;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":586
+  /* "socintpy/cythoncode/cnetwork_node.pyx":613
  * """
  * 
  * cdef idata *create_nodes_interaction_stream(idata **nodes_interactions,             # <<<<<<<<<<<<<<
@@ -7180,7 +7216,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":608
+/* "socintpy/cythoncode/cnetwork_node.pyx":635
  * 
  * # CAUTIONL only works for ordinal scale time
  * cdef float compute_node_susceptibility_ordinal_c(idata* my_interactions,             # <<<<<<<<<<<<<<
@@ -7206,7 +7242,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   int __pyx_t_3;
   int __pyx_t_4;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":614
+  /* "socintpy/cythoncode/cnetwork_node.pyx":641
  *                         int time_diff, float cutoff_rating,
  *                         int time_scale, bint allow_duplicates, bint debug) nogil:
  *     cdef float simscore= 0             # <<<<<<<<<<<<<<
@@ -7215,7 +7251,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_simscore = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":616
+  /* "socintpy/cythoncode/cnetwork_node.pyx":643
  *     cdef float simscore= 0
  *     cdef int i, j, y, index
  *     cdef int size_stream = -1             # <<<<<<<<<<<<<<
@@ -7224,7 +7260,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_size_stream = -1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":617
+  /* "socintpy/cythoncode/cnetwork_node.pyx":644
  *     cdef int i, j, y, index
  *     cdef int size_stream = -1
  *     cdef int prev_item_id = -1             # <<<<<<<<<<<<<<
@@ -7233,7 +7269,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_prev_item_id = -1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":618
+  /* "socintpy/cythoncode/cnetwork_node.pyx":645
  *     cdef int size_stream = -1
  *     cdef int prev_item_id = -1
  *     cdef idata *others_stream = create_nodes_interaction_stream(others_interactions,             # <<<<<<<<<<<<<<
@@ -7242,7 +7278,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_others_stream = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_create_nodes_interaction_stream(__pyx_v_others_interactions, __pyx_v_lengths_others_interactions, __pyx_v_num_other_nodes, (&__pyx_v_size_stream));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":620
+  /* "socintpy/cythoncode/cnetwork_node.pyx":647
  *     cdef idata *others_stream = create_nodes_interaction_stream(others_interactions,
  *             lengths_others_interactions, num_other_nodes, &size_stream)
  *     cdef int my_count = 0             # <<<<<<<<<<<<<<
@@ -7251,7 +7287,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_my_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":621
+  /* "socintpy/cythoncode/cnetwork_node.pyx":648
  *             lengths_others_interactions, num_other_nodes, &size_stream)
  *     cdef int my_count = 0
  *     cdef int others_count = 0             # <<<<<<<<<<<<<<
@@ -7260,7 +7296,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_others_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":622
+  /* "socintpy/cythoncode/cnetwork_node.pyx":649
  *     cdef int my_count = 0
  *     cdef int others_count = 0
  *     cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))             # <<<<<<<<<<<<<<
@@ -7269,7 +7305,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_sim = ((int *)malloc((__pyx_v_length_my_interactions * (sizeof(int)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":623
+  /* "socintpy/cythoncode/cnetwork_node.pyx":650
  *     cdef int others_count = 0
  *     cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))
  *     for y in range(length_my_interactions):             # <<<<<<<<<<<<<<
@@ -7280,7 +7316,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_y = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":624
+    /* "socintpy/cythoncode/cnetwork_node.pyx":651
  *     cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))
  *     for y in range(length_my_interactions):
  *         sim[y] = 0             # <<<<<<<<<<<<<<
@@ -7290,7 +7326,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     (__pyx_v_sim[__pyx_v_y]) = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":625
+  /* "socintpy/cythoncode/cnetwork_node.pyx":652
  *     for y in range(length_my_interactions):
  *         sim[y] = 0
  *     i = 0             # <<<<<<<<<<<<<<
@@ -7299,7 +7335,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_i = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":626
+  /* "socintpy/cythoncode/cnetwork_node.pyx":653
  *         sim[y] = 0
  *     i = 0
  *     while i < length_my_interactions:             # <<<<<<<<<<<<<<
@@ -7310,7 +7346,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_3 = ((__pyx_v_i < __pyx_v_length_my_interactions) != 0);
     if (!__pyx_t_3) break;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":627
+    /* "socintpy/cythoncode/cnetwork_node.pyx":654
  *     i = 0
  *     while i < length_my_interactions:
  *         if my_interactions[i].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -7320,7 +7356,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_3 = (((__pyx_v_my_interactions[__pyx_v_i]).rating >= __pyx_v_cutoff_rating) != 0);
     if (__pyx_t_3) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":629
+      /* "socintpy/cythoncode/cnetwork_node.pyx":656
  *         if my_interactions[i].rating >= cutoff_rating:
  *             # Checking for duplicates, we know my_interactions is sorted by item_id
  *             if allow_duplicates or my_interactions[i].item_id !=prev_item_id:             # <<<<<<<<<<<<<<
@@ -7338,7 +7374,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       __pyx_L9_bool_binop_done:;
       if (__pyx_t_3) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":630
+        /* "socintpy/cythoncode/cnetwork_node.pyx":657
  *             # Checking for duplicates, we know my_interactions is sorted by item_id
  *             if allow_duplicates or my_interactions[i].item_id !=prev_item_id:
  *                 index = binary_search_closest_temporal(others_stream, size_stream,             # <<<<<<<<<<<<<<
@@ -7347,7 +7383,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
         __pyx_v_index = __pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_closest_temporal(__pyx_v_others_stream, __pyx_v_size_stream, (__pyx_v_my_interactions[__pyx_v_i]).timestamp, __pyx_v_debug);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":632
+        /* "socintpy/cythoncode/cnetwork_node.pyx":659
  *                 index = binary_search_closest_temporal(others_stream, size_stream,
  *                         my_interactions[i].timestamp, debug)
  *                 if index >= size_stream:             # <<<<<<<<<<<<<<
@@ -7357,7 +7393,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         __pyx_t_3 = ((__pyx_v_index >= __pyx_v_size_stream) != 0);
         if (__pyx_t_3) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":633
+          /* "socintpy/cythoncode/cnetwork_node.pyx":660
  *                         my_interactions[i].timestamp, debug)
  *                 if index >= size_stream:
  *                     if debug:             # <<<<<<<<<<<<<<
@@ -7367,7 +7403,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           __pyx_t_3 = (__pyx_v_debug != 0);
           if (__pyx_t_3) {
 
-            /* "socintpy/cythoncode/cnetwork_node.pyx":634
+            /* "socintpy/cythoncode/cnetwork_node.pyx":661
  *                 if index >= size_stream:
  *                     if debug:
  *                         printf("ERROR:Cython: Big Error, how can index of friend stream be %d", index)             # <<<<<<<<<<<<<<
@@ -7382,7 +7418,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         }
         __pyx_L11:;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":635
+        /* "socintpy/cythoncode/cnetwork_node.pyx":662
  *                     if debug:
  *                         printf("ERROR:Cython: Big Error, how can index of friend stream be %d", index)
  *                 if index <0:             # <<<<<<<<<<<<<<
@@ -7392,7 +7428,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         __pyx_t_3 = ((__pyx_v_index < 0) != 0);
         if (__pyx_t_3) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":636
+          /* "socintpy/cythoncode/cnetwork_node.pyx":663
  *                         printf("ERROR:Cython: Big Error, how can index of friend stream be %d", index)
  *                 if index <0:
  *                     if debug:             # <<<<<<<<<<<<<<
@@ -7402,7 +7438,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           __pyx_t_3 = (__pyx_v_debug != 0);
           if (__pyx_t_3) {
 
-            /* "socintpy/cythoncode/cnetwork_node.pyx":637
+            /* "socintpy/cythoncode/cnetwork_node.pyx":664
  *                 if index <0:
  *                     if debug:
  *                         printf("WARN:This interaction is too early for others test set. Aborting...")             # <<<<<<<<<<<<<<
@@ -7414,7 +7450,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           }
           __pyx_L14:;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":638
+          /* "socintpy/cythoncode/cnetwork_node.pyx":665
  *                     if debug:
  *                         printf("WARN:This interaction is too early for others test set. Aborting...")
  *                     return -2             # <<<<<<<<<<<<<<
@@ -7425,7 +7461,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           goto __pyx_L0;
         }
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":639
+        /* "socintpy/cythoncode/cnetwork_node.pyx":666
  *                         printf("WARN:This interaction is too early for others test set. Aborting...")
  *                     return -2
  *                 if index+1 <time_diff:             # <<<<<<<<<<<<<<
@@ -7435,7 +7471,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         __pyx_t_3 = (((__pyx_v_index + 1) < __pyx_v_time_diff) != 0);
         if (__pyx_t_3) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":640
+          /* "socintpy/cythoncode/cnetwork_node.pyx":667
  *                     return -2
  *                 if index+1 <time_diff:
  *                     if debug:             # <<<<<<<<<<<<<<
@@ -7445,7 +7481,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           __pyx_t_3 = (__pyx_v_debug != 0);
           if (__pyx_t_3) {
 
-            /* "socintpy/cythoncode/cnetwork_node.pyx":641
+            /* "socintpy/cythoncode/cnetwork_node.pyx":668
  *                 if index+1 <time_diff:
  *                     if debug:
  *                         printf("WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting...")             # <<<<<<<<<<<<<<
@@ -7457,7 +7493,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           }
           __pyx_L16:;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":642
+          /* "socintpy/cythoncode/cnetwork_node.pyx":669
  *                     if debug:
  *                         printf("WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting...")
  *                     return -3             # <<<<<<<<<<<<<<
@@ -7468,7 +7504,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           goto __pyx_L0;
         }
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":643
+        /* "socintpy/cythoncode/cnetwork_node.pyx":670
  *                         printf("WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting...")
  *                     return -3
  *                 j=index             # <<<<<<<<<<<<<<
@@ -7477,7 +7513,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
         __pyx_v_j = __pyx_v_index;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":644
+        /* "socintpy/cythoncode/cnetwork_node.pyx":671
  *                     return -3
  *                 j=index
  *                 while j >index-time_diff and j>=0:             # <<<<<<<<<<<<<<
@@ -7496,7 +7532,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           __pyx_L19_bool_binop_done:;
           if (!__pyx_t_3) break;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":646
+          /* "socintpy/cythoncode/cnetwork_node.pyx":673
  *                 while j >index-time_diff and j>=0:
  *                     #print others_stream[j].item_id,  my_interactions[i].item_id, others_stream[j].timestamp,my_interactions[i].timestamp
  *                     if others_stream[j].item_id == my_interactions[i].item_id:             # <<<<<<<<<<<<<<
@@ -7506,7 +7542,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           __pyx_t_3 = (((__pyx_v_others_stream[__pyx_v_j]).item_id == (__pyx_v_my_interactions[__pyx_v_i]).item_id) != 0);
           if (__pyx_t_3) {
 
-            /* "socintpy/cythoncode/cnetwork_node.pyx":647
+            /* "socintpy/cythoncode/cnetwork_node.pyx":674
  *                     #print others_stream[j].item_id,  my_interactions[i].item_id, others_stream[j].timestamp,my_interactions[i].timestamp
  *                     if others_stream[j].item_id == my_interactions[i].item_id:
  *                         if others_stream[j].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -7516,7 +7552,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
             __pyx_t_3 = (((__pyx_v_others_stream[__pyx_v_j]).rating >= __pyx_v_cutoff_rating) != 0);
             if (__pyx_t_3) {
 
-              /* "socintpy/cythoncode/cnetwork_node.pyx":648
+              /* "socintpy/cythoncode/cnetwork_node.pyx":675
  *                     if others_stream[j].item_id == my_interactions[i].item_id:
  *                         if others_stream[j].rating >= cutoff_rating:
  *                             sim[i] += 1             # <<<<<<<<<<<<<<
@@ -7532,7 +7568,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           }
           __pyx_L21:;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":649
+          /* "socintpy/cythoncode/cnetwork_node.pyx":676
  *                         if others_stream[j].rating >= cutoff_rating:
  *                             sim[i] += 1
  *                     j -= 1             # <<<<<<<<<<<<<<
@@ -7542,7 +7578,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           __pyx_v_j = (__pyx_v_j - 1);
         }
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":654
+        /* "socintpy/cythoncode/cnetwork_node.pyx":681
  *                     print "ONO!!!", my_interactions[i].item_id, my_interactions[i].timestamp
  *                 """
  *                 my_count += 1             # <<<<<<<<<<<<<<
@@ -7557,7 +7593,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     }
     __pyx_L7:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":655
+    /* "socintpy/cythoncode/cnetwork_node.pyx":682
  *                 """
  *                 my_count += 1
  *         prev_item_id = my_interactions[i].item_id             # <<<<<<<<<<<<<<
@@ -7567,7 +7603,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_1 = (__pyx_v_my_interactions[__pyx_v_i]).item_id;
     __pyx_v_prev_item_id = __pyx_t_1;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":656
+    /* "socintpy/cythoncode/cnetwork_node.pyx":683
  *                 my_count += 1
  *         prev_item_id = my_interactions[i].item_id
  *         i += 1             # <<<<<<<<<<<<<<
@@ -7577,7 +7613,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":659
+  /* "socintpy/cythoncode/cnetwork_node.pyx":686
  * 
  * 
  *     if my_count == 0:             # <<<<<<<<<<<<<<
@@ -7587,7 +7623,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   __pyx_t_3 = ((__pyx_v_my_count == 0) != 0);
   if (__pyx_t_3) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":660
+    /* "socintpy/cythoncode/cnetwork_node.pyx":687
  * 
  *     if my_count == 0:
  *         return -1             # <<<<<<<<<<<<<<
@@ -7598,7 +7634,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":662
+  /* "socintpy/cythoncode/cnetwork_node.pyx":689
  *         return -1
  *     #l2_norm1 = sqrt(my_count)
  *     for y in range(length_my_interactions):             # <<<<<<<<<<<<<<
@@ -7609,7 +7645,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_y = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":663
+    /* "socintpy/cythoncode/cnetwork_node.pyx":690
  *     #l2_norm1 = sqrt(my_count)
  *     for y in range(length_my_interactions):
  *         if sim[y] > 0:             # <<<<<<<<<<<<<<
@@ -7619,7 +7655,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_3 = (((__pyx_v_sim[__pyx_v_y]) > 0) != 0);
     if (__pyx_t_3) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":664
+      /* "socintpy/cythoncode/cnetwork_node.pyx":691
  *     for y in range(length_my_interactions):
  *         if sim[y] > 0:
  *             simscore += 1             # <<<<<<<<<<<<<<
@@ -7632,7 +7668,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_L26:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":665
+  /* "socintpy/cythoncode/cnetwork_node.pyx":692
  *         if sim[y] > 0:
  *             simscore += 1
  *     free(others_stream)             # <<<<<<<<<<<<<<
@@ -7641,7 +7677,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   free(__pyx_v_others_stream);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":666
+  /* "socintpy/cythoncode/cnetwork_node.pyx":693
  *             simscore += 1
  *     free(others_stream)
  *     free(sim)             # <<<<<<<<<<<<<<
@@ -7650,7 +7686,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   free(__pyx_v_sim);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":667
+  /* "socintpy/cythoncode/cnetwork_node.pyx":694
  *     free(others_stream)
  *     free(sim)
  *     return simscore/my_count             # <<<<<<<<<<<<<<
@@ -7660,7 +7696,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   __pyx_r = (__pyx_v_simscore / __pyx_v_my_count);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":608
+  /* "socintpy/cythoncode/cnetwork_node.pyx":635
  * 
  * # CAUTIONL only works for ordinal scale time
  * cdef float compute_node_susceptibility_ordinal_c(idata* my_interactions,             # <<<<<<<<<<<<<<
@@ -7673,7 +7709,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":669
+/* "socintpy/cythoncode/cnetwork_node.pyx":696
  *     return simscore/my_count
  * 
  * cdef float compute_node_susceptibility_c(idata* my_interactions,             # <<<<<<<<<<<<<<
@@ -7698,7 +7734,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   int __pyx_t_4;
   int __pyx_t_5;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":678
+  /* "socintpy/cythoncode/cnetwork_node.pyx":705
  * 
  *     cdef int i, k, x, y
  *     cdef int *j = <int *>malloc(num_other_nodes*cython.sizeof(int))             # <<<<<<<<<<<<<<
@@ -7707,7 +7743,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_j = ((int *)malloc((__pyx_v_num_other_nodes * (sizeof(int)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":679
+  /* "socintpy/cythoncode/cnetwork_node.pyx":706
  *     cdef int i, k, x, y
  *     cdef int *j = <int *>malloc(num_other_nodes*cython.sizeof(int))
  *     cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))             # <<<<<<<<<<<<<<
@@ -7716,7 +7752,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_sim = ((int *)malloc((__pyx_v_length_my_interactions * (sizeof(int)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":680
+  /* "socintpy/cythoncode/cnetwork_node.pyx":707
  *     cdef int *j = <int *>malloc(num_other_nodes*cython.sizeof(int))
  *     cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))
  *     for x in range(num_other_nodes):             # <<<<<<<<<<<<<<
@@ -7727,7 +7763,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_x = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":681
+    /* "socintpy/cythoncode/cnetwork_node.pyx":708
  *     cdef int *sim = <int *>malloc(length_my_interactions*cython.sizeof(int))
  *     for x in range(num_other_nodes):
  *         j[x] = 0             # <<<<<<<<<<<<<<
@@ -7737,7 +7773,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     (__pyx_v_j[__pyx_v_x]) = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":682
+  /* "socintpy/cythoncode/cnetwork_node.pyx":709
  *     for x in range(num_other_nodes):
  *         j[x] = 0
  *     for y in range(length_my_interactions):             # <<<<<<<<<<<<<<
@@ -7748,7 +7784,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_y = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":683
+    /* "socintpy/cythoncode/cnetwork_node.pyx":710
  *         j[x] = 0
  *     for y in range(length_my_interactions):
  *         sim[y] = 0             # <<<<<<<<<<<<<<
@@ -7758,7 +7794,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     (__pyx_v_sim[__pyx_v_y]) = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":684
+  /* "socintpy/cythoncode/cnetwork_node.pyx":711
  *     for y in range(length_my_interactions):
  *         sim[y] = 0
  *     simscore = 0             # <<<<<<<<<<<<<<
@@ -7767,7 +7803,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_simscore = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":685
+  /* "socintpy/cythoncode/cnetwork_node.pyx":712
  *         sim[y] = 0
  *     simscore = 0
  *     i = 0             # <<<<<<<<<<<<<<
@@ -7776,7 +7812,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_i = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":686
+  /* "socintpy/cythoncode/cnetwork_node.pyx":713
  *     simscore = 0
  *     i = 0
  *     cdef int my_count = 0             # <<<<<<<<<<<<<<
@@ -7785,7 +7821,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_my_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":687
+  /* "socintpy/cythoncode/cnetwork_node.pyx":714
  *     i = 0
  *     cdef int my_count = 0
  *     cdef int others_count = 0             # <<<<<<<<<<<<<<
@@ -7794,7 +7830,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_others_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":688
+  /* "socintpy/cythoncode/cnetwork_node.pyx":715
  *     cdef int my_count = 0
  *     cdef int others_count = 0
  *     cdef bint finished_others = False             # <<<<<<<<<<<<<<
@@ -7803,7 +7839,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   __pyx_v_finished_others = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":689
+  /* "socintpy/cythoncode/cnetwork_node.pyx":716
  *     cdef int others_count = 0
  *     cdef bint finished_others = False
  *     while i < length_my_interactions:             # <<<<<<<<<<<<<<
@@ -7814,7 +7850,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_3 = ((__pyx_v_i < __pyx_v_length_my_interactions) != 0);
     if (!__pyx_t_3) break;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":690
+    /* "socintpy/cythoncode/cnetwork_node.pyx":717
  *     cdef bint finished_others = False
  *     while i < length_my_interactions:
  *         for x in xrange(num_other_nodes):             # <<<<<<<<<<<<<<
@@ -7825,7 +7861,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
       __pyx_v_x = __pyx_t_2;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":693
+      /* "socintpy/cythoncode/cnetwork_node.pyx":720
  * #if my_interactions[i].item_id < others_interactions[x][j[x]].item_id:
  * #                i += 1
  *             while j[x] < lengths_others_interactions[x] and my_interactions[i].item_id > others_interactions[x][j[x]].item_id:             # <<<<<<<<<<<<<<
@@ -7844,7 +7880,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         __pyx_L13_bool_binop_done:;
         if (!__pyx_t_3) break;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":696
+        /* "socintpy/cythoncode/cnetwork_node.pyx":723
  * #if others_interactions[x][j[x]].rating >= cutoff_rating:
  * #                    others_count += 1
  *                 j[x] += 1             # <<<<<<<<<<<<<<
@@ -7855,7 +7891,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         (__pyx_v_j[__pyx_t_5]) = ((__pyx_v_j[__pyx_t_5]) + 1);
       }
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":697
+      /* "socintpy/cythoncode/cnetwork_node.pyx":724
  * #                    others_count += 1
  *                 j[x] += 1
  *             if j[x] < lengths_others_interactions[x] and my_interactions[i].item_id == others_interactions[x][j[x]].item_id:             # <<<<<<<<<<<<<<
@@ -7873,7 +7909,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       __pyx_L16_bool_binop_done:;
       if (__pyx_t_3) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":698
+        /* "socintpy/cythoncode/cnetwork_node.pyx":725
  *                 j[x] += 1
  *             if j[x] < lengths_others_interactions[x] and my_interactions[i].item_id == others_interactions[x][j[x]].item_id:
  *                 if my_interactions[i].rating >= cutoff_rating and others_interactions[x][j[x]].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -7891,7 +7927,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         __pyx_L19_bool_binop_done:;
         if (__pyx_t_3) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":699
+          /* "socintpy/cythoncode/cnetwork_node.pyx":726
  *             if j[x] < lengths_others_interactions[x] and my_interactions[i].item_id == others_interactions[x][j[x]].item_id:
  *                 if my_interactions[i].rating >= cutoff_rating and others_interactions[x][j[x]].rating >= cutoff_rating:
  *                     if is_influence(my_interactions, length_my_interactions,             # <<<<<<<<<<<<<<
@@ -7901,7 +7937,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
           __pyx_t_3 = (__pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(__pyx_v_my_interactions, __pyx_v_length_my_interactions, (__pyx_v_my_interactions[__pyx_v_i]).timestamp, ((__pyx_v_others_interactions[__pyx_v_x])[(__pyx_v_j[__pyx_v_x])]).timestamp, __pyx_v_cutoff_rating, __pyx_v_time_diff, __pyx_v_time_scale, 0) != 0);
           if (__pyx_t_3) {
 
-            /* "socintpy/cythoncode/cnetwork_node.pyx":703
+            /* "socintpy/cythoncode/cnetwork_node.pyx":730
  *                             others_interactions[x][j[x]].timestamp, cutoff_rating,
  *                             time_diff, time_scale, order_agnostic=False):
  *                         sim[i] += 1             # <<<<<<<<<<<<<<
@@ -7917,7 +7953,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
         }
         __pyx_L18:;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":706
+        /* "socintpy/cythoncode/cnetwork_node.pyx":733
  *                 #if others_interactions[x].rating >= cutoff_rating:
  *                 #    others_count += 1
  *                 j[x] += 1             # <<<<<<<<<<<<<<
@@ -7931,7 +7967,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
       __pyx_L15:;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":707
+    /* "socintpy/cythoncode/cnetwork_node.pyx":734
  *                 #    others_count += 1
  *                 j[x] += 1
  *         i +=1             # <<<<<<<<<<<<<<
@@ -7940,7 +7976,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
     __pyx_v_i = (__pyx_v_i + 1);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":708
+    /* "socintpy/cythoncode/cnetwork_node.pyx":735
  *                 j[x] += 1
  *         i +=1
  *         if my_interactions[i].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -7950,7 +7986,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_3 = (((__pyx_v_my_interactions[__pyx_v_i]).rating >= __pyx_v_cutoff_rating) != 0);
     if (__pyx_t_3) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":709
+      /* "socintpy/cythoncode/cnetwork_node.pyx":736
  *         i +=1
  *         if my_interactions[i].rating >= cutoff_rating:
  *             my_count += 1             # <<<<<<<<<<<<<<
@@ -7963,7 +7999,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_L22:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":712
+  /* "socintpy/cythoncode/cnetwork_node.pyx":739
  * 
  * 
  *     if my_count == 0:             # <<<<<<<<<<<<<<
@@ -7973,7 +8009,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   __pyx_t_3 = ((__pyx_v_my_count == 0) != 0);
   if (__pyx_t_3) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":713
+    /* "socintpy/cythoncode/cnetwork_node.pyx":740
  * 
  *     if my_count == 0:
  *         return -1             # <<<<<<<<<<<<<<
@@ -7984,7 +8020,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":715
+  /* "socintpy/cythoncode/cnetwork_node.pyx":742
  *         return -1
  *     #l2_norm1 = sqrt(my_count)
  *     for y in range(length_my_interactions):             # <<<<<<<<<<<<<<
@@ -7995,7 +8031,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_y = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":716
+    /* "socintpy/cythoncode/cnetwork_node.pyx":743
  *     #l2_norm1 = sqrt(my_count)
  *     for y in range(length_my_interactions):
  *         if sim[y] > 0:             # <<<<<<<<<<<<<<
@@ -8005,7 +8041,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_t_3 = (((__pyx_v_sim[__pyx_v_y]) > 0) != 0);
     if (__pyx_t_3) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":717
+      /* "socintpy/cythoncode/cnetwork_node.pyx":744
  *     for y in range(length_my_interactions):
  *         if sim[y] > 0:
  *             simscore += 1             # <<<<<<<<<<<<<<
@@ -8018,7 +8054,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
     __pyx_L26:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":718
+  /* "socintpy/cythoncode/cnetwork_node.pyx":745
  *         if sim[y] > 0:
  *             simscore += 1
  *     free(j)             # <<<<<<<<<<<<<<
@@ -8027,7 +8063,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   free(__pyx_v_j);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":719
+  /* "socintpy/cythoncode/cnetwork_node.pyx":746
  *             simscore += 1
  *     free(j)
  *     free(sim)             # <<<<<<<<<<<<<<
@@ -8036,7 +8072,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
  */
   free(__pyx_v_sim);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":720
+  /* "socintpy/cythoncode/cnetwork_node.pyx":747
  *     free(j)
  *     free(sim)
  *     return simscore/my_count             # <<<<<<<<<<<<<<
@@ -8046,7 +8082,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   __pyx_r = (__pyx_v_simscore / __pyx_v_my_count);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":669
+  /* "socintpy/cythoncode/cnetwork_node.pyx":696
  *     return simscore/my_count
  * 
  * cdef float compute_node_susceptibility_c(idata* my_interactions,             # <<<<<<<<<<<<<<
@@ -8059,7 +8095,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_suscept
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":724
+/* "socintpy/cythoncode/cnetwork_node.pyx":751
  * 
  * 
  * cdef float l2_norm_dict(dict_val_iter):             # <<<<<<<<<<<<<<
@@ -8083,7 +8119,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("l2_norm_dict", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":725
+  /* "socintpy/cythoncode/cnetwork_node.pyx":752
  * 
  * cdef float l2_norm_dict(dict_val_iter):
  *     cdef float norm = 0             # <<<<<<<<<<<<<<
@@ -8092,7 +8128,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
  */
   __pyx_v_norm = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":727
+  /* "socintpy/cythoncode/cnetwork_node.pyx":754
  *     cdef float norm = 0
  *     cdef float temp
  *     for v in dict_val_iter:             # <<<<<<<<<<<<<<
@@ -8103,25 +8139,25 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
     __pyx_t_1 = __pyx_v_dict_val_iter; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_dict_val_iter); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 727; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_dict_val_iter); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 727; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 727; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 727; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 727; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 727; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -8130,7 +8166,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 727; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 754; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -8139,17 +8175,17 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
     __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":728
+    /* "socintpy/cythoncode/cnetwork_node.pyx":755
  *     cdef float temp
  *     for v in dict_val_iter:
  *         temp = len(v)             # <<<<<<<<<<<<<<
  *         norm += temp*temp
  *     norm = sqrt(norm)
  */
-    __pyx_t_5 = PyObject_Length(__pyx_v_v); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 728; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyObject_Length(__pyx_v_v); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 755; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_temp = __pyx_t_5;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":729
+    /* "socintpy/cythoncode/cnetwork_node.pyx":756
  *     for v in dict_val_iter:
  *         temp = len(v)
  *         norm += temp*temp             # <<<<<<<<<<<<<<
@@ -8158,7 +8194,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
  */
     __pyx_v_norm = (__pyx_v_norm + (__pyx_v_temp * __pyx_v_temp));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":727
+    /* "socintpy/cythoncode/cnetwork_node.pyx":754
  *     cdef float norm = 0
  *     cdef float temp
  *     for v in dict_val_iter:             # <<<<<<<<<<<<<<
@@ -8168,7 +8204,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":730
+  /* "socintpy/cythoncode/cnetwork_node.pyx":757
  *         temp = len(v)
  *         norm += temp*temp
  *     norm = sqrt(norm)             # <<<<<<<<<<<<<<
@@ -8177,7 +8213,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
  */
   __pyx_v_norm = sqrt(__pyx_v_norm);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":731
+  /* "socintpy/cythoncode/cnetwork_node.pyx":758
  *         norm += temp*temp
  *     norm = sqrt(norm)
  *     return norm             # <<<<<<<<<<<<<<
@@ -8187,7 +8223,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
   __pyx_r = __pyx_v_norm;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":724
+  /* "socintpy/cythoncode/cnetwork_node.pyx":751
  * 
  * 
  * cdef float l2_norm_dict(dict_val_iter):             # <<<<<<<<<<<<<<
@@ -8207,7 +8243,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(PyObjec
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":736
+/* "socintpy/cythoncode/cnetwork_node.pyx":763
  * 
  * @cython.boundscheck(False)
  * cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):             # <<<<<<<<<<<<<<
@@ -8238,11 +8274,11 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
   __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 736; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 763; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0];
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":738
+  /* "socintpy/cythoncode/cnetwork_node.pyx":765
  * cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):
  *     cdef int i
  *     cdef DTYPE_t min_val = arr[0]             # <<<<<<<<<<<<<<
@@ -8252,7 +8288,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
   __pyx_t_1 = 0;
   __pyx_v_min_val = (*__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_1, __pyx_pybuffernd_arr.diminfo[0].strides));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":739
+  /* "socintpy/cythoncode/cnetwork_node.pyx":766
  *     cdef int i
  *     cdef DTYPE_t min_val = arr[0]
  *     min_index[0] = 0             # <<<<<<<<<<<<<<
@@ -8261,7 +8297,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
  */
   (__pyx_v_min_index[0]) = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":740
+  /* "socintpy/cythoncode/cnetwork_node.pyx":767
  *     cdef DTYPE_t min_val = arr[0]
  *     min_index[0] = 0
  *     for i in range(1, length_arr):             # <<<<<<<<<<<<<<
@@ -8272,7 +8308,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
   for (__pyx_t_3 = 1; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":741
+    /* "socintpy/cythoncode/cnetwork_node.pyx":768
  *     min_index[0] = 0
  *     for i in range(1, length_arr):
  *         if arr[i] < min_val:             # <<<<<<<<<<<<<<
@@ -8283,7 +8319,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
     __pyx_t_5 = (((*__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_arr.diminfo[0].strides)) < __pyx_v_min_val) != 0);
     if (__pyx_t_5) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":742
+      /* "socintpy/cythoncode/cnetwork_node.pyx":769
  *     for i in range(1, length_arr):
  *         if arr[i] < min_val:
  *             min_val = arr[i]             # <<<<<<<<<<<<<<
@@ -8293,7 +8329,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
       __pyx_t_6 = __pyx_v_i;
       __pyx_v_min_val = (*__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_arr.diminfo[0].strides));
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":743
+      /* "socintpy/cythoncode/cnetwork_node.pyx":770
  *         if arr[i] < min_val:
  *             min_val = arr[i]
  *             min_index[0] = i             # <<<<<<<<<<<<<<
@@ -8306,7 +8342,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":744
+  /* "socintpy/cythoncode/cnetwork_node.pyx":771
  *             min_val = arr[i]
  *             min_index[0] = i
  *     return min_val             # <<<<<<<<<<<<<<
@@ -8316,7 +8352,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
   __pyx_r = __pyx_v_min_val;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":736
+  /* "socintpy/cythoncode/cnetwork_node.pyx":763
  * 
  * @cython.boundscheck(False)
  * cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index):             # <<<<<<<<<<<<<<
@@ -8340,7 +8376,7 @@ static __pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t __pyx_f_8socintpy_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":761
+/* "socintpy/cythoncode/cnetwork_node.pyx":788
  *     cdef int length_fakedata_inf_fr_stream
  * 
  *     def __cinit__(self, *args,  **kwargs):             # <<<<<<<<<<<<<<
@@ -8388,23 +8424,23 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":763
+  /* "socintpy/cythoncode/cnetwork_node.pyx":790
  *     def __cinit__(self, *args,  **kwargs):
  *         cdef int a
  *         if kwargs['should_have_interactions'] and not (kwargs['node_data'] is None):             # <<<<<<<<<<<<<<
  *             self.c_num_interact_types = len(kwargs['node_data'].interaction_types)
  *             self.ndata.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))
  */
-  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_should_have_interactions); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 763; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_should_have_interactions); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 763; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
   } else {
     __pyx_t_1 = __pyx_t_3;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_node_data); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 763; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_node_data); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 790; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = (__pyx_t_2 != Py_None);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -8413,23 +8449,23 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":764
+    /* "socintpy/cythoncode/cnetwork_node.pyx":791
  *         cdef int a
  *         if kwargs['should_have_interactions'] and not (kwargs['node_data'] is None):
  *             self.c_num_interact_types = len(kwargs['node_data'].interaction_types)             # <<<<<<<<<<<<<<
  *             self.ndata.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))
  *             self.ndata.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))
  */
-    __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_node_data); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 764; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_node_data); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 791; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_interaction_types); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 764; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_interaction_types); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 791; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_6 = PyObject_Length(__pyx_t_5); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 764; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyObject_Length(__pyx_t_5); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 791; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_self->c_num_interact_types = __pyx_t_6;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":765
+    /* "socintpy/cythoncode/cnetwork_node.pyx":792
  *         if kwargs['should_have_interactions'] and not (kwargs['node_data'] is None):
  *             self.c_num_interact_types = len(kwargs['node_data'].interaction_types)
  *             self.ndata.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))             # <<<<<<<<<<<<<<
@@ -8438,7 +8474,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
     __pyx_v_self->ndata.c_list = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_idata **)PyMem_Malloc((__pyx_v_self->c_num_interact_types * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *)))));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":766
+    /* "socintpy/cythoncode/cnetwork_node.pyx":793
  *             self.c_num_interact_types = len(kwargs['node_data'].interaction_types)
  *             self.ndata.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))
  *             self.ndata.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))             # <<<<<<<<<<<<<<
@@ -8447,7 +8483,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
     __pyx_v_self->ndata.c_length_list = ((int *)PyMem_Malloc((__pyx_v_self->c_num_interact_types * (sizeof(int)))));
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":767
+    /* "socintpy/cythoncode/cnetwork_node.pyx":794
  *             self.ndata.c_list = <idata **>PyMem_Malloc(self.c_num_interact_types*sizeof(idata *))
  *             self.ndata.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))
  *             for a in xrange(self.c_num_interact_types):             # <<<<<<<<<<<<<<
@@ -8458,7 +8494,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
     for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_a = __pyx_t_8;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":768
+      /* "socintpy/cythoncode/cnetwork_node.pyx":795
  *             self.ndata.c_length_list = <int *>PyMem_Malloc(self.c_num_interact_types*cython.sizeof(int))
  *             for a in xrange(self.c_num_interact_types):
  *                 self.ndata.c_length_list[a] = 0             # <<<<<<<<<<<<<<
@@ -8471,7 +8507,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
   }
   /*else*/ {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":770
+    /* "socintpy/cythoncode/cnetwork_node.pyx":797
  *                 self.ndata.c_length_list[a] = 0
  *         else:
  *             self.c_num_interact_types = 0             # <<<<<<<<<<<<<<
@@ -8480,7 +8516,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
     __pyx_v_self->c_num_interact_types = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":771
+    /* "socintpy/cythoncode/cnetwork_node.pyx":798
  *         else:
  *             self.c_num_interact_types = 0
  *             self.ndata.c_list = NULL             # <<<<<<<<<<<<<<
@@ -8489,7 +8525,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
     __pyx_v_self->ndata.c_list = NULL;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":772
+    /* "socintpy/cythoncode/cnetwork_node.pyx":799
  *             self.c_num_interact_types = 0
  *             self.ndata.c_list = NULL
  *             self.ndata.c_length_list = NULL             # <<<<<<<<<<<<<<
@@ -8500,7 +8536,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":774
+  /* "socintpy/cythoncode/cnetwork_node.pyx":801
  *             self.ndata.c_length_list = NULL
  * 
  *         self.ndata.c_friend_list = NULL             # <<<<<<<<<<<<<<
@@ -8509,7 +8545,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
   __pyx_v_self->ndata.c_friend_list = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":775
+  /* "socintpy/cythoncode/cnetwork_node.pyx":802
  * 
  *         self.ndata.c_friend_list = NULL
  *         self.ndata.c_train_data = NULL             # <<<<<<<<<<<<<<
@@ -8518,7 +8554,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
   __pyx_v_self->ndata.c_train_data = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":776
+  /* "socintpy/cythoncode/cnetwork_node.pyx":803
  *         self.ndata.c_friend_list = NULL
  *         self.ndata.c_train_data = NULL
  *         self.ndata.c_test_data = NULL             # <<<<<<<<<<<<<<
@@ -8527,7 +8563,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
   __pyx_v_self->ndata.c_test_data = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":777
+  /* "socintpy/cythoncode/cnetwork_node.pyx":804
  *         self.ndata.c_train_data = NULL
  *         self.ndata.c_test_data = NULL
  *         self.ndata.c_length_friend_list = 0             # <<<<<<<<<<<<<<
@@ -8536,7 +8572,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
   __pyx_v_self->ndata.c_length_friend_list = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":778
+  /* "socintpy/cythoncode/cnetwork_node.pyx":805
  *         self.ndata.c_test_data = NULL
  *         self.ndata.c_length_friend_list = 0
  *         self.ndata.c_length_test_ids = 0             # <<<<<<<<<<<<<<
@@ -8545,7 +8581,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
   __pyx_v_self->ndata.c_length_test_ids = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":779
+  /* "socintpy/cythoncode/cnetwork_node.pyx":806
  *         self.ndata.c_length_friend_list = 0
  *         self.ndata.c_length_test_ids = 0
  *         self.ndata.c_length_train_ids = 0             # <<<<<<<<<<<<<<
@@ -8554,7 +8590,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
   __pyx_v_self->ndata.c_length_train_ids = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":782
+  /* "socintpy/cythoncode/cnetwork_node.pyx":809
  *         #if kwargs['should_have_friends']:
  *         #    self.ndata.c_friend_list = <fdata **>PyMem_Malloc(self.)a
  *         self.length_fakedata_inf_fr_stream = -1             # <<<<<<<<<<<<<<
@@ -8563,7 +8599,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
  */
   __pyx_v_self->length_fakedata_inf_fr_stream = -1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":761
+  /* "socintpy/cythoncode/cnetwork_node.pyx":788
  *     cdef int length_fakedata_inf_fr_stream
  * 
  *     def __cinit__(self, *args,  **kwargs):             # <<<<<<<<<<<<<<
@@ -8584,7 +8620,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode___cini
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":784
+/* "socintpy/cythoncode/cnetwork_node.pyx":811
  *         self.length_fakedata_inf_fr_stream = -1
  * 
  *     def __init__(self,*args, **kwargs):             # <<<<<<<<<<<<<<
@@ -8625,46 +8661,46 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_2__ini
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":785
+  /* "socintpy/cythoncode/cnetwork_node.pyx":812
  * 
  *     def __init__(self,*args, **kwargs):
  *         self.ndata.c_uid = int(args[0])             # <<<<<<<<<<<<<<
  *         self.c_should_have_friends = kwargs['should_have_friends']
  *         self.c_should_have_interactions = kwargs['should_have_interactions']
  */
-  __pyx_t_1 = PyNumber_Int(PyTuple_GET_ITEM(__pyx_v_args, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 785; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyNumber_Int(PyTuple_GET_ITEM(__pyx_v_args, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 812; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 785; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 812; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->ndata.c_uid = __pyx_t_2;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":786
+  /* "socintpy/cythoncode/cnetwork_node.pyx":813
  *     def __init__(self,*args, **kwargs):
  *         self.ndata.c_uid = int(args[0])
  *         self.c_should_have_friends = kwargs['should_have_friends']             # <<<<<<<<<<<<<<
  *         self.c_should_have_interactions = kwargs['should_have_interactions']
  * 
  */
-  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_should_have_friends); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 786; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_should_have_friends); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 813; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 786; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 813; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->c_should_have_friends = __pyx_t_2;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":787
+  /* "socintpy/cythoncode/cnetwork_node.pyx":814
  *         self.ndata.c_uid = int(args[0])
  *         self.c_should_have_friends = kwargs['should_have_friends']
  *         self.c_should_have_interactions = kwargs['should_have_interactions']             # <<<<<<<<<<<<<<
  * 
  *     def __dealloc__(self):
  */
-  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_should_have_interactions); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 787; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_kwargs, __pyx_n_s_should_have_interactions); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 787; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->c_should_have_interactions = __pyx_t_2;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":784
+  /* "socintpy/cythoncode/cnetwork_node.pyx":811
  *         self.length_fakedata_inf_fr_stream = -1
  * 
  *     def __init__(self,*args, **kwargs):             # <<<<<<<<<<<<<<
@@ -8684,7 +8720,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_2__ini
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":789
+/* "socintpy/cythoncode/cnetwork_node.pyx":816
  *         self.c_should_have_interactions = kwargs['should_have_interactions']
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -8711,7 +8747,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":791
+  /* "socintpy/cythoncode/cnetwork_node.pyx":818
  *     def __dealloc__(self):
  *         cdef int interact_type
  *         if self.ndata.c_list is not NULL:             # <<<<<<<<<<<<<<
@@ -8721,7 +8757,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   __pyx_t_1 = ((__pyx_v_self->ndata.c_list != NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":792
+    /* "socintpy/cythoncode/cnetwork_node.pyx":819
  *         cdef int interact_type
  *         if self.ndata.c_list is not NULL:
  *             for interact_type in xrange(self.c_num_interact_types):             # <<<<<<<<<<<<<<
@@ -8732,7 +8768,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_interact_type = __pyx_t_3;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":793
+      /* "socintpy/cythoncode/cnetwork_node.pyx":820
  *         if self.ndata.c_list is not NULL:
  *             for interact_type in xrange(self.c_num_interact_types):
  *                 if self.ndata.c_length_list[interact_type] > 0:             # <<<<<<<<<<<<<<
@@ -8742,7 +8778,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
       __pyx_t_1 = (((__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]) > 0) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":794
+        /* "socintpy/cythoncode/cnetwork_node.pyx":821
  *             for interact_type in xrange(self.c_num_interact_types):
  *                 if self.ndata.c_length_list[interact_type] > 0:
  *                     PyMem_Free(self.ndata.c_list[interact_type])             # <<<<<<<<<<<<<<
@@ -8755,7 +8791,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
       __pyx_L6:;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":795
+    /* "socintpy/cythoncode/cnetwork_node.pyx":822
  *                 if self.ndata.c_length_list[interact_type] > 0:
  *                     PyMem_Free(self.ndata.c_list[interact_type])
  *             PyMem_Free(self.ndata.c_list)             # <<<<<<<<<<<<<<
@@ -8764,7 +8800,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
  */
     PyMem_Free(__pyx_v_self->ndata.c_list);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":796
+    /* "socintpy/cythoncode/cnetwork_node.pyx":823
  *                     PyMem_Free(self.ndata.c_list[interact_type])
  *             PyMem_Free(self.ndata.c_list)
  *             PyMem_Free(self.ndata.c_length_list)             # <<<<<<<<<<<<<<
@@ -8776,7 +8812,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":798
+  /* "socintpy/cythoncode/cnetwork_node.pyx":825
  *             PyMem_Free(self.ndata.c_length_list)
  * 
  *         if self.ndata.c_friend_list is not NULL:             # <<<<<<<<<<<<<<
@@ -8786,7 +8822,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   __pyx_t_1 = ((__pyx_v_self->ndata.c_friend_list != NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":799
+    /* "socintpy/cythoncode/cnetwork_node.pyx":826
  * 
  *         if self.ndata.c_friend_list is not NULL:
  *             PyMem_Free(self.ndata.c_friend_list)             # <<<<<<<<<<<<<<
@@ -8798,7 +8834,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   }
   __pyx_L7:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":801
+  /* "socintpy/cythoncode/cnetwork_node.pyx":828
  *             PyMem_Free(self.ndata.c_friend_list)
  * 
  *         if self.ndata.c_train_data is not NULL:             # <<<<<<<<<<<<<<
@@ -8808,7 +8844,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   __pyx_t_1 = ((__pyx_v_self->ndata.c_train_data != NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":802
+    /* "socintpy/cythoncode/cnetwork_node.pyx":829
  * 
  *         if self.ndata.c_train_data is not NULL:
  *             PyMem_Free(self.ndata.c_train_data)             # <<<<<<<<<<<<<<
@@ -8817,7 +8853,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
  */
     PyMem_Free(__pyx_v_self->ndata.c_train_data);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":803
+    /* "socintpy/cythoncode/cnetwork_node.pyx":830
  *         if self.ndata.c_train_data is not NULL:
  *             PyMem_Free(self.ndata.c_train_data)
  *             PyMem_Free(self.ndata.c_test_data)             # <<<<<<<<<<<<<<
@@ -8829,7 +8865,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   }
   __pyx_L8:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":789
+  /* "socintpy/cythoncode/cnetwork_node.pyx":816
  *         self.c_should_have_interactions = kwargs['should_have_interactions']
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -8841,7 +8877,7 @@ static void __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_4__de
   __Pyx_RefNannyFinishContext();
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":805
+/* "socintpy/cythoncode/cnetwork_node.pyx":832
  *             PyMem_Free(self.ndata.c_test_data)
  * 
  *     cpdef int store_interactions(self, int interact_type, ilist, do_sort=True) except -1:             # <<<<<<<<<<<<<<
@@ -8879,10 +8915,10 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_i
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_store_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_store_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_7store_interactions)) {
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -8897,7 +8933,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_i
           __pyx_t_6 = 1;
         }
       }
-      __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       if (__pyx_t_5) {
         PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __Pyx_GIVEREF(__pyx_t_5); __pyx_t_5 = NULL;
@@ -8911,11 +8947,11 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_i
       PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_6, __pyx_v_do_sort);
       __Pyx_GIVEREF(__pyx_v_do_sort);
       __pyx_t_3 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_8;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -8924,17 +8960,17 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_i
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":806
+  /* "socintpy/cythoncode/cnetwork_node.pyx":833
  * 
  *     cpdef int store_interactions(self, int interact_type, ilist, do_sort=True) except -1:
  *         self.ndata.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))             # <<<<<<<<<<<<<<
  *         if self.ndata.c_list is NULL:
  *             raise MemoryError()
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_ilist); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 806; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyObject_Length(__pyx_v_ilist); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 833; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   (__pyx_v_self->ndata.c_list[__pyx_v_interact_type]) = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *)PyMem_Malloc((__pyx_t_6 * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":807
+  /* "socintpy/cythoncode/cnetwork_node.pyx":834
  *     cpdef int store_interactions(self, int interact_type, ilist, do_sort=True) except -1:
  *         self.ndata.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
  *         if self.ndata.c_list is NULL:             # <<<<<<<<<<<<<<
@@ -8944,97 +8980,97 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_i
   __pyx_t_9 = ((__pyx_v_self->ndata.c_list == NULL) != 0);
   if (__pyx_t_9) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":808
+    /* "socintpy/cythoncode/cnetwork_node.pyx":835
  *         self.ndata.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
  *         if self.ndata.c_list is NULL:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(len(ilist)):
  */
-    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 835; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":810
+  /* "socintpy/cythoncode/cnetwork_node.pyx":837
  *             raise MemoryError()
  *         cdef int i
  *         for i in range(len(ilist)):             # <<<<<<<<<<<<<<
  *             self.ndata.c_list[interact_type][i].item_id = ilist[i].item_id
  *             self.ndata.c_list[interact_type][i].rating = ilist[i].rating
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_ilist); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 810; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyObject_Length(__pyx_v_ilist); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 837; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_6; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":811
+    /* "socintpy/cythoncode/cnetwork_node.pyx":838
  *         cdef int i
  *         for i in range(len(ilist)):
  *             self.ndata.c_list[interact_type][i].item_id = ilist[i].item_id             # <<<<<<<<<<<<<<
  *             self.ndata.c_list[interact_type][i].rating = ilist[i].rating
  *             self.ndata.c_list[interact_type][i].timestamp = ilist[i].timestamp
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ilist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ilist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 838; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_item_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_item_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 838; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 811; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 838; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id = __pyx_t_10;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":812
+    /* "socintpy/cythoncode/cnetwork_node.pyx":839
  *         for i in range(len(ilist)):
  *             self.ndata.c_list[interact_type][i].item_id = ilist[i].item_id
  *             self.ndata.c_list[interact_type][i].rating = ilist[i].rating             # <<<<<<<<<<<<<<
  *             self.ndata.c_list[interact_type][i].timestamp = ilist[i].timestamp
  *         self.ndata.c_length_list[interact_type] = len(ilist)
  */
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_ilist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 812; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_ilist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 839; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_rating); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 812; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_rating); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 839; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 812; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 839; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating = __pyx_t_10;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":813
+    /* "socintpy/cythoncode/cnetwork_node.pyx":840
  *             self.ndata.c_list[interact_type][i].item_id = ilist[i].item_id
  *             self.ndata.c_list[interact_type][i].rating = ilist[i].rating
  *             self.ndata.c_list[interact_type][i].timestamp = ilist[i].timestamp             # <<<<<<<<<<<<<<
  *         self.ndata.c_length_list[interact_type] = len(ilist)
  *         if do_sort:
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ilist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 813; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_ilist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 840; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 813; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 840; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_11 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_11 == (unsigned int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 813; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_11 == (unsigned int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 840; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp = __pyx_t_11;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":814
+  /* "socintpy/cythoncode/cnetwork_node.pyx":841
  *             self.ndata.c_list[interact_type][i].rating = ilist[i].rating
  *             self.ndata.c_list[interact_type][i].timestamp = ilist[i].timestamp
  *         self.ndata.c_length_list[interact_type] = len(ilist)             # <<<<<<<<<<<<<<
  *         if do_sort:
  *             qsort(self.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], sizeof(idata), comp_interactions)
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_ilist); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyObject_Length(__pyx_v_ilist); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 841; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]) = __pyx_t_6;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":815
+  /* "socintpy/cythoncode/cnetwork_node.pyx":842
  *             self.ndata.c_list[interact_type][i].timestamp = ilist[i].timestamp
  *         self.ndata.c_length_list[interact_type] = len(ilist)
  *         if do_sort:             # <<<<<<<<<<<<<<
  *             qsort(self.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], sizeof(idata), comp_interactions)
  *         return self.ndata.c_length_list[interact_type]
  */
-  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_do_sort); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 815; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_do_sort); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 842; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_9) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":816
+    /* "socintpy/cythoncode/cnetwork_node.pyx":843
  *         self.ndata.c_length_list[interact_type] = len(ilist)
  *         if do_sort:
  *             qsort(self.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], sizeof(idata), comp_interactions)             # <<<<<<<<<<<<<<
@@ -9046,7 +9082,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_i
   }
   __pyx_L6:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":817
+  /* "socintpy/cythoncode/cnetwork_node.pyx":844
  *         if do_sort:
  *             qsort(self.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], sizeof(idata), comp_interactions)
  *         return self.ndata.c_length_list[interact_type]             # <<<<<<<<<<<<<<
@@ -9056,7 +9092,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_i
   __pyx_r = (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":805
+  /* "socintpy/cythoncode/cnetwork_node.pyx":832
  *             PyMem_Free(self.ndata.c_test_data)
  * 
  *     cpdef int store_interactions(self, int interact_type, ilist, do_sort=True) except -1:             # <<<<<<<<<<<<<<
@@ -9113,7 +9149,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_ilist)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("store_interactions", 0, 2, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("store_interactions", 0, 2, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (kw_args > 0) {
@@ -9122,7 +9158,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "store_interactions") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "store_interactions") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -9133,13 +9169,13 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_ilist = values[1];
     __pyx_v_do_sort = values[2];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("store_interactions", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("store_interactions", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.store_interactions", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9165,8 +9201,8 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.do_sort = __pyx_v_do_sort;
-  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->store_interactions(__pyx_v_self, __pyx_v_interact_type, __pyx_v_ilist, 1, &__pyx_t_2); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 805; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->store_interactions(__pyx_v_self, __pyx_v_interact_type, __pyx_v_ilist, 1, &__pyx_t_2); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -9183,7 +9219,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":819
+/* "socintpy/cythoncode/cnetwork_node.pyx":846
  *         return self.ndata.c_length_list[interact_type]
  * 
  *     cpdef int store_friends(self, flist):             # <<<<<<<<<<<<<<
@@ -9213,7 +9249,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_store_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_store_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_9store_friends)) {
       __Pyx_INCREF(__pyx_t_1);
@@ -9228,21 +9264,21 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_flist); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_flist); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __Pyx_GIVEREF(__pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_flist);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_flist);
         __Pyx_GIVEREF(__pyx_v_flist);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_6;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -9251,17 +9287,17 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":820
+  /* "socintpy/cythoncode/cnetwork_node.pyx":847
  * 
  *     cpdef int store_friends(self, flist):
  *         self.ndata.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))             # <<<<<<<<<<<<<<
  *         if self.ndata.c_friend_list is NULL:
  *             raise MemoryError()
  */
-  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 820; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 847; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->ndata.c_friend_list = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_fdata *)PyMem_Malloc((__pyx_t_7 * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_fdata)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":821
+  /* "socintpy/cythoncode/cnetwork_node.pyx":848
  *     cpdef int store_friends(self, flist):
  *         self.ndata.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
  *         if self.ndata.c_friend_list is NULL:             # <<<<<<<<<<<<<<
@@ -9271,55 +9307,55 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
   __pyx_t_8 = ((__pyx_v_self->ndata.c_friend_list == NULL) != 0);
   if (__pyx_t_8) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":822
+    /* "socintpy/cythoncode/cnetwork_node.pyx":849
  *         self.ndata.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
  *         if self.ndata.c_friend_list is NULL:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in xrange(len(flist)):
  */
-    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 822; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 849; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":824
+  /* "socintpy/cythoncode/cnetwork_node.pyx":851
  *             raise MemoryError()
  *         cdef int i
  *         for i in xrange(len(flist)):             # <<<<<<<<<<<<<<
  *             self.ndata.c_friend_list[i].receiver_id = flist[i].receiver_id
  *         self.ndata.c_length_friend_list = len(flist)
  */
-  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 824; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 851; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_7; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":825
+    /* "socintpy/cythoncode/cnetwork_node.pyx":852
  *         cdef int i
  *         for i in xrange(len(flist)):
  *             self.ndata.c_friend_list[i].receiver_id = flist[i].receiver_id             # <<<<<<<<<<<<<<
  *         self.ndata.c_length_friend_list = len(flist)
  * 
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_flist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 825; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_flist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 852; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_receiver_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 825; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_receiver_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 852; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 825; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 852; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     (__pyx_v_self->ndata.c_friend_list[__pyx_v_i]).receiver_id = __pyx_t_9;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":826
+  /* "socintpy/cythoncode/cnetwork_node.pyx":853
  *         for i in xrange(len(flist)):
  *             self.ndata.c_friend_list[i].receiver_id = flist[i].receiver_id
  *         self.ndata.c_length_friend_list = len(flist)             # <<<<<<<<<<<<<<
  * 
  *         qsort(self.ndata.c_friend_list, self.ndata.c_length_friend_list, sizeof(fdata), comp_friends)
  */
-  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 826; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 853; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->ndata.c_length_friend_list = __pyx_t_7;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":828
+  /* "socintpy/cythoncode/cnetwork_node.pyx":855
  *         self.ndata.c_length_friend_list = len(flist)
  * 
  *         qsort(self.ndata.c_friend_list, self.ndata.c_length_friend_list, sizeof(fdata), comp_friends)             # <<<<<<<<<<<<<<
@@ -9328,7 +9364,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
  */
   qsort(__pyx_v_self->ndata.c_friend_list, __pyx_v_self->ndata.c_length_friend_list, (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_fdata)), __pyx_f_8socintpy_10cythoncode_10data_types_comp_friends);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":829
+  /* "socintpy/cythoncode/cnetwork_node.pyx":856
  * 
  *         qsort(self.ndata.c_friend_list, self.ndata.c_length_friend_list, sizeof(fdata), comp_friends)
  *         return self.ndata.c_length_friend_list             # <<<<<<<<<<<<<<
@@ -9338,7 +9374,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
   __pyx_r = __pyx_v_self->ndata.c_length_friend_list;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":819
+  /* "socintpy/cythoncode/cnetwork_node.pyx":846
  *         return self.ndata.c_length_list[interact_type]
  * 
  *     cpdef int store_friends(self, flist):             # <<<<<<<<<<<<<<
@@ -9382,7 +9418,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("store_friends", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_friends(__pyx_v_self, __pyx_v_flist, 1)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 819; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_friends(__pyx_v_self, __pyx_v_flist, 1)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9399,7 +9435,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":831
+/* "socintpy/cythoncode/cnetwork_node.pyx":858
  *         return self.ndata.c_length_friend_list
  * 
  *     cpdef int store_friend_ids(self, flist):             # <<<<<<<<<<<<<<
@@ -9429,7 +9465,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_store_friend_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_store_friend_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_11store_friend_ids)) {
       __Pyx_INCREF(__pyx_t_1);
@@ -9444,21 +9480,21 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_flist); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_flist); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __Pyx_GIVEREF(__pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_flist);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_flist);
         __Pyx_GIVEREF(__pyx_v_flist);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_6;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -9467,17 +9503,17 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":832
+  /* "socintpy/cythoncode/cnetwork_node.pyx":859
  * 
  *     cpdef int store_friend_ids(self, flist):
  *         self.ndata.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))             # <<<<<<<<<<<<<<
  *         if self.ndata.c_friend_list is NULL:
  *             raise MemoryError()
  */
-  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 832; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 859; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->ndata.c_friend_list = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_fdata *)PyMem_Malloc((__pyx_t_7 * (sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_fdata)))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":833
+  /* "socintpy/cythoncode/cnetwork_node.pyx":860
  *     cpdef int store_friend_ids(self, flist):
  *         self.ndata.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
  *         if self.ndata.c_friend_list is NULL:             # <<<<<<<<<<<<<<
@@ -9487,52 +9523,52 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
   __pyx_t_8 = ((__pyx_v_self->ndata.c_friend_list == NULL) != 0);
   if (__pyx_t_8) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":834
+    /* "socintpy/cythoncode/cnetwork_node.pyx":861
  *         self.ndata.c_friend_list = <fdata *>PyMem_Malloc(len(flist)*cython.sizeof(fdata))
  *         if self.ndata.c_friend_list is NULL:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in xrange(len(flist)):
  */
-    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 834; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 861; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":836
+  /* "socintpy/cythoncode/cnetwork_node.pyx":863
  *             raise MemoryError()
  *         cdef int i
  *         for i in xrange(len(flist)):             # <<<<<<<<<<<<<<
  *             self.ndata.c_friend_list[i].receiver_id = flist[i]
  *         self.ndata.c_length_friend_list = len(flist)
  */
-  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 836; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_7; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":837
+    /* "socintpy/cythoncode/cnetwork_node.pyx":864
  *         cdef int i
  *         for i in xrange(len(flist)):
  *             self.ndata.c_friend_list[i].receiver_id = flist[i]             # <<<<<<<<<<<<<<
  *         self.ndata.c_length_friend_list = len(flist)
  *         return self.ndata.c_length_friend_list
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_flist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 837; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_flist, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 837; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     (__pyx_v_self->ndata.c_friend_list[__pyx_v_i]).receiver_id = __pyx_t_9;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":838
+  /* "socintpy/cythoncode/cnetwork_node.pyx":865
  *         for i in xrange(len(flist)):
  *             self.ndata.c_friend_list[i].receiver_id = flist[i]
  *         self.ndata.c_length_friend_list = len(flist)             # <<<<<<<<<<<<<<
  *         return self.ndata.c_length_friend_list
  * 
  */
-  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 838; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyObject_Length(__pyx_v_flist); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->ndata.c_length_friend_list = __pyx_t_7;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":839
+  /* "socintpy/cythoncode/cnetwork_node.pyx":866
  *             self.ndata.c_friend_list[i].receiver_id = flist[i]
  *         self.ndata.c_length_friend_list = len(flist)
  *         return self.ndata.c_length_friend_list             # <<<<<<<<<<<<<<
@@ -9542,7 +9578,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_f
   __pyx_r = __pyx_v_self->ndata.c_length_friend_list;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":831
+  /* "socintpy/cythoncode/cnetwork_node.pyx":858
  *         return self.ndata.c_length_friend_list
  * 
  *     cpdef int store_friend_ids(self, flist):             # <<<<<<<<<<<<<<
@@ -9586,7 +9622,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("store_friend_ids", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_friend_ids(__pyx_v_self, __pyx_v_flist, 1)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 831; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_store_friend_ids(__pyx_v_self, __pyx_v_flist, 1)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 858; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9603,7 +9639,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":841
+/* "socintpy/cythoncode/cnetwork_node.pyx":868
  *         return self.ndata.c_length_friend_list
  * 
  *     cpdef int remove_interactions(self, interact_type):             # <<<<<<<<<<<<<<
@@ -9630,7 +9666,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_remove_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 841; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_remove_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_13remove_interactions)) {
       __Pyx_INCREF(__pyx_t_1);
@@ -9645,21 +9681,21 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_interact_type); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 841; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_interact_type); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 841; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __Pyx_GIVEREF(__pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_interact_type);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_interact_type);
         __Pyx_GIVEREF(__pyx_v_interact_type);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 841; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 841; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_6;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -9668,27 +9704,27 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":842
+  /* "socintpy/cythoncode/cnetwork_node.pyx":869
  * 
  *     cpdef int remove_interactions(self, interact_type):
  *         PyMem_Free(self.ndata.c_list[interact_type])             # <<<<<<<<<<<<<<
  *         self.ndata.c_length_list[interact_type] = 0
  *         return 1
  */
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 842; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 869; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   PyMem_Free((__pyx_v_self->ndata.c_list[__pyx_t_7]));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":843
+  /* "socintpy/cythoncode/cnetwork_node.pyx":870
  *     cpdef int remove_interactions(self, interact_type):
  *         PyMem_Free(self.ndata.c_list[interact_type])
  *         self.ndata.c_length_list[interact_type] = 0             # <<<<<<<<<<<<<<
  *         return 1
  * 
  */
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 843; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 870; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   (__pyx_v_self->ndata.c_length_list[__pyx_t_7]) = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":844
+  /* "socintpy/cythoncode/cnetwork_node.pyx":871
  *         PyMem_Free(self.ndata.c_list[interact_type])
  *         self.ndata.c_length_list[interact_type] = 0
  *         return 1             # <<<<<<<<<<<<<<
@@ -9698,7 +9734,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
   __pyx_r = 1;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":841
+  /* "socintpy/cythoncode/cnetwork_node.pyx":868
  *         return self.ndata.c_length_friend_list
  * 
  *     cpdef int remove_interactions(self, interact_type):             # <<<<<<<<<<<<<<
@@ -9742,7 +9778,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_interactions", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_interactions(__pyx_v_self, __pyx_v_interact_type, 1)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 841; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_interactions(__pyx_v_self, __pyx_v_interact_type, 1)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9759,7 +9795,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":846
+/* "socintpy/cythoncode/cnetwork_node.pyx":873
  *         return 1
  * 
  *     cpdef int remove_friends(self, change_should_have_friends=True):             # <<<<<<<<<<<<<<
@@ -9792,7 +9828,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_remove_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_remove_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_15remove_friends)) {
       __Pyx_INCREF(__pyx_t_1);
@@ -9807,21 +9843,21 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_change_should_have_friends); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_change_should_have_friends); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __Pyx_GIVEREF(__pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_change_should_have_friends);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_change_should_have_friends);
         __Pyx_GIVEREF(__pyx_v_change_should_have_friends);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_6;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -9830,7 +9866,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":847
+  /* "socintpy/cythoncode/cnetwork_node.pyx":874
  * 
  *     cpdef int remove_friends(self, change_should_have_friends=True):
  *         self.ndata.c_length_friend_list = 0             # <<<<<<<<<<<<<<
@@ -9839,7 +9875,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
  */
   __pyx_v_self->ndata.c_length_friend_list = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":848
+  /* "socintpy/cythoncode/cnetwork_node.pyx":875
  *     cpdef int remove_friends(self, change_should_have_friends=True):
  *         self.ndata.c_length_friend_list = 0
  *         PyMem_Free(self.ndata.c_friend_list)             # <<<<<<<<<<<<<<
@@ -9848,7 +9884,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
  */
   PyMem_Free(__pyx_v_self->ndata.c_friend_list);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":849
+  /* "socintpy/cythoncode/cnetwork_node.pyx":876
  *         self.ndata.c_length_friend_list = 0
  *         PyMem_Free(self.ndata.c_friend_list)
  *         self.ndata.c_friend_list = NULL             # <<<<<<<<<<<<<<
@@ -9857,17 +9893,17 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
  */
   __pyx_v_self->ndata.c_friend_list = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":850
+  /* "socintpy/cythoncode/cnetwork_node.pyx":877
  *         PyMem_Free(self.ndata.c_friend_list)
  *         self.ndata.c_friend_list = NULL
  *         if change_should_have_friends:             # <<<<<<<<<<<<<<
  *             self.c_should_have_friends = False
  * 
  */
-  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_change_should_have_friends); if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 850; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_change_should_have_friends); if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 877; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_7) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":851
+    /* "socintpy/cythoncode/cnetwork_node.pyx":878
  *         self.ndata.c_friend_list = NULL
  *         if change_should_have_friends:
  *             self.c_should_have_friends = False             # <<<<<<<<<<<<<<
@@ -9879,7 +9915,7 @@ static int __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_remove_
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":846
+  /* "socintpy/cythoncode/cnetwork_node.pyx":873
  *         return 1
  * 
  *     cpdef int remove_friends(self, change_should_have_friends=True):             # <<<<<<<<<<<<<<
@@ -9934,7 +9970,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "remove_friends") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "remove_friends") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -9947,7 +9983,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("remove_friends", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("remove_friends", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.remove_friends", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9974,7 +10010,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.change_should_have_friends = __pyx_v_change_should_have_friends;
   __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->remove_friends(__pyx_v_self, 1, &__pyx_t_2); 
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 846; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
@@ -9991,7 +10027,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":853
+/* "socintpy/cythoncode/cnetwork_node.pyx":880
  *             self.c_should_have_friends = False
  * 
  *     cpdef get_all_items_interacted_with(self):             # <<<<<<<<<<<<<<
@@ -10023,7 +10059,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_all_items_interacted_with); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 853; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_all_items_interacted_with); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_17get_all_items_interacted_with)) {
       __Pyx_XDECREF(__pyx_r);
@@ -10039,10 +10075,10 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 853; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 853; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -10054,19 +10090,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":854
+  /* "socintpy/cythoncode/cnetwork_node.pyx":881
  * 
  *     cpdef get_all_items_interacted_with(self):
  *         interacted_items = set()             # <<<<<<<<<<<<<<
  *         cdef int i, curr_interact_type
  *         for curr_interact_type in range(self.c_num_interact_types):
  */
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 854; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_interacted_items = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":856
+  /* "socintpy/cythoncode/cnetwork_node.pyx":883
  *         interacted_items = set()
  *         cdef int i, curr_interact_type
  *         for curr_interact_type in range(self.c_num_interact_types):             # <<<<<<<<<<<<<<
@@ -10077,7 +10113,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_curr_interact_type = __pyx_t_6;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":857
+    /* "socintpy/cythoncode/cnetwork_node.pyx":884
  *         cdef int i, curr_interact_type
  *         for curr_interact_type in range(self.c_num_interact_types):
  *             for i in range(self.ndata.c_length_list[curr_interact_type]):             # <<<<<<<<<<<<<<
@@ -10088,21 +10124,21 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_i = __pyx_t_8;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":859
+      /* "socintpy/cythoncode/cnetwork_node.pyx":886
  *             for i in range(self.ndata.c_length_list[curr_interact_type]):
  *                 #print self.ndata.c_list[curr_interact_type][i].item_id
  *                 interacted_items.add(self.ndata.c_list[curr_interact_type][i].item_id)             # <<<<<<<<<<<<<<
  *         return interacted_items
  * 
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_curr_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 859; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_curr_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = PySet_Add(__pyx_v_interacted_items, __pyx_t_1); if (unlikely(__pyx_t_9 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 859; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PySet_Add(__pyx_v_interacted_items, __pyx_t_1); if (unlikely(__pyx_t_9 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":860
+  /* "socintpy/cythoncode/cnetwork_node.pyx":887
  *                 #print self.ndata.c_list[curr_interact_type][i].item_id
  *                 interacted_items.add(self.ndata.c_list[curr_interact_type][i].item_id)
  *         return interacted_items             # <<<<<<<<<<<<<<
@@ -10114,7 +10150,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_interacted_items;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":853
+  /* "socintpy/cythoncode/cnetwork_node.pyx":880
  *             self.c_should_have_friends = False
  * 
  *     cpdef get_all_items_interacted_with(self):             # <<<<<<<<<<<<<<
@@ -10159,7 +10195,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_all_items_interacted_with", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_all_items_interacted_with(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 853; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_all_items_interacted_with(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 880; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10176,7 +10212,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":862
+/* "socintpy/cythoncode/cnetwork_node.pyx":889
  *         return interacted_items
  * 
  *     def print_interactions(self, interact_type):             # <<<<<<<<<<<<<<
@@ -10213,43 +10249,43 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("print_interactions", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":863
+  /* "socintpy/cythoncode/cnetwork_node.pyx":890
  * 
  *     def print_interactions(self, interact_type):
  *         print self.ndata.c_uid             # <<<<<<<<<<<<<<
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             print "---", self.ndata.c_list[interact_type][i].item_id
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 890; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 863; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 890; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":864
+  /* "socintpy/cythoncode/cnetwork_node.pyx":891
  *     def print_interactions(self, interact_type):
  *         print self.ndata.c_uid
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
  *             print "---", self.ndata.c_list[interact_type][i].item_id
  * 
  */
-  __pyx_t_2 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_2 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_length_list[__pyx_t_2])); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_2 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_length_list[__pyx_t_2])); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_2 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -10257,16 +10293,16 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_2); __Pyx_INCREF(__pyx_t_1); __pyx_t_2++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -10275,7 +10311,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 864; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 891; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -10284,18 +10320,18 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
     __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":865
+    /* "socintpy/cythoncode/cnetwork_node.pyx":892
  *         print self.ndata.c_uid
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             print "---", self.ndata.c_list[interact_type][i].item_id             # <<<<<<<<<<<<<<
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_6 = __Pyx_PyIndex_AsSsize_t(__pyx_v_i); if (unlikely((__pyx_t_6 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_t_5])[__pyx_t_6]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 892; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyIndex_AsSsize_t(__pyx_v_i); if (unlikely((__pyx_t_6 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 892; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_t_5])[__pyx_t_6]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 892; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 892; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_INCREF(__pyx_kp_s__2);
     PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_kp_s__2);
@@ -10303,10 +10339,10 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
     PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     __pyx_t_1 = 0;
-    if (__Pyx_Print(0, __pyx_t_7, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 865; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (__Pyx_Print(0, __pyx_t_7, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 892; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":864
+    /* "socintpy/cythoncode/cnetwork_node.pyx":891
  *     def print_interactions(self, interact_type):
  *         print self.ndata.c_uid
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -10316,7 +10352,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":862
+  /* "socintpy/cythoncode/cnetwork_node.pyx":889
  *         return interacted_items
  * 
  *     def print_interactions(self, interact_type):             # <<<<<<<<<<<<<<
@@ -10340,7 +10376,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":867
+/* "socintpy/cythoncode/cnetwork_node.pyx":894
  *             print "---", self.ndata.c_list[interact_type][i].item_id
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,             # <<<<<<<<<<<<<<
@@ -10352,7 +10388,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
 static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_items_interacted_with(struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *__pyx_v_self, int __pyx_v_interact_type, int __pyx_skip_dispatch, struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_items_interacted_with *__pyx_optional_args) {
   int __pyx_v_rating_cutoff = ((int)-1);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":868
+  /* "socintpy/cythoncode/cnetwork_node.pyx":895
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,
  *             int rating_cutoff=-1, bool return_timestamp = False):             # <<<<<<<<<<<<<<
@@ -10389,7 +10425,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     }
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":867
+  /* "socintpy/cythoncode/cnetwork_node.pyx":894
  *             print "---", self.ndata.c_list[interact_type][i].item_id
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,             # <<<<<<<<<<<<<<
@@ -10400,13 +10436,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_items_interacted_with); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_items_interacted_with); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_21get_items_interacted_with)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_rating_cutoff); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_rating_cutoff); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -10421,7 +10457,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
           __pyx_t_7 = 1;
         }
       }
-      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_6) {
         PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __Pyx_GIVEREF(__pyx_t_6); __pyx_t_6 = NULL;
@@ -10435,7 +10471,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __Pyx_GIVEREF(((PyObject *)__pyx_v_return_timestamp));
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10447,19 +10483,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":869
+  /* "socintpy/cythoncode/cnetwork_node.pyx":896
  *     cpdef get_items_interacted_with(self, int interact_type,
  *             int rating_cutoff=-1, bool return_timestamp = False):
  *         interacted_items = set()             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  */
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 869; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 896; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_interacted_items = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":871
+  /* "socintpy/cythoncode/cnetwork_node.pyx":898
  *         interacted_items = set()
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -10470,7 +10506,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
     __pyx_v_i = __pyx_t_10;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":872
+    /* "socintpy/cythoncode/cnetwork_node.pyx":899
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= rating_cutoff:             # <<<<<<<<<<<<<<
@@ -10480,37 +10516,37 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_t_11 = ((((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating >= __pyx_v_rating_cutoff) != 0);
     if (__pyx_t_11) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":873
+      /* "socintpy/cythoncode/cnetwork_node.pyx":900
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= rating_cutoff:
  *                 if return_timestamp:             # <<<<<<<<<<<<<<
  *                     interacted_items.add((self.ndata.c_list[interact_type][i].item_id, self.c_list[interact_type][i].timestamp))
  *                 else:
  */
-      __pyx_t_11 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_return_timestamp)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 873; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_11 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_return_timestamp)); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 900; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       if (__pyx_t_11) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":874
+        /* "socintpy/cythoncode/cnetwork_node.pyx":901
  *             if self.ndata.c_list[interact_type][i].rating >= rating_cutoff:
  *                 if return_timestamp:
  *                     interacted_items.add((self.ndata.c_list[interact_type][i].item_id, self.c_list[interact_type][i].timestamp))             # <<<<<<<<<<<<<<
  *                 else:
  *                     interacted_items.add(self.ndata.c_list[interact_type][i].item_id)
  */
-        __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_c_list); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_c_list); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_2, __pyx_v_interact_type, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_2, __pyx_v_interact_type, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_5, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_5, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_timestamp); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_timestamp); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
@@ -10518,22 +10554,22 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
         __Pyx_GIVEREF(__pyx_t_5);
         __pyx_t_1 = 0;
         __pyx_t_5 = 0;
-        __pyx_t_12 = PySet_Add(__pyx_v_interacted_items, __pyx_t_2); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 874; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_12 = PySet_Add(__pyx_v_interacted_items, __pyx_t_2); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 901; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         goto __pyx_L6;
       }
       /*else*/ {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":876
+        /* "socintpy/cythoncode/cnetwork_node.pyx":903
  *                     interacted_items.add((self.ndata.c_list[interact_type][i].item_id, self.c_list[interact_type][i].timestamp))
  *                 else:
  *                     interacted_items.add(self.ndata.c_list[interact_type][i].item_id)             # <<<<<<<<<<<<<<
  *         #print self.ndata.c_uid, len(interacted_items), interact_type
  *         return interacted_items
  */
-        __pyx_t_2 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 876; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 903; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_12 = PySet_Add(__pyx_v_interacted_items, __pyx_t_2); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 876; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_12 = PySet_Add(__pyx_v_interacted_items, __pyx_t_2); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 903; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
       __pyx_L6:;
@@ -10542,7 +10578,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":878
+  /* "socintpy/cythoncode/cnetwork_node.pyx":905
  *                     interacted_items.add(self.ndata.c_list[interact_type][i].item_id)
  *         #print self.ndata.c_uid, len(interacted_items), interact_type
  *         return interacted_items             # <<<<<<<<<<<<<<
@@ -10554,7 +10590,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_interacted_items;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":867
+  /* "socintpy/cythoncode/cnetwork_node.pyx":894
  *             print "---", self.ndata.c_list[interact_type][i].item_id
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,             # <<<<<<<<<<<<<<
@@ -10596,7 +10632,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_interact_type,&__pyx_n_s_rating_cutoff,&__pyx_n_s_return_timestamp,0};
     PyObject* values[3] = {0,0,0};
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":868
+    /* "socintpy/cythoncode/cnetwork_node.pyx":895
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,
  *             int rating_cutoff=-1, bool return_timestamp = False):             # <<<<<<<<<<<<<<
@@ -10631,7 +10667,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_items_interacted_with") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_items_interacted_with") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -10642,9 +10678,9 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     if (values[1]) {
-      __pyx_v_rating_cutoff = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_rating_cutoff == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_rating_cutoff = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_rating_cutoff == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 895; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_rating_cutoff = ((int)-1);
     }
@@ -10652,16 +10688,16 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_items_interacted_with", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("get_items_interacted_with", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.get_items_interacted_with", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_return_timestamp), __pyx_ptype_7cpython_4bool_bool, 1, "return_timestamp", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 868; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_return_timestamp), __pyx_ptype_7cpython_4bool_bool, 1, "return_timestamp", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 895; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_20get_items_interacted_with(((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self), __pyx_v_interact_type, __pyx_v_rating_cutoff, __pyx_v_return_timestamp);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":867
+  /* "socintpy/cythoncode/cnetwork_node.pyx":894
  *             print "---", self.ndata.c_list[interact_type][i].item_id
  * 
  *     cpdef get_items_interacted_with(self, int interact_type,             # <<<<<<<<<<<<<<
@@ -10691,7 +10727,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __pyx_t_2.__pyx_n = 2;
   __pyx_t_2.rating_cutoff = __pyx_v_rating_cutoff;
   __pyx_t_2.return_timestamp = __pyx_v_return_timestamp;
-  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_items_interacted_with(__pyx_v_self, __pyx_v_interact_type, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 867; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_items_interacted_with(__pyx_v_self, __pyx_v_interact_type, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 894; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10708,7 +10744,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":881
+/* "socintpy/cythoncode/cnetwork_node.pyx":908
  * 
  * 
  *     cpdef get_interactions(self, int interact_type, int cutoff_rating=-1):             # <<<<<<<<<<<<<<
@@ -10748,13 +10784,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_23get_interactions)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -10769,7 +10805,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
           __pyx_t_7 = 1;
         }
       }
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_6) {
         PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __Pyx_GIVEREF(__pyx_t_6); __pyx_t_6 = NULL;
@@ -10780,7 +10816,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __Pyx_GIVEREF(__pyx_t_4);
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10792,19 +10828,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":882
+  /* "socintpy/cythoncode/cnetwork_node.pyx":909
  * 
  *     cpdef get_interactions(self, int interact_type, int cutoff_rating=-1):
  *         interacts = []             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 882; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 909; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_interacts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":884
+  /* "socintpy/cythoncode/cnetwork_node.pyx":911
  *         interacts = []
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -10815,7 +10851,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
     __pyx_v_i = __pyx_t_10;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":885
+    /* "socintpy/cythoncode/cnetwork_node.pyx":912
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -10825,44 +10861,44 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_t_11 = ((((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating >= __pyx_v_cutoff_rating) != 0);
     if (__pyx_t_11) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":886
+      /* "socintpy/cythoncode/cnetwork_node.pyx":913
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating:
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 913; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":887
+      /* "socintpy/cythoncode/cnetwork_node.pyx":914
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating:
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts
  */
-      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 887; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 914; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":888
+      /* "socintpy/cythoncode/cnetwork_node.pyx":915
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))             # <<<<<<<<<<<<<<
  *         return interacts
  * 
  */
-      __pyx_t_5 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 888; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 915; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":886
+      /* "socintpy/cythoncode/cnetwork_node.pyx":913
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating:
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 913; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
       PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
@@ -10873,14 +10909,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __pyx_t_1 = 0;
       __pyx_t_2 = 0;
       __pyx_t_5 = 0;
-      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_8); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 886; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_8); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 913; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       goto __pyx_L5;
     }
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":889
+  /* "socintpy/cythoncode/cnetwork_node.pyx":916
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts             # <<<<<<<<<<<<<<
@@ -10892,7 +10928,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_interacts;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":881
+  /* "socintpy/cythoncode/cnetwork_node.pyx":908
  * 
  * 
  *     cpdef get_interactions(self, int interact_type, int cutoff_rating=-1):             # <<<<<<<<<<<<<<
@@ -10953,7 +10989,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -10963,16 +10999,16 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     if (values[1]) {
-      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_cutoff_rating = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_interactions", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("get_interactions", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.get_interactions", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -10997,7 +11033,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.cutoff_rating = __pyx_v_cutoff_rating;
-  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions(__pyx_v_self, __pyx_v_interact_type, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 881; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions(__pyx_v_self, __pyx_v_interact_type, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 908; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11014,7 +11050,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":891
+/* "socintpy/cythoncode/cnetwork_node.pyx":918
  *         return interacts
  * 
  *     cdef idata* get_interactions_c(self, int interact_type, int *length_list, int data_type):             # <<<<<<<<<<<<<<
@@ -11031,7 +11067,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_interactions_c", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":892
+  /* "socintpy/cythoncode/cnetwork_node.pyx":919
  * 
  *     cdef idata* get_interactions_c(self, int interact_type, int *length_list, int data_type):
  *         if data_type == <int>"a":             # <<<<<<<<<<<<<<
@@ -11041,7 +11077,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   __pyx_t_1 = ((__pyx_v_data_type == ((int)'a')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":893
+    /* "socintpy/cythoncode/cnetwork_node.pyx":920
  *     cdef idata* get_interactions_c(self, int interact_type, int *length_list, int data_type):
  *         if data_type == <int>"a":
  *             length_list[0] = self.ndata.c_length_list[interact_type]             # <<<<<<<<<<<<<<
@@ -11050,7 +11086,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
  */
     (__pyx_v_length_list[0]) = (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":894
+    /* "socintpy/cythoncode/cnetwork_node.pyx":921
  *         if data_type == <int>"a":
  *             length_list[0] = self.ndata.c_length_list[interact_type]
  *             return self.ndata.c_list[interact_type]             # <<<<<<<<<<<<<<
@@ -11062,17 +11098,17 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   }
   /*else*/ {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":896
+    /* "socintpy/cythoncode/cnetwork_node.pyx":923
  *             return self.ndata.c_list[interact_type]
  *         else:
  *             print "woow"             # <<<<<<<<<<<<<<
  * 
  *     cpdef get_interactions_before(self, int interact_type, int split_timestamp,
  */
-    if (__Pyx_PrintOne(0, __pyx_n_s_woow) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 896; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (__Pyx_PrintOne(0, __pyx_n_s_woow) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 923; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":891
+  /* "socintpy/cythoncode/cnetwork_node.pyx":918
  *         return interacts
  * 
  *     cdef idata* get_interactions_c(self, int interact_type, int *length_list, int data_type):             # <<<<<<<<<<<<<<
@@ -11091,7 +11127,7 @@ static struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *__pyx_f_8socint
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":898
+/* "socintpy/cythoncode/cnetwork_node.pyx":925
  *             print "woow"
  * 
  *     cpdef get_interactions_before(self, int interact_type, int split_timestamp,             # <<<<<<<<<<<<<<
@@ -11133,15 +11169,15 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions_before); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions_before); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_25get_interactions_before)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_split_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_split_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
@@ -11156,7 +11192,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
           __pyx_t_8 = 1;
         }
       }
-      __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       if (__pyx_t_7) {
         PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
@@ -11170,7 +11206,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -11182,19 +11218,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":900
+  /* "socintpy/cythoncode/cnetwork_node.pyx":927
  *     cpdef get_interactions_before(self, int interact_type, int split_timestamp,
  *             int cutoff_rating=-1):
  *         interacts = []             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 900; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 927; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_interacts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":902
+  /* "socintpy/cythoncode/cnetwork_node.pyx":929
  *         interacts = []
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -11205,7 +11241,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
     __pyx_v_i = __pyx_t_11;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":903
+    /* "socintpy/cythoncode/cnetwork_node.pyx":930
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (             # <<<<<<<<<<<<<<
@@ -11219,7 +11255,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       goto __pyx_L6_bool_binop_done;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":904
+    /* "socintpy/cythoncode/cnetwork_node.pyx":931
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp < split_timestamp):             # <<<<<<<<<<<<<<
@@ -11231,44 +11267,44 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_12) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":905
+      /* "socintpy/cythoncode/cnetwork_node.pyx":932
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp < split_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 905; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":906
+      /* "socintpy/cythoncode/cnetwork_node.pyx":933
  *                     self.ndata.c_list[interact_type][i].timestamp < split_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts
  */
-      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 906; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":907
+      /* "socintpy/cythoncode/cnetwork_node.pyx":934
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))             # <<<<<<<<<<<<<<
  *         return interacts
  * 
  */
-      __pyx_t_6 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 907; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 934; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":905
+      /* "socintpy/cythoncode/cnetwork_node.pyx":932
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp < split_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 905; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
@@ -11279,14 +11315,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __pyx_t_1 = 0;
       __pyx_t_2 = 0;
       __pyx_t_6 = 0;
-      __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_9); if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 905; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_9); if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       goto __pyx_L5;
     }
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":908
+  /* "socintpy/cythoncode/cnetwork_node.pyx":935
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts             # <<<<<<<<<<<<<<
@@ -11298,7 +11334,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_interacts;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":898
+  /* "socintpy/cythoncode/cnetwork_node.pyx":925
  *             print "woow"
  * 
  *     cpdef get_interactions_before(self, int interact_type, int split_timestamp,             # <<<<<<<<<<<<<<
@@ -11358,7 +11394,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_split_timestamp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_interactions_before", 0, 2, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_interactions_before", 0, 2, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (kw_args > 0) {
@@ -11367,7 +11403,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions_before") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions_before") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -11378,17 +11414,17 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_split_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_split_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_split_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_split_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     if (values[2]) {
-      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 899; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 926; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_cutoff_rating = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_interactions_before", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("get_interactions_before", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.get_interactions_before", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -11413,7 +11449,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.cutoff_rating = __pyx_v_cutoff_rating;
-  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions_before(__pyx_v_self, __pyx_v_interact_type, __pyx_v_split_timestamp, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 898; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions_before(__pyx_v_self, __pyx_v_interact_type, __pyx_v_split_timestamp, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11430,7 +11466,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":910
+/* "socintpy/cythoncode/cnetwork_node.pyx":937
  *         return interacts
  * 
  *     cpdef get_interactions_after(self, int interact_type, int split_timestamp,             # <<<<<<<<<<<<<<
@@ -11472,15 +11508,15 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions_after); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions_after); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_27get_interactions_after)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_split_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_split_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
@@ -11495,7 +11531,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
           __pyx_t_8 = 1;
         }
       }
-      __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       if (__pyx_t_7) {
         PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
@@ -11509,7 +11545,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -11521,19 +11557,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":912
+  /* "socintpy/cythoncode/cnetwork_node.pyx":939
  *     cpdef get_interactions_after(self, int interact_type, int split_timestamp,
  *             int cutoff_rating=-1):
  *         interacts = []             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 912; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 939; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_interacts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":914
+  /* "socintpy/cythoncode/cnetwork_node.pyx":941
  *         interacts = []
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -11544,7 +11580,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
     __pyx_v_i = __pyx_t_11;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":915
+    /* "socintpy/cythoncode/cnetwork_node.pyx":942
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (             # <<<<<<<<<<<<<<
@@ -11558,7 +11594,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       goto __pyx_L6_bool_binop_done;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":916
+    /* "socintpy/cythoncode/cnetwork_node.pyx":943
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp >= split_timestamp):             # <<<<<<<<<<<<<<
@@ -11570,44 +11606,44 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_12) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":917
+      /* "socintpy/cythoncode/cnetwork_node.pyx":944
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp >= split_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 917; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":918
+      /* "socintpy/cythoncode/cnetwork_node.pyx":945
  *                     self.ndata.c_list[interact_type][i].timestamp >= split_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts
  */
-      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 918; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 945; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":919
+      /* "socintpy/cythoncode/cnetwork_node.pyx":946
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))             # <<<<<<<<<<<<<<
  *         return interacts
  * 
  */
-      __pyx_t_6 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 919; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 946; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":917
+      /* "socintpy/cythoncode/cnetwork_node.pyx":944
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp >= split_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 917; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
@@ -11618,14 +11654,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __pyx_t_1 = 0;
       __pyx_t_2 = 0;
       __pyx_t_6 = 0;
-      __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_9); if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 917; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_9); if (unlikely(__pyx_t_14 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       goto __pyx_L5;
     }
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":920
+  /* "socintpy/cythoncode/cnetwork_node.pyx":947
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts             # <<<<<<<<<<<<<<
@@ -11637,7 +11673,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_interacts;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":910
+  /* "socintpy/cythoncode/cnetwork_node.pyx":937
  *         return interacts
  * 
  *     cpdef get_interactions_after(self, int interact_type, int split_timestamp,             # <<<<<<<<<<<<<<
@@ -11697,7 +11733,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_split_timestamp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_interactions_after", 0, 2, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_interactions_after", 0, 2, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (kw_args > 0) {
@@ -11706,7 +11742,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions_after") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions_after") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -11717,17 +11753,17 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_split_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_split_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_split_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_split_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     if (values[2]) {
-      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 911; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 938; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_cutoff_rating = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_interactions_after", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("get_interactions_after", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.get_interactions_after", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -11752,7 +11788,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.cutoff_rating = __pyx_v_cutoff_rating;
-  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions_after(__pyx_v_self, __pyx_v_interact_type, __pyx_v_split_timestamp, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 910; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions_after(__pyx_v_self, __pyx_v_interact_type, __pyx_v_split_timestamp, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 937; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11769,7 +11805,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":922
+/* "socintpy/cythoncode/cnetwork_node.pyx":949
  *         return interacts
  * 
  *     cpdef get_interactions_between(self, int interact_type, int start_timestamp,             # <<<<<<<<<<<<<<
@@ -11812,17 +11848,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions_between); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_interactions_between); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_29get_interactions_between)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_start_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_start_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_end_timestamp); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_end_timestamp); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_7 = __pyx_t_1; __pyx_t_8 = NULL;
@@ -11837,7 +11873,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
           __pyx_t_9 = 1;
         }
       }
-      __pyx_t_10 = PyTuple_New(4+__pyx_t_9); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyTuple_New(4+__pyx_t_9); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_8) {
         PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __Pyx_GIVEREF(__pyx_t_8); __pyx_t_8 = NULL;
@@ -11854,7 +11890,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
       __pyx_t_6 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -11866,19 +11902,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":925
+  /* "socintpy/cythoncode/cnetwork_node.pyx":952
  *             int end_timestamp,
  *             int cutoff_rating=-1):
  *         interacts = []             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 925; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 952; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_interacts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":927
+  /* "socintpy/cythoncode/cnetwork_node.pyx":954
  *         interacts = []
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -11889,7 +11925,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":928
+    /* "socintpy/cythoncode/cnetwork_node.pyx":955
  *         cdef int i
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (             # <<<<<<<<<<<<<<
@@ -11903,7 +11939,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       goto __pyx_L6_bool_binop_done;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":929
+    /* "socintpy/cythoncode/cnetwork_node.pyx":956
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp < end_timestamp) and (             # <<<<<<<<<<<<<<
@@ -11917,7 +11953,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       goto __pyx_L6_bool_binop_done;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":930
+    /* "socintpy/cythoncode/cnetwork_node.pyx":957
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating and (
  *                     self.ndata.c_list[interact_type][i].timestamp < end_timestamp) and (
  *                         self.ndata.c_list[interact_type][i].timestamp >= start_timestamp):             # <<<<<<<<<<<<<<
@@ -11929,44 +11965,44 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_13) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":931
+      /* "socintpy/cythoncode/cnetwork_node.pyx":958
  *                     self.ndata.c_list[interact_type][i].timestamp < end_timestamp) and (
  *                         self.ndata.c_list[interact_type][i].timestamp >= start_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 931; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 958; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":932
+      /* "socintpy/cythoncode/cnetwork_node.pyx":959
  *                         self.ndata.c_list[interact_type][i].timestamp >= start_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts
  */
-      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 932; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 959; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":933
+      /* "socintpy/cythoncode/cnetwork_node.pyx":960
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))             # <<<<<<<<<<<<<<
  *         return interacts
  * 
  */
-      __pyx_t_7 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 933; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 960; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":931
+      /* "socintpy/cythoncode/cnetwork_node.pyx":958
  *                     self.ndata.c_list[interact_type][i].timestamp < end_timestamp) and (
  *                         self.ndata.c_list[interact_type][i].timestamp >= start_timestamp):
  *                 interacts.append((self.ndata.c_list[interact_type][i].item_id,             # <<<<<<<<<<<<<<
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  */
-      __pyx_t_10 = PyTuple_New(3); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 931; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyTuple_New(3); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 958; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
@@ -11977,14 +12013,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __pyx_t_1 = 0;
       __pyx_t_2 = 0;
       __pyx_t_7 = 0;
-      __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_10); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 931; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_interacts, __pyx_t_10); if (unlikely(__pyx_t_15 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 958; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       goto __pyx_L5;
     }
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":934
+  /* "socintpy/cythoncode/cnetwork_node.pyx":961
  *                             self.ndata.c_list[interact_type][i].timestamp,
  *                             self.ndata.c_list[interact_type][i].rating))
  *         return interacts             # <<<<<<<<<<<<<<
@@ -11996,7 +12032,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_interacts;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":922
+  /* "socintpy/cythoncode/cnetwork_node.pyx":949
  *         return interacts
  * 
  *     cpdef get_interactions_between(self, int interact_type, int start_timestamp,             # <<<<<<<<<<<<<<
@@ -12059,12 +12095,12 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_start_timestamp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_interactions_between", 0, 3, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_interactions_between", 0, 3, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_end_timestamp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_interactions_between", 0, 3, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_interactions_between", 0, 3, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (kw_args > 0) {
@@ -12073,7 +12109,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions_between") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_interactions_between") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -12085,18 +12121,18 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_start_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_start_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_end_timestamp = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_end_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 923; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_start_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_start_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_end_timestamp = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_end_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     if (values[3]) {
-      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 924; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_cutoff_rating = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_cutoff_rating == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 951; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_cutoff_rating = ((int)-1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_interactions_between", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("get_interactions_between", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.get_interactions_between", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -12121,7 +12157,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.cutoff_rating = __pyx_v_cutoff_rating;
-  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions_between(__pyx_v_self, __pyx_v_interact_type, __pyx_v_start_timestamp, __pyx_v_end_timestamp, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 922; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_interactions_between(__pyx_v_self, __pyx_v_interact_type, __pyx_v_start_timestamp, __pyx_v_end_timestamp, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 949; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12138,7 +12174,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":936
+/* "socintpy/cythoncode/cnetwork_node.pyx":963
  *         return interacts
  * 
  *     cpdef get_friend_ids(self):             # <<<<<<<<<<<<<<
@@ -12167,7 +12203,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_friend_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_friend_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 963; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_31get_friend_ids)) {
       __Pyx_XDECREF(__pyx_r);
@@ -12183,10 +12219,10 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 963; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 963; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -12198,19 +12234,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":938
+  /* "socintpy/cythoncode/cnetwork_node.pyx":965
  *     cpdef get_friend_ids(self):
  *         cdef int i
  *         id_list = []             # <<<<<<<<<<<<<<
  *         for i in xrange(self.ndata.c_length_friend_list):
  *             id_list.append(self.ndata.c_friend_list[i].receiver_id)
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 938; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 965; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_id_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":939
+  /* "socintpy/cythoncode/cnetwork_node.pyx":966
  *         cdef int i
  *         id_list = []
  *         for i in xrange(self.ndata.c_length_friend_list):             # <<<<<<<<<<<<<<
@@ -12221,20 +12257,20 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":940
+    /* "socintpy/cythoncode/cnetwork_node.pyx":967
  *         id_list = []
  *         for i in xrange(self.ndata.c_length_friend_list):
  *             id_list.append(self.ndata.c_friend_list[i].receiver_id)             # <<<<<<<<<<<<<<
  *         return id_list
  * 
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_friend_list[__pyx_v_i]).receiver_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 940; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_friend_list[__pyx_v_i]).receiver_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_id_list, __pyx_t_1); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 940; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_id_list, __pyx_t_1); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":941
+  /* "socintpy/cythoncode/cnetwork_node.pyx":968
  *         for i in xrange(self.ndata.c_length_friend_list):
  *             id_list.append(self.ndata.c_friend_list[i].receiver_id)
  *         return id_list             # <<<<<<<<<<<<<<
@@ -12246,7 +12282,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_id_list;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":936
+  /* "socintpy/cythoncode/cnetwork_node.pyx":963
  *         return interacts
  * 
  *     cpdef get_friend_ids(self):             # <<<<<<<<<<<<<<
@@ -12291,7 +12327,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_friend_ids", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_friend_ids(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 936; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_friend_ids(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 963; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12308,7 +12344,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":944
+/* "socintpy/cythoncode/cnetwork_node.pyx":971
  * 
  * 
  *     cpdef get_num_interactions(self, int interact_type):             # <<<<<<<<<<<<<<
@@ -12335,11 +12371,11 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_num_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_num_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_33get_num_interactions)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -12353,17 +12389,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
         }
       }
       if (!__pyx_t_5) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __Pyx_GIVEREF(__pyx_t_5); __pyx_t_5 = NULL;
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -12376,7 +12412,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":945
+  /* "socintpy/cythoncode/cnetwork_node.pyx":972
  * 
  *     cpdef get_num_interactions(self, int interact_type):
  *         if self.ndata.c_list is NULL:             # <<<<<<<<<<<<<<
@@ -12386,7 +12422,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_t_7 = ((__pyx_v_self->ndata.c_list == NULL) != 0);
   if (__pyx_t_7) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":946
+    /* "socintpy/cythoncode/cnetwork_node.pyx":973
  *     cpdef get_num_interactions(self, int interact_type):
  *         if self.ndata.c_list is NULL:
  *             return 0             # <<<<<<<<<<<<<<
@@ -12400,7 +12436,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   }
   /*else*/ {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":948
+    /* "socintpy/cythoncode/cnetwork_node.pyx":975
  *             return 0
  *         else:
  *             return self.ndata.c_length_list[interact_type]             # <<<<<<<<<<<<<<
@@ -12408,14 +12444,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  *     cpdef has_interactions(self, int interact_type):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type])); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 948; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type])); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 975; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":944
+  /* "socintpy/cythoncode/cnetwork_node.pyx":971
  * 
  * 
  *     cpdef get_num_interactions(self, int interact_type):             # <<<<<<<<<<<<<<
@@ -12450,7 +12486,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_num_interactions (wrapper)", 0);
   assert(__pyx_arg_interact_type); {
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(__pyx_arg_interact_type); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(__pyx_arg_interact_type); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -12474,7 +12510,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_num_interactions", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_num_interactions(__pyx_v_self, __pyx_v_interact_type, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 944; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_num_interactions(__pyx_v_self, __pyx_v_interact_type, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12491,7 +12527,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":950
+/* "socintpy/cythoncode/cnetwork_node.pyx":977
  *             return self.ndata.c_length_list[interact_type]
  * 
  *     cpdef has_interactions(self, int interact_type):             # <<<<<<<<<<<<<<
@@ -12518,11 +12554,11 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_35has_interactions)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -12536,17 +12572,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
         }
       }
       if (!__pyx_t_5) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __Pyx_GIVEREF(__pyx_t_5); __pyx_t_5 = NULL;
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -12559,7 +12595,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":951
+  /* "socintpy/cythoncode/cnetwork_node.pyx":978
  * 
  *     cpdef has_interactions(self, int interact_type):
  *         return (not (self.ndata.c_list is NULL)) and (self.ndata.c_length_list[interact_type] > 0)             # <<<<<<<<<<<<<<
@@ -12570,14 +12606,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
   __pyx_t_7 = (__pyx_v_self->ndata.c_list != NULL);
   if (__pyx_t_7) {
   } else {
-    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_7); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 951; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_7); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 978; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L3_bool_binop_done;
   }
   __pyx_t_7 = ((__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]) > 0);
-  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_7); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 951; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_7); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 978; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -12586,7 +12622,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":950
+  /* "socintpy/cythoncode/cnetwork_node.pyx":977
  *             return self.ndata.c_length_list[interact_type]
  * 
  *     cpdef has_interactions(self, int interact_type):             # <<<<<<<<<<<<<<
@@ -12621,7 +12657,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("has_interactions (wrapper)", 0);
   assert(__pyx_arg_interact_type); {
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(__pyx_arg_interact_type); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(__pyx_arg_interact_type); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -12645,7 +12681,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("has_interactions", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_has_interactions(__pyx_v_self, __pyx_v_interact_type, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 950; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_has_interactions(__pyx_v_self, __pyx_v_interact_type, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12662,7 +12698,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":953
+/* "socintpy/cythoncode/cnetwork_node.pyx":980
  *         return (not (self.ndata.c_list is NULL)) and (self.ndata.c_length_list[interact_type] > 0)
  * 
  *     cpdef get_num_friends(self):             # <<<<<<<<<<<<<<
@@ -12687,7 +12723,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_num_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 953; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_num_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 980; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_37get_num_friends)) {
       __Pyx_XDECREF(__pyx_r);
@@ -12703,10 +12739,10 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 953; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 980; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 953; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 980; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -12718,7 +12754,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":954
+  /* "socintpy/cythoncode/cnetwork_node.pyx":981
  * 
  *     cpdef get_num_friends(self):
  *         if self.ndata.c_friend_list is NULL:             # <<<<<<<<<<<<<<
@@ -12728,7 +12764,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_t_5 = ((__pyx_v_self->ndata.c_friend_list == NULL) != 0);
   if (__pyx_t_5) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":955
+    /* "socintpy/cythoncode/cnetwork_node.pyx":982
  *     cpdef get_num_friends(self):
  *         if self.ndata.c_friend_list is NULL:
  *             return 0             # <<<<<<<<<<<<<<
@@ -12742,7 +12778,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   }
   /*else*/ {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":957
+    /* "socintpy/cythoncode/cnetwork_node.pyx":984
  *             return 0
  *         else:
  *             return self.ndata.c_length_friend_list             # <<<<<<<<<<<<<<
@@ -12750,14 +12786,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  *     cpdef has_friends(self):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_length_friend_list); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 957; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_length_friend_list); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 984; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":953
+  /* "socintpy/cythoncode/cnetwork_node.pyx":980
  *         return (not (self.ndata.c_list is NULL)) and (self.ndata.c_length_list[interact_type] > 0)
  * 
  *     cpdef get_num_friends(self):             # <<<<<<<<<<<<<<
@@ -12801,7 +12837,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_num_friends", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_num_friends(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 953; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_num_friends(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 980; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12818,7 +12854,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":959
+/* "socintpy/cythoncode/cnetwork_node.pyx":986
  *             return self.ndata.c_length_friend_list
  * 
  *     cpdef has_friends(self):             # <<<<<<<<<<<<<<
@@ -12843,7 +12879,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 959; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_has_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 986; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_39has_friends)) {
       __Pyx_XDECREF(__pyx_r);
@@ -12859,10 +12895,10 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 959; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 986; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 959; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 986; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -12874,7 +12910,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":960
+  /* "socintpy/cythoncode/cnetwork_node.pyx":987
  * 
  *     cpdef has_friends(self):
  *         return (not(self.ndata.c_friend_list is NULL)) and (self.ndata.c_length_friend_list > 0)             # <<<<<<<<<<<<<<
@@ -12885,14 +12921,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
   __pyx_t_5 = (__pyx_v_self->ndata.c_friend_list != NULL);
   if (__pyx_t_5) {
   } else {
-    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 960; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 987; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L3_bool_binop_done;
   }
   __pyx_t_5 = (__pyx_v_self->ndata.c_length_friend_list > 0);
-  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 960; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 987; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -12901,7 +12937,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_h
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":959
+  /* "socintpy/cythoncode/cnetwork_node.pyx":986
  *             return self.ndata.c_length_friend_list
  * 
  *     cpdef has_friends(self):             # <<<<<<<<<<<<<<
@@ -12945,7 +12981,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("has_friends", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_has_friends(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 959; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_has_friends(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 986; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -12962,7 +12998,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":962
+/* "socintpy/cythoncode/cnetwork_node.pyx":989
  *         return (not(self.ndata.c_friend_list is NULL)) and (self.ndata.c_length_friend_list > 0)
  * 
  *     cpdef change_interacted_item(self, interact_type, old_item_id, new_item_id, timestamp):             # <<<<<<<<<<<<<<
@@ -13001,7 +13037,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_change_interacted_item); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_change_interacted_item); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_41change_interacted_item)) {
       __Pyx_XDECREF(__pyx_r);
@@ -13018,7 +13054,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_5 = 1;
         }
       }
-      __pyx_t_6 = PyTuple_New(4+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(4+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       if (__pyx_t_4) {
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __Pyx_GIVEREF(__pyx_t_4); __pyx_t_4 = NULL;
@@ -13035,7 +13071,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __Pyx_INCREF(__pyx_v_timestamp);
       PyTuple_SET_ITEM(__pyx_t_6, 3+__pyx_t_5, __pyx_v_timestamp);
       __Pyx_GIVEREF(__pyx_v_timestamp);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -13047,27 +13083,27 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":963
+  /* "socintpy/cythoncode/cnetwork_node.pyx":990
  * 
  *     cpdef change_interacted_item(self, interact_type, old_item_id, new_item_id, timestamp):
  *         cdef int old_index = binary_search_timesensitive(self.ndata.c_list[interact_type],             # <<<<<<<<<<<<<<
  *                 self.ndata.c_length_list[interact_type], old_item_id, timestamp, False)
  *         cdef idata temp_inter
  */
-  __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 963; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 990; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":964
+  /* "socintpy/cythoncode/cnetwork_node.pyx":991
  *     cpdef change_interacted_item(self, interact_type, old_item_id, new_item_id, timestamp):
  *         cdef int old_index = binary_search_timesensitive(self.ndata.c_list[interact_type],
  *                 self.ndata.c_length_list[interact_type], old_item_id, timestamp, False)             # <<<<<<<<<<<<<<
  *         cdef idata temp_inter
  *         if old_index == -1:
  */
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 964; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_old_item_id); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 964; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_timestamp); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 964; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 991; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_old_item_id); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 991; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_timestamp); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 991; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":963
+  /* "socintpy/cythoncode/cnetwork_node.pyx":990
  * 
  *     cpdef change_interacted_item(self, interact_type, old_item_id, new_item_id, timestamp):
  *         cdef int old_index = binary_search_timesensitive(self.ndata.c_list[interact_type],             # <<<<<<<<<<<<<<
@@ -13076,7 +13112,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_old_index = __pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_timesensitive((__pyx_v_self->ndata.c_list[__pyx_t_5]), (__pyx_v_self->ndata.c_length_list[__pyx_t_7]), __pyx_t_8, __pyx_t_9, ((PyBoolObject *)Py_False));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":966
+  /* "socintpy/cythoncode/cnetwork_node.pyx":993
  *                 self.ndata.c_length_list[interact_type], old_item_id, timestamp, False)
  *         cdef idata temp_inter
  *         if old_index == -1:             # <<<<<<<<<<<<<<
@@ -13086,31 +13122,31 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_t_10 = ((__pyx_v_old_index == -1) != 0);
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":967
+    /* "socintpy/cythoncode/cnetwork_node.pyx":994
  *         cdef idata temp_inter
  *         if old_index == -1:
  *             for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
  *                 if self.ndata.c_list[interact_type][i].item_id == old_item_id and (
  *                         self.ndata.c_list[interact_type][i].timestamp == timestamp):
  */
-    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_length_list[__pyx_t_7])); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_length_list[__pyx_t_7])); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
       __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_7 = 0;
       __pyx_t_11 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_11 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_11 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
@@ -13118,16 +13154,16 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #endif
         }
       } else {
@@ -13136,7 +13172,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 967; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 994; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -13145,20 +13181,20 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":968
+      /* "socintpy/cythoncode/cnetwork_node.pyx":995
  *         if old_index == -1:
  *             for i in range(self.ndata.c_length_list[interact_type]):
  *                 if self.ndata.c_list[interact_type][i].item_id == old_item_id and (             # <<<<<<<<<<<<<<
  *                         self.ndata.c_list[interact_type][i].timestamp == timestamp):
  *                     print i, old_item_id, timestamp
  */
-      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 968; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_i); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 968; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_t_5])[__pyx_t_12]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 968; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 995; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_i); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 995; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_self->ndata.c_list[__pyx_t_5])[__pyx_t_12]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 995; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_v_old_item_id, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 968; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_v_old_item_id, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 995; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 968; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 995; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       if (__pyx_t_13) {
       } else {
@@ -13166,33 +13202,33 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         goto __pyx_L7_bool_binop_done;
       }
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":969
+      /* "socintpy/cythoncode/cnetwork_node.pyx":996
  *             for i in range(self.ndata.c_length_list[interact_type]):
  *                 if self.ndata.c_list[interact_type][i].item_id == old_item_id and (
  *                         self.ndata.c_list[interact_type][i].timestamp == timestamp):             # <<<<<<<<<<<<<<
  *                     print i, old_item_id, timestamp
  *             return binary_search_timesensitive(self.ndata.c_list[interact_type],
  */
-      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 969; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_i); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 969; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_t_12])[__pyx_t_5]).timestamp); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 969; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_i); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(((__pyx_v_self->ndata.c_list[__pyx_t_12])[__pyx_t_5]).timestamp); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_v_timestamp, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 969; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_v_timestamp, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 969; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_13 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_10 = __pyx_t_13;
       __pyx_L7_bool_binop_done:;
       if (__pyx_t_10) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":970
+        /* "socintpy/cythoncode/cnetwork_node.pyx":997
  *                 if self.ndata.c_list[interact_type][i].item_id == old_item_id and (
  *                         self.ndata.c_list[interact_type][i].timestamp == timestamp):
  *                     print i, old_item_id, timestamp             # <<<<<<<<<<<<<<
  *             return binary_search_timesensitive(self.ndata.c_list[interact_type],
  *                     self.ndata.c_length_list[interact_type], old_item_id, timestamp, True)
  */
-        __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 970; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 997; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_INCREF(__pyx_v_i);
         PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_i);
@@ -13203,13 +13239,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __Pyx_INCREF(__pyx_v_timestamp);
         PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_v_timestamp);
         __Pyx_GIVEREF(__pyx_v_timestamp);
-        if (__Pyx_Print(0, __pyx_t_1, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 970; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        if (__Pyx_Print(0, __pyx_t_1, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 997; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L6;
       }
       __pyx_L6:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":967
+      /* "socintpy/cythoncode/cnetwork_node.pyx":994
  *         cdef idata temp_inter
  *         if old_index == -1:
  *             for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -13219,7 +13255,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":971
+    /* "socintpy/cythoncode/cnetwork_node.pyx":998
  *                         self.ndata.c_list[interact_type][i].timestamp == timestamp):
  *                     print i, old_item_id, timestamp
  *             return binary_search_timesensitive(self.ndata.c_list[interact_type],             # <<<<<<<<<<<<<<
@@ -13227,27 +13263,27 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  *         else:
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 998; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":972
+    /* "socintpy/cythoncode/cnetwork_node.pyx":999
  *                     print i, old_item_id, timestamp
  *             return binary_search_timesensitive(self.ndata.c_list[interact_type],
  *                     self.ndata.c_length_list[interact_type], old_item_id, timestamp, True)             # <<<<<<<<<<<<<<
  *         else:
  *             new_index = binary_search_closest(self.ndata.c_list[interact_type],
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 972; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_old_item_id); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 972; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_timestamp); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 972; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 999; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_old_item_id); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 999; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_timestamp); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 999; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":971
+    /* "socintpy/cythoncode/cnetwork_node.pyx":998
  *                         self.ndata.c_list[interact_type][i].timestamp == timestamp):
  *                     print i, old_item_id, timestamp
  *             return binary_search_timesensitive(self.ndata.c_list[interact_type],             # <<<<<<<<<<<<<<
  *                     self.ndata.c_length_list[interact_type], old_item_id, timestamp, True)
  *         else:
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_timesensitive((__pyx_v_self->ndata.c_list[__pyx_t_7]), (__pyx_v_self->ndata.c_length_list[__pyx_t_5]), __pyx_t_9, __pyx_t_8, ((PyBoolObject *)Py_True))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 971; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_timesensitive((__pyx_v_self->ndata.c_list[__pyx_t_7]), (__pyx_v_self->ndata.c_length_list[__pyx_t_5]), __pyx_t_9, __pyx_t_8, ((PyBoolObject *)Py_True))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 998; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -13255,59 +13291,59 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   /*else*/ {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":974
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1001
  *                     self.ndata.c_length_list[interact_type], old_item_id, timestamp, True)
  *         else:
  *             new_index = binary_search_closest(self.ndata.c_list[interact_type],             # <<<<<<<<<<<<<<
  *                     self.ndata.c_length_list[interact_type], new_item_id, False)
  *             if new_index == -1:
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 974; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1001; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":975
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1002
  *         else:
  *             new_index = binary_search_closest(self.ndata.c_list[interact_type],
  *                     self.ndata.c_length_list[interact_type], new_item_id, False)             # <<<<<<<<<<<<<<
  *             if new_index == -1:
  *                 print "new_index is not correct"
  */
-    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 975; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_new_item_id); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 975; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1002; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_new_item_id); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1002; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":974
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1001
  *                     self.ndata.c_length_list[interact_type], old_item_id, timestamp, True)
  *         else:
  *             new_index = binary_search_closest(self.ndata.c_list[interact_type],             # <<<<<<<<<<<<<<
  *                     self.ndata.c_length_list[interact_type], new_item_id, False)
  *             if new_index == -1:
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_closest((__pyx_v_self->ndata.c_list[__pyx_t_5]), (__pyx_v_self->ndata.c_length_list[__pyx_t_7]), __pyx_t_8, ((PyBoolObject *)Py_False))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 974; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_closest((__pyx_v_self->ndata.c_list[__pyx_t_5]), (__pyx_v_self->ndata.c_length_list[__pyx_t_7]), __pyx_t_8, ((PyBoolObject *)Py_False))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1001; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_new_index = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":976
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1003
  *             new_index = binary_search_closest(self.ndata.c_list[interact_type],
  *                     self.ndata.c_length_list[interact_type], new_item_id, False)
  *             if new_index == -1:             # <<<<<<<<<<<<<<
  *                 print "new_index is not correct"
  *                 return -1
  */
-    __pyx_t_2 = PyObject_RichCompare(__pyx_v_new_index, __pyx_int_neg_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 976; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 976; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyObject_RichCompare(__pyx_v_new_index, __pyx_int_neg_1, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1003; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1003; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":977
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1004
  *                     self.ndata.c_length_list[interact_type], new_item_id, False)
  *             if new_index == -1:
  *                 print "new_index is not correct"             # <<<<<<<<<<<<<<
  *                 return -1
  *             temp_inter = self.ndata.c_list[interact_type][old_index]
  */
-      if (__Pyx_PrintOne(0, __pyx_kp_s_new_index_is_not_correct) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 977; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__Pyx_PrintOne(0, __pyx_kp_s_new_index_is_not_correct) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1004; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":978
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1005
  *             if new_index == -1:
  *                 print "new_index is not correct"
  *                 return -1             # <<<<<<<<<<<<<<
@@ -13320,86 +13356,86 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       goto __pyx_L0;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":979
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1006
  *                 print "new_index is not correct"
  *                 return -1
  *             temp_inter = self.ndata.c_list[interact_type][old_index]             # <<<<<<<<<<<<<<
  *             temp_inter.item_id = new_item_id
  * 
  */
-    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 979; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1006; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_temp_inter = ((__pyx_v_self->ndata.c_list[__pyx_t_7])[__pyx_v_old_index]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":980
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1007
  *                 return -1
  *             temp_inter = self.ndata.c_list[interact_type][old_index]
  *             temp_inter.item_id = new_item_id             # <<<<<<<<<<<<<<
  * 
  *             if old_index >= new_index:
  */
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_new_item_id); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 980; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_new_item_id); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1007; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_temp_inter.item_id = __pyx_t_8;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":982
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1009
  *             temp_inter.item_id = new_item_id
  * 
  *             if old_index >= new_index:             # <<<<<<<<<<<<<<
  *                 memmove(&self.ndata.c_list[interact_type][new_index+1],
  *                         &self.ndata.c_list[interact_type][new_index],
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 982; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1009; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_new_index, Py_GE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 982; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_new_index, Py_GE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1009; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 982; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1009; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":983
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1010
  * 
  *             if old_index >= new_index:
  *                 memmove(&self.ndata.c_list[interact_type][new_index+1],             # <<<<<<<<<<<<<<
  *                         &self.ndata.c_list[interact_type][new_index],
  *                         (old_index-new_index)*cython.sizeof(idata))
  */
-      __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 983; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_1 = PyNumber_Add(__pyx_v_new_index, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 983; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1010; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyNumber_Add(__pyx_v_new_index, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1010; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 983; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1010; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":984
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1011
  *             if old_index >= new_index:
  *                 memmove(&self.ndata.c_list[interact_type][new_index+1],
  *                         &self.ndata.c_list[interact_type][new_index],             # <<<<<<<<<<<<<<
  *                         (old_index-new_index)*cython.sizeof(idata))
  *                 self.ndata.c_list[interact_type][new_index] = temp_inter
  */
-      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 984; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_new_index); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 984; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1011; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_new_index); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1011; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":985
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1012
  *                 memmove(&self.ndata.c_list[interact_type][new_index+1],
  *                         &self.ndata.c_list[interact_type][new_index],
  *                         (old_index-new_index)*cython.sizeof(idata))             # <<<<<<<<<<<<<<
  *                 self.ndata.c_list[interact_type][new_index] = temp_inter
  *             elif old_index < new_index:
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 985; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_v_new_index); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 985; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_v_new_index); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyInt_FromSize_t((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 985; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_FromSize_t((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = PyNumber_Multiply(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 985; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = PyNumber_Multiply(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_15 = __Pyx_PyInt_As_size_t(__pyx_t_3); if (unlikely((__pyx_t_15 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 985; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_15 = __Pyx_PyInt_As_size_t(__pyx_t_3); if (unlikely((__pyx_t_15 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":983
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1010
  * 
  *             if old_index >= new_index:
  *                 memmove(&self.ndata.c_list[interact_type][new_index+1],             # <<<<<<<<<<<<<<
@@ -13408,77 +13444,77 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
       memmove((&((__pyx_v_self->ndata.c_list[__pyx_t_7])[__pyx_t_5])), (&((__pyx_v_self->ndata.c_list[__pyx_t_12])[__pyx_t_14])), __pyx_t_15);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":986
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1013
  *                         &self.ndata.c_list[interact_type][new_index],
  *                         (old_index-new_index)*cython.sizeof(idata))
  *                 self.ndata.c_list[interact_type][new_index] = temp_inter             # <<<<<<<<<<<<<<
  *             elif old_index < new_index:
  *                 memmove(&self.ndata.c_list[interact_type][old_index],
  */
-      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 986; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_new_index); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 986; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1013; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_new_index); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1013; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       ((__pyx_v_self->ndata.c_list[__pyx_t_14])[__pyx_t_12]) = __pyx_v_temp_inter;
       goto __pyx_L10;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":987
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1014
  *                         (old_index-new_index)*cython.sizeof(idata))
  *                 self.ndata.c_list[interact_type][new_index] = temp_inter
  *             elif old_index < new_index:             # <<<<<<<<<<<<<<
  *                 memmove(&self.ndata.c_list[interact_type][old_index],
  *                         &self.ndata.c_list[interact_type][old_index+1],
  */
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 987; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_v_new_index, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 987; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyObject_RichCompare(__pyx_t_3, __pyx_v_new_index, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 987; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":988
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1015
  *                 self.ndata.c_list[interact_type][new_index] = temp_inter
  *             elif old_index < new_index:
  *                 memmove(&self.ndata.c_list[interact_type][old_index],             # <<<<<<<<<<<<<<
  *                         &self.ndata.c_list[interact_type][old_index+1],
  *                         (new_index-old_index-1)*cython.sizeof(idata))
  */
-      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 988; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1015; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":989
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1016
  *             elif old_index < new_index:
  *                 memmove(&self.ndata.c_list[interact_type][old_index],
  *                         &self.ndata.c_list[interact_type][old_index+1],             # <<<<<<<<<<<<<<
  *                         (new_index-old_index-1)*cython.sizeof(idata))
  *                 self.ndata.c_list[interact_type][new_index -1] = temp_inter
  */
-      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1016; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":990
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1017
  *                 memmove(&self.ndata.c_list[interact_type][old_index],
  *                         &self.ndata.c_list[interact_type][old_index+1],
  *                         (new_index-old_index-1)*cython.sizeof(idata))             # <<<<<<<<<<<<<<
  *                 self.ndata.c_list[interact_type][new_index -1] = temp_inter
  * 
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 990; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_old_index); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1017; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = PyNumber_Subtract(__pyx_v_new_index, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 990; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = PyNumber_Subtract(__pyx_v_new_index, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1017; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = PyNumber_Subtract(__pyx_t_3, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 990; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyNumber_Subtract(__pyx_t_3, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1017; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyInt_FromSize_t((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata))); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 990; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_FromSize_t((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata))); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1017; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 990; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1017; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_15 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_15 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 990; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_15 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_15 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1017; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":988
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1015
  *                 self.ndata.c_list[interact_type][new_index] = temp_inter
  *             elif old_index < new_index:
  *                 memmove(&self.ndata.c_list[interact_type][old_index],             # <<<<<<<<<<<<<<
@@ -13487,24 +13523,24 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
       memmove((&((__pyx_v_self->ndata.c_list[__pyx_t_12])[__pyx_v_old_index])), (&((__pyx_v_self->ndata.c_list[__pyx_t_14])[(__pyx_v_old_index + 1)])), __pyx_t_15);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":991
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1018
  *                         &self.ndata.c_list[interact_type][old_index+1],
  *                         (new_index-old_index-1)*cython.sizeof(idata))
  *                 self.ndata.c_list[interact_type][new_index -1] = temp_inter             # <<<<<<<<<<<<<<
  * 
  *             #self.ndata.c_list[interact_type][index].item_id = new_item_id
  */
-      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 991; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_2 = PyNumber_Subtract(__pyx_v_new_index, __pyx_int_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 991; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_14 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_14 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1018; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PyNumber_Subtract(__pyx_v_new_index, __pyx_int_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1018; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_t_2); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 991; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __Pyx_PyIndex_AsSsize_t(__pyx_t_2); if (unlikely((__pyx_t_12 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1018; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       ((__pyx_v_self->ndata.c_list[__pyx_t_14])[__pyx_t_12]) = __pyx_v_temp_inter;
       goto __pyx_L10;
     }
     __pyx_L10:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":994
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1021
  * 
  *             #self.ndata.c_list[interact_type][index].item_id = new_item_id
  *             return 1             # <<<<<<<<<<<<<<
@@ -13517,7 +13553,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":962
+  /* "socintpy/cythoncode/cnetwork_node.pyx":989
  *         return (not(self.ndata.c_friend_list is NULL)) and (self.ndata.c_length_friend_list > 0)
  * 
  *     cpdef change_interacted_item(self, interact_type, old_item_id, new_item_id, timestamp):             # <<<<<<<<<<<<<<
@@ -13577,21 +13613,21 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_old_item_id)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_new_item_id)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_timestamp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "change_interacted_item") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "change_interacted_item") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -13608,7 +13644,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("change_interacted_item", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.change_interacted_item", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -13630,7 +13666,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("change_interacted_item", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_change_interacted_item(__pyx_v_self, __pyx_v_interact_type, __pyx_v_old_item_id, __pyx_v_new_item_id, __pyx_v_timestamp, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 962; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_change_interacted_item(__pyx_v_self, __pyx_v_interact_type, __pyx_v_old_item_id, __pyx_v_new_item_id, __pyx_v_timestamp, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 989; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -13647,7 +13683,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":996
+/* "socintpy/cythoncode/cnetwork_node.pyx":1023
  *             return 1
  * 
  *     cpdef compute_similarity(self, items, int interact_type, int rating_cutoff):             # <<<<<<<<<<<<<<
@@ -13686,13 +13722,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_43compute_similarity)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_rating_cutoff); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_rating_cutoff); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -13707,7 +13743,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_7 = 1;
         }
       }
-      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_6) {
         PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __Pyx_GIVEREF(__pyx_t_6); __pyx_t_6 = NULL;
@@ -13721,7 +13757,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __Pyx_GIVEREF(__pyx_t_4);
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -13733,7 +13769,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":997
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1024
  * 
  *     cpdef compute_similarity(self, items, int interact_type, int rating_cutoff):
  *         if self.ndata.c_length_list[interact_type] ==0 or len(items) == 0:             # <<<<<<<<<<<<<<
@@ -13746,13 +13782,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_9 = __pyx_t_10;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_7 = PyObject_Length(__pyx_v_items); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 997; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyObject_Length(__pyx_v_items); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1024; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_10 = ((__pyx_t_7 == 0) != 0);
   __pyx_t_9 = __pyx_t_10;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_9) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":998
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1025
  *     cpdef compute_similarity(self, items, int interact_type, int rating_cutoff):
  *         if self.ndata.c_length_list[interact_type] ==0 or len(items) == 0:
  *             return None             # <<<<<<<<<<<<<<
@@ -13765,7 +13801,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":999
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1026
  *         if self.ndata.c_length_list[interact_type] ==0 or len(items) == 0:
  *             return None
  *         cdef float simscore = 0             # <<<<<<<<<<<<<<
@@ -13774,7 +13810,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_simscore = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1002
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1029
  *         cdef float l2_norm1, l2_norm2
  *         cdef int i, item_id
  *         cdef int count_items = 0             # <<<<<<<<<<<<<<
@@ -13783,7 +13819,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_count_items = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1003
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1030
  *         cdef int i, item_id
  *         cdef int count_items = 0
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -13794,7 +13830,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1004
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1031
  *         cdef int count_items = 0
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating > rating_cutoff:             # <<<<<<<<<<<<<<
@@ -13804,7 +13840,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_9 = ((((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating > __pyx_v_rating_cutoff) != 0);
     if (__pyx_t_9) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1005
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1032
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating > rating_cutoff:
  *                 item_id = self.ndata.c_list[interact_type][i].item_id             # <<<<<<<<<<<<<<
@@ -13814,37 +13850,37 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_13 = ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id;
       __pyx_v_item_id = __pyx_t_13;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1006
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1033
  *             if self.ndata.c_list[interact_type][i].rating > rating_cutoff:
  *                 item_id = self.ndata.c_list[interact_type][i].item_id
  *                 if item_id in items:             # <<<<<<<<<<<<<<
  *                     simscore += len(items[item_id])
  *                 count_items += 1
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1006; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1033; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = (__Pyx_PySequence_Contains(__pyx_t_1, __pyx_v_items, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1006; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = (__Pyx_PySequence_Contains(__pyx_t_1, __pyx_v_items, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1033; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_10 = (__pyx_t_9 != 0);
       if (__pyx_t_10) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1007
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1034
  *                 item_id = self.ndata.c_list[interact_type][i].item_id
  *                 if item_id in items:
  *                     simscore += len(items[item_id])             # <<<<<<<<<<<<<<
  *                 count_items += 1
  *         if count_items == 0:
  */
-        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_items, __pyx_v_item_id, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1007; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_items, __pyx_v_item_id, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1034; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_7 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1007; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_7 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1034; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_simscore = (__pyx_v_simscore + __pyx_t_7);
         goto __pyx_L9;
       }
       __pyx_L9:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1008
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1035
  *                 if item_id in items:
  *                     simscore += len(items[item_id])
  *                 count_items += 1             # <<<<<<<<<<<<<<
@@ -13857,7 +13893,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_L8:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1009
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1036
  *                     simscore += len(items[item_id])
  *                 count_items += 1
  *         if count_items == 0:             # <<<<<<<<<<<<<<
@@ -13867,7 +13903,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_t_10 = ((__pyx_v_count_items == 0) != 0);
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1010
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1037
  *                 count_items += 1
  *         if count_items == 0:
  *             return None             # <<<<<<<<<<<<<<
@@ -13880,7 +13916,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1012
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1039
  *             return None
  *         #l2_norm1 = sqrt(self.ndata.c_length_list[interact_type])
  *         l2_norm1 = sqrt(count_items)             # <<<<<<<<<<<<<<
@@ -13889,14 +13925,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_l2_norm1 = sqrt(__pyx_v_count_items);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1013
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1040
  *         #l2_norm1 = sqrt(self.ndata.c_length_list[interact_type])
  *         l2_norm1 = sqrt(count_items)
  *         l2_norm2 = l2_norm_dict(items.itervalues())             # <<<<<<<<<<<<<<
  *         return simscore/(l2_norm1*l2_norm2)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_items, __pyx_n_s_itervalues); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1013; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_items, __pyx_n_s_itervalues); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1040; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_5 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
@@ -13909,17 +13945,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1013; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1040; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1013; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1040; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_l2_norm2 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_l2_norm_dict(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1014
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1041
  *         l2_norm1 = sqrt(count_items)
  *         l2_norm2 = l2_norm_dict(items.itervalues())
  *         return simscore/(l2_norm1*l2_norm2)             # <<<<<<<<<<<<<<
@@ -13927,13 +13963,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_simscore / (__pyx_v_l2_norm1 * __pyx_v_l2_norm2))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyFloat_FromDouble((__pyx_v_simscore / (__pyx_v_l2_norm1 * __pyx_v_l2_norm2))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1041; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":996
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1023
  *             return 1
  * 
  *     cpdef compute_similarity(self, items, int interact_type, int rating_cutoff):             # <<<<<<<<<<<<<<
@@ -13991,16 +14027,16 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_similarity", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_similarity", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_rating_cutoff)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_similarity", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_similarity", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -14010,12 +14046,12 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_items = values[0];
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_rating_cutoff = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_rating_cutoff == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_rating_cutoff = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_rating_cutoff == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_similarity", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_similarity", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.compute_similarity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14037,7 +14073,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_similarity", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_similarity(__pyx_v_self, __pyx_v_items, __pyx_v_interact_type, __pyx_v_rating_cutoff, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 996; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_similarity(__pyx_v_self, __pyx_v_items, __pyx_v_interact_type, __pyx_v_rating_cutoff, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1023; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14054,7 +14090,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1033
+/* "socintpy/cythoncode/cnetwork_node.pyx":1060
  * 
  * 
  *     cdef float compute_othernode_influence_c(self, idata *others_interactions,             # <<<<<<<<<<<<<<
@@ -14082,7 +14118,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("compute_othernode_influence_c", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1039
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1066
  *                                          int time_scale):
  *         cdef float l2_norm1, l2_norm2, simscore
  *         cdef idata *my_interactions = NULL             # <<<<<<<<<<<<<<
@@ -14091,7 +14127,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_my_interactions = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1040
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1067
  *         cdef float l2_norm1, l2_norm2, simscore
  *         cdef idata *my_interactions = NULL
  *         cdef int length_my_interactions = 0             # <<<<<<<<<<<<<<
@@ -14100,7 +14136,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_length_my_interactions = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1041
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1068
  *         cdef idata *my_interactions = NULL
  *         cdef int length_my_interactions = 0
  *         if data_type_code==<int>'i':             # <<<<<<<<<<<<<<
@@ -14110,7 +14146,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   __pyx_t_1 = ((__pyx_v_data_type_code == ((int)'i')) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1042
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1069
  *         cdef int length_my_interactions = 0
  *         if data_type_code==<int>'i':
  *             my_interactions = self.ndata.c_test_data             # <<<<<<<<<<<<<<
@@ -14120,7 +14156,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     __pyx_t_2 = __pyx_v_self->ndata.c_test_data;
     __pyx_v_my_interactions = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1043
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1070
  *         if data_type_code==<int>'i':
  *             my_interactions = self.ndata.c_test_data
  *             length_my_interactions = self.ndata.c_length_test_ids             # <<<<<<<<<<<<<<
@@ -14133,7 +14169,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1045
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1072
  *             length_my_interactions = self.ndata.c_length_test_ids
  *         cdef int i, j, k
  *         simscore = 0             # <<<<<<<<<<<<<<
@@ -14142,7 +14178,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_simscore = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1046
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1073
  *         cdef int i, j, k
  *         simscore = 0
  *         i = 0             # <<<<<<<<<<<<<<
@@ -14151,7 +14187,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_i = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1047
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1074
  *         simscore = 0
  *         i = 0
  *         j = 0             # <<<<<<<<<<<<<<
@@ -14160,7 +14196,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_j = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1049
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1076
  *         j = 0
  *         # Variables to check whether my_interactions or others_interactions are empty
  *         cdef int my_count = 0             # <<<<<<<<<<<<<<
@@ -14169,7 +14205,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_my_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1050
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1077
  *         # Variables to check whether my_interactions or others_interactions are empty
  *         cdef int my_count = 0
  *         cdef int others_count = 0             # <<<<<<<<<<<<<<
@@ -14178,7 +14214,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_others_count = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1051
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1078
  *         cdef int my_count = 0
  *         cdef int others_count = 0
  *         while i < length_my_interactions and j < length_others_interactions:             # <<<<<<<<<<<<<<
@@ -14197,7 +14233,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     __pyx_L6_bool_binop_done:;
     if (!__pyx_t_1) break;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1052
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1079
  *         cdef int others_count = 0
  *         while i < length_my_interactions and j < length_others_interactions:
  *             if my_interactions[i].item_id < others_interactions[j].item_id:             # <<<<<<<<<<<<<<
@@ -14207,7 +14243,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).item_id < (__pyx_v_others_interactions[__pyx_v_j]).item_id) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1053
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1080
  *         while i < length_my_interactions and j < length_others_interactions:
  *             if my_interactions[i].item_id < others_interactions[j].item_id:
  *                 if my_interactions[i].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -14217,7 +14253,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).rating >= __pyx_v_cutoff_rating) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1054
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1081
  *             if my_interactions[i].item_id < others_interactions[j].item_id:
  *                 if my_interactions[i].rating >= cutoff_rating:
  *                     my_count += 1             # <<<<<<<<<<<<<<
@@ -14229,7 +14265,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       }
       __pyx_L9:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1055
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1082
  *                 if my_interactions[i].rating >= cutoff_rating:
  *                     my_count += 1
  *                 i += 1             # <<<<<<<<<<<<<<
@@ -14240,7 +14276,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       goto __pyx_L8;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1056
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1083
  *                     my_count += 1
  *                 i += 1
  *             elif my_interactions[i].item_id > others_interactions[j].item_id:             # <<<<<<<<<<<<<<
@@ -14250,7 +14286,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).item_id > (__pyx_v_others_interactions[__pyx_v_j]).item_id) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1057
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1084
  *                 i += 1
  *             elif my_interactions[i].item_id > others_interactions[j].item_id:
  *                 if others_interactions[j].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -14260,7 +14296,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       __pyx_t_1 = (((__pyx_v_others_interactions[__pyx_v_j]).rating >= __pyx_v_cutoff_rating) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1058
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1085
  *             elif my_interactions[i].item_id > others_interactions[j].item_id:
  *                 if others_interactions[j].rating >= cutoff_rating:
  *                     others_count += 1             # <<<<<<<<<<<<<<
@@ -14272,7 +14308,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       }
       __pyx_L10:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1059
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1086
  *                 if others_interactions[j].rating >= cutoff_rating:
  *                     others_count += 1
  *                 j+= 1             # <<<<<<<<<<<<<<
@@ -14284,7 +14320,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     }
     /*else*/ {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1061
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1088
  *                 j+= 1
  *             else:
  *                 if my_interactions[i].rating >= cutoff_rating and others_interactions[j].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -14302,7 +14338,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       __pyx_L12_bool_binop_done:;
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1062
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1089
  *             else:
  *                 if my_interactions[i].rating >= cutoff_rating and others_interactions[j].rating >= cutoff_rating:
  *                     if is_influence(my_interactions, length_my_interactions,             # <<<<<<<<<<<<<<
@@ -14312,7 +14348,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
         __pyx_t_1 = (__pyx_f_8socintpy_10cythoncode_13cnetwork_node_is_influence(__pyx_v_my_interactions, __pyx_v_length_my_interactions, (__pyx_v_my_interactions[__pyx_v_i]).timestamp, (__pyx_v_others_interactions[__pyx_v_j]).timestamp, __pyx_v_cutoff_rating, __pyx_v_time_diff, __pyx_v_time_scale, 0) != 0);
         if (__pyx_t_1) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1066
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1093
  *                             others_interactions[j].timestamp, cutoff_rating,
  *                             time_diff, time_scale, order_agnostic=False):
  *                         simscore += 1             # <<<<<<<<<<<<<<
@@ -14327,7 +14363,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       }
       __pyx_L11:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1068
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1095
  *                         simscore += 1
  * 
  *                 if my_interactions[i].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -14337,7 +14373,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).rating >= __pyx_v_cutoff_rating) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1069
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1096
  * 
  *                 if my_interactions[i].rating >= cutoff_rating:
  *                     my_count += 1             # <<<<<<<<<<<<<<
@@ -14349,7 +14385,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       }
       __pyx_L15:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1070
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1097
  *                 if my_interactions[i].rating >= cutoff_rating:
  *                     my_count += 1
  *                 if others_interactions[j].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -14359,7 +14395,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       __pyx_t_1 = (((__pyx_v_others_interactions[__pyx_v_j]).rating >= __pyx_v_cutoff_rating) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1071
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1098
  *                     my_count += 1
  *                 if others_interactions[j].rating >= cutoff_rating:
  *                     others_count += 1             # <<<<<<<<<<<<<<
@@ -14371,7 +14407,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       }
       __pyx_L16:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1072
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1099
  *                 if others_interactions[j].rating >= cutoff_rating:
  *                     others_count += 1
  *                 i += 1             # <<<<<<<<<<<<<<
@@ -14380,7 +14416,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
       __pyx_v_i = (__pyx_v_i + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1073
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1100
  *                     others_count += 1
  *                 i += 1
  *                 j += 1             # <<<<<<<<<<<<<<
@@ -14392,7 +14428,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     __pyx_L8:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1075
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1102
  *                 j += 1
  * 
  *         if j == length_others_interactions:             # <<<<<<<<<<<<<<
@@ -14402,7 +14438,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   __pyx_t_1 = ((__pyx_v_j == __pyx_v_length_others_interactions) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1076
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1103
  * 
  *         if j == length_others_interactions:
  *             for k in range(i,length_my_interactions):             # <<<<<<<<<<<<<<
@@ -14413,7 +14449,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     for (__pyx_t_5 = __pyx_v_i; __pyx_t_5 < __pyx_t_3; __pyx_t_5+=1) {
       __pyx_v_k = __pyx_t_5;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1077
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1104
  *         if j == length_others_interactions:
  *             for k in range(i,length_my_interactions):
  *                 if my_interactions[k].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -14423,7 +14459,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_k]).rating >= __pyx_v_cutoff_rating) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1078
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1105
  *             for k in range(i,length_my_interactions):
  *                 if my_interactions[k].rating >= cutoff_rating:
  *                     my_count += 1             # <<<<<<<<<<<<<<
@@ -14438,7 +14474,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     goto __pyx_L17;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1079
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1106
  *                 if my_interactions[k].rating >= cutoff_rating:
  *                     my_count += 1
  *         elif i == length_my_interactions:             # <<<<<<<<<<<<<<
@@ -14448,7 +14484,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   __pyx_t_1 = ((__pyx_v_i == __pyx_v_length_my_interactions) != 0);
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1080
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1107
  *                     my_count += 1
  *         elif i == length_my_interactions:
  *             for k in range(j, length_others_interactions):             # <<<<<<<<<<<<<<
@@ -14459,7 +14495,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     for (__pyx_t_5 = __pyx_v_j; __pyx_t_5 < __pyx_t_3; __pyx_t_5+=1) {
       __pyx_v_k = __pyx_t_5;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1081
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1108
  *         elif i == length_my_interactions:
  *             for k in range(j, length_others_interactions):
  *                 if others_interactions[k].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -14469,7 +14505,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
       __pyx_t_1 = (((__pyx_v_others_interactions[__pyx_v_k]).rating >= __pyx_v_cutoff_rating) != 0);
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1082
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1109
  *             for k in range(j, length_others_interactions):
  *                 if others_interactions[k].rating >= cutoff_rating:
  *                     others_count += 1             # <<<<<<<<<<<<<<
@@ -14485,7 +14521,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   }
   __pyx_L17:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1084
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1111
  *                     others_count += 1
  * 
  *         if my_count == 0 or others_count == 0: # prevent zero division error             # <<<<<<<<<<<<<<
@@ -14503,7 +14539,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   __pyx_L25_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1085
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1112
  * 
  *         if my_count == 0 or others_count == 0: # prevent zero division error
  *             return -1             # <<<<<<<<<<<<<<
@@ -14514,7 +14550,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1086
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1113
  *         if my_count == 0 or others_count == 0: # prevent zero division error
  *             return -1
  *         l2_norm1 = my_count             # <<<<<<<<<<<<<<
@@ -14523,7 +14559,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_l2_norm1 = __pyx_v_my_count;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1087
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1114
  *             return -1
  *         l2_norm1 = my_count
  *         l2_norm2 = others_count             # <<<<<<<<<<<<<<
@@ -14532,7 +14568,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
  */
   __pyx_v_l2_norm2 = __pyx_v_others_count;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1089
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1116
  *         l2_norm2 = others_count
  * 
  *         return simscore/(l2_norm2)             # <<<<<<<<<<<<<<
@@ -14542,7 +14578,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   __pyx_r = (__pyx_v_simscore / __pyx_v_l2_norm2);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1033
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1060
  * 
  * 
  *     cdef float compute_othernode_influence_c(self, idata *others_interactions,             # <<<<<<<<<<<<<<
@@ -14556,7 +14592,7 @@ static float __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compu
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1092
+/* "socintpy/cythoncode/cnetwork_node.pyx":1119
  * 
  *     @cython.boundscheck(False)
  *     cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -14604,15 +14640,15 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_global_topk_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_global_topk_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_45compute_global_topk_similarity)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
@@ -14627,7 +14663,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_8 = 1;
         }
       }
-      __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       if (__pyx_t_7) {
         PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
@@ -14644,7 +14680,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -14656,43 +14692,43 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1093
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1120
  *     @cython.boundscheck(False)
  *     cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim, float cutoff_rating):
  *         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *         cdef fdata *friend_arr = self.ndata.c_friend_list
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_9) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_9) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_10 = ((PyArrayObject *)__pyx_t_9);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sims_vector.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_sims_vector = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1093; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_sims_vector.diminfo[0].strides = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sims_vector.diminfo[0].shape = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -14700,7 +14736,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_v_sims_vector = ((PyArrayObject *)__pyx_t_9);
   __pyx_t_9 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1095
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1122
  *         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
  * 
  *         cdef fdata *friend_arr = self.ndata.c_friend_list             # <<<<<<<<<<<<<<
@@ -14710,7 +14746,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_t_11 = __pyx_v_self->ndata.c_friend_list;
   __pyx_v_friend_arr = __pyx_t_11;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1099
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1126
  *         cdef DTYPE_t sim, min_sim
  *         cdef CNetworkNode c_node_obj
  *         min_sim = 0             # <<<<<<<<<<<<<<
@@ -14719,7 +14755,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_min_sim = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1100
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1127
  *         cdef CNetworkNode c_node_obj
  *         min_sim = 0
  *         min_sim_index = 0             # <<<<<<<<<<<<<<
@@ -14728,7 +14764,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_min_sim_index = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1101
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1128
  *         min_sim = 0
  *         min_sim_index = 0
  *         for node_obj in allnodes_iterable:             # <<<<<<<<<<<<<<
@@ -14739,25 +14775,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_9 = __pyx_v_allnodes_iterable; __Pyx_INCREF(__pyx_t_9); __pyx_t_8 = 0;
     __pyx_t_12 = NULL;
   } else {
-    __pyx_t_8 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_v_allnodes_iterable); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_v_allnodes_iterable); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_12 = Py_TYPE(__pyx_t_9)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = Py_TYPE(__pyx_t_9)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_12)) {
       if (likely(PyList_CheckExact(__pyx_t_9))) {
         if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_9)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_9)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -14766,7 +14802,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1128; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -14775,7 +14811,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_node_obj, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1102
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1129
  *         min_sim_index = 0
  *         for node_obj in allnodes_iterable:
  *             c_node_obj = <CNetworkNode>node_obj             # <<<<<<<<<<<<<<
@@ -14787,7 +14823,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1103
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1130
  *         for node_obj in allnodes_iterable:
  *             c_node_obj = <CNetworkNode>node_obj
  *             if c_node_obj.ndata.c_length_list[interact_type]>0:             # <<<<<<<<<<<<<<
@@ -14797,7 +14833,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_13 = (((__pyx_v_c_node_obj->ndata.c_length_list[__pyx_v_interact_type]) > 0) != 0);
     if (__pyx_t_13) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1104
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1131
  *             c_node_obj = <CNetworkNode>node_obj
  *             if c_node_obj.ndata.c_length_list[interact_type]>0:
  *                 if (not exists(c_node_obj.ndata.c_uid, friend_arr, self.ndata.c_length_friend_list)) and c_node_obj.ndata.c_uid != self.ndata.c_uid:             # <<<<<<<<<<<<<<
@@ -14815,7 +14851,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_L7_bool_binop_done:;
       if (__pyx_t_13) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1105
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1132
  *             if c_node_obj.ndata.c_length_list[interact_type]>0:
  *                 if (not exists(c_node_obj.ndata.c_uid, friend_arr, self.ndata.c_length_friend_list)) and c_node_obj.ndata.c_uid != self.ndata.c_uid:
  *                     sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')             # <<<<<<<<<<<<<<
@@ -14824,7 +14860,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
         __pyx_v_sim = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similarity_c((__pyx_v_self->ndata.c_list[__pyx_v_interact_type]), (__pyx_v_c_node_obj->ndata.c_list[__pyx_v_interact_type]), (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]), (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_v_interact_type]), -1, ((int)'w'));
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1107
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1134
  *                     sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')
  *                     #sim=1
  *                     if sim > min_sim:             # <<<<<<<<<<<<<<
@@ -14834,7 +14870,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_13 = ((__pyx_v_sim > __pyx_v_min_sim) != 0);
         if (__pyx_t_13) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1108
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1135
  *                     #sim=1
  *                     if sim > min_sim:
  *                         sims_vector[min_sim_index] = sim             # <<<<<<<<<<<<<<
@@ -14844,7 +14880,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_15 = __pyx_v_min_sim_index;
           *__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t *, __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_sims_vector.diminfo[0].strides) = __pyx_v_sim;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1109
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1136
  *                     if sim > min_sim:
  *                         sims_vector[min_sim_index] = sim
  *                         min_sim = min(sims_vector, klim, &min_sim_index)             # <<<<<<<<<<<<<<
@@ -14862,7 +14898,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     }
     __pyx_L5:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1101
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1128
  *         min_sim = 0
  *         min_sim_index = 0
  *         for node_obj in allnodes_iterable:             # <<<<<<<<<<<<<<
@@ -14872,7 +14908,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1110
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1137
  *                         sims_vector[min_sim_index] = sim
  *                         min_sim = min(sims_vector, klim, &min_sim_index)
  *         return sims_vector             # <<<<<<<<<<<<<<
@@ -14884,7 +14920,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_r = ((PyObject *)__pyx_v_sims_vector);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1092
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1119
  * 
  *     @cython.boundscheck(False)
  *     cpdef compute_global_topk_similarity(self, allnodes_iterable, int interact_type, int klim, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -14955,21 +14991,21 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_klim)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff_rating)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_global_topk_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_global_topk_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -14980,13 +15016,13 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
     __pyx_v_allnodes_iterable = values[0];
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_klim = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_klim == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_klim = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_klim == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.compute_global_topk_similarity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -15008,7 +15044,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_global_topk_similarity", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_global_topk_similarity(__pyx_v_self, __pyx_v_allnodes_iterable, __pyx_v_interact_type, __pyx_v_klim, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1092; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_global_topk_similarity(__pyx_v_self, __pyx_v_allnodes_iterable, __pyx_v_interact_type, __pyx_v_klim, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15025,7 +15061,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1113
+/* "socintpy/cythoncode/cnetwork_node.pyx":1140
  * 
  *     @cython.boundscheck(False)
  *     cpdef compute_global_topk_similarity_mat(self, mat, int klim):             # <<<<<<<<<<<<<<
@@ -15071,11 +15107,11 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_global_topk_similarity_m); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_global_topk_similarity_m); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_47compute_global_topk_similarity_mat)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -15090,7 +15126,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_6 = 1;
         }
       }
-      __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       if (__pyx_t_5) {
         PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __Pyx_GIVEREF(__pyx_t_5); __pyx_t_5 = NULL;
@@ -15101,7 +15137,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -15113,16 +15149,16 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1116
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1143
  *         #print mat.shape[0], mat.shape[1]
  *         #print self.uid
  *         user_row = mat[self.uid,:]             # <<<<<<<<<<<<<<
  *         sim_col = mat * user_row.T
  *         #sim_indices,_=sim_col.nonzero()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1116; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1116; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -15130,64 +15166,64 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_slice__3);
   __Pyx_GIVEREF(__pyx_slice__3);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_GetItem(__pyx_v_mat, __pyx_t_2); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1116; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = PyObject_GetItem(__pyx_v_mat, __pyx_t_2); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1143; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_user_row = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1117
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1144
  *         #print self.uid
  *         user_row = mat[self.uid,:]
  *         sim_col = mat * user_row.T             # <<<<<<<<<<<<<<
  *         #sim_indices,_=sim_col.nonzero()
  *         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_user_row, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_user_row, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Multiply(__pyx_v_mat, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyNumber_Multiply(__pyx_v_mat, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_sim_col = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1119
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1146
  *         sim_col = mat * user_row.T
  *         #sim_indices,_=sim_col.nonzero()
  *         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *         cdef int min_sim_index = 0
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_8 = ((PyArrayObject *)__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sims_vector.rcbuffer->pybuffer, (PyObject*)__pyx_t_8, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_sims_vector = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_sims_vector.diminfo[0].strides = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sims_vector.diminfo[0].shape = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -15195,7 +15231,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_v_sims_vector = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1121
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1148
  *         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)
  * 
  *         cdef int min_sim_index = 0             # <<<<<<<<<<<<<<
@@ -15204,7 +15240,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_min_sim_index = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1122
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1149
  * 
  *         cdef int min_sim_index = 0
  *         cdef DTYPE_t min_sim = 0             # <<<<<<<<<<<<<<
@@ -15213,7 +15249,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_min_sim = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1124
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1151
  *         cdef DTYPE_t min_sim = 0
  *         cdef DTYPE_t val
  *         min_sim_index = 0             # <<<<<<<<<<<<<<
@@ -15222,33 +15258,33 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_min_sim_index = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1126
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1153
  *         min_sim_index = 0
  *         cdef int i
  *         for i in range(sim_col.shape[0]):             # <<<<<<<<<<<<<<
  *             val = sim_col[i,0]
  *             #print val
  */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_sim_col, __pyx_n_s_shape); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_sim_col, __pyx_n_s_shape); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_7, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1126; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_7, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1153; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_9 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
     __pyx_v_i = __pyx_t_10;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1127
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1154
  *         cdef int i
  *         for i in range(sim_col.shape[0]):
  *             val = sim_col[i,0]             # <<<<<<<<<<<<<<
  *             #print val
  *             if val > min_sim:
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
@@ -15256,14 +15292,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_int_0);
     __Pyx_GIVEREF(__pyx_int_0);
     __pyx_t_2 = 0;
-    __pyx_t_2 = PyObject_GetItem(__pyx_v_sim_col, __pyx_t_7); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1127; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = PyObject_GetItem(__pyx_v_sim_col, __pyx_t_7); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1154; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_11 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_11 == (npy_double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_val = __pyx_t_11;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1129
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1156
  *             val = sim_col[i,0]
  *             #print val
  *             if val > min_sim:             # <<<<<<<<<<<<<<
@@ -15273,7 +15309,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_12 = ((__pyx_v_val > __pyx_v_min_sim) != 0);
     if (__pyx_t_12) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1130
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1157
  *             #print val
  *             if val > min_sim:
  *                 sims_vector[min_sim_index] = val             # <<<<<<<<<<<<<<
@@ -15283,7 +15319,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_13 = __pyx_v_min_sim_index;
       *__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t *, __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_sims_vector.diminfo[0].strides) = __pyx_v_val;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1131
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1158
  *             if val > min_sim:
  *                 sims_vector[min_sim_index] = val
  *                 min_sim = min(sims_vector, klim, &min_sim_index)             # <<<<<<<<<<<<<<
@@ -15296,7 +15332,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1133
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1160
  *                 min_sim = min(sims_vector, klim, &min_sim_index)
  * 
  *         return sims_vector             # <<<<<<<<<<<<<<
@@ -15308,7 +15344,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_r = ((PyObject *)__pyx_v_sims_vector);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1113
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1140
  * 
  *     @cython.boundscheck(False)
  *     cpdef compute_global_topk_similarity_mat(self, mat, int klim):             # <<<<<<<<<<<<<<
@@ -15373,11 +15409,11 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_klim)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity_mat", 1, 2, 2, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity_mat", 1, 2, 2, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_global_topk_similarity_mat") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_global_topk_similarity_mat") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -15386,11 +15422,11 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_mat = values[0];
-    __pyx_v_klim = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_klim == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_klim = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_klim == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity_mat", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_global_topk_similarity_mat", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.compute_global_topk_similarity_mat", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -15412,7 +15448,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_global_topk_similarity_mat", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_global_topk_similarity_mat(__pyx_v_self, __pyx_v_mat, __pyx_v_klim, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_global_topk_similarity_mat(__pyx_v_self, __pyx_v_mat, __pyx_v_klim, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15429,7 +15465,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1136
+/* "socintpy/cythoncode/cnetwork_node.pyx":1163
  * 
  *     @cython.boundscheck(False)
  *     cpdef compute_local_topk_similarity(self, friends_iterable, int interact_type, int klim, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -15480,15 +15516,15 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_local_topk_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_local_topk_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_49compute_local_topk_similarity)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
@@ -15503,7 +15539,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_8 = 1;
         }
       }
-      __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       if (__pyx_t_7) {
         PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
@@ -15520,7 +15556,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -15532,43 +15568,43 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1137
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1164
  *     @cython.boundscheck(False)
  *     cpdef compute_local_topk_similarity(self, friends_iterable, int interact_type, int klim, float cutoff_rating):
  *         cdef np.ndarray[DTYPE_t, ndim=1] sims_vector = np.zeros(klim, dtype=DTYPE)             # <<<<<<<<<<<<<<
  *         #cdef fdata *friend_arr = self.ndata.c_friend_list
  *         cdef int i, min_sim_index
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_klim); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_9) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_9) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_10 = ((PyArrayObject *)__pyx_t_9);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sims_vector.rcbuffer->pybuffer, (PyObject*)__pyx_t_10, &__Pyx_TypeInfo_nn___pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_sims_vector = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_sims_vector.diminfo[0].strides = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sims_vector.diminfo[0].shape = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -15576,7 +15612,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_v_sims_vector = ((PyArrayObject *)__pyx_t_9);
   __pyx_t_9 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1142
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1169
  *         cdef DTYPE_t sim, min_sim
  *         cdef CNetworkNode c_node_obj
  *         min_sim = 0             # <<<<<<<<<<<<<<
@@ -15585,7 +15621,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_min_sim = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1143
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1170
  *         cdef CNetworkNode c_node_obj
  *         min_sim = 0
  *         min_sim_index = 0             # <<<<<<<<<<<<<<
@@ -15594,7 +15630,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_min_sim_index = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1144
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1171
  *         min_sim = 0
  *         min_sim_index = 0
  *         cdef int counter = 0             # <<<<<<<<<<<<<<
@@ -15603,7 +15639,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_counter = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1145
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1172
  *         min_sim_index = 0
  *         cdef int counter = 0
  *         for node_obj in friends_iterable:             # <<<<<<<<<<<<<<
@@ -15614,25 +15650,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_9 = __pyx_v_friends_iterable; __Pyx_INCREF(__pyx_t_9); __pyx_t_8 = 0;
     __pyx_t_11 = NULL;
   } else {
-    __pyx_t_8 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_v_friends_iterable); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_v_friends_iterable); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_11 = Py_TYPE(__pyx_t_9)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = Py_TYPE(__pyx_t_9)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_11)) {
       if (likely(PyList_CheckExact(__pyx_t_9))) {
         if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_9)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_9)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_9, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -15641,7 +15677,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -15650,7 +15686,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_node_obj, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1146
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1173
  *         cdef int counter = 0
  *         for node_obj in friends_iterable:
  *             c_node_obj = <CNetworkNode>node_obj             # <<<<<<<<<<<<<<
@@ -15662,7 +15698,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1147
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1174
  *         for node_obj in friends_iterable:
  *             c_node_obj = <CNetworkNode>node_obj
  *             if self.ndata.c_length_list[interact_type]>0 and c_node_obj.ndata.c_length_list[interact_type]>0:             # <<<<<<<<<<<<<<
@@ -15680,7 +15716,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_12) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1148
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1175
  *             c_node_obj = <CNetworkNode>node_obj
  *             if self.ndata.c_length_list[interact_type]>0 and c_node_obj.ndata.c_length_list[interact_type]>0:
  *                 sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')             # <<<<<<<<<<<<<<
@@ -15689,7 +15725,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
       __pyx_v_sim = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similarity_c((__pyx_v_self->ndata.c_list[__pyx_v_interact_type]), (__pyx_v_c_node_obj->ndata.c_list[__pyx_v_interact_type]), (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]), (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_v_interact_type]), -1, ((int)'w'));
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1149
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1176
  *             if self.ndata.c_length_list[interact_type]>0 and c_node_obj.ndata.c_length_list[interact_type]>0:
  *                 sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')
  *                 if sim > min_sim:             # <<<<<<<<<<<<<<
@@ -15699,7 +15735,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_12 = ((__pyx_v_sim > __pyx_v_min_sim) != 0);
       if (__pyx_t_12) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1150
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1177
  *                 sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')
  *                 if sim > min_sim:
  *                     sims_vector[min_sim_index] = sim             # <<<<<<<<<<<<<<
@@ -15709,7 +15745,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_14 = __pyx_v_min_sim_index;
         *__Pyx_BufPtrStrided1d(__pyx_t_8socintpy_10cythoncode_13cnetwork_node_DTYPE_t *, __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_sims_vector.diminfo[0].strides) = __pyx_v_sim;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1151
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1178
  *                 if sim > min_sim:
  *                     sims_vector[min_sim_index] = sim
  *                     min_sim = min(sims_vector, klim, &min_sim_index)             # <<<<<<<<<<<<<<
@@ -15721,7 +15757,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       }
       __pyx_L8:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1152
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1179
  *                     sims_vector[min_sim_index] = sim
  *                     min_sim = min(sims_vector, klim, &min_sim_index)
  *                 counter += 1             # <<<<<<<<<<<<<<
@@ -15733,7 +15769,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     }
     __pyx_L5:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1145
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1172
  *         min_sim_index = 0
  *         cdef int counter = 0
  *         for node_obj in friends_iterable:             # <<<<<<<<<<<<<<
@@ -15743,7 +15779,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1153
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1180
  *                     min_sim = min(sims_vector, klim, &min_sim_index)
  *                 counter += 1
  *         if counter < klim:             # <<<<<<<<<<<<<<
@@ -15753,7 +15789,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_t_12 = ((__pyx_v_counter < __pyx_v_klim) != 0);
   if (__pyx_t_12) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1154
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1181
  *                 counter += 1
  *         if counter < klim:
  *             sims_vector = None             # <<<<<<<<<<<<<<
@@ -15775,7 +15811,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         }
       }
       __pyx_pybuffernd_sims_vector.diminfo[0].strides = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sims_vector.diminfo[0].shape = __pyx_pybuffernd_sims_vector.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__pyx_t_15 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_t_10 = 0;
     __Pyx_INCREF(Py_None);
@@ -15784,7 +15820,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   __pyx_L9:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1155
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1182
  *         if counter < klim:
  *             sims_vector = None
  *         return sims_vector             # <<<<<<<<<<<<<<
@@ -15796,7 +15832,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_r = ((PyObject *)__pyx_v_sims_vector);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1136
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1163
  * 
  *     @cython.boundscheck(False)
  *     cpdef compute_local_topk_similarity(self, friends_iterable, int interact_type, int klim, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -15867,21 +15903,21 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_klim)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff_rating)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_local_topk_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_local_topk_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -15892,13 +15928,13 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
     __pyx_v_friends_iterable = values[0];
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_klim = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_klim == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_klim = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_klim == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_local_topk_similarity", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.compute_local_topk_similarity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -15920,7 +15956,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_local_topk_similarity", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_local_topk_similarity(__pyx_v_self, __pyx_v_friends_iterable, __pyx_v_interact_type, __pyx_v_klim, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_local_topk_similarity(__pyx_v_self, __pyx_v_friends_iterable, __pyx_v_interact_type, __pyx_v_klim, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -15937,7 +15973,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1158
+/* "socintpy/cythoncode/cnetwork_node.pyx":1185
  * 
  *     @cython.boundscheck(False)
  *     cpdef  compute_mean_similarity(self, nodes_iterable, int interact_type, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -15973,13 +16009,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_mean_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_mean_similarity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_51compute_mean_similarity)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -15994,7 +16030,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_7 = 1;
         }
       }
-      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_6) {
         PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __Pyx_GIVEREF(__pyx_t_6); __pyx_t_6 = NULL;
@@ -16008,7 +16044,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __Pyx_GIVEREF(__pyx_t_4);
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -16020,7 +16056,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1161
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1188
  *         cdef int i, min_sim_index
  *         cdef DTYPE_t sim
  *         cdef DTYPE_t sim_avg = 0             # <<<<<<<<<<<<<<
@@ -16029,7 +16065,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_sim_avg = 0.0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1162
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1189
  *         cdef DTYPE_t sim
  *         cdef DTYPE_t sim_avg = 0
  *         cdef int counter = 0             # <<<<<<<<<<<<<<
@@ -16038,7 +16074,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_counter = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1164
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1191
  *         cdef int counter = 0
  *         cdef CNetworkNode c_node_obj
  *         for node_obj in nodes_iterable:             # <<<<<<<<<<<<<<
@@ -16049,25 +16085,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_1 = __pyx_v_nodes_iterable; __Pyx_INCREF(__pyx_t_1); __pyx_t_7 = 0;
     __pyx_t_9 = NULL;
   } else {
-    __pyx_t_7 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_nodes_iterable); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_nodes_iterable); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_9)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_2); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -16076,7 +16112,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -16085,7 +16121,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_node_obj, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1165
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1192
  *         cdef CNetworkNode c_node_obj
  *         for node_obj in nodes_iterable:
  *             c_node_obj = <CNetworkNode>node_obj             # <<<<<<<<<<<<<<
@@ -16097,7 +16133,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1166
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1193
  *         for node_obj in nodes_iterable:
  *             c_node_obj = <CNetworkNode>node_obj
  *             if self.ndata.c_length_list[interact_type]>0 and c_node_obj.ndata.c_length_list[interact_type]>0:             # <<<<<<<<<<<<<<
@@ -16115,7 +16151,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1167
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1194
  *             c_node_obj = <CNetworkNode>node_obj
  *             if self.ndata.c_length_list[interact_type]>0 and c_node_obj.ndata.c_length_list[interact_type]>0:
  *                 sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type],self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')             # <<<<<<<<<<<<<<
@@ -16124,7 +16160,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
       __pyx_v_sim = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_compute_node_similarity_c((__pyx_v_self->ndata.c_list[__pyx_v_interact_type]), (__pyx_v_c_node_obj->ndata.c_list[__pyx_v_interact_type]), (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]), (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_v_interact_type]), -1, ((int)'w'));
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1168
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1195
  *             if self.ndata.c_length_list[interact_type]>0 and c_node_obj.ndata.c_length_list[interact_type]>0:
  *                 sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type],self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')
  *                 if sim != -1: #TODO CAUTION change float eq comparison             # <<<<<<<<<<<<<<
@@ -16134,7 +16170,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_10 = ((__pyx_v_sim != -1.0) != 0);
       if (__pyx_t_10) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1169
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1196
  *                 sim = compute_node_similarity_c(self.ndata.c_list[interact_type], c_node_obj.ndata.c_list[interact_type],self.ndata.c_length_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], -1, time_scale=<int>'w')
  *                 if sim != -1: #TODO CAUTION change float eq comparison
  *                     sim_avg += sim             # <<<<<<<<<<<<<<
@@ -16143,7 +16179,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
         __pyx_v_sim_avg = (__pyx_v_sim_avg + __pyx_v_sim);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1170
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1197
  *                 if sim != -1: #TODO CAUTION change float eq comparison
  *                     sim_avg += sim
  *                     counter += 1             # <<<<<<<<<<<<<<
@@ -16158,7 +16194,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     }
     __pyx_L5:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1164
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1191
  *         cdef int counter = 0
  *         cdef CNetworkNode c_node_obj
  *         for node_obj in nodes_iterable:             # <<<<<<<<<<<<<<
@@ -16168,7 +16204,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1171
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1198
  *                     sim_avg += sim
  *                     counter += 1
  *         if counter == 0:             # <<<<<<<<<<<<<<
@@ -16178,7 +16214,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_t_10 = ((__pyx_v_counter == 0) != 0);
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1172
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1199
  *                     counter += 1
  *         if counter == 0:
  *             return None             # <<<<<<<<<<<<<<
@@ -16192,7 +16228,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   /*else*/ {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1174
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1201
  *             return None
  *         else:
  *             return sim_avg/counter             # <<<<<<<<<<<<<<
@@ -16200,14 +16236,14 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  *     cpdef compute_items_coverage(self, friends_iterable, int interact_type, int min_friends, int max_friends):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = PyFloat_FromDouble((__pyx_v_sim_avg / __pyx_v_counter)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyFloat_FromDouble((__pyx_v_sim_avg / __pyx_v_counter)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1158
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1185
  * 
  *     @cython.boundscheck(False)
  *     cpdef  compute_mean_similarity(self, nodes_iterable, int interact_type, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -16267,16 +16303,16 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_mean_similarity", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_mean_similarity", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff_rating)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_mean_similarity", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_mean_similarity", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_mean_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_mean_similarity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -16286,12 +16322,12 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_nodes_iterable = values[0];
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_mean_similarity", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_mean_similarity", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.compute_mean_similarity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -16313,7 +16349,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_mean_similarity", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_mean_similarity(__pyx_v_self, __pyx_v_nodes_iterable, __pyx_v_interact_type, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_mean_similarity(__pyx_v_self, __pyx_v_nodes_iterable, __pyx_v_interact_type, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16330,7 +16366,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1176
+/* "socintpy/cythoncode/cnetwork_node.pyx":1203
  *             return sim_avg/counter
  * 
  *     cpdef compute_items_coverage(self, friends_iterable, int interact_type, int min_friends, int max_friends):             # <<<<<<<<<<<<<<
@@ -16372,15 +16408,15 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_items_coverage); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_items_coverage); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_53compute_items_coverage)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_min_friends); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_min_friends); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_max_friends); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_max_friends); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
@@ -16395,7 +16431,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_8 = 1;
         }
       }
-      __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(4+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       if (__pyx_t_7) {
         PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
@@ -16412,7 +16448,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -16424,7 +16460,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1177
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1204
  * 
  *     cpdef compute_items_coverage(self, friends_iterable, int interact_type, int min_friends, int max_friends):
  *         if self.ndata.c_length_list[interact_type] == 0 or self.ndata.c_length_friend_list < min_friends or self.ndata.c_length_friend_list >= max_friends:             # <<<<<<<<<<<<<<
@@ -16448,7 +16484,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1178
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1205
  *     cpdef compute_items_coverage(self, friends_iterable, int interact_type, int min_friends, int max_friends):
  *         if self.ndata.c_length_list[interact_type] == 0 or self.ndata.c_length_friend_list < min_friends or self.ndata.c_length_friend_list >= max_friends:
  *             return None             # <<<<<<<<<<<<<<
@@ -16461,7 +16497,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1179
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1206
  *         if self.ndata.c_length_list[interact_type] == 0 or self.ndata.c_length_friend_list < min_friends or self.ndata.c_length_friend_list >= max_friends:
  *             return None
  *         cdef int_counter *all_items = NULL             # <<<<<<<<<<<<<<
@@ -16470,7 +16506,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_all_items = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1180
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1207
  *             return None
  *         cdef int_counter *all_items = NULL
  *         cdef int_counter *s = NULL             # <<<<<<<<<<<<<<
@@ -16479,7 +16515,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_s = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1182
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1209
  *         cdef int_counter *s = NULL
  *         cdef int i
  *         cdef int num_items_found = 0             # <<<<<<<<<<<<<<
@@ -16488,7 +16524,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_num_items_found = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1183
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1210
  *         cdef int i
  *         cdef int num_items_found = 0
  *         for node_obj in friends_iterable:             # <<<<<<<<<<<<<<
@@ -16499,25 +16535,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_1 = __pyx_v_friends_iterable; __Pyx_INCREF(__pyx_t_1); __pyx_t_8 = 0;
     __pyx_t_12 = NULL;
   } else {
-    __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_friends_iterable); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_friends_iterable); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_12)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -16526,7 +16562,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -16535,7 +16571,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_node_obj, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1184
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1211
  *         cdef int num_items_found = 0
  *         for node_obj in friends_iterable:
  *             c_node_obj = <CNetworkNode>node_obj             # <<<<<<<<<<<<<<
@@ -16547,7 +16583,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1185
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1212
  *         for node_obj in friends_iterable:
  *             c_node_obj = <CNetworkNode>node_obj
  *             for i in range(c_node_obj.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -16558,7 +16594,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
       __pyx_v_i = __pyx_t_14;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1186
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1213
  *             c_node_obj = <CNetworkNode>node_obj
  *             for i in range(c_node_obj.ndata.c_length_list[interact_type]):
  *                 HASH_FIND_INT(all_items, &(c_node_obj.ndata.c_list[interact_type][i].item_id), s)             # <<<<<<<<<<<<<<
@@ -16567,7 +16603,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
       HASH_FIND_INT(__pyx_v_all_items, (&((__pyx_v_c_node_obj->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id), __pyx_v_s);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1187
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1214
  *             for i in range(c_node_obj.ndata.c_length_list[interact_type]):
  *                 HASH_FIND_INT(all_items, &(c_node_obj.ndata.c_list[interact_type][i].item_id), s)
  *                 if s == NULL:             # <<<<<<<<<<<<<<
@@ -16577,7 +16613,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_10 = ((__pyx_v_s == NULL) != 0);
       if (__pyx_t_10) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1188
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1215
  *                 HASH_FIND_INT(all_items, &(c_node_obj.ndata.c_list[interact_type][i].item_id), s)
  *                 if s == NULL:
  *                     s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))             # <<<<<<<<<<<<<<
@@ -16586,7 +16622,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
         __pyx_v_s = ((__pyx_t_8socintpy_10cythoncode_10data_types_int_counter *)PyMem_Malloc((sizeof(__pyx_t_8socintpy_10cythoncode_10data_types_int_counter))));
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1189
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1216
  *                 if s == NULL:
  *                     s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))
  *                     s[0].id = c_node_obj.ndata.c_list[interact_type][i].item_id             # <<<<<<<<<<<<<<
@@ -16596,7 +16632,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_15 = ((__pyx_v_c_node_obj->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id;
         (__pyx_v_s[0]).id = __pyx_t_15;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1190
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1217
  *                     s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))
  *                     s[0].id = c_node_obj.ndata.c_list[interact_type][i].item_id
  *                     s[0].count = 0             # <<<<<<<<<<<<<<
@@ -16605,7 +16641,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
         (__pyx_v_s[0]).count = 0;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1191
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1218
  *                     s[0].id = c_node_obj.ndata.c_list[interact_type][i].item_id
  *                     s[0].count = 0
  *                     HASH_ADD_INT_CUSTOM(all_items, s)             # <<<<<<<<<<<<<<
@@ -16617,7 +16653,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       }
       __pyx_L11:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1192
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1219
  *                     s[0].count = 0
  *                     HASH_ADD_INT_CUSTOM(all_items, s)
  *                 s[0].count += 1             # <<<<<<<<<<<<<<
@@ -16628,7 +16664,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       (__pyx_v_s[__pyx_t_16]).count = ((__pyx_v_s[__pyx_t_16]).count + 1);
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1183
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1210
  *         cdef int i
  *         cdef int num_items_found = 0
  *         for node_obj in friends_iterable:             # <<<<<<<<<<<<<<
@@ -16638,7 +16674,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1194
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1221
  *                 s[0].count += 1
  * 
  *         s = NULL             # <<<<<<<<<<<<<<
@@ -16647,7 +16683,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_s = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1195
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1222
  * 
  *         s = NULL
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -16658,7 +16694,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
     __pyx_v_i = __pyx_t_14;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1196
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1223
  *         s = NULL
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             HASH_FIND_INT(all_items, &(self.ndata.c_list[interact_type][i].item_id), s)             # <<<<<<<<<<<<<<
@@ -16667,7 +16703,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
     HASH_FIND_INT(__pyx_v_all_items, (&((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id), __pyx_v_s);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1197
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1224
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             HASH_FIND_INT(all_items, &(self.ndata.c_list[interact_type][i].item_id), s)
  *             if s != NULL:             # <<<<<<<<<<<<<<
@@ -16677,7 +16713,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_10 = ((__pyx_v_s != NULL) != 0);
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1198
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1225
  *             HASH_FIND_INT(all_items, &(self.ndata.c_list[interact_type][i].item_id), s)
  *             if s != NULL:
  *                 num_items_found += 1             # <<<<<<<<<<<<<<
@@ -16690,7 +16726,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_L14:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1200
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1227
  *                 num_items_found += 1
  * 
  *         delete_hashtable(all_items)             # <<<<<<<<<<<<<<
@@ -16699,7 +16735,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_f_8socintpy_10cythoncode_10data_types_delete_hashtable(__pyx_v_all_items);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1201
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1228
  * 
  *         delete_hashtable(all_items)
  *         return (<float>num_items_found)/self.ndata.c_length_list[interact_type]             # <<<<<<<<<<<<<<
@@ -16707,13 +16743,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  *     cdef int_counter *update_items_edge_coverage_c(self, idata* others_interactions, int length_others_interactions, int interact_type, int_counter *count_influencers, bool time_sensitive, int time_diff):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble((((float)__pyx_v_num_items_found) / (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyFloat_FromDouble((((float)__pyx_v_num_items_found) / (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1228; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1176
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1203
  *             return sim_avg/counter
  * 
  *     cpdef compute_items_coverage(self, friends_iterable, int interact_type, int min_friends, int max_friends):             # <<<<<<<<<<<<<<
@@ -16776,21 +16812,21 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_min_friends)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_max_friends)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_items_coverage") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compute_items_coverage") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -16801,13 +16837,13 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
     __pyx_v_friends_iterable = values[0];
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_min_friends = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_min_friends == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_max_friends = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_max_friends == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_min_friends = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_min_friends == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_max_friends = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_max_friends == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("compute_items_coverage", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.compute_items_coverage", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -16829,7 +16865,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_items_coverage", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_items_coverage(__pyx_v_self, __pyx_v_friends_iterable, __pyx_v_interact_type, __pyx_v_min_friends, __pyx_v_max_friends, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_compute_items_coverage(__pyx_v_self, __pyx_v_friends_iterable, __pyx_v_interact_type, __pyx_v_min_friends, __pyx_v_max_friends, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16846,7 +16882,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1203
+/* "socintpy/cythoncode/cnetwork_node.pyx":1230
  *         return (<float>num_items_found)/self.ndata.c_length_list[interact_type]
  * 
  *     cdef int_counter *update_items_edge_coverage_c(self, idata* others_interactions, int length_others_interactions, int interact_type, int_counter *count_influencers, bool time_sensitive, int time_diff):             # <<<<<<<<<<<<<<
@@ -16871,7 +16907,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_items_edge_coverage_c", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1204
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1231
  * 
  *     cdef int_counter *update_items_edge_coverage_c(self, idata* others_interactions, int length_others_interactions, int interact_type, int_counter *count_influencers, bool time_sensitive, int time_diff):
  *         cdef idata *my_interactions = self.ndata.c_list[interact_type]             # <<<<<<<<<<<<<<
@@ -16880,7 +16916,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
   __pyx_v_my_interactions = (__pyx_v_self->ndata.c_list[__pyx_v_interact_type]);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1206
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1233
  *         cdef idata *my_interactions = self.ndata.c_list[interact_type]
  *         cdef int i, j, valid_match
  *         i = 0             # <<<<<<<<<<<<<<
@@ -16889,7 +16925,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
   __pyx_v_i = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1207
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1234
  *         cdef int i, j, valid_match
  *         i = 0
  *         j = 0             # <<<<<<<<<<<<<<
@@ -16898,7 +16934,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
   __pyx_v_j = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1210
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1237
  *         #cdef int my_count = 0
  *         #cdef int others_count = 0
  *         while i < self.ndata.c_length_list[interact_type] and j < length_others_interactions:             # <<<<<<<<<<<<<<
@@ -16917,7 +16953,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
     __pyx_L5_bool_binop_done:;
     if (!__pyx_t_1) break;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1211
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1238
  *         #cdef int others_count = 0
  *         while i < self.ndata.c_length_list[interact_type] and j < length_others_interactions:
  *             if my_interactions[i].item_id < others_interactions[j].item_id:             # <<<<<<<<<<<<<<
@@ -16927,7 +16963,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
     __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).item_id < (__pyx_v_others_interactions[__pyx_v_j]).item_id) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1214
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1241
  *                 #if my_interactions[i].rating > cutoff_rating:
  *                 #    my_count += 1
  *                 i += 1             # <<<<<<<<<<<<<<
@@ -16938,7 +16974,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
       goto __pyx_L7;
     }
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1215
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1242
  *                 #    my_count += 1
  *                 i += 1
  *             elif my_interactions[i].item_id > others_interactions[j].item_id:             # <<<<<<<<<<<<<<
@@ -16948,7 +16984,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
     __pyx_t_1 = (((__pyx_v_my_interactions[__pyx_v_i]).item_id > (__pyx_v_others_interactions[__pyx_v_j]).item_id) != 0);
     if (__pyx_t_1) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1218
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1245
  *                 #if others_interactions[j].rating > cutoff_rating:
  *                 #    others_count += 1
  *                 j+= 1             # <<<<<<<<<<<<<<
@@ -16960,7 +16996,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
     }
     /*else*/ {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1220
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1247
  *                 j+= 1
  *             else:
  *                 valid_match = 1             # <<<<<<<<<<<<<<
@@ -16969,17 +17005,17 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
       __pyx_v_valid_match = 1;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1221
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1248
  *             else:
  *                 valid_match = 1
  *                 if time_sensitive:             # <<<<<<<<<<<<<<
  *                     if not (my_interactions[i].timestamp > others_interactions[j].timestamp and
  *                             my_interactions[i].timestamp - others_interactions[j].timestamp <=time_diff):
  */
-      __pyx_t_1 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_time_sensitive)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1221; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_IsTrue(((PyObject *)__pyx_v_time_sensitive)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1248; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       if (__pyx_t_1) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1222
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1249
  *                 valid_match = 1
  *                 if time_sensitive:
  *                     if not (my_interactions[i].timestamp > others_interactions[j].timestamp and             # <<<<<<<<<<<<<<
@@ -16993,7 +17029,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
           goto __pyx_L10_bool_binop_done;
         }
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1223
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1250
  *                 if time_sensitive:
  *                     if not (my_interactions[i].timestamp > others_interactions[j].timestamp and
  *                             my_interactions[i].timestamp - others_interactions[j].timestamp <=time_diff):             # <<<<<<<<<<<<<<
@@ -17004,7 +17040,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
         __pyx_t_1 = __pyx_t_2;
         __pyx_L10_bool_binop_done:;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1222
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1249
  *                 valid_match = 1
  *                 if time_sensitive:
  *                     if not (my_interactions[i].timestamp > others_interactions[j].timestamp and             # <<<<<<<<<<<<<<
@@ -17014,7 +17050,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
         __pyx_t_2 = ((!__pyx_t_1) != 0);
         if (__pyx_t_2) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1224
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1251
  *                     if not (my_interactions[i].timestamp > others_interactions[j].timestamp and
  *                             my_interactions[i].timestamp - others_interactions[j].timestamp <=time_diff):
  *                         valid_match = 0             # <<<<<<<<<<<<<<
@@ -17029,7 +17065,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
       }
       __pyx_L8:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1225
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1252
  *                             my_interactions[i].timestamp - others_interactions[j].timestamp <=time_diff):
  *                         valid_match = 0
  *                 if valid_match == 1:             # <<<<<<<<<<<<<<
@@ -17039,7 +17075,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
       __pyx_t_2 = ((__pyx_v_valid_match == 1) != 0);
       if (__pyx_t_2) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1226
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1253
  *                         valid_match = 0
  *                 if valid_match == 1:
  *                     HASH_FIND_INT(count_influencers, &(my_interactions[i].item_id), s)             # <<<<<<<<<<<<<<
@@ -17048,7 +17084,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
         HASH_FIND_INT(__pyx_v_count_influencers, (&(__pyx_v_my_interactions[__pyx_v_i]).item_id), __pyx_v_s);
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1227
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1254
  *                 if valid_match == 1:
  *                     HASH_FIND_INT(count_influencers, &(my_interactions[i].item_id), s)
  *                     if s == NULL:             # <<<<<<<<<<<<<<
@@ -17058,7 +17094,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
         __pyx_t_2 = ((__pyx_v_s == NULL) != 0);
         if (__pyx_t_2) {
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1228
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1255
  *                     HASH_FIND_INT(count_influencers, &(my_interactions[i].item_id), s)
  *                     if s == NULL:
  *                             s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))             # <<<<<<<<<<<<<<
@@ -17067,7 +17103,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
           __pyx_v_s = ((__pyx_t_8socintpy_10cythoncode_10data_types_int_counter *)PyMem_Malloc((sizeof(__pyx_t_8socintpy_10cythoncode_10data_types_int_counter))));
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1229
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1256
  *                     if s == NULL:
  *                             s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))
  *                             s[0].id = my_interactions[i].item_id             # <<<<<<<<<<<<<<
@@ -17077,7 +17113,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
           __pyx_t_3 = (__pyx_v_my_interactions[__pyx_v_i]).item_id;
           (__pyx_v_s[0]).id = __pyx_t_3;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1230
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1257
  *                             s = <int_counter *>PyMem_Malloc(cython.sizeof(int_counter))
  *                             s[0].id = my_interactions[i].item_id
  *                             s[0].count = 0             # <<<<<<<<<<<<<<
@@ -17086,7 +17122,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
           (__pyx_v_s[0]).count = 0;
 
-          /* "socintpy/cythoncode/cnetwork_node.pyx":1231
+          /* "socintpy/cythoncode/cnetwork_node.pyx":1258
  *                             s[0].id = my_interactions[i].item_id
  *                             s[0].count = 0
  *                             HASH_ADD_INT_CUSTOM(count_influencers, s)             # <<<<<<<<<<<<<<
@@ -17098,7 +17134,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
         }
         __pyx_L13:;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1232
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1259
  *                             s[0].count = 0
  *                             HASH_ADD_INT_CUSTOM(count_influencers, s)
  *                     s[0].count += 1             # <<<<<<<<<<<<<<
@@ -17111,7 +17147,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
       }
       __pyx_L12:;
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1234
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1261
  *                     s[0].count += 1
  * 
  *                 i += 1             # <<<<<<<<<<<<<<
@@ -17120,7 +17156,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
  */
       __pyx_v_i = (__pyx_v_i + 1);
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1235
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1262
  * 
  *                 i += 1
  *                 j += 1             # <<<<<<<<<<<<<<
@@ -17132,7 +17168,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
     __pyx_L7:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1236
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1263
  *                 i += 1
  *                 j += 1
  *         return count_influencers             # <<<<<<<<<<<<<<
@@ -17142,7 +17178,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
   __pyx_r = __pyx_v_count_influencers;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1203
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1230
  *         return (<float>num_items_found)/self.ndata.c_length_list[interact_type]
  * 
  *     cdef int_counter *update_items_edge_coverage_c(self, idata* others_interactions, int length_others_interactions, int interact_type, int_counter *count_influencers, bool time_sensitive, int time_diff):             # <<<<<<<<<<<<<<
@@ -17159,7 +17195,7 @@ static __pyx_t_8socintpy_10cythoncode_10data_types_int_counter *__pyx_f_8socintp
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1238
+/* "socintpy/cythoncode/cnetwork_node.pyx":1265
  *         return count_influencers
  * 
  *     cpdef update_items_edge_coverage(self, friends_iterable, int interact_type, unsigned int [:] items_edge_coverage_view, unsigned int [:] items_num_influencers, bool time_sensitive, int time_diff):             # <<<<<<<<<<<<<<
@@ -17197,19 +17233,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_items_edge_coverage); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_items_edge_coverage); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_55update_items_edge_coverage)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      if (unlikely(!__pyx_v_items_edge_coverage_view.memview)) { __Pyx_RaiseUnboundLocalError("items_edge_coverage_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-      __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_items_edge_coverage_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_int, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_int, 0);; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(!__pyx_v_items_edge_coverage_view.memview)) { __Pyx_RaiseUnboundLocalError("items_edge_coverage_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+      __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_items_edge_coverage_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_int, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_int, 0);; if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      if (unlikely(!__pyx_v_items_num_influencers.memview)) { __Pyx_RaiseUnboundLocalError("items_num_influencers"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-      __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_items_num_influencers, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_int, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_int, 0);; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(!__pyx_v_items_num_influencers.memview)) { __Pyx_RaiseUnboundLocalError("items_num_influencers"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+      __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_items_num_influencers, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_int, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_int, 0);; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_time_diff); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_time_diff); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_7 = __pyx_t_1; __pyx_t_8 = NULL;
@@ -17224,7 +17260,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
           __pyx_t_9 = 1;
         }
       }
-      __pyx_t_10 = PyTuple_New(6+__pyx_t_9); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyTuple_New(6+__pyx_t_9); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_8) {
         PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __Pyx_GIVEREF(__pyx_t_8); __pyx_t_8 = NULL;
@@ -17247,7 +17283,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
       __pyx_t_6 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -17259,7 +17295,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1240
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1267
  *     cpdef update_items_edge_coverage(self, friends_iterable, int interact_type, unsigned int [:] items_edge_coverage_view, unsigned int [:] items_num_influencers, bool time_sensitive, int time_diff):
  *         cdef int i
  *         cdef int_counter *count_influencers = NULL             # <<<<<<<<<<<<<<
@@ -17268,7 +17304,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
  */
   __pyx_v_count_influencers = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1241
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1268
  *         cdef int i
  *         cdef int_counter *count_influencers = NULL
  *         cdef int_counter *s = NULL             # <<<<<<<<<<<<<<
@@ -17277,7 +17313,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
  */
   __pyx_v_s = NULL;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1242
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1269
  *         cdef int_counter *count_influencers = NULL
  *         cdef int_counter *s = NULL
  *         for node_obj in friends_iterable:             # <<<<<<<<<<<<<<
@@ -17288,25 +17324,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __pyx_t_1 = __pyx_v_friends_iterable; __Pyx_INCREF(__pyx_t_1); __pyx_t_9 = 0;
     __pyx_t_11 = NULL;
   } else {
-    __pyx_t_9 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_friends_iterable); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_friends_iterable); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_11 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_11)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_9); __Pyx_INCREF(__pyx_t_2); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_9); __Pyx_INCREF(__pyx_t_2); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_9); __Pyx_INCREF(__pyx_t_2); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_9); __Pyx_INCREF(__pyx_t_2); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -17315,7 +17351,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -17324,7 +17360,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __Pyx_XDECREF_SET(__pyx_v_node_obj, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1243
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1270
  *         cdef int_counter *s = NULL
  *         for node_obj in friends_iterable:
  *             c_node_obj = <CNetworkNode>node_obj             # <<<<<<<<<<<<<<
@@ -17336,7 +17372,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1244
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1271
  *         for node_obj in friends_iterable:
  *             c_node_obj = <CNetworkNode>node_obj
  *             count_influencers = self.update_items_edge_coverage_c(c_node_obj.ndata.c_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], interact_type, count_influencers, time_sensitive, time_diff)             # <<<<<<<<<<<<<<
@@ -17345,7 +17381,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
  */
     __pyx_v_count_influencers = ((struct __pyx_vtabstruct_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->update_items_edge_coverage_c(__pyx_v_self, (__pyx_v_c_node_obj->ndata.c_list[__pyx_v_interact_type]), (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_v_interact_type]), __pyx_v_interact_type, __pyx_v_count_influencers, __pyx_v_time_sensitive, __pyx_v_time_diff);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1242
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1269
  *         cdef int_counter *count_influencers = NULL
  *         cdef int_counter *s = NULL
  *         for node_obj in friends_iterable:             # <<<<<<<<<<<<<<
@@ -17355,7 +17391,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1246
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1273
  *             count_influencers = self.update_items_edge_coverage_c(c_node_obj.ndata.c_list[interact_type], c_node_obj.ndata.c_length_list[interact_type], interact_type, count_influencers, time_sensitive, time_diff)
  *         #Now updating the numpy arrays
  *         s = count_influencers             # <<<<<<<<<<<<<<
@@ -17364,7 +17400,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
  */
   __pyx_v_s = __pyx_v_count_influencers;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1247
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1274
  *         #Now updating the numpy arrays
  *         s = count_influencers
  *         while s!=NULL:             # <<<<<<<<<<<<<<
@@ -17375,7 +17411,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __pyx_t_12 = ((__pyx_v_s != NULL) != 0);
     if (!__pyx_t_12) break;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1248
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1275
  *         s = count_influencers
  *         while s!=NULL:
  *             items_num_influencers[s[0].count] += 1             # <<<<<<<<<<<<<<
@@ -17385,7 +17421,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __pyx_t_13 = (__pyx_v_s[0]).count;
     *((unsigned int *) ( /* dim=0 */ (__pyx_v_items_num_influencers.data + __pyx_t_13 * __pyx_v_items_num_influencers.strides[0]) )) += 1;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1249
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1276
  *         while s!=NULL:
  *             items_num_influencers[s[0].count] += 1
  *             items_edge_coverage_view[s[0].id] += 1             # <<<<<<<<<<<<<<
@@ -17395,7 +17431,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __pyx_t_14 = (__pyx_v_s[0]).id;
     *((unsigned int *) ( /* dim=0 */ (__pyx_v_items_edge_coverage_view.data + __pyx_t_14 * __pyx_v_items_edge_coverage_view.strides[0]) )) += 1;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1250
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1277
  *             items_num_influencers[s[0].count] += 1
  *             items_edge_coverage_view[s[0].id] += 1
  *             s = <int_counter *>s.hh.next             # <<<<<<<<<<<<<<
@@ -17405,7 +17441,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __pyx_v_s = ((__pyx_t_8socintpy_10cythoncode_10data_types_int_counter *)__pyx_v_s->hh.next);
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1251
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1278
  *             items_edge_coverage_view[s[0].id] += 1
  *             s = <int_counter *>s.hh.next
  *         delete_hashtable(count_influencers)             # <<<<<<<<<<<<<<
@@ -17414,7 +17450,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
  */
   __pyx_f_8socintpy_10cythoncode_10data_types_delete_hashtable(__pyx_v_count_influencers);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1252
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1279
  *             s = <int_counter *>s.hh.next
  *         delete_hashtable(count_influencers)
  *         return             # <<<<<<<<<<<<<<
@@ -17425,7 +17461,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1238
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1265
  *         return count_influencers
  * 
  *     cpdef update_items_edge_coverage(self, friends_iterable, int interact_type, unsigned int [:] items_edge_coverage_view, unsigned int [:] items_num_influencers, bool time_sensitive, int time_diff):             # <<<<<<<<<<<<<<
@@ -17493,31 +17529,31 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_items_edge_coverage_view)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_items_num_influencers)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_time_sensitive)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_time_diff)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_items_edge_coverage") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_items_edge_coverage") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
       goto __pyx_L5_argtuple_error;
@@ -17530,21 +17566,21 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
     }
     __pyx_v_friends_iterable = values[0];
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_items_edge_coverage_view = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_int(values[2]); if (unlikely(!__pyx_v_items_edge_coverage_view.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_items_num_influencers = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_int(values[3]); if (unlikely(!__pyx_v_items_num_influencers.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_items_edge_coverage_view = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_int(values[2]); if (unlikely(!__pyx_v_items_edge_coverage_view.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_items_num_influencers = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_int(values[3]); if (unlikely(!__pyx_v_items_num_influencers.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_time_sensitive = ((PyBoolObject *)values[4]);
-    __pyx_v_time_diff = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_time_diff == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_time_diff = __Pyx_PyInt_As_int(values[5]); if (unlikely((__pyx_v_time_diff == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("update_items_edge_coverage", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.update_items_edge_coverage", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_time_sensitive), __pyx_ptype_7cpython_4bool_bool, 1, "time_sensitive", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_time_sensitive), __pyx_ptype_7cpython_4bool_bool, 1, "time_sensitive", 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_54update_items_edge_coverage(((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self), __pyx_v_friends_iterable, __pyx_v_interact_type, __pyx_v_items_edge_coverage_view, __pyx_v_items_num_influencers, __pyx_v_time_sensitive, __pyx_v_time_diff);
 
   /* function exit code */
@@ -17565,9 +17601,9 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_items_edge_coverage", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_items_edge_coverage_view.memview)) { __Pyx_RaiseUnboundLocalError("items_edge_coverage_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-  if (unlikely(!__pyx_v_items_num_influencers.memview)) { __Pyx_RaiseUnboundLocalError("items_num_influencers"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_update_items_edge_coverage(__pyx_v_self, __pyx_v_friends_iterable, __pyx_v_interact_type, __pyx_v_items_edge_coverage_view, __pyx_v_items_num_influencers, __pyx_v_time_sensitive, __pyx_v_time_diff, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1238; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_v_items_edge_coverage_view.memview)) { __Pyx_RaiseUnboundLocalError("items_edge_coverage_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  if (unlikely(!__pyx_v_items_num_influencers.memview)) { __Pyx_RaiseUnboundLocalError("items_num_influencers"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_update_items_edge_coverage(__pyx_v_self, __pyx_v_friends_iterable, __pyx_v_interact_type, __pyx_v_items_edge_coverage_view, __pyx_v_items_num_influencers, __pyx_v_time_sensitive, __pyx_v_time_diff, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1265; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17586,7 +17622,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1254
+/* "socintpy/cythoncode/cnetwork_node.pyx":1281
  *         return
  * 
  *     cpdef update_items_popularity(self, interact_type, unsigned int [:] total_popularity_view):             # <<<<<<<<<<<<<<
@@ -17617,12 +17653,12 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_items_popularity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_items_popularity); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_57update_items_popularity)) {
       __Pyx_XDECREF(__pyx_r);
-      if (unlikely(!__pyx_v_total_popularity_view.memview)) { __Pyx_RaiseUnboundLocalError("total_popularity_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-      __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_total_popularity_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_int, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_int, 0);; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(!__pyx_v_total_popularity_view.memview)) { __Pyx_RaiseUnboundLocalError("total_popularity_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+      __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_total_popularity_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_int, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_int, 0);; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -17637,7 +17673,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
           __pyx_t_6 = 1;
         }
       }
-      __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       if (__pyx_t_5) {
         PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __Pyx_GIVEREF(__pyx_t_5); __pyx_t_5 = NULL;
@@ -17648,7 +17684,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
       PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -17660,20 +17696,20 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1255
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1282
  * 
  *     cpdef update_items_popularity(self, interact_type, unsigned int [:] total_popularity_view):
  *         item_ids = self.get_items_interacted_with(interact_type)             # <<<<<<<<<<<<<<
  *         #print item_ids
  *         cdef int itemid
  */
-  __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_interact_type); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_1 = ((struct __pyx_vtabstruct_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->get_items_interacted_with(__pyx_v_self, __pyx_t_8, 0, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_interact_type); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1282; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = ((struct __pyx_vtabstruct_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->get_items_interacted_with(__pyx_v_self, __pyx_t_8, 0, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1282; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_item_ids = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1258
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1285
  *         #print item_ids
  *         cdef int itemid
  *         for itemid in item_ids:             # <<<<<<<<<<<<<<
@@ -17684,25 +17720,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __pyx_t_1 = __pyx_v_item_ids; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
     __pyx_t_9 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_item_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_item_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   for (;;) {
     if (likely(!__pyx_t_9)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       } else {
         if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #endif
       }
     } else {
@@ -17711,17 +17747,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
       __Pyx_GOTREF(__pyx_t_2);
     }
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1258; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_itemid = __pyx_t_8;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1261
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1288
  *             #print itemid
  *             #if itemid > 11626325: print "oh!"
  *             total_popularity_view[itemid] += 1             # <<<<<<<<<<<<<<
@@ -17731,7 +17767,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
     __pyx_t_8 = __pyx_v_itemid;
     *((unsigned int *) ( /* dim=0 */ (__pyx_v_total_popularity_view.data + __pyx_t_8 * __pyx_v_total_popularity_view.strides[0]) )) += 1;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1258
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1285
  *         #print item_ids
  *         cdef int itemid
  *         for itemid in item_ids:             # <<<<<<<<<<<<<<
@@ -17741,7 +17777,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_u
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1254
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1281
  *         return
  * 
  *     cpdef update_items_popularity(self, interact_type, unsigned int [:] total_popularity_view):             # <<<<<<<<<<<<<<
@@ -17799,11 +17835,11 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_total_popularity_view)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("update_items_popularity", 1, 2, 2, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("update_items_popularity", 1, 2, 2, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_items_popularity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "update_items_popularity") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -17812,11 +17848,11 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_interact_type = values[0];
-    __pyx_v_total_popularity_view = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_int(values[1]); if (unlikely(!__pyx_v_total_popularity_view.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_total_popularity_view = __Pyx_PyObject_to_MemoryviewSlice_ds_unsigned_int(values[1]); if (unlikely(!__pyx_v_total_popularity_view.memview)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("update_items_popularity", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("update_items_popularity", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.update_items_popularity", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -17838,8 +17874,8 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_items_popularity", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_total_popularity_view.memview)) { __Pyx_RaiseUnboundLocalError("total_popularity_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_update_items_popularity(__pyx_v_self, __pyx_v_interact_type, __pyx_v_total_popularity_view, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1254; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__pyx_v_total_popularity_view.memview)) { __Pyx_RaiseUnboundLocalError("total_popularity_view"); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L1_error;} }
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_update_items_popularity(__pyx_v_self, __pyx_v_interact_type, __pyx_v_total_popularity_view, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1281; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17857,7 +17893,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1289
+/* "socintpy/cythoncode/cnetwork_node.pyx":1316
  * 
  *     # by construction, train, test sets should be sorted by item_id too
  *     cpdef create_training_test_sets_bytime(self, int interact_type, int split_timestamp, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -17895,15 +17931,15 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_create_training_test_sets_bytime); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_create_training_test_sets_bytime); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_59create_training_test_sets_bytime)) {
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_interact_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_split_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_split_timestamp); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_cutoff_rating); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
@@ -17918,7 +17954,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
           __pyx_t_8 = 1;
         }
       }
-      __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(3+__pyx_t_8); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       if (__pyx_t_7) {
         PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_7); __Pyx_GIVEREF(__pyx_t_7); __pyx_t_7 = NULL;
@@ -17932,7 +17968,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_3 = 0;
       __pyx_t_4 = 0;
       __pyx_t_5 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -17944,7 +17980,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1292
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1319
  *         #create train and test set based on a time split
  *         cdef int i
  *         cdef int k1 = 0, k2 = 0             # <<<<<<<<<<<<<<
@@ -17954,7 +17990,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_v_k1 = 0;
   __pyx_v_k2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1294
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1321
  *         cdef int k1 = 0, k2 = 0
  *         cdef float random_num
  *         if self.ndata.c_train_data is not NULL:             # <<<<<<<<<<<<<<
@@ -17964,7 +18000,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_t_10 = ((__pyx_v_self->ndata.c_train_data != NULL) != 0);
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1295
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1322
  *         cdef float random_num
  *         if self.ndata.c_train_data is not NULL:
  *             PyMem_Free(self.ndata.c_train_data)             # <<<<<<<<<<<<<<
@@ -17976,7 +18012,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   __pyx_L3:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1296
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1323
  *         if self.ndata.c_train_data is not NULL:
  *             PyMem_Free(self.ndata.c_train_data)
  *         if self.ndata.c_test_data is not NULL:             # <<<<<<<<<<<<<<
@@ -17986,7 +18022,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_t_10 = ((__pyx_v_self->ndata.c_test_data != NULL) != 0);
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1297
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1324
  *             PyMem_Free(self.ndata.c_train_data)
  *         if self.ndata.c_test_data is not NULL:
  *             PyMem_Free(self.ndata.c_test_data)             # <<<<<<<<<<<<<<
@@ -17998,7 +18034,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   }
   __pyx_L4:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1298
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1325
  *         if self.ndata.c_test_data is not NULL:
  *             PyMem_Free(self.ndata.c_test_data)
  *         self.ndata.c_train_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.ndata.c_length_list[interact_type])             # <<<<<<<<<<<<<<
@@ -18007,7 +18043,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_self->ndata.c_train_data = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *)PyMem_Malloc(((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata)) * (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1299
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1326
  *             PyMem_Free(self.ndata.c_test_data)
  *         self.ndata.c_train_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.ndata.c_length_list[interact_type])
  *         self.ndata.c_test_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.ndata.c_length_list[interact_type])             # <<<<<<<<<<<<<<
@@ -18016,7 +18052,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_self->ndata.c_test_data = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *)PyMem_Malloc(((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata)) * (__pyx_v_self->ndata.c_length_list[__pyx_v_interact_type]))));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1300
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1327
  *         self.ndata.c_train_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.ndata.c_length_list[interact_type])
  *         self.ndata.c_test_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.ndata.c_length_list[interact_type])
  *         if not self.ndata.c_train_data or not self.ndata.c_test_data:             # <<<<<<<<<<<<<<
@@ -18034,17 +18070,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_L6_bool_binop_done:;
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1301
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1328
  *         self.ndata.c_test_data = <idata *>PyMem_Malloc(cython.sizeof(idata) * self.ndata.c_length_list[interact_type])
  *         if not self.ndata.c_train_data or not self.ndata.c_test_data:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  * 
  *         for i in range(self.ndata.c_length_list[interact_type]):
  */
-    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1301; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    PyErr_NoMemory(); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1303
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1330
  *             raise MemoryError()
  * 
  *         for i in range(self.ndata.c_length_list[interact_type]):             # <<<<<<<<<<<<<<
@@ -18055,7 +18091,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
     __pyx_v_i = __pyx_t_13;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1304
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1331
  * 
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating:             # <<<<<<<<<<<<<<
@@ -18065,7 +18101,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_t_10 = ((((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating >= __pyx_v_cutoff_rating) != 0);
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1305
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1332
  *         for i in range(self.ndata.c_length_list[interact_type]):
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating:
  *                 if self.ndata.c_list[interact_type][i].timestamp < split_timestamp:             # <<<<<<<<<<<<<<
@@ -18075,7 +18111,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       __pyx_t_10 = ((((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp < __pyx_v_split_timestamp) != 0);
       if (__pyx_t_10) {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1306
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1333
  *             if self.ndata.c_list[interact_type][i].rating >= cutoff_rating:
  *                 if self.ndata.c_list[interact_type][i].timestamp < split_timestamp:
  *                     self.ndata.c_train_data[k1].item_id = self.ndata.c_list[interact_type][i].item_id             # <<<<<<<<<<<<<<
@@ -18085,7 +18121,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_14 = ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id;
         (__pyx_v_self->ndata.c_train_data[__pyx_v_k1]).item_id = __pyx_t_14;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1307
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1334
  *                 if self.ndata.c_list[interact_type][i].timestamp < split_timestamp:
  *                     self.ndata.c_train_data[k1].item_id = self.ndata.c_list[interact_type][i].item_id
  *                     self.ndata.c_train_data[k1].rating = self.ndata.c_list[interact_type][i].rating             # <<<<<<<<<<<<<<
@@ -18095,7 +18131,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_14 = ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating;
         (__pyx_v_self->ndata.c_train_data[__pyx_v_k1]).rating = __pyx_t_14;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1308
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1335
  *                     self.ndata.c_train_data[k1].item_id = self.ndata.c_list[interact_type][i].item_id
  *                     self.ndata.c_train_data[k1].rating = self.ndata.c_list[interact_type][i].rating
  *                     self.ndata.c_train_data[k1].timestamp = self.ndata.c_list[interact_type][i].timestamp             # <<<<<<<<<<<<<<
@@ -18105,7 +18141,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_15 = ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp;
         (__pyx_v_self->ndata.c_train_data[__pyx_v_k1]).timestamp = __pyx_t_15;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1309
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1336
  *                     self.ndata.c_train_data[k1].rating = self.ndata.c_list[interact_type][i].rating
  *                     self.ndata.c_train_data[k1].timestamp = self.ndata.c_list[interact_type][i].timestamp
  *                     k1 += 1             # <<<<<<<<<<<<<<
@@ -18117,7 +18153,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
       }
       /*else*/ {
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1311
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1338
  *                     k1 += 1
  *                 else:
  *                     self.ndata.c_test_data[k2].item_id = self.ndata.c_list[interact_type][i].item_id             # <<<<<<<<<<<<<<
@@ -18127,7 +18163,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_14 = ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).item_id;
         (__pyx_v_self->ndata.c_test_data[__pyx_v_k2]).item_id = __pyx_t_14;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1312
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1339
  *                 else:
  *                     self.ndata.c_test_data[k2].item_id = self.ndata.c_list[interact_type][i].item_id
  *                     self.ndata.c_test_data[k2].rating = self.ndata.c_list[interact_type][i].rating             # <<<<<<<<<<<<<<
@@ -18137,7 +18173,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_14 = ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).rating;
         (__pyx_v_self->ndata.c_test_data[__pyx_v_k2]).rating = __pyx_t_14;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1313
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1340
  *                     self.ndata.c_test_data[k2].item_id = self.ndata.c_list[interact_type][i].item_id
  *                     self.ndata.c_test_data[k2].rating = self.ndata.c_list[interact_type][i].rating
  *                     self.ndata.c_test_data[k2].timestamp = self.ndata.c_list[interact_type][i].timestamp             # <<<<<<<<<<<<<<
@@ -18147,7 +18183,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
         __pyx_t_15 = ((__pyx_v_self->ndata.c_list[__pyx_v_interact_type])[__pyx_v_i]).timestamp;
         (__pyx_v_self->ndata.c_test_data[__pyx_v_k2]).timestamp = __pyx_t_15;
 
-        /* "socintpy/cythoncode/cnetwork_node.pyx":1314
+        /* "socintpy/cythoncode/cnetwork_node.pyx":1341
  *                     self.ndata.c_test_data[k2].rating = self.ndata.c_list[interact_type][i].rating
  *                     self.ndata.c_test_data[k2].timestamp = self.ndata.c_list[interact_type][i].timestamp
  *                     k2 += 1             # <<<<<<<<<<<<<<
@@ -18162,7 +18198,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
     __pyx_L10:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1315
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1342
  *                     self.ndata.c_test_data[k2].timestamp = self.ndata.c_list[interact_type][i].timestamp
  *                     k2 += 1
  *         self.ndata.c_length_train_ids = k1             # <<<<<<<<<<<<<<
@@ -18171,7 +18207,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_self->ndata.c_length_train_ids = __pyx_v_k1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1316
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1343
  *                     k2 += 1
  *         self.ndata.c_length_train_ids = k1
  *         self.ndata.c_length_test_ids = k2             # <<<<<<<<<<<<<<
@@ -18180,7 +18216,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
  */
   __pyx_v_self->ndata.c_length_test_ids = __pyx_v_k2;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1317
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1344
  *         self.ndata.c_length_train_ids = k1
  *         self.ndata.c_length_test_ids = k2
  *         return             # <<<<<<<<<<<<<<
@@ -18191,7 +18227,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_c
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1289
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1316
  * 
  *     # by construction, train, test sets should be sorted by item_id too
  *     cpdef create_training_test_sets_bytime(self, int interact_type, int split_timestamp, float cutoff_rating):             # <<<<<<<<<<<<<<
@@ -18250,16 +18286,16 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_split_timestamp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_training_test_sets_bytime", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("create_training_test_sets_bytime", 1, 3, 3, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cutoff_rating)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("create_training_test_sets_bytime", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("create_training_test_sets_bytime", 1, 3, 3, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_training_test_sets_bytime") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "create_training_test_sets_bytime") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -18268,13 +18304,13 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_split_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_split_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_split_timestamp = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_split_timestamp == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_cutoff_rating = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_cutoff_rating == (float)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("create_training_test_sets_bytime", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("create_training_test_sets_bytime", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.create_training_test_sets_bytime", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -18296,7 +18332,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("create_training_test_sets_bytime", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_create_training_test_sets_bytime(__pyx_v_self, __pyx_v_interact_type, __pyx_v_split_timestamp, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1289; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_create_training_test_sets_bytime(__pyx_v_self, __pyx_v_interact_type, __pyx_v_split_timestamp, __pyx_v_cutoff_rating, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1316; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -18313,7 +18349,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1319
+/* "socintpy/cythoncode/cnetwork_node.pyx":1346
  *         return
  * 
  *     cpdef get_others_prev_actions(self, other_nodes, length_other_nodes, interact_type, timestamp, min_interactions_per_user, time_diff, time_scale, debug=False):             # <<<<<<<<<<<<<<
@@ -18361,7 +18397,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_others_prev_actions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_others_prev_actions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_61get_others_prev_actions)) {
       __Pyx_XDECREF(__pyx_r);
@@ -18378,7 +18414,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
           __pyx_t_5 = 1;
         }
       }
-      __pyx_t_6 = PyTuple_New(8+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(8+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       if (__pyx_t_4) {
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __Pyx_GIVEREF(__pyx_t_4); __pyx_t_4 = NULL;
@@ -18407,7 +18443,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       __Pyx_INCREF(__pyx_v_debug);
       PyTuple_SET_ITEM(__pyx_t_6, 7+__pyx_t_5, __pyx_v_debug);
       __Pyx_GIVEREF(__pyx_v_debug);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -18419,7 +18455,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1321
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1348
  *     cpdef get_others_prev_actions(self, other_nodes, length_other_nodes, interact_type, timestamp, min_interactions_per_user, time_diff, time_scale, debug=False):
  *         cdef int j, index
  *         cdef int size_stream = -1             # <<<<<<<<<<<<<<
@@ -18428,39 +18464,39 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   __pyx_v_size_stream = -1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1327
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1354
  *         cdef int i
  *         if True:#self.length_fakedata_inf_fr_stream == -1:
  *             lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))             # <<<<<<<<<<<<<<
  *             others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))
  *             valid_flag = True
  */
-  __pyx_t_1 = __Pyx_PyInt_FromSize_t((sizeof(int))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1327; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_FromSize_t((sizeof(int))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1354; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Multiply(__pyx_v_length_other_nodes, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1327; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyNumber_Multiply(__pyx_v_length_other_nodes, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1354; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_7 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1327; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_7 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1354; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_lengths_others_interactions = ((int *)PyMem_Malloc(__pyx_t_7));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1328
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1355
  *         if True:#self.length_fakedata_inf_fr_stream == -1:
  *             lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
  *             others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))             # <<<<<<<<<<<<<<
  *             valid_flag = True
  *             for i in range(length_other_nodes):
  */
-  __pyx_t_2 = __Pyx_PyInt_FromSize_t((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_FromSize_t((sizeof(struct __pyx_t_8socintpy_10cythoncode_10data_types_idata *))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1355; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v_length_other_nodes, __pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyNumber_Multiply(__pyx_v_length_other_nodes, __pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1355; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1328; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (size_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1355; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_others_interactions = ((struct __pyx_t_8socintpy_10cythoncode_10data_types_idata **)PyMem_Malloc(__pyx_t_7));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1329
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1356
  *             lengths_others_interactions = <int *>PyMem_Malloc(length_other_nodes*cython.sizeof(int))
  *             others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))
  *             valid_flag = True             # <<<<<<<<<<<<<<
@@ -18469,25 +18505,25 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   __pyx_v_valid_flag = 1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1330
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1357
  *             others_interactions = <idata **>PyMem_Malloc(length_other_nodes*sizeof(idata *))
  *             valid_flag = True
  *             for i in range(length_other_nodes):             # <<<<<<<<<<<<<<
  *                 c_node_obj = <CNetworkNode>other_nodes[i]
  *                 lengths_others_interactions[i] = c_node_obj.ndata.c_length_list[interact_type]
  */
-  __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_v_length_other_nodes); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1330; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_v_length_other_nodes); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1331
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1358
  *             valid_flag = True
  *             for i in range(length_other_nodes):
  *                 c_node_obj = <CNetworkNode>other_nodes[i]             # <<<<<<<<<<<<<<
  *                 lengths_others_interactions[i] = c_node_obj.ndata.c_length_list[interact_type]
  *                 others_interactions[i] = c_node_obj.ndata.c_list[interact_type]
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_other_nodes, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1331; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_other_nodes, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1358; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_2 = __pyx_t_1;
     __Pyx_INCREF(__pyx_t_2);
@@ -18495,42 +18531,42 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __Pyx_XDECREF_SET(__pyx_v_c_node_obj, ((struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1332
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1359
  *             for i in range(length_other_nodes):
  *                 c_node_obj = <CNetworkNode>other_nodes[i]
  *                 lengths_others_interactions[i] = c_node_obj.ndata.c_length_list[interact_type]             # <<<<<<<<<<<<<<
  *                 others_interactions[i] = c_node_obj.ndata.c_list[interact_type]
  *                 if lengths_others_interactions[i] < min_interactions_per_user:
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1332; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     (__pyx_v_lengths_others_interactions[__pyx_v_i]) = (__pyx_v_c_node_obj->ndata.c_length_list[__pyx_t_5]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1333
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1360
  *                 c_node_obj = <CNetworkNode>other_nodes[i]
  *                 lengths_others_interactions[i] = c_node_obj.ndata.c_length_list[interact_type]
  *                 others_interactions[i] = c_node_obj.ndata.c_list[interact_type]             # <<<<<<<<<<<<<<
  *                 if lengths_others_interactions[i] < min_interactions_per_user:
  *                     valid_flag = False
  */
-    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1333; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_interact_type); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1360; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     (__pyx_v_others_interactions[__pyx_v_i]) = (__pyx_v_c_node_obj->ndata.c_list[__pyx_t_5]);
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1334
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1361
  *                 lengths_others_interactions[i] = c_node_obj.ndata.c_length_list[interact_type]
  *                 others_interactions[i] = c_node_obj.ndata.c_list[interact_type]
  *                 if lengths_others_interactions[i] < min_interactions_per_user:             # <<<<<<<<<<<<<<
  *                     valid_flag = False
  *             if not valid_flag:
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_lengths_others_interactions[__pyx_v_i])); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_lengths_others_interactions[__pyx_v_i])); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_min_interactions_per_user, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_min_interactions_per_user, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1334; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1335
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1362
  *                 others_interactions[i] = c_node_obj.ndata.c_list[interact_type]
  *                 if lengths_others_interactions[i] < min_interactions_per_user:
  *                     valid_flag = False             # <<<<<<<<<<<<<<
@@ -18543,7 +18579,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_L5:;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1336
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1363
  *                 if lengths_others_interactions[i] < min_interactions_per_user:
  *                     valid_flag = False
  *             if not valid_flag:             # <<<<<<<<<<<<<<
@@ -18553,28 +18589,28 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_t_10 = ((!(__pyx_v_valid_flag != 0)) != 0);
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1337
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1364
  *                     valid_flag = False
  *             if not valid_flag:
  *                 print "ALERT: Valid flag is false!!!"             # <<<<<<<<<<<<<<
  *             others_stream = create_nodes_interaction_stream(others_interactions,
  *                     lengths_others_interactions, length_other_nodes, &size_stream)
  */
-    if (__Pyx_PrintOne(0, __pyx_kp_s_ALERT_Valid_flag_is_false) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1337; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (__Pyx_PrintOne(0, __pyx_kp_s_ALERT_Valid_flag_is_false) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1364; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     goto __pyx_L6;
   }
   __pyx_L6:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1339
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1366
  *                 print "ALERT: Valid flag is false!!!"
  *             others_stream = create_nodes_interaction_stream(others_interactions,
  *                     lengths_others_interactions, length_other_nodes, &size_stream)             # <<<<<<<<<<<<<<
  * 
  *             self.fakedata_inf_fr_stream = others_stream
  */
-  __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_length_other_nodes); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1339; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_length_other_nodes); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1366; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1338
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1365
  *             if not valid_flag:
  *                 print "ALERT: Valid flag is false!!!"
  *             others_stream = create_nodes_interaction_stream(others_interactions,             # <<<<<<<<<<<<<<
@@ -18583,7 +18619,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   __pyx_v_others_stream = __pyx_f_8socintpy_10cythoncode_13cnetwork_node_create_nodes_interaction_stream(__pyx_v_others_interactions, __pyx_v_lengths_others_interactions, __pyx_t_9, (&__pyx_v_size_stream));
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1341
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1368
  *                     lengths_others_interactions, length_other_nodes, &size_stream)
  * 
  *             self.fakedata_inf_fr_stream = others_stream             # <<<<<<<<<<<<<<
@@ -18592,7 +18628,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   __pyx_v_self->fakedata_inf_fr_stream = __pyx_v_others_stream;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1342
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1369
  * 
  *             self.fakedata_inf_fr_stream = others_stream
  *             self.length_fakedata_inf_fr_stream = size_stream             # <<<<<<<<<<<<<<
@@ -18601,7 +18637,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   __pyx_v_self->length_fakedata_inf_fr_stream = __pyx_v_size_stream;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1344
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1371
  *             self.length_fakedata_inf_fr_stream = size_stream
  *             #PyMem_Free(others_stream)
  *             PyMem_Free(others_interactions)             # <<<<<<<<<<<<<<
@@ -18610,7 +18646,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   PyMem_Free(__pyx_v_others_interactions);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1345
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1372
  *             #PyMem_Free(others_stream)
  *             PyMem_Free(others_interactions)
  *             PyMem_Free(lengths_others_interactions)             # <<<<<<<<<<<<<<
@@ -18619,29 +18655,29 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   PyMem_Free(__pyx_v_lengths_others_interactions);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1346
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1373
  *             PyMem_Free(others_interactions)
  *             PyMem_Free(lengths_others_interactions)
  *         fr_interacts = []             # <<<<<<<<<<<<<<
  *         index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream,
  *                     timestamp, debug)
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1373; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_fr_interacts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1348
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1375
  *         fr_interacts = []
  *         index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream,
  *                     timestamp, debug)             # <<<<<<<<<<<<<<
  *         if index <-1 or index >= self.length_fakedata_inf_fr_stream:
  *             if debug:
  */
-  __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_timestamp); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1348; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1348; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_v_timestamp); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1375; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1375; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1347
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1374
  *             PyMem_Free(lengths_others_interactions)
  *         fr_interacts = []
  *         index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream,             # <<<<<<<<<<<<<<
@@ -18650,7 +18686,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   __pyx_v_index = __pyx_f_8socintpy_10cythoncode_13binary_search_binary_search_closest_temporal(__pyx_v_self->fakedata_inf_fr_stream, __pyx_v_self->length_fakedata_inf_fr_stream, __pyx_t_9, __pyx_t_10);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1349
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1376
  *         index = binary_search_closest_temporal(self.fakedata_inf_fr_stream, self.length_fakedata_inf_fr_stream,
  *                     timestamp, debug)
  *         if index <-1 or index >= self.length_fakedata_inf_fr_stream:             # <<<<<<<<<<<<<<
@@ -18668,26 +18704,26 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_L8_bool_binop_done:;
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1350
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1377
  *                     timestamp, debug)
  *         if index <-1 or index >= self.length_fakedata_inf_fr_stream:
  *             if debug:             # <<<<<<<<<<<<<<
  *                 print "ERROR:Cython: Big Error, how can index of friend stream be", index
  *             return None
  */
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1350; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1351
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1378
  *         if index <-1 or index >= self.length_fakedata_inf_fr_stream:
  *             if debug:
  *                 print "ERROR:Cython: Big Error, how can index of friend stream be", index             # <<<<<<<<<<<<<<
  *             return None
  *         elif index == -1:
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1351; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1378; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1351; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1378; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_INCREF(__pyx_kp_s_ERROR_Cython_Big_Error_how_can_i_2);
       PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_s_ERROR_Cython_Big_Error_how_can_i_2);
@@ -18695,13 +18731,13 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
       PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
       __pyx_t_1 = 0;
-      if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1351; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1378; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       goto __pyx_L10;
     }
     __pyx_L10:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1352
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1379
  *             if debug:
  *                 print "ERROR:Cython: Big Error, how can index of friend stream be", index
  *             return None             # <<<<<<<<<<<<<<
@@ -18714,7 +18750,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1353
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1380
  *                 print "ERROR:Cython: Big Error, how can index of friend stream be", index
  *             return None
  *         elif index == -1:             # <<<<<<<<<<<<<<
@@ -18724,29 +18760,29 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_t_10 = ((__pyx_v_index == -1) != 0);
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1354
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1381
  *             return None
  *         elif index == -1:
  *             if debug:             # <<<<<<<<<<<<<<
  *                 print "WARN: Not enough interactions in others test set before this interaction"
  *             return None
  */
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1354; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1381; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1355
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1382
  *         elif index == -1:
  *             if debug:
  *                 print "WARN: Not enough interactions in others test set before this interaction"             # <<<<<<<<<<<<<<
  *             return None
  *         if index+1<time_diff:
  */
-      if (__Pyx_PrintOne(0, __pyx_kp_s_WARN_Not_enough_interactions_in) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1355; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__Pyx_PrintOne(0, __pyx_kp_s_WARN_Not_enough_interactions_in) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1382; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       goto __pyx_L11;
     }
     __pyx_L11:;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1356
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1383
  *             if debug:
  *                 print "WARN: Not enough interactions in others test set before this interaction"
  *             return None             # <<<<<<<<<<<<<<
@@ -18759,39 +18795,39 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     goto __pyx_L0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1357
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1384
  *                 print "WARN: Not enough interactions in others test set before this interaction"
  *             return None
  *         if index+1<time_diff:             # <<<<<<<<<<<<<<
  *             if debug:
  *                 print "WARN: Few nodes for random sample of influence"
  */
-  __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_index + 1)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_long((__pyx_v_index + 1)); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_time_diff, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v_time_diff, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1357; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1384; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_10) {
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1358
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1385
  *             return None
  *         if index+1<time_diff:
  *             if debug:             # <<<<<<<<<<<<<<
  *                 print "WARN: Few nodes for random sample of influence"
  *         j=index
  */
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1358; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_v_debug); if (unlikely(__pyx_t_10 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1385; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     if (__pyx_t_10) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1359
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1386
  *         if index+1<time_diff:
  *             if debug:
  *                 print "WARN: Few nodes for random sample of influence"             # <<<<<<<<<<<<<<
  *         j=index
  *         while j >index-time_diff and j>=0:
  */
-      if (__Pyx_PrintOne(0, __pyx_kp_s_WARN_Few_nodes_for_random_sample) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1359; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__Pyx_PrintOne(0, __pyx_kp_s_WARN_Few_nodes_for_random_sample) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1386; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       goto __pyx_L13;
     }
     __pyx_L13:;
@@ -18799,7 +18835,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   }
   __pyx_L12:;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1360
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1387
  *             if debug:
  *                 print "WARN: Few nodes for random sample of influence"
  *         j=index             # <<<<<<<<<<<<<<
@@ -18808,7 +18844,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   __pyx_v_j = __pyx_v_index;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1361
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1388
  *                 print "WARN: Few nodes for random sample of influence"
  *         j=index
  *         while j >index-time_diff and j>=0:             # <<<<<<<<<<<<<<
@@ -18816,17 +18852,17 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  *             j -= 1
  */
   while (1) {
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_j); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_j); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1388; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1388; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_v_time_diff); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_v_time_diff); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1388; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1388; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1361; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1388; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_11) {
     } else {
@@ -18838,19 +18874,19 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_L16_bool_binop_done:;
     if (!__pyx_t_10) break;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1362
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1389
  *         j=index
  *         while j >index-time_diff and j>=0:
  *             fr_interacts.append(self.fakedata_inf_fr_stream[j].item_id)             # <<<<<<<<<<<<<<
  *             j -= 1
  * 
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_self->fakedata_inf_fr_stream[__pyx_v_j]).item_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1362; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_self->fakedata_inf_fr_stream[__pyx_v_j]).item_id); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1389; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_fr_interacts, __pyx_t_2); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1362; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_fr_interacts, __pyx_t_2); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1389; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1363
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1390
  *         while j >index-time_diff and j>=0:
  *             fr_interacts.append(self.fakedata_inf_fr_stream[j].item_id)
  *             j -= 1             # <<<<<<<<<<<<<<
@@ -18860,7 +18896,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
     __pyx_v_j = (__pyx_v_j - 1);
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1370
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1397
  *         print "DONEYO"
  *         """
  *         PyMem_Free(others_stream)             # <<<<<<<<<<<<<<
@@ -18869,7 +18905,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
  */
   PyMem_Free(__pyx_v_others_stream);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1371
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1398
  *         """
  *         PyMem_Free(others_stream)
  *         return fr_interacts             # <<<<<<<<<<<<<<
@@ -18881,7 +18917,7 @@ static PyObject *__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_g
   __pyx_r = __pyx_v_fr_interacts;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1319
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1346
  *         return
  * 
  *     cpdef get_others_prev_actions(self, other_nodes, length_other_nodes, interact_type, timestamp, min_interactions_per_user, time_diff, time_scale, debug=False):             # <<<<<<<<<<<<<<
@@ -18950,32 +18986,32 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_length_other_nodes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_interact_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_timestamp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_min_interactions_per_user)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_time_diff)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  6:
         if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_time_scale)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, 6); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  7:
         if (kw_args > 0) {
@@ -18984,7 +19020,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_others_prev_actions") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_others_prev_actions") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -19011,7 +19047,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("get_others_prev_actions", 0, 7, 8, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("socintpy.cythoncode.cnetwork_node.CNetworkNode.get_others_prev_actions", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -19036,7 +19072,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.debug = __pyx_v_debug;
-  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_others_prev_actions(__pyx_v_self, __pyx_v_other_nodes, __pyx_v_length_other_nodes, __pyx_v_interact_type, __pyx_v_timestamp, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1319; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode->get_others_prev_actions(__pyx_v_self, __pyx_v_other_nodes, __pyx_v_length_other_nodes, __pyx_v_interact_type, __pyx_v_timestamp, __pyx_v_min_interactions_per_user, __pyx_v_time_diff, __pyx_v_time_scale, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1346; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -19053,7 +19089,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1373
+/* "socintpy/cythoncode/cnetwork_node.pyx":1400
  *         return fr_interacts
  * 
  *     def get_train_ids_list(self, int interact_type):             # <<<<<<<<<<<<<<
@@ -19072,7 +19108,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_train_ids_list (wrapper)", 0);
   assert(__pyx_arg_interact_type); {
-    __pyx_v_interact_type = __Pyx_PyInt_As_int(__pyx_arg_interact_type); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1373; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_interact_type = __Pyx_PyInt_As_int(__pyx_arg_interact_type); if (unlikely((__pyx_v_interact_type == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1400; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19101,19 +19137,19 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_train_ids_list", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1375
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1402
  *     def get_train_ids_list(self, int interact_type):
  *         cdef int i
  *         itemid_arr = []             # <<<<<<<<<<<<<<
  *         for i in range(self.ndata.c_length_train_ids):
  *             itemid_arr.append(self.ndata.c_train_data[i].item_id)
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1375; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1402; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_itemid_arr = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1376
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1403
  *         cdef int i
  *         itemid_arr = []
  *         for i in range(self.ndata.c_length_train_ids):             # <<<<<<<<<<<<<<
@@ -19124,20 +19160,20 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1377
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1404
  *         itemid_arr = []
  *         for i in range(self.ndata.c_length_train_ids):
  *             itemid_arr.append(self.ndata.c_train_data[i].item_id)             # <<<<<<<<<<<<<<
  *         return itemid_arr
  * 
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_train_data[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->ndata.c_train_data[__pyx_v_i]).item_id); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1404; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_itemid_arr, __pyx_t_1); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1377; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_itemid_arr, __pyx_t_1); if (unlikely(__pyx_t_4 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1404; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1378
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1405
  *         for i in range(self.ndata.c_length_train_ids):
  *             itemid_arr.append(self.ndata.c_train_data[i].item_id)
  *         return itemid_arr             # <<<<<<<<<<<<<<
@@ -19149,7 +19185,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __pyx_r = __pyx_v_itemid_arr;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1373
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1400
  *         return fr_interacts
  * 
  *     def get_train_ids_list(self, int interact_type):             # <<<<<<<<<<<<<<
@@ -19169,7 +19205,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1380
+/* "socintpy/cythoncode/cnetwork_node.pyx":1407
  *         return itemid_arr
  * 
  *     def in_test_set(self, int item_id):             # <<<<<<<<<<<<<<
@@ -19188,7 +19224,7 @@ static PyObject *__pyx_pw_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("in_test_set (wrapper)", 0);
   assert(__pyx_arg_item_id); {
-    __pyx_v_item_id = __Pyx_PyInt_As_int(__pyx_arg_item_id); if (unlikely((__pyx_v_item_id == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1380; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_item_id = __Pyx_PyInt_As_int(__pyx_arg_item_id); if (unlikely((__pyx_v_item_id == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1407; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19218,7 +19254,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("in_test_set", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1382
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1409
  *     def in_test_set(self, int item_id):
  *         cdef int i
  *         for i in range(self.ndata.c_length_test_ids):             # <<<<<<<<<<<<<<
@@ -19229,28 +19265,28 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "socintpy/cythoncode/cnetwork_node.pyx":1383
+    /* "socintpy/cythoncode/cnetwork_node.pyx":1410
  *         cdef int i
  *         for i in range(self.ndata.c_length_test_ids):
  *             if self.c_test_ids[i] == item_id:             # <<<<<<<<<<<<<<
  *                 return True
  *         return False
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_c_test_ids); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1383; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_c_test_ids); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1410; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1383; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_3, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_4 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1410; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_item_id); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1383; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_item_id); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1410; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1383; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1410; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_6 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1383; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_6 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1410; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_6) {
 
-      /* "socintpy/cythoncode/cnetwork_node.pyx":1384
+      /* "socintpy/cythoncode/cnetwork_node.pyx":1411
  *         for i in range(self.ndata.c_length_test_ids):
  *             if self.c_test_ids[i] == item_id:
  *                 return True             # <<<<<<<<<<<<<<
@@ -19264,7 +19300,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
     }
   }
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1385
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1412
  *             if self.c_test_ids[i] == item_id:
  *                 return True
  *         return False             # <<<<<<<<<<<<<<
@@ -19276,7 +19312,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   __pyx_r = Py_False;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1380
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1407
  *         return itemid_arr
  * 
  *     def in_test_set(self, int item_id):             # <<<<<<<<<<<<<<
@@ -19297,7 +19333,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1416
+/* "socintpy/cythoncode/cnetwork_node.pyx":1443
  *     """
  * 
  *     def get_details(self, interact_type):             # <<<<<<<<<<<<<<
@@ -19329,16 +19365,16 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_details", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1417
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1444
  * 
  *     def get_details(self, interact_type):
  *         print "Node Id: ", self.ndata.c_uid             # <<<<<<<<<<<<<<
  *         print "Should Have Interactions", self.c_should_have_interactions
  *         print "Should Have Friends", self.c_should_have_friends
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1417; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1444; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1417; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1444; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_kp_s_Node_Id);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_s_Node_Id);
@@ -19346,19 +19382,19 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1417; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1444; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1418
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1445
  *     def get_details(self, interact_type):
  *         print "Node Id: ", self.ndata.c_uid
  *         print "Should Have Interactions", self.c_should_have_interactions             # <<<<<<<<<<<<<<
  *         print "Should Have Friends", self.c_should_have_friends
  *         print "Num Interactions", self.get_num_interactions(interact_type)
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_interactions); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1418; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_interactions); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1445; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1418; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1445; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_kp_s_Should_Have_Interactions);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_s_Should_Have_Interactions);
@@ -19366,19 +19402,19 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  if (__Pyx_Print(0, __pyx_t_1, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1418; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_Print(0, __pyx_t_1, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1445; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1419
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1446
  *         print "Node Id: ", self.ndata.c_uid
  *         print "Should Have Interactions", self.c_should_have_interactions
  *         print "Should Have Friends", self.c_should_have_friends             # <<<<<<<<<<<<<<
  *         print "Num Interactions", self.get_num_interactions(interact_type)
  *         print "Num Friends", self.get_num_friends()
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1419; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1446; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1419; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1446; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_kp_s_Should_Have_Friends);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_s_Should_Have_Friends);
@@ -19386,20 +19422,20 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1419; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1446; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1420
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1447
  *         print "Should Have Interactions", self.c_should_have_interactions
  *         print "Should Have Friends", self.c_should_have_friends
  *         print "Num Interactions", self.get_num_interactions(interact_type)             # <<<<<<<<<<<<<<
  *         print "Num Friends", self.get_num_friends()
  * 
  */
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_interact_type); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1420; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_2 = ((struct __pyx_vtabstruct_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->get_num_interactions(__pyx_v_self, __pyx_t_3, 0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1420; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_interact_type); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1447; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = ((struct __pyx_vtabstruct_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->get_num_interactions(__pyx_v_self, __pyx_t_3, 0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1447; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1420; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1447; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_kp_s_Num_Interactions);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_s_Num_Interactions);
@@ -19407,19 +19443,19 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
-  if (__Pyx_Print(0, __pyx_t_1, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1420; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_Print(0, __pyx_t_1, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1447; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1421
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1448
  *         print "Should Have Friends", self.c_should_have_friends
  *         print "Num Interactions", self.get_num_interactions(interact_type)
  *         print "Num Friends", self.get_num_friends()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->get_num_friends(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1421; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = ((struct __pyx_vtabstruct_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *)__pyx_v_self->__pyx_vtab)->get_num_friends(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1448; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1421; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1448; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_kp_s_Num_Friends);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_s_Num_Friends);
@@ -19427,10 +19463,10 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
-  if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1421; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_Print(0, __pyx_t_2, 1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1448; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1416
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1443
  *     """
  * 
  *     def get_details(self, interact_type):             # <<<<<<<<<<<<<<
@@ -19452,7 +19488,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1425
+/* "socintpy/cythoncode/cnetwork_node.pyx":1452
  * 
  *     property uid:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19482,7 +19518,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1426
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1453
  *     property uid:
  *         def __get__(self):
  *             return self.ndata.c_uid             # <<<<<<<<<<<<<<
@@ -19490,13 +19526,13 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
  *             self.ndata.c_uid = value
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1426; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_uid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1453; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1425
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1452
  * 
  *     property uid:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19515,7 +19551,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1427
+/* "socintpy/cythoncode/cnetwork_node.pyx":1454
  *         def __get__(self):
  *             return self.ndata.c_uid
  *         def __set__(self, value):             # <<<<<<<<<<<<<<
@@ -19545,17 +19581,17 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_3uid_2
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1428
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1455
  *             return self.ndata.c_uid
  *         def __set__(self, value):
  *             self.ndata.c_uid = value             # <<<<<<<<<<<<<<
  * 
  *     property should_have_interactions:
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1428; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1455; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->ndata.c_uid = __pyx_t_1;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1427
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1454
  *         def __get__(self):
  *             return self.ndata.c_uid
  *         def __set__(self, value):             # <<<<<<<<<<<<<<
@@ -19574,7 +19610,7 @@ static int __pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_3uid_2
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1431
+/* "socintpy/cythoncode/cnetwork_node.pyx":1458
  * 
  *     property should_have_interactions:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19604,7 +19640,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1432
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1459
  *     property should_have_interactions:
  *         def __get__(self):
  *             return self.c_should_have_interactions             # <<<<<<<<<<<<<<
@@ -19612,13 +19648,13 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
  *     property should_have_friends:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1432; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_interactions); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1459; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1431
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1458
  * 
  *     property should_have_interactions:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19637,7 +19673,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1435
+/* "socintpy/cythoncode/cnetwork_node.pyx":1462
  * 
  *     property should_have_friends:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19667,7 +19703,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1436
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1463
  *     property should_have_friends:
  *         def __get__(self):
  *             return self.c_should_have_friends             # <<<<<<<<<<<<<<
@@ -19675,13 +19711,13 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
  *     property length_test_ids:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1436; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->c_should_have_friends); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1463; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1435
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1462
  * 
  *     property should_have_friends:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19700,7 +19736,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1439
+/* "socintpy/cythoncode/cnetwork_node.pyx":1466
  * 
  *     property length_test_ids:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19730,7 +19766,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1440
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1467
  *     property length_test_ids:
  *         def __get__(self):
  *             return self.ndata.c_length_test_ids             # <<<<<<<<<<<<<<
@@ -19738,13 +19774,13 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
  *     property length_train_ids:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_length_test_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1440; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_length_test_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1467; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1439
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1466
  * 
  *     property length_test_ids:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19763,7 +19799,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/cnetwork_node.pyx":1443
+/* "socintpy/cythoncode/cnetwork_node.pyx":1470
  * 
  *     property length_train_ids:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -19793,7 +19829,7 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1444
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1471
  *     property length_train_ids:
  *         def __get__(self):
  *             return self.ndata.c_length_train_ids             # <<<<<<<<<<<<<<
@@ -19801,13 +19837,13 @@ static PyObject *__pyx_pf_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_
  *     #property interactions:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_length_train_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1444; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->ndata.c_length_train_ids); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1471; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1443
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1470
  * 
  *     property length_train_ids:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -21824,7 +21860,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   return __pyx_r;
 }
 
-/* "socintpy/cythoncode/data_types.pxd":84
+/* "socintpy/cythoncode/data_types.pxd":85
  * 
  * 
  * cdef inline int int_min(int a, int b) nogil: return a if a <= b else b             # <<<<<<<<<<<<<<
@@ -33459,9 +33495,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_max_friends, __pyx_k_max_friends, sizeof(__pyx_k_max_friends), 0, 0, 1, 1},
   {&__pyx_n_s_max_interact_ratio_error, __pyx_k_max_interact_ratio_error, sizeof(__pyx_k_max_interact_ratio_error), 0, 0, 1, 1},
   {&__pyx_n_s_max_node_computes, __pyx_k_max_node_computes, sizeof(__pyx_k_max_node_computes), 0, 0, 1, 1},
+  {&__pyx_n_s_max_sim_ratio_error, __pyx_k_max_sim_ratio_error, sizeof(__pyx_k_max_sim_ratio_error), 0, 0, 1, 1},
   {&__pyx_n_s_max_tries, __pyx_k_max_tries, sizeof(__pyx_k_max_tries), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {&__pyx_n_s_min_friends, __pyx_k_min_friends, sizeof(__pyx_k_min_friends), 0, 0, 1, 1},
+  {&__pyx_n_s_min_friends_match_ratio, __pyx_k_min_friends_match_ratio, sizeof(__pyx_k_min_friends_match_ratio), 0, 0, 1, 1},
   {&__pyx_n_s_min_interactions_per_user, __pyx_k_min_interactions_per_user, sizeof(__pyx_k_min_interactions_per_user), 0, 0, 1, 1},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
   {&__pyx_n_s_my_node, __pyx_k_my_node, sizeof(__pyx_k_my_node), 0, 0, 1, 1},
@@ -33476,6 +33514,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_node_data, __pyx_k_node_data, sizeof(__pyx_k_node_data), 0, 0, 1, 1},
   {&__pyx_n_s_nodes_iterable, __pyx_k_nodes_iterable, sizeof(__pyx_k_nodes_iterable), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
+  {&__pyx_n_s_num_parallel_threads, __pyx_k_num_parallel_threads, sizeof(__pyx_k_num_parallel_threads), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
   {&__pyx_n_s_old_item_id, __pyx_k_old_item_id, sizeof(__pyx_k_old_item_id), 0, 0, 1, 1},
@@ -33535,11 +33574,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #if PY_MAJOR_VERSION >= 3
-  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_xrange) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 690; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_xrange) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 717; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #else
-  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_xrange); if (!__pyx_builtin_xrange) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 690; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_xrange = __Pyx_GetBuiltinName(__pyx_n_s_xrange); if (!__pyx_builtin_xrange) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 717; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 835; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 799; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -33556,25 +33595,25 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":544
+  /* "socintpy/cythoncode/cnetwork_node.pyx":571
  *     cdef int i,j
  *     i = 0
  *     indptr[0:2]=0             # <<<<<<<<<<<<<<
  *     i+=1
  *     for node_obj in all_nodes:
  */
-  __pyx_slice_ = PySlice_New(__pyx_int_0, __pyx_int_2, Py_None); if (unlikely(!__pyx_slice_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 544; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice_ = PySlice_New(__pyx_int_0, __pyx_int_2, Py_None); if (unlikely(!__pyx_slice_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 571; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice_);
   __Pyx_GIVEREF(__pyx_slice_);
 
-  /* "socintpy/cythoncode/cnetwork_node.pyx":1116
+  /* "socintpy/cythoncode/cnetwork_node.pyx":1143
  *         #print mat.shape[0], mat.shape[1]
  *         #print self.uid
  *         user_row = mat[self.uid,:]             # <<<<<<<<<<<<<<
  *         sim_col = mat * user_row.T
  *         #sim_indices,_=sim_col.nonzero()
  */
-  __pyx_slice__3 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1116; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__3 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__3);
   __Pyx_GIVEREF(__pyx_slice__3);
 
@@ -33987,10 +34026,10 @@ PyMODINIT_FUNC PyInit_cnetwork_node(void)
   __pyx_vtable_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode.update_items_popularity = (PyObject *(*)(struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *, PyObject *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_update_items_popularity;
   __pyx_vtable_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode.create_training_test_sets_bytime = (PyObject *(*)(struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *, int, int, float, int __pyx_skip_dispatch))__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_create_training_test_sets_bytime;
   __pyx_vtable_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode.get_others_prev_actions = (PyObject *(*)(struct __pyx_obj_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_others_prev_actions *__pyx_optional_args))__pyx_f_8socintpy_10cythoncode_13cnetwork_node_12CNetworkNode_get_others_prev_actions;
-  if (PyType_Ready(&__pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 750; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 777; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode.tp_dict, __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 750; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyObject_SetAttrString(__pyx_m, "CNetworkNode", (PyObject *)&__pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 750; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_SetVtable(__pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode.tp_dict, __pyx_vtabptr_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 777; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "CNetworkNode", (PyObject *)&__pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 777; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode = &__pyx_type_8socintpy_10cythoncode_13cnetwork_node_CNetworkNode;
   if (PyType_Ready(&__pyx_type___pyx_array) < 0) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type___pyx_array.tp_print = 0;

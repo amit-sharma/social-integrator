@@ -127,7 +127,7 @@ cdef twoints binary_search_closest_fsiminfo(fsiminfo *interactions, int length_i
         mid = (lower+upper)/2
         if debug:
             printf("%d %d %d", lower, mid, upper)
-        if fabs(interactions[mid].sim -sim)/interactions[mid].sim <= max_sim_ratio_error:
+        if (interactions[mid].sim <0.00001 and sim<0.00001) or (fabs(interactions[mid].sim -sim)/interactions[mid].sim <= max_sim_ratio_error):
             item_index = mid
             break
         elif interactions[mid].sim > sim:
