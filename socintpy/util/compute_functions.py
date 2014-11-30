@@ -1,8 +1,9 @@
 import socintpy.util.utils as utils
 
 def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, control_divider,
-                   min_interactions_per_user, max_tries, max_node_computes, num_processes,
-                   max_interact_ratio_error,klim, nonfr_match,
+                   min_interactions_per_user, max_tries, max_node_computes, num_threads,
+                   max_interact_ratio_error,max_sim_ratio_error, 
+                   min_friends_match_ratio, klim, nonfr_match,
                    method, allow_duplicates):
     
     #time_diff = 90000 #86400
@@ -13,8 +14,10 @@ def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, co
                                                      selection_method="random",
                                                      klim=klim, max_tries=max_tries,
                                                      max_node_computes=max_node_computes,
-                                                     num_processes=num_processes,
+                                                     num_threads=num_threads,
                                                      max_interact_ratio_error=max_interact_ratio_error,
+                                                     max_sim_ratio_error=max_sim_ratio_error,
+                                                     min_friends_match_ratio=min_friends_match_ratio,
                                                      nonfr_match = nonfr_match,
                                                      method=method, 
                                                      allow_duplicates=allow_duplicates)

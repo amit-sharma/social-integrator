@@ -70,9 +70,9 @@ def compute_node_susceptibility_pywrapper(my_node, other_nodes,
     """
     cdef int i
     cdef float ret
-    cdef netnodedata **other_nodes_ndata = <netnodedata **>malloc(length_other_nodes*sizeof(netnodedata *))
+    cdef netnodedata *other_nodes_ndata = <netnodedata *>malloc(length_other_nodes*sizeof(netnodedata))
     for i in range(length_other_nodes):
-        other_nodes_ndata[i] = &((<CNetworkNode>other_nodes[i]).ndata)
+        other_nodes_ndata[i] = (<CNetworkNode>other_nodes[i]).ndata
     ret = compute_node_susceptibility((<CNetworkNode>my_node).ndata, other_nodes_ndata, 
             length_other_nodes, interact_type, cutoff_rating, data_type_code,
             min_interactions_per_user, time_diff, time_scale, allow_duplicates, debug) 
@@ -113,13 +113,15 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
                                             int time_diff, int time_scale, 
                                             int max_tries, int max_node_computes,
                                             float max_interact_ratio_error,
+                                            float max_sim_ratio_error,
+                                            float min_friends_match_ratio,
+                                            int num_parallel_threads,
                                             bint allow_duplicates):   
     cdef:
         int counter, counter2
         int count_success
         int eligible_nodes_counter
         int edges_counter = 0
-        float max_sim_ratio_error = 0.1
         float fsim, rsim
         int num_eligible_friends
         int total_num_nodes
@@ -139,7 +141,7 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
     cdef loopvars *buf
     cdef netnodedata *loc_allnodes
     cdef int tid = 0
-    with nogil, parallel(num_threads=2):
+    with nogil, parallel(num_threads=num_parallel_threads):
         buf = <loopvars *>malloc(1*sizeof(loopvars))
         buf[0].counter = 0
         buf[0].counter2 = 0
@@ -147,6 +149,7 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
         buf[0].count_success = 0
         buf[0].node_fnode_counter = 0
         buf[0].node_rnode_counter = 0
+        buf[0].rnodes_found_counter = 0
         for i in prange(1,len_nodes_arr,schedule='dynamic'):
         #for i in range(1,len_nodes_arr):
             one_nodeinfo = (<netnodedata *>allnodes[i])[0]
@@ -156,8 +159,11 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
                                             min_interactions_per_user, 
                                             time_diff, time_scale, 
                                             max_tries, 
-                                            max_interact_ratio_error, allow_duplicates,
+                                            max_interact_ratio_error,
+                                            max_sim_ratio_error,
+                                            min_friends_match_ratio, allow_duplicates,
                                             total_num_nodes, &(buf[0].eligible_nodes_counter),
+                                            &(buf[0].rnodes_found_counter),
                                             &(buf[0].node_fnode_counter), &(buf[0].node_rnode_counter))
                  
                 if node_data.fsim > -0.5:# !=-1 but equality not well-defined for float
@@ -181,19 +187,22 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
         printf("--Number of nodes I lod through(with interactions AND friends): %d\n", buf[0].counter2)
         printf("--Eligible nodes (with interactions > %d): %d\n" ,min_interactions_per_user, buf[0].eligible_nodes_counter)
         printf("--Total Edges from eligible nodes: %d\n", edges_counter)
-        printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].count_success)
-        printf("--Successful triplets:")#, len(triplet_nodes) 
+        printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].rnodes_found_counter)
         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)
         printf("--Nodes with eligible fnode and rnode influence measure: %d\n", buf[0].node_rnode_counter)
+        printf("--Successful final nodes: %d\n", buf[0].count_success) 
         free(buf)
-    PyMem_Free(allnodes)
+    free(allnodes)
     return influence_arr
 
 cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, netnodedata c_node,
         int interact_type, float cutoff_rating, float control_divider, 
         int min_interactions_per_user, int time_diff, int time_scale, 
-        int max_tries, float max_interact_ratio_error, bint allow_duplicates, 
+        int max_tries, float max_interact_ratio_error, float max_sim_ratio_error,
+        float min_friends_match_ratio,
+        bint allow_duplicates, 
         int total_num_nodes, int *ptr_eligible_nodes_counter,
+        int *ptr_rnodes_found,
         int *ptr_node_fnode_counter, int *ptr_node_rnode_counter) nogil:
     cdef nodesusceptinfo node_data
     node_data.fsim = -1
@@ -203,9 +212,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
     ptr_eligible_nodes_counter[0] += 1
 
     cdef:
-        float min_friends_match_ratio = 0.9
         int edges_counter = 0
-        float max_sim_ratio_error = 0.1
         int data_type_code=<int>'c' 
         int data_type_code2=<int>'i'
         float fsim, rsim
@@ -216,10 +223,11 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
         float inf1, inf2
         netnodedata  fobj
         fsiminfo *frsim_data_arr = NULL
-        netnodedata **control_nonfr_nodes = NULL
-        netnodedata **selected_friends = NULL
+        netnodedata *control_nonfr_nodes = NULL
+        netnodedata *selected_friends = NULL
         compfrnonfr frnonfr_data
-        int j
+        int *done_friends
+        int i,j
     
     frsim_data_arr = <fsiminfo *>malloc(c_node.c_length_friend_list*cython.sizeof(fsiminfo))
     edges_counter += c_node.c_length_friend_list
@@ -238,8 +246,12 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
                 frsim_data_arr[ictr].sim = fsim
                 frsim_data_arr[ictr].uid = fobj.c_uid
                 ictr += 1
-    qsort(frsim_data_arr, num_eligible_friends, cython.sizeof(fsiminfo), comp_fsiminfo) 
-    
+    qsort(frsim_data_arr, num_eligible_friends, cython.sizeof(fsiminfo), comp_fsiminfo)
+    """
+    for j in range(num_eligible_friends):
+        printf("%d,%f ", frsim_data_arr[j].uid, frsim_data_arr[j].sim)
+    printf("\n")
+    """
     #eligible_fr_sim_arr = fr_sim_arr[:num_eligible_friends]
     max_tries = total_num_nodes #TODO change, do it in python, remember allnodes starts with [1:]
     #randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
@@ -250,35 +262,47 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
     avg_fsim = 0
     avg_rsim = 0
     #found_ids = {} #TODO think of ways to avoid duplicates and ensure every non-friend is tried once, also how to free memory
-    control_nonfr_nodes = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))
-    selected_friends = <netnodedata **>malloc(num_eligible_friends*sizeof(netnodedata *))
+    control_nonfr_nodes = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))
+    selected_friends = <netnodedata *>malloc(num_eligible_friends*sizeof(netnodedata))
 
     rand_node_ids = <int *>malloc(max_tries*sizeof(int))
     for j in range(max_tries): 
         rand_node_ids[j] = j+1
     
+    done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
+    for i in range(num_eligible_friends):
+        done_friends[i] = 0
+
     for r_index in range(max_tries):#, schedule='dynamic', num_threads=1):        
         rand_id = (rand() % (max_tries-r_index))
-        swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
         rand_node = (<netnodedata *>allnodes[rand_node_ids[rand_id]])[0]
+        swap_elements(&(rand_node_ids[rand_id]), &(rand_node_ids[max_tries-r_index-1]))
         frnonfr_data =  compare_friend_nonfriend(c_node, rand_node, allnodes,
             num_eligible_friends, frsim_data_arr,interact_type, 
             min_interactions_per_user, data_type_code,
-            time_diff, time_scale, max_sim_ratio_error, max_interact_ratio_error)
+            time_diff, time_scale, max_sim_ratio_error, max_interact_ratio_error,
+            done_friends)
         if frnonfr_data.fsim > -0.5: # workaround for float equality
                 if num_friends_matched < num_eligible_friends:
                     avg_fsim += frnonfr_data.fsim
                     avg_rsim += frnonfr_data.rsim
-                    control_nonfr_nodes[num_friends_matched] = &(frnonfr_data.rnode)
-                    selected_friends[num_friends_matched] = &(frnonfr_data.fnode)
+                    control_nonfr_nodes[num_friends_matched] = frnonfr_data.rnode
+                    selected_friends[num_friends_matched] = frnonfr_data.fnode
+                    #printf("%d,%d ",frnonfr_data.rnode.c_uid, frnonfr_data.fnode.c_uid)
                     num_friends_matched += 1
                 else:
                     break
                     #printf("We got a matching!! %f %f", fsim, rsim)
-
+    #printf("\n")
     tries += 1
-    #printf("Eligible friends and matched: %d %d\n`", num_eligible_friends, num_friends_matched) 
+    """
+    printf("Eligible friends and matched: %d %d\n`", num_eligible_friends, num_friends_matched) 
+    for j in range(num_friends_matched):
+        printf("%d ",selected_friends[j].c_uid)
+    printf("\n")
+    """
     if num_eligible_friends >0 and num_friends_matched >= min_friends_match_ratio*num_eligible_friends:
+        ptr_rnodes_found[0] += 1
         avg_fsim = avg_fsim/float(num_friends_matched)
         avg_rsim = avg_rsim/float(num_friends_matched)
     #TODO even this struct c_node should be referenced, not copy for fn call 
@@ -300,10 +324,12 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
                 node_data.fsusc = inf1
                 node_data.rsusc = inf2
     #printf("Good node %d",node_rnode_counter) 
+    
     free(control_nonfr_nodes)
     free(selected_friends)
     free(frsim_data_arr)
     free(rand_node_ids)
+    free(done_friends)
     return node_data
 
 
@@ -311,7 +337,8 @@ cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_n
         netnodedata **allnodes,
         int num_eligible_friends, fsiminfo *frsim_data_arr,int interact_type, 
         int min_interactions_per_user, int data_type_code,
-        int time_diff, int time_scale, float max_sim_ratio_error, float max_interact_ratio_error) nogil:
+        int time_diff, int time_scale, float max_sim_ratio_error, 
+        float max_interact_ratio_error, int *done_friends) nogil:
     cdef:
         float rsim, fsim, sim_diff
         float ratio_train
@@ -320,12 +347,8 @@ cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_n
         bint valid_rand
         netnodedata fobj
         compfrnonfr ret
-        int *done_friends
 
     ret.fsim = -1
-    done_friends = <int *>malloc(num_eligible_friends*sizeof(int))
-    for i in range(num_eligible_friends):
-        done_friends[i] = 0
     if rand_node.c_length_train_ids >=min_interactions_per_user and rand_node.c_length_test_ids >=min_interactions_per_user:
         if True:
             #if rand_node.uid not in friend_ids and 
@@ -333,8 +356,12 @@ cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_n
                 rsim = compute_node_similarity(c_node,rand_node, interact_type, 
                                                 data_type_code, min_interactions_per_user, 
                                                 time_diff=-1, time_scale=time_scale)
+                """
+                if rsim >0:
+                    printf("%f ", rsim)
+                """
                 if rsim > -0.5: # also check for duplicate friend being selected
-                    f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, 0)
+                    f_indices = binary_search_closest_fsiminfo(frsim_data_arr, num_eligible_friends, rsim, max_sim_ratio_error, False)
                     if f_indices.val1 != -1:
                         # first filtering out if rand_node is a friend of user
                         valid_rand = True
@@ -348,17 +375,17 @@ cdef compfrnonfr compare_friend_nonfriend(netnodedata c_node, netnodedata rand_n
                                 ratio_train = abs(rand_node.c_length_train_ids-fobj.c_length_train_ids)/<float>(fobj.c_length_train_ids)
                                 if ratio_train <= max_interact_ratio_error: 
                                     # checking that no friend is added twice
-                                    #TODO do not check for fsim==0 in binary_search above. check if needed
+                                    #TODO  I do not check for fsim==0 in binary_search above. check if needed
                                     if done_friends[loop_i] == 0:#(fsim< 0.000001 and rsim<0.000001) or (fsim>0 and sim_diff/fsim <= max_sim_ratio_error):
-                                            ret.fsim = fsim
-                                            ret.rsim = rsim
-                                            ret.fnode = fobj
-                                            ret.rnode = rand_node
-                                            done_friends[loop_i] = 1
-                                            break
+                                        ret.fsim = fsim
+                                        ret.rsim = rsim
+                                        ret.fnode = fobj
+                                        ret.rnode = rand_node
+                                        done_friends[loop_i] = 1
+                                        break
     return ret
 
-cdef float compute_node_susceptibility(netnodedata my_node, netnodedata **other_nodes,
+cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_nodes,
         int length_other_nodes,
         int interact_type, float cutoff_rating, int data_type_code, 
         int min_interactions_per_user, int time_diff, int time_scale, 
@@ -375,7 +402,7 @@ cdef float compute_node_susceptibility(netnodedata my_node, netnodedata **other_
         length_my_interactions = my_node.c_length_test_ids
         valid_flag = True
         for i in range(length_other_nodes):
-            c_node_obj = other_nodes[i][0]
+            c_node_obj = other_nodes[i]
             lengths_others_interactions[i] = c_node_obj.c_length_test_ids
             others_interactions[i] = c_node_obj.c_test_data
             if lengths_others_interactions[i] < min_interactions_per_user:

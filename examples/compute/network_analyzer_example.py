@@ -255,11 +255,14 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         interact_type_str = "listen" if interact_type==0 else "love"
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
+        NUM_NODES_TO_COMPUTE = 50000
+        num_threads=4
         max_tries_val = None#30000
-        max_node_computes_val = 1000
+        max_node_computes_val = NUM_NODES_TO_COMPUTE/num_threads
         max_interact_ratio_error =0.1
+        max_sim_ratio_error = 0.1
+        min_friends_match_ratio = 0.9
         klim_val = None # not used for influence test
-        num_processes=1
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
         f = open("suscept_test_"+dataset_domain+ interact_type_str+str(
@@ -287,8 +290,10 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
                                        #time_diff=100000, split_date_str="1970/06/23", 
                                        control_divider=0.01, # not used anymore
                                        min_interactions_per_user = min_interactions_per_user,
-                                       max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_processes=num_processes,
+                                       max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_threads=num_threads,
                                        max_interact_ratio_error = max_interact_ratio_error,
+                                       max_sim_ratio_error = max_sim_ratio_error,
+                                       min_friends_match_ratio=min_friends_match_ratio,
                                        klim = klim_val,
                                        nonfr_match=nonfr_match,
                                        method="suscept", 
