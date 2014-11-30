@@ -13,13 +13,15 @@ class FlickrDataPreparser(NetworkDataPreparser):
     ItemData = namedtuple('ItemData', 'item_id original_item_id created_time \
                            photo_owner num_views num_comments num_favorites')
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
-    EdgeData = namedtuple('EdgeData', 'receiver_id timestamp')
+    # Ignoring timestamp for now, for the paper 
+    EdgeData = namedtuple('EdgeData', 'receiver_id')# timestamp')
 
     def __init__(self, data_path, node_impl, cutoff_rating, 
-                 max_core_nodes, store_dataset):
+                 max_core_nodes, store_dataset, min_interactions_per_user):
         NetworkDataPreparser.__init__(self, node_impl, data_path,
                                       max_core_nodes=max_core_nodes, 
-                                      store_dataset=store_dataset)
+                                      store_dataset=store_dataset,
+                                      min_interactions_per_user=min_interactions_per_user)
         self.datadir = data_path
         self.nodes_filename = data_path + "sorted-flickr-growth.txt"
         self.items_filename = data_path + "flickr-all-photos.txt"
@@ -33,6 +35,7 @@ class FlickrDataPreparser(NetworkDataPreparser):
         self.cutoff_rating = cutoff_rating
         self.cutoff_rating = None
         #self.copy_timestamps = []
+        self.interact_type_val = 0
         
         globals().update(self.named_tuple_dict)
 
@@ -43,9 +46,16 @@ class FlickrDataPreparser(NetworkDataPreparser):
         else:
             self.read_nodes_file()
             self.read_edges_file()
-            self.read_items_file()
+            #self.read_items_file() ## commenting out because we do not need it for the paper
             self.read_interactions_file()
             del self.node_id_map
+
+            print "filtering data based on min_interactions_per_user=", self.min_interactions_per_user
+            self.filter_min_interaction_nodes(self.interact_type_val, self.min_interactions_per_user)
+            items_interacted_with_dict = self.compute_store_total_num_items()
+            self.total_num_items = len(items_interacted_with_dict)
+
+            self.print_summary()
 
     def read_nodes_file(self):
         self.nodes.insert(self.node_counter, None)
@@ -126,8 +136,10 @@ class FlickrDataPreparser(NetworkDataPreparser):
                     if prev_sender is not None and curr_sender != prev_sender:
                         self.nodes[self.node_id_map[prev_sender]].store_friends(flist)
                         flist = []
+                    # Caution: ignoring timestamp for now for the paper
                     new_edge = FlickrDataPreparser.EdgeData(
-                            self.node_id_map[receiver_id], anon_timestamp)
+                            self.node_id_map[receiver_id])#, anon_timestamp)
+
                     flist.append(new_edge)
                     prev_sender = curr_sender
                     counter += 1

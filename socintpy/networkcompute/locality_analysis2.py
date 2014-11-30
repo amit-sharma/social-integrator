@@ -1,22 +1,47 @@
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
+import socintpy.cythoncode.cnetwork_node as cycode
 import numpy as np
 import random
 import heapq
 import multiprocessing as mp
+import threading
+from threading import Thread
+from Queue import Queue
 import operator
+import time
 
 def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_type, 
                                             cutoff_rating, control_divider, min_interactions_per_user, 
                                             time_diff, time_scale, max_tries, max_node_computes,
                                             max_interact_ratio_error, nonfr_match, 
                                             allow_duplicates, q):   
-    num_rand_attempts = 2.0
+    num_rand_attempts = 1.0
     final_influence = None
+    if max_tries is None:
+        max_tries = netdata.get_total_num_nodes()
+    print threading.current_thread(), "Started process!"
+
     for ii in range(int(num_rand_attempts)):
-        influence_dict = compute_susceptibility_randomselect(netdata, nodes_list, interact_type, 
+        start= time.clock()
+        start2 = time.time()
+        influence_dict = cycode.compute_susceptibility_randomselect_cfast(netdata.nodes, interact_type, 
                                                 cutoff_rating, control_divider, min_interactions_per_user, 
                                                 time_diff, time_scale, max_tries, max_node_computes,
-                                                max_interact_ratio_error, nonfr_match, allow_duplicates)
+                                                max_interact_ratio_error, allow_duplicates)
+        end = time.clock()
+        end2 = time.time()
+        print('Computation took %.03f CPU seconds and %.03f wall-clock seconds' % (end-start, end2-start2))
+      
+        """ 
+        start= time.clock()
+        influence_dict = compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type, 
+                                                cutoff_rating, control_divider, min_interactions_per_user, 
+                                                time_diff, time_scale, max_tries, max_node_computes,
+                                                max_interact_ratio_error, nonfr_match, allow_duplicates, method="compute")
+        end = time.clock()
+        print('Computation took %.03f seconds' % (end-start))
+        """
+
         if final_influence is None:
             final_influence = influence_dict
         else:
@@ -29,17 +54,15 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
     final_influence_arr = [tuple(val/num_rand_attempts for val in val_tuple) for (
             val_tuple) in final_influence.itervalues() if val_tuple is not None]
 
-    q.put(final_influence_arr)
-    return
+    #q.put(final_influence_arr)
+    return final_influence_arr
 
-def compute_susceptibility_randomselect(netdata, nodes_list, interact_type, 
+def compute_susceptibility_randomselect_dummy_compute(netdata, nodes_list, interact_type, 
                                             cutoff_rating, control_divider, min_interactions_per_user, 
                                             time_diff, time_scale, max_tries, max_node_computes,
                                             max_interact_ratio_error, nonfr_match,
                                             allow_duplicates):   
     # Find similarity on training set
-    max_sim_ratio_error = 0.1
-    triplet_nodes = []
     counter = 0
     failed_counter = 0
     eligible_nodes_counter = 0
@@ -76,20 +99,336 @@ def compute_susceptibility_randomselect(netdata, nodes_list, interact_type,
         for fobj in fnodes:
             num_fobj_interacts = fobj.get_num_interactions(interact_type)
             if fobj.length_train_ids >=min_interactions_per_user and fobj.length_test_ids >=min_interactions_per_user:
-                """
-                fsim2 = node.compute_node_similarity(fobj, interact_type, 
-                        cutoff_rating, data_type_code, 
-                        min_interactions_per_user, time_diff=500000, time_scale=ord('w'))#time_diff=-1, time_scale=time_scale)
-                """
                 if (fobj.uid,node.uid) in sim_dict:
                     fsim = sim_dict[(fobj.uid,node.uid)]
                 elif (node.uid,fobj.uid) in sim_dict:
                     fsim = sim_dict[(node.uid,fobj.uid)]
                 else:
-                    fsim = node.compute_node_similarity(fobj, interact_type, 
+                    fsim = compute_node_similarity(node, fobj, interact_type, 
                             cutoff_rating, data_type_code, 
                             min_interactions_per_user, time_diff=-1, time_scale=time_scale)
                     sim_dict[(fobj.uid, node.uid)] = fsim
+        if counter %100==0:
+            print "Done counter", counter
+        if max_node_computes is not None:
+            if counter > max_node_computes:
+                print counter, max_node_computes
+                break
+        counter += 1
+    return
+
+def get_similarity_from_db(i, j, conn):
+    c = conn.cursor()
+    c.execute('SELECT * FROM stocks WHERE ij=?', ((i<<32)+j,))
+    dbrow = c.fetchone()
+    if dbrow == None:
+        return 0
+    else:
+        return dbrow[1]
+
+def compute_susceptibility_randomselect_dummy(netdata, nodes_list, interact_type, 
+                                            cutoff_rating, control_divider, min_interactions_per_user, 
+                                            time_diff, time_scale, max_tries, max_node_computes,
+                                            max_interact_ratio_error, nonfr_match,
+                                            allow_duplicates):   
+    # Find similarity on training set
+    counter = 0
+    failed_counter = 0
+    eligible_nodes_counter = 0
+    count_success = 0
+    edges_counter = 0
+    total_tries_counter = 0
+    time_saved_counter = 0
+   
+    
+    data_type="compare_train"
+    data_type_code=ord(data_type[0]) 
+    for node in nodes_list:
+        num_node_interacts = node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
+        if node.length_train_ids < min_interactions_per_user or node.length_test_ids <min_interactions_per_user or not node.has_friends():
+            counter +=1
+            continue
+        eligible_nodes_counter += 1
+        fnodes = netdata.get_friends_nodes(node)
+        num_eligible_friends = 0
+        friend_ids = node.get_friend_ids()
+        edges_counter += len(friend_ids)
+        for fobj in fnodes:
+            num_fobj_interacts = fobj.get_num_interactions(interact_type)
+            if fobj.length_train_ids >=min_interactions_per_user and fobj.length_test_ids >=min_interactions_per_user:
+                fsim = get_similarity_from_db(node.uid,fobj.uid,netdata.sim_mat)#get_similarity_from_mat(node.uid, fobj.uid, netdata.sim_mat)
+        if counter %100==0:
+            print "Done counter", counter
+        if max_node_computes is not None:
+            if counter > max_node_computes:
+                print counter, max_node_computes
+                break
+        counter += 1
+    return
+
+def compute_susceptibility_randomselect_fast(netdata, nodes_list, interact_type, 
+                                            cutoff_rating, control_divider, min_interactions_per_user, 
+                                            time_diff, time_scale, max_tries, max_node_computes,
+                                            max_interact_ratio_error, nonfr_match,
+                                            allow_duplicates, method):   
+    counter = 0
+    count_success = 0
+    eligible_nodes_counter = 0
+    edges_counter = 0
+    triplet_nodes = []
+    max_sim_ratio_error = 0.1
+    data_type="compare_train"
+    data_type_code=ord(data_type[0]) 
+    for node in nodes_list:
+        num_node_interacts = node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
+        if node.length_train_ids < min_interactions_per_user or node.length_test_ids <min_interactions_per_user or not node.has_friends():
+            if counter %100==0:
+                print "Done counter", counter
+            if max_node_computes is not None:
+                if counter > max_node_computes:
+                    print counter, max_node_computes
+                    break
+            counter +=1
+            continue
+        eligible_nodes_counter += 1
+        fnodes = netdata.get_friends_nodes(node)
+        num_eligible_friends = 0
+        friend_ids = node.get_friend_ids()
+        fr_sim_arr = np.empty(len(friend_ids))
+        fr_sim_arr.fill(-1)
+        fr_ids_dict = {}
+        edges_counter += len(friend_ids)
+        ictr = 0
+        for fobj in fnodes:
+            num_fobj_interacts = fobj.get_num_interactions(interact_type)
+            if fobj.length_train_ids >=min_interactions_per_user and fobj.length_test_ids >=min_interactions_per_user:
+                if method=="db":
+                    fsim = get_similarity_from_db(node.uid, fobj.uid, netdata.sim_mat)
+                else:
+                    #fsim = random.random()
+                    fsim = cycode.compute_node_similarity_pywrapper(node, fobj, interact_type, 
+                            data_type_code, 
+                            min_interactions_per_user, time_diff=-1, time_scale=time_scale)
+                #found = False
+                if fsim is not None and fsim!=-1:
+                    num_eligible_friends += 1
+                    fr_sim_arr[ictr] = fsim
+                    fr_ids_dict[ictr] = fobj
+                    ictr += 1
+        fr_sim_arr[:num_eligible_friends].sort()
+        eligible_fr_sim_arr = fr_sim_arr[:num_eligible_friends]
+        if max_tries is None:
+            max_tries = netdata.get_total_num_nodes()
+        randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
+        num_friends_left = num_eligible_friends
+        r_index = 0
+        tries = 0
+        avg_fsim = 0
+        avg_rsim = 0
+        found_ids = {}
+        control_nonfr_nodes = []
+        selected_friends = []
+        while num_friends_left > 0 and r_index < max_tries:
+            rand_node_id = randomized_node_ids[r_index]
+            r_index += 1
+            rand_node = netdata.nodes[rand_node_id]
+            if rand_node.length_train_ids >=min_interactions_per_user and rand_node.length_test_ids >=min_interactions_per_user:
+                if True:
+                    if rand_node.uid not in friend_ids and rand_node.uid!=node.uid:
+                        if method=="db":
+                            rsim = get_similarity_from_db(rand_node.uid, node.uid, netdata.sim_mat)
+                        else:
+                            #rsim = random.random()
+                            rsim = cycode.compute_node_similarity_pywrapper(node,rand_node, interact_type, 
+                                                        data_type_code, min_interactions_per_user, 
+                                                        time_diff=-1, time_scale=time_scale)
+                        num_rnode_interacts = rand_node.get_num_interactions(interact_type)
+                        if rsim is not None and rsim!=-1: # also check for duplicate friend being selected
+                            f_index = np.searchsorted(eligible_fr_sim_arr, rsim)
+                            """
+                            if rsim != 0:
+                                print rsim, f_index, len(eligible_fr_sim_arr)
+                            """
+                            if f_index == num_eligible_friends:
+                                f_index = f_index - 1
+                            fsim = eligible_fr_sim_arr[f_index]
+                            fobj = fr_ids_dict[f_index]
+                            sim_diff = abs(rsim-fsim)
+                            ratio_train = abs(rand_node.length_train_ids-fobj.length_train_ids)/float(fobj.length_train_ids)
+                            if ratio_train <= max_interact_ratio_error: 
+                
+                                if (fsim==0 and sim_diff<=0.00001) or (fsim>0 and
+                                    sim_diff/fsim <= max_sim_ratio_error):# and (fsim2 >0 and abs(rsim2-fsim2)/fsim2<=max_sim_ratio_error)):
+                                    found = True
+                                    avg_fsim += fsim
+                                    avg_rsim += rsim
+                                    control_nonfr_nodes.append(rand_node)
+                                    selected_friends.append(fobj)
+                                    num_friends_left -= 1
+            tries += 1
+        
+        if num_eligible_friends >0 and len(control_nonfr_nodes) >= 1*num_eligible_friends:
+            avg_fsim = avg_fsim/float(len(control_nonfr_nodes))
+            avg_rsim = avg_rsim/float(len(control_nonfr_nodes))
+            #print num_eligible_friends, len(selected_friends)
+            if len(selected_friends) != len(control_nonfr_nodes):
+                print "ALERT: Something is wrong here!!"; sys.exit(2)
+            if len(control_nonfr_nodes) != num_eligible_friends:
+                print "WARN: Cannot match all eligible friends", num_eligible_friends, len(control_nonfr_nodes)
+#print node.uid, [fr.uid for fr in selected_friends]
+            triplet_nodes.append((node, selected_friends, control_nonfr_nodes, 
+                     0, 0, 0, avg_fsim, avg_rsim))
+            count_success +=1
+        if counter %100==0:
+            print "Done counter", counter
+        if max_node_computes is not None:
+            if counter > max_node_computes:
+                print counter, max_node_computes
+                break
+        counter += 1
+    print "\n--Number of nodes assigned to me(with interactions and friends):", len(nodes_list)
+    print "--Number of nodes I looped over:", counter
+    print "--Eligible nodes (with interactions > %d): " %min_interactions_per_user, eligible_nodes_counter
+    print "--Total Edges from eligible nodes:", edges_counter
+    print "--Number of  successful nodes (can find rnodes):", count_success
+    print "--Successful triplets:", len(triplet_nodes) 
+
+
+    # Now compare influencer effect on test set
+    data_type="influence_effect"
+    data_type_code=ord(data_type[0]) 
+    influence_arr = compare_susceptibility_effect(triplet_nodes, interact_type, 
+                                              cutoff_rating, min_interactions_per_user, 
+                                              time_diff, time_scale, data_type_code,
+                                              allow_duplicates)
+    return influence_arr
+
+def compute_susceptibility_randomselect(netdata, nodes_list, interact_type, 
+                                                cutoff_rating, control_divider, min_interactions_per_user, 
+                                                time_diff, time_scale, max_tries, max_node_computes,
+                                                max_interact_ratio_error, nonfr_match,
+                                                allow_duplicates):   
+        # Find similarity on training set
+        counter = 0
+        failed_counter = 0
+        eligible_nodes_counter = 0
+        count_success = 0
+        edges_counter = 0
+        total_tries_counter = 0
+        time_saved_counter = 0
+        # not checking for duplicates within non-friends right now 
+        if max_tries is None:
+            max_tries = netdata.get_total_num_nodes()
+        randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
+        
+        data_type="compare_train"
+        data_type_code=ord(data_type[0]) 
+        for node in nodes_list:
+            num_node_interacts = node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
+            if node.length_train_ids < min_interactions_per_user or node.length_test_ids <min_interactions_per_user or not node.has_friends():
+                counter +=1
+                continue
+            eligible_nodes_counter += 1
+            fnodes = netdata.get_friends_nodes(node)
+            num_eligible_friends = 0
+            friend_ids = node.get_friend_ids()
+            edges_counter += len(friend_ids)
+            for fobj in fnodes:
+                num_fobj_interacts = fobj.get_num_interactions(interact_type)
+                if fobj.length_train_ids >=min_interactions_per_user and fobj.length_test_ids >=min_interactions_per_user:
+                    fsim = get_similarity_from_db(node.uid, fobj.uid, netdata.sim_mat)
+                    found = False
+                    if fsim is not None and fsim!=-1:
+                        num_eligible_friends += 1
+                        total_tries_counter += 1
+                        tries=0
+                        if nonfr_match=="random":
+                            randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
+                        elif nonfr_match=="serial":
+                            randomized_node_ids = range(1, max_tries+1)
+                        else:
+                            print "Error in parameter"; sys.exit(1)
+                        r_index = 0
+                       
+                        while not found and r_index < max_tries and r_index<len(randomized_node_ids):
+                            rand_node_id = randomized_node_ids[r_index]
+                            r_index += 1
+                            rand_node = netdata.nodes[rand_node_id]
+                            if rand_node.length_train_ids >=min_interactions_per_user and rand_node.length_test_ids >=min_interactions_per_user:
+                                ratio_train = abs(rand_node.length_train_ids-fobj.length_train_ids)/float(fobj.length_train_ids)
+                                if ratio_train <= max_interact_ratio_error: 
+                                    if rand_node.uid not in friend_ids and rand_node.uid!=node.uid:
+                                        rsim = get_similarity_from_db(rand_node.uid, node.uid, netdata.sim_mat)
+                            tries += 1
+                        if not found:
+                            failed_counter += 1
+                count_success +=1
+            if counter %10==0:
+                print "Done counter", counter
+            if max_node_computes is not None:
+                if counter > max_node_computes:
+                    print counter, max_node_computes
+                    break
+            counter += 1
+        print "\n--Number of nodes assigned to me(with interactions and friends):", len(nodes_list)
+        print "--Eligible nodes (with interactions > %d): " %min_interactions_per_user, eligible_nodes_counter
+        print "--Total Edges from eligible nodes:", edges_counter
+        #print "--Eligible friend-edges (with friend hving interactions >%d): " %min_interactions_per_user, eligible_edges_counter
+        print "--Number of tries (and successful caches) to find random non-friend:", total_tries_counter, time_saved_counter
+        print "--Number of  successful nodes (can find rnodes):", count_success
+        print "--Successful triplets:", len(triplet_nodes) 
+
+        return influence_arr
+
+
+def compute_susceptibility_randomselect_true(netdata, nodes_list, interact_type, 
+                                                cutoff_rating, control_divider, min_interactions_per_user, 
+                                                time_diff, time_scale, max_tries, max_node_computes,
+                                                max_interact_ratio_error, nonfr_match,
+                                                allow_duplicates):   
+    # Find similarity on training set
+    max_sim_ratio_error = 0.1
+    triplet_nodes = []
+    counter = 0
+    failed_counter = 0
+    eligible_nodes_counter = 0
+    count_success = 0
+    edges_counter = 0
+    total_tries_counter = 0
+    time_saved_counter = 0
+       
+    if max_tries is None:
+        max_tries = netdata.get_total_num_nodes()
+    randomized_node_ids = random.sample(xrange(1, netdata.get_total_num_nodes()+1), max_tries)
+        
+    data_type="compare_train"
+    data_type_code=ord(data_type[0]) 
+    #sim_dict = {}
+    for node in nodes_list:
+        nonfr_ids = {}
+        sim_dict = {}
+        num_node_interacts = node.get_num_interactions(interact_type) # return all interactions, no check for duplicates
+        #if not node.has_interactions(interact_type) or not node.has_friends():
+        if node.length_train_ids < min_interactions_per_user or node.length_test_ids <min_interactions_per_user or not node.has_friends():
+            #print "Node has no interactions. Skipping!"
+            counter +=1
+            continue
+        eligible_nodes_counter += 1
+        fnodes = netdata.get_friends_nodes(node)
+        control_nonfr_nodes = []
+        avg_fsim = 0
+        avg_rsim = 0
+        num_eligible_friends = 0
+        selected_friends = []
+        friend_ids = node.get_friend_ids()
+        edges_counter += len(friend_ids)
+        for fobj in fnodes:
+            num_fobj_interacts = fobj.get_num_interactions(interact_type)
+            if fobj.length_train_ids >=min_interactions_per_user and fobj.length_test_ids >=min_interactions_per_user:
+                fsim = node.compute_node_similarity(fobj, interact_type, 
+                            cutoff_rating, data_type_code, 
+                            min_interactions_per_user, time_diff=-1, time_scale=time_scale)
+                
 #if fsim is None:
 #                        print "Error:fsim cannot be None"
                 #print fsim
@@ -125,23 +464,16 @@ def compute_susceptibility_randomselect(netdata, nodes_list, interact_type,
                             ratio_train = abs(rand_node.length_train_ids-fobj.length_train_ids)/float(fobj.length_train_ids)
                             if ratio_train <= max_interact_ratio_error: 
                                 if rand_node.uid not in friend_ids and rand_node.uid!=node.uid:
-                                    if (rand_node.uid,node.uid) in sim_dict: 
-                                        rsim = sim_dict[(rand_node.uid,node.uid)]
-                                        time_saved_counter += 1
-                                    elif (node.uid,rand_node.uid) in sim_dict:
-                                        rsim = sim_dict[(node.uid,rand_node.uid)]
-                                        time_saved_counter += 1
-                                    else:
-                                        rsim = node.compute_node_similarity(rand_node, interact_type, 
+                                    rsim = node.compute_node_similarity(rand_node, interact_type, 
                                                         cutoff_rating, data_type_code, min_interactions_per_user, 
                                                         time_diff=-1, time_scale=time_scale)
-                                        sim_dict[(rand_node.uid, node.uid)] = rsim
-                                        """
+                                    sim_dict[(rand_node.uid, node.uid)] = rsim
+                                    """
                                         rsim2 = node.compute_node_similarity(rand_node, interact_type, 
                                                         cutoff_rating, data_type_code, min_interactions_per_user, 
                                                         time_diff=500000, time_scale=ord('w'))#time_diff=-1, time_scale=time_scale)
                                                         #time_diff=-1, time_scale=time_scale)
-                                        """
+                                    """
                                     num_rnode_interacts = rand_node.get_num_interactions(interact_type)
                                     if rsim is not None and rsim!=-1:
                                         sim_diff = abs(rsim-fsim)
@@ -418,13 +750,13 @@ def compare_susceptibility_effect(triplet_nodes, interact_type, cutoff_rating,
     node_rnode_counter = 0
     for node, fnodes, rnodes, num1, num2, num3, fsim, rsim in triplet_nodes:
         # this similarity is not symmetric
-        inf1 = node.compute_node_susceptibility(fnodes, len(fnodes), interact_type,
+        inf1 = cycode.compute_node_susceptibility_pywrapper(node, fnodes, len(fnodes), interact_type,
                 cutoff_rating, data_type_code, min_interactions_per_user, 
                 time_diff, time_scale, allow_duplicates, debug=False)
         #print inf1
         if inf1 is not None and inf1 > -1:
             node_fnode_counter += 1
-            inf2 = node.compute_node_susceptibility(rnodes, len(rnodes), 
+            inf2 = cycode.compute_node_susceptibility_pywrapper(node, rnodes, len(rnodes), 
                     interact_type, cutoff_rating, data_type_code, 
                     min_interactions_per_user, 
                     time_diff, time_scale, allow_duplicates, debug=False)
@@ -656,6 +988,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         """
 
         nodes_list = self.netdata.get_nodes_list(should_have_friends=True, should_have_interactions=True)
+        """
         partial_num_nodes = len(nodes_list) / num_processes + 1
         arg_list = []
         influence_arr_all = []
@@ -668,7 +1001,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         proc_list = []
         for i in range(num_processes):
             if method=="influence":
-                p = mp.Process(target=compute_influence_randomselect_parallel, 
+                p = Thread(target=compute_influence_randomselect_parallel, 
                                args=(self.netdata, arg_list[i], interact_type,
                                    cutoff_rating, control_divider, 
                                    min_interactions_per_user, 
@@ -676,7 +1009,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
                                    max_node_computes, max_interact_ratio_error, 
                                    nonfr_match,q))
             elif method=="suscept":
-                p = mp.Process(target=compute_susceptibility_randomselect_parallel, 
+                p = Thread(target=compute_susceptibility_randomselect_parallel, 
                                args=(self.netdata, arg_list[i], interact_type,
                                    cutoff_rating, control_divider, min_interactions_per_user, 
                                    time_diff, time_scale, max_tries,
@@ -691,6 +1024,16 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         # join waits on end of processes
         for p in proc_list:
             p.join()
+        """
+        q = Queue()
+        influence_arr_all = compute_susceptibility_randomselect_parallel (
+                self.netdata, nodes_list, interact_type,
+                           cutoff_rating, control_divider, min_interactions_per_user, 
+                           time_diff, time_scale, max_tries,
+                           max_node_computes, max_interact_ratio_error,
+                           nonfr_match, allow_duplicates, q)
+        print len(influence_arr_all)
+        print influence_arr_all[0:10]
         return influence_arr_all
 
 

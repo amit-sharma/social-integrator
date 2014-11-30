@@ -4,8 +4,15 @@
 *.log
 *.swp
 *.so
+*.o
 *settings.py
 build-couchdb
 .idea/
 examples/compute/plots/
 examples/compute/final_plots/
+examples/compute/fri_results/
+examples/compute/wed_results/
+examples/compute/suscept_test*
+examples/compute/inftest*
+examples/compute/test_results/
+socintpy/cythoncode/cython_debug/

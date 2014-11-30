@@ -15,10 +15,12 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
     InteractData = namedtuple('InteractData', 'item_id timestamp rating')
     EdgeData = namedtuple('EdgeData', 'receiver_id')
 
-    def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes, store_dataset):
+    def __init__(self, data_path, node_impl, cutoff_rating, max_core_nodes, 
+            store_dataset, min_interactions_per_user):
         NetworkDataPreparser.__init__(self, node_impl, data_path,
                                       max_core_nodes=max_core_nodes, 
-                                      store_dataset=store_dataset)
+                                      store_dataset=store_dataset, 
+                                      min_interactions_per_user=min_interactions_per_user)
         self.datadir = data_path
         self.nodes_filename = data_path + "goodreads.300k.users.xml"
         self.items_filename = data_path + "goodreads.300k.items.xml"
@@ -29,6 +31,7 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         #self.nodes = [None]*300000 # so that we can index it for smaller datasetsa
         self.node_counter = 0
         self.node_id_map = {}
+        self.interact_type_val = 0
         self.cutoff_rating = cutoff_rating
         self.copy_timestamps = []
 
@@ -38,6 +41,17 @@ class GoodreadsDataPreparser(NetworkDataPreparser):
         self.read_items_file()
         self.read_edges_file()
         self.read_interactions_file()
+        
+        print "filtering data based on min_interactions_per_user=", self.min_interactions_per_user
+        self.filter_min_interaction_nodes(self.interact_type_val, self.min_interactions_per_user)
+#        proc_pool.close()
+#        proc_pool.join()
+        items_interacted_with_dict = self.compute_store_total_num_items()
+        self.total_num_items = len(items_interacted_with_dict)
+
+        # Not reading all_item_ids file for now.
+        #self.item_ids_list = self.read_all_item_ids(self.datadir+"itemmap.tsv") 
+        self.print_summary()
         del self.node_id_map
 
     def read_nodes_file(self):

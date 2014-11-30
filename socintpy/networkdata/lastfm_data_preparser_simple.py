@@ -55,6 +55,13 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
 
     def get_all_data(self):
         encoding = "utf-8"
+        print "Starting to load data from ", self.datadir
+        print "Loading data only for interaction", self.interact_type_val
+        print "Using artists:", self.use_artists
+        print "Using cutoffrating", self.cutoff_rating
+        print "Using min_interactions_per_user", self.min_interactions_per_user
+
+        print "Input files:"
         for root, dirs, files in os.walk(self.datadir, onerror=handle_os_walk):
             sorted_files = sorted(files, cmp=compare_filenames)
             for filename in sorted_files:
@@ -66,8 +73,8 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
                     self.nodes_files.append(filepath)
                     nodes_db_obj = codecs.open(filepath, encoding=encoding)
                     self.nodes_db_list.append(nodes_db_obj)
-                    print filename
-
+                    sys.stdout.write(filename+",")
+        print " "
         self.nodes.append(None)
         """
         first_flag=True
@@ -85,9 +92,12 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
         self.filter_min_interaction_nodes(self.interact_type_val, self.min_interactions_per_user)
 #        proc_pool.close()
 #        proc_pool.join()
-        items_interacted_with = self.compute_store_total_num_items()
-        self.total_num_items = len(items_interacted_with)
+        items_interacted_with_dict = self.compute_store_total_num_items()
+        self.total_num_items = len(items_interacted_with_dict)
+
+        # Not reading all_item_ids file for now.
         #self.item_ids_list = self.read_all_item_ids(self.datadir+"itemmap.tsv") 
+        self.print_summary()
         return
    
     # CAUTION: Assume we read only one interact_type per run
@@ -117,6 +127,7 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
                     fids = [int(val) for val in row]
                     new_netnode.store_friend_ids(fids)
 
+            # CAUTION: only reading one of the interact types!!
             for interact_type in self.interaction_types:
                 line= nodes_db.readline()
                 if interact_type==self.interact_type_val:

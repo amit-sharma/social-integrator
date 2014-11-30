@@ -52,11 +52,13 @@ class LastfmDataPreparserCSV(NetworkDataPreparser):
                 uname = fname_chunks[0]
                 uname_lastchunk = uname.split("_")[-1]
                 filepath = os.path.join(root, filename)
-                """
-                if filepath.split('/')[4] >= "partae":
+                ## Optional, to contrl the number of nodes we store in dataset
+                #"""
+                if filepath.split('/')[4] != "partag":
+                #if filepath.split('/')[4] >= "partae":
                     print "Ignoring part", filepath.split('/')[4]
                     continue
-                """
+                #"""
                 if filename=="lastfm_nodes.tsv":
                     self.nodes_files.append(filepath)
                     nodes_db_obj = codecs.open(filepath, encoding=encoding)
