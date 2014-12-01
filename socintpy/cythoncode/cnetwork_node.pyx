@@ -898,7 +898,7 @@ cdef class CNetworkNode:
         for i in range(self.ndata.c_length_list[interact_type]):
             if self.ndata.c_list[interact_type][i].rating >= rating_cutoff:
                 if return_timestamp:
-                    interacted_items.add((self.ndata.c_list[interact_type][i].item_id, self.c_list[interact_type][i].timestamp))
+                    interacted_items.add((self.ndata.c_list[interact_type][i].item_id, self.ndata.c_list[interact_type][i].timestamp))
                 else:
                     interacted_items.add(self.ndata.c_list[interact_type][i].item_id)
         #print self.ndata.c_uid, len(interacted_items), interact_type
