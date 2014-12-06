@@ -21,6 +21,7 @@ def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, co
                                                      nonfr_match = nonfr_match,
                                                      method=method, 
                                                      allow_duplicates=allow_duplicates)
+    node_test_set_sizes = [v[0] for v in influence_tuples]
     fr_inf_vals = [v[5] for v in influence_tuples]
     nonfr_inf_vals = [v[6] for v in influence_tuples]
     diff_inf_vals = [v[5]-v[6] for v in influence_tuples]
@@ -37,4 +38,4 @@ def test_influence(la, interact_type, time_diff, time_scale, split_timestamp, co
     print mean_fr_sim, mean_nonfr_sim, mean_diff_sim
     print mean_fr_influence, mean_nonfr_influence, mean_diff_influence
     print len(fr_inf_vals), len(nonfr_inf_vals)
-    return fr_sim_vals, nonfr_sim_vals, fr_inf_vals, nonfr_inf_vals
+    return node_test_set_sizes, fr_sim_vals, nonfr_sim_vals, fr_inf_vals, nonfr_inf_vals

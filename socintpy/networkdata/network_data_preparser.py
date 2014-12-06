@@ -23,6 +23,7 @@ class NetworkDataPreparser():
         self.total_num_items = None
         self.load_from_saved_dataset = False
         self.global_k_neighbors = None
+        self.global_k_incoming = None
         self.min_interaction_timestamp = None
         self.max_interaction_timestamp = None
         if data_path.endswith(".pkl"):
@@ -70,6 +71,9 @@ class NetworkDataPreparser():
 
     def get_node_objs(self, indices):
         return [self.nodes[i] for i in indices]
+
+    def get_node_from_id(self, node_id):
+        return self.nodes[node_id]
 
     def get_random_node(self):
         index = random.randint(1, len(self.nodes)-1)
@@ -262,6 +266,7 @@ class NetworkDataPreparser():
     def print_summary(self):
         print "INFO: Data reading complete!"
         print "-- Total Number of nodes ", len(self.nodes) -1
+        # Caution: value of total_num_items may not be accurate
         print "-- Total number of items featuring in atleast one interaction", self.total_num_items
         return
 

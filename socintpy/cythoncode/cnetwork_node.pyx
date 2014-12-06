@@ -15,6 +15,7 @@ from libc.string cimport memmove, memcpy
 import numpy as np
 cimport numpy as np
 import scipy.sparse as sp
+import heapq
 
 import sys
 from itertools import izip
@@ -107,6 +108,123 @@ def compute_node_similarity_pywrapper(node, other_node, int interact_type,
             (<CNetworkNode>other_node).ndata, interact_type,
             data_type_code, min_interactions_per_user, time_diff, time_scale)
 
+def compute_allpairs_sim_mat_wrapper(nodes_list, interact_type, data_type_code):
+
+    sim_mat = compute_allpairs_sim_mat(nodes_list, interact_type, data_type_code)
+    return sim_mat
+
+def compute_global_kbest_neighbors_wrapper(nodes_list, interact_type, 
+        data_type, k):
+    """ Compute k-best neighbors for a list of users, among the same list of usrs.
+
+        Does not distinguish between friends or non-friends. Returns a dict
+        containing a list of k-best user_ids for each user. If the number
+        of users with non-zero similarity to a user is less than k, then returns
+        a list of that size.
+    """
+
+    sim_mat = compute_allpairs_sim_mat(nodes_list, interact_type, data_type)
+    for kk in range(100):
+        node1 = <CNetworkNode>nodes_list[kk]
+        node2 = <CNetworkNode>nodes_list[2]
+        rsim = compute_node_similarity(node1.ndata,node2.ndata, interact_type, 
+                                    data_type, 10, 
+                                    time_diff=-1, time_scale=ord('w'))
+        print rsim, sim_mat[node1.uid, node2.uid]
+    globalk_neighbors = {}
+    #TODO find topk and return indices, not actual sim values
+    for node in nodes_list:
+        
+        row_vals = sim_mat[node.uid,:].toarray().flatten()
+        row_vals[node.uid] = 0 # this would have been 1, similarity with own prefs
+        indices = np.argpartition(-row_vals, k)
+        globalk_neighbors[node.uid] = indices[:k]
+        if node.uid % 1000 ==0:
+            print row_vals[indices[:k]]
+        """
+        _, cols = row_vals.nonzero()
+        h = []
+        for j in cols:
+            heapq.heappush(h, (row_vals[0,j],j))
+            if len(h) > k:
+                heapq.heappop(h)
+        globalk_neighbors[node.uid] = h
+        """
+    return globalk_neighbors
+
+
+
+def compute_allpairs_sim_mat(nodes, interact_type, data_type):
+    num_all_interacts = 50000000
+    
+    interactions_mat = create_allusers_interact_mat(nodes, interact_type, 
+            data_type, num_all_interacts)
+
+    print "Read all interacts into a sparse matrix of size", interactions_mat.shape
+    sim_mat = compute_sim_mat(interactions_mat)
+    #sim_mat = sort_coo(sim_mat)
+    print "computed similarity"
+    return sim_mat
+
+cdef create_allusers_interact_mat(nodes, int interact_type, int data_type,
+     int num_all_interacts):
+    rows = np.zeros(num_all_interacts, dtype=np.intc)
+    cols = np.zeros(num_all_interacts, dtype=np.intc)
+    values = np.zeros(num_all_interacts, dtype=np.double)
+    cdef int idx = 0
+    cdef int j, len_interacts
+    for node in nodes:
+        cnode = <CNetworkNode>node
+        j = 0
+        ilist = cnode.get_interactions_c(interact_type, &len_interacts, data_type)
+        for j in xrange(len_interacts):
+            rows[idx] = cnode.ndata.c_uid
+            cols[idx] = ilist[j].item_id
+            values[idx] = ilist[j].rating
+            idx += 1
+            #if cnode.ndata.c_uid == 5:print cnode.ndata.c_uid
+    return sp.csr_matrix((values, (rows, cols)))
+
+cdef compute_sim_mat(interactions_mat):
+    """ Computes the Jaccard similarity between users by using a matrix of 
+        their interactions with items.
+
+        Params:
+            interactions_mat: A matrix of size m*n where m is the number of users
+            and n is the number of items.
+        Returns:
+            sim_mat: a symmetric sparse matrix of size m*m where sim_mat[i,j] 
+            is the similarity between user i and j.
+    """
+    cdef int i,j,k, nrows, ncols, idx
+    cdef float t
+    nrows, ncols = interactions_mat.shape
+    #print interactions_mat.todense()
+    int_mat_t = interactions_mat.transpose(copy=False)
+    print "Created transpose of shape", int_mat_t.shape
+    common_elements_mat =  interactions_mat * int_mat_t
+    #common_elements_mat = sp.triu(common_elements_mat, k=0, format='csr')
+    print "Interactions", interactions_mat[0:5,0:5]
+    print "Common interactions", common_elements_mat[0:5,0:5]
+    print "created user-user common interactions matrix of size ", common_elements_mat.shape
+    print "Nonzeros in interaction mat %d and common-elem matrix %d " %(interactions_mat.getnnz(), common_elements_mat.getnnz())
+
+    cdef np.ndarray[DTYPE_INT32_t, ndim=1] sizes_arr = interactions_mat.getnnz(axis =1)
+    cdef int index, union_size
+    common_elements_coo_mat = common_elements_mat.tocoo(copy=False)
+    print "Got i, j indices"
+        
+    common_elements_coo_mat.data = common_elements_coo_mat.data/(sizes_arr[[common_elements_coo_mat.row]] 
+            + sizes_arr[[common_elements_coo_mat.col]] - common_elements_coo_mat.data)
+    #common_elements_coo_mat.data[common_elements_coo_mat.data <0.0001] = 0 
+        #new_V[index] = V[index]/union_size
+        #common_elements_mat[I[index], J[index]] /= union_size
+    print "Done size computations"
+    ret = common_elements_coo_mat.tocsr() 
+    print "ret is set"
+    return ret
+
+
 cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_type, 
                                             float cutoff_rating, float control_divider, 
                                             int min_interactions_per_user, 
@@ -170,7 +288,7 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
                     buf[0].count_success +=1
                      
                     with gil:
-                        influence_arr[one_nodeinfo.c_uid] = (0, 0, 0, 
+                        influence_arr[one_nodeinfo.c_uid] = (one_nodeinfo.c_length_test_ids, 0, 0, 
                            node_data.fsim, node_data.rsim,node_data.fsusc, node_data.rsusc)
                         #printf("%d: %f", one_nodeinfo.c_uid,node_data.fsim)#, node_data.rsim, node_data.fsusc, node_data.rsusc)
                     
@@ -184,8 +302,8 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
                     break
             buf[0].counter += 1
         printf("\n--Number of nodes I looped through: %d\n", buf[0].counter)
-        printf("--Number of nodes I lod through(with interactions AND friends): %d\n", buf[0].counter2)
-        printf("--Eligible nodes (with interactions > %d): %d\n" ,min_interactions_per_user, buf[0].eligible_nodes_counter)
+        printf("--Number of nodes I looped through that have interactions AND friends: %d\n", buf[0].counter2)
+        printf("--Eligible nodes (with interactions >= %d): %d\n" ,min_interactions_per_user, buf[0].eligible_nodes_counter)
         printf("--Total Edges from eligible nodes: %d\n", edges_counter)
         printf("--Number of  successful nodes (can find rnodes): %d\n", buf[0].rnodes_found_counter)
         printf("--Nodes with eligible fnode influence measure: %d\n", buf[0].node_fnode_counter)
@@ -208,6 +326,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
     node_data.fsim = -1
     
     if c_node.c_length_train_ids < min_interactions_per_user or c_node.c_length_test_ids <min_interactions_per_user or c_node.c_length_friend_list == 0:
+        #print c_node.c_uid, c_node.c_length_train_ids, c_node.c_length_test_ids, c_node.c_length_friend_list
         return node_data
     ptr_eligible_nodes_counter[0] += 1
 
@@ -309,6 +428,8 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
         inf1 = compute_node_susceptibility(c_node,selected_friends, num_friends_matched, interact_type,
                 cutoff_rating, data_type_code2, min_interactions_per_user, 
                 time_diff, time_scale, allow_duplicates, False)
+        if inf1 != 1:
+            printf("%d: %f\n",c_node.c_uid, inf1)
         #print inf1
         if inf1 > -1: #TODO check for none, remove default argument debug
             ptr_node_fnode_counter[0] += 1
@@ -323,6 +444,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
                 node_data.rsim = avg_rsim
                 node_data.fsusc = inf1
                 node_data.rsusc = inf2
+                printf("Valid node-id %d\n", c_node.c_uid)
     #printf("Good node %d",node_rnode_counter) 
     
     free(control_nonfr_nodes)
@@ -668,12 +790,14 @@ cdef float compute_node_susceptibility_ordinal_c(idata* my_interactions,
                         printf("WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting...")
                     return -3
                 j=index
+                #printf("my_inter:%d-%d ", my_interactions[i].item_id, my_interactions[i].timestamp)
                 while j >index-time_diff and j>=0:
-                    #print others_stream[j].item_id,  my_interactions[i].item_id, others_stream[j].timestamp,my_interactions[i].timestamp
+                    #printf("%d-%d ",others_stream[j].item_id,  others_stream[j].timestamp)
                     if others_stream[j].item_id == my_interactions[i].item_id:
                         if others_stream[j].rating >= cutoff_rating:
                             sim[i] += 1
                     j -= 1
+                #printf("\n")
                 """
                 if sim[i] == 0:
                     print "ONO!!!", my_interactions[i].item_id, my_interactions[i].timestamp
@@ -775,6 +899,13 @@ cdef DTYPE_t min(np.ndarray[DTYPE_t, ndim=1] arr, int length_arr, int *min_index
 @cython.freelist(1024)
 @cython.no_gc_clear
 cdef class CNetworkNode:
+    """ Extension type for a node in the social network.
+
+        Guarantees the following:
+        1. The interactions list is always sorted by item_id
+        2. If should_have_friends is True, then friends list exists. Otherwise undefined.
+        3. 
+    """
     cdef netnodedata ndata
     cdef int c_should_have_friends
     cdef int c_should_have_interactions
@@ -919,6 +1050,9 @@ cdef class CNetworkNode:
         if data_type == <int>"a":
             length_list[0] = self.ndata.c_length_list[interact_type]
             return self.ndata.c_list[interact_type]
+        elif data_type == <int>"c":
+            length_list[0] = self.ndata.c_length_train_ids
+            return self.ndata.c_train_data
         else:
             print "woow"
 
