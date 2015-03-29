@@ -111,6 +111,7 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
             if not line: break
             row = line.strip("\r\n ")
             cols = row.split(' ')
+            #print cols[0], cols[1]
             user_id = int(cols[0])
             should_have_friends = bool(int(cols[1]))
 #           sys.exit(1)

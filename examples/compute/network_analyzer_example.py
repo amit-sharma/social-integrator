@@ -70,6 +70,7 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
     
     try:
         data.get_all_data()
+        BasicNetworkAnalyzer(data).show_basic_stats()
     except:
         raise
     return data
@@ -255,13 +256,13 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         interact_type_str = "listen" if interact_type==0 else "love"
         M = [10]#,20]#,30,40,50]
         t_scale = ord('o')
-        NUM_NODES_TO_COMPUTE = 50000
+        NUM_NODES_TO_COMPUTE = 10000
         num_threads=4
         max_tries_val = None#30000
         max_node_computes_val = NUM_NODES_TO_COMPUTE/num_threads
         max_interact_ratio_error =0.1
         max_sim_ratio_error = 0.1
-        min_friends_match_ratio = 0.9
+        min_friends_match_ratio = 1 # important to be 1 for simulation--because e.g. in influence, we use a person's all friends to compute his next like
         klim_val = None # not used for influence test
         nonfr_match = "random" #random, serial, kbest
         num_loop = 1
@@ -272,8 +273,9 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         for t_window in M:
             for h in range(num_loop):
                 print "\n\n################### ALERTINFO: STARTING ITERATION", h, t_window
-                
-                split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
+                if split_date_str=="test": split_timestamp = 2000
+                else:
+                    split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
                 #split_timestamp=25000000
                 if create_fake_prefs is not None:
                     data.create_training_test_bytime(interact_type, split_timestamp)
@@ -301,8 +303,8 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
                 print "t-test results", ttest_rel(inf_tuple[2], inf_tuple[3])
                 num_vals = len(inf_tuple[0])
                 for i in range(num_vals):
-                    f.write("%f\t%f\t%f\t%f\t%d\t%d\n" % (inf_tuple[0][i], inf_tuple[1][i], 
-                                inf_tuple[2][i], inf_tuple[3][i],h, t_window))
+                    f.write("%d\t%f\t%f\t%f\t%f\t%d\t%d\n" % (inf_tuple[0][i], inf_tuple[1][i], 
+                                inf_tuple[2][i], inf_tuple[3][i], inf_tuple[4][i], h, t_window))
         f.close()
     """
     elif computation_cmd=="random_recommender":
