@@ -259,7 +259,7 @@ def process_data_for_popularity_prediction(
             interactions_by_item[item[0]].append((date, v.uid))
     with open(filename, 'w') as csvfile:
         writer = csv.writer(csvfile)
-        if not baseline:
+        if False:
             writer.writerow((
                 "alpha",
                 "alpha_weighted",
@@ -275,7 +275,7 @@ def process_data_for_popularity_prediction(
         completed = 0
         # for each item calculate data for prediction
         for item, interactions in interactions_by_item.iteritems():
-            if completed % 1000 == 0:
+            if completed % 10000 == 0:
                 print completed, "of", total_items
             completed += 1
             # sort by timestamp
@@ -304,17 +304,6 @@ def process_data_for_popularity_prediction(
                     print item
                     continue
 
-                # construct subgraph of early adopters
-                subgraph = nx.Graph()
-                for a in adopters:
-                    node = a[1]
-                    friends = node.get_friend_ids()
-                    subgraph.add_node(node.uid)
-                    for a2 in adopters:
-                        node2 = a2[1]
-                        if node2.uid in friends:
-                            subgraph.add_edge(node.uid, node2.uid)
-                        pass
                 # number of connections within the subgraph
                 # TODO: turn this into a list??
                 num_connections = 0
@@ -340,33 +329,45 @@ def process_data_for_popularity_prediction(
                 root = adopters[0][1]
                 root_time = adopters[0][0]
 
-                # baseline features
-                b_root_outdegree = None
-                b_root_age = None
-                b_root_activity = None
-                b_outdegrees = []
-                b_outdegrees_sub = []
-                b_network_ages = []
-                b_activities = []  # approximate days active, by amount of loves
-                b_orig_connections = subgraph.degree(root.uid)
-                b_border_nodes = set([])
-                b_border_edges = 0
-                b_subgraph = len(subgraph.edges())
-                b_trees = len(list(nx.connected_component_subgraphs(subgraph)))
-                b_depth = 0  # average distance from node to node for connected
-                b_time = []
-                b_time_first = None  # average time between reshares for 1st 1/2
-                b_time_last = None  # average time between reshares for 2nd 1/2
+                if baseline:
+                    # construct subgraph of early adopters
+                    subgraph = nx.Graph()
+                    for a in adopters:
+                        node = a[1]
+                        friends = node.get_friend_ids()
+                        subgraph.add_node(node.uid)
+                        for a2 in adopters:
+                            node2 = a2[1]
+                            if node2.uid in friends:
+                                subgraph.add_edge(node.uid, node2.uid)
+                            pass
+                    # baseline features
+                    b_root_outdegree = None
+                    b_root_age = None
+                    b_root_activity = None
+                    b_outdegrees = []
+                    b_outdegrees_sub = []
+                    b_network_ages = []
+                    b_activities = []  # approximate days active, by amount of loves
+                    b_orig_connections = subgraph.degree(root.uid)
+                    b_border_nodes = set([])
+                    b_border_edges = 0
+                    b_subgraph = len(subgraph.edges())
+                    b_trees = len(list(nx.connected_component_subgraphs(subgraph)))
+                    b_depth = 0  # average distance from node to node for connected
+                    b_time = []
+                    b_time_first = None  # average time between reshares for 1st 1/2
+                    b_time_last = None  # average time between reshares for 2nd 1/2
 
-                distances = 0
-                num_ns = 0
-                for g in nx.connected_component_subgraphs(subgraph):
-                    try:
-                        distances += nx.average_shortest_path_length(g) * \
-                            len(g.nodes())
-                    except:
-                        pass
-                b_depth = distances / len(subgraph.nodes())
+                    distances = 0
+                    num_ns = 0
+                    for g in nx.connected_component_subgraphs(subgraph):
+                        try:
+                            distances += nx.average_shortest_path_length(g) * \
+                                len(g.nodes())
+                        except:
+                            pass
+                    b_depth = distances / len(subgraph.nodes())
 
                 for adopter in adopters:
                     node = adopter[1]
@@ -382,7 +383,29 @@ def process_data_for_popularity_prediction(
                         ),
                         key=lambda x: x[1]
                     )
-                    if not baseline:
+
+                    # similarity
+                    if use_similarity:
+                        node.create_training_test_sets_bytime(
+                            1,
+                            time.mktime(max_t1_time.timetuple()),
+                            -1
+                        )
+                        for pa in prev_adoptions:
+                            pnode = pa[1]
+                            similarity = compute_node_similarity_pywrapper(
+                                node=node,
+                                other_node=pnode,
+                                interact_type=interact_type,
+                                data_type_code=ord('c'),
+                                min_interactions_per_user=5,
+                                time_diff=-1,
+                                time_scale=ord('w')
+                            )
+                            if similarity >= 0:
+                                similarities.append(similarity)
+
+                    if False:
                         prev_interactions_len = len(
                             [
                                 i for i in adopter_interactions
@@ -417,7 +440,7 @@ def process_data_for_popularity_prediction(
                                 if pa[0] + timestep >= adopt_time:
                                     friend_adopted += 1
                         friend_adoptions.append(friend_adopted)
-                        prev_adoptions.append(adopter)
+                    prev_adoptions.append(adopter)
 
                     if baseline:
                         # Baseline (Cheng et al. Features)
@@ -457,6 +480,7 @@ def process_data_for_popularity_prediction(
                     ).total_seconds() / split
 
                 if early_popularity > 1:
+                    row = ()
                     if ignore_early_pop:
                         final_popularity = len(
                             [
@@ -468,7 +492,18 @@ def process_data_for_popularity_prediction(
                         final_popularity = len(
                             [i for i in interactions if i[0] <= max_t2_time]
                         )
-                    if not baseline:
+                    if use_similarity:
+                        if len(similarities) == 0:
+                            sim_attrs = (0, 0, 0, 0)
+                        else:
+                            sim_attrs = (
+                                len(similarities),
+                                np.mean(similarities),
+                                np.median(similarities),
+                                np.max(similarities)
+                            )
+                        row = row + sim_attrs
+                    if False:
                         # FEATURES #
                         # proportion friend adoption
                         alpha = len([f for f in friend_adoptions if f > 0]) / \
@@ -492,7 +527,7 @@ def process_data_for_popularity_prediction(
                             prev_num_interactions
                         )
                         # Compute y value (final popularity)
-                        row = (
+                        row = row + (
                             alpha,
                             alpha_weighted,
                             avg_similarity,
@@ -501,10 +536,9 @@ def process_data_for_popularity_prediction(
                             early_adopter_connectedness,
                             early_adoption_length,
                             avg_early_adopter_activity_level,
-                            final_popularity,
                         )
-                    else:
-                        row = (
+                    if baseline:
+                        row = row + (
                             b_root_outdegree,  # outdeg v0
                             b_root_age.total_seconds(),  # fb_age0
                             b_root_activity,  # activity0
@@ -526,8 +560,8 @@ def process_data_for_popularity_prediction(
                             (
                                 b_time_first,  # time'_1...k/2
                                 b_time_last,  # time'_k/2...k
-                                final_popularity,  # label
                             )
+                    row = row + (final_popularity,)
                     writer.writerow(row)
 
     print time.time() - start
