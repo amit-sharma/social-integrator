@@ -211,15 +211,10 @@ class NetworkVisualizer(object):
         netdata - netdata object
         interact_type (int)- the type of interactions to process
         filename (string)- csv to save data to
-        timestep (timedelta)- how long between interactions is considered a
-            friend adoption (i.e. 1 week)
+        k - minimum number of interactions (if t1 is none, then early adoption period is first k)
         t1 (timedelta or int) - how long the early adopter period is,
             or how many adopters are considered the early adopter period
         t2 (timedelta or int) - how long final popularity time is
-        ordinal - use time as early adopter period or number of adopters
-            (t1 as datetime or t1 as int)
-        ignore_early_pop - calculate final popularity only using time between
-            t1 and t2 instead of from start to t2
 '''
 
 
@@ -227,16 +222,18 @@ def process_data_for_popularity_prediction(
     netdata,
     interact_type,
     filename,
-    timestep,
-    t1,
     t2,
-    ordinal=False,
-    ignore_early_pop=False,
+    t1=None,
+    k=1,
     use_similarity=False,
-    baseline=False,
+    kmax=None,
 ):
+    # t2 = t2.total_seconds()
+    # if t1 is not None:
+    #     t1 = t1.total_seconds()
     start = time.time()
     interactions_by_item = defaultdict(list)
+    # change here
     max_interaction_time = datetime(year=1970, month=1, day=1)
     # get all interactions for all items and put in a dictionary
     # for each item we have all interactions (user id and timestamp)
@@ -254,23 +251,15 @@ def process_data_for_popularity_prediction(
             return_timestamp=True
         )
         for item in interactions:
+            print item[1]
+            # change here
             date = (datetime.fromtimestamp(item[1]))
+            print date
             max_interaction_time = max(date, max_interaction_time)
             interactions_by_item[item[0]].append((date, v.uid))
+
     with open(filename, 'w') as csvfile:
         writer = csv.writer(csvfile)
-        if False:
-            writer.writerow((
-                "alpha",
-                "alpha_weighted",
-                "avg_similarity",
-                "early_popularity",
-                "avg_early_adopter_popularity",
-                "early_adopter_connectedness",
-                "early_adoption_length",
-                "avg_early_adopter_activity_level",
-                "final_popularity",
-            ))
         total_items = len(interactions_by_item)
         completed = 0
         # for each item calculate data for prediction
@@ -278,18 +267,19 @@ def process_data_for_popularity_prediction(
             if completed % 10000 == 0:
                 print completed, "of", total_items
             completed += 1
+
             # sort by timestamp
             interactions.sort()
+
             max_t2_time = interactions[0][0] + t2
-            # item has existed long enough
-            if (not ordinal and
-                    interactions[0][0] + max(t1, t2) <= max_interaction_time) \
-                or (ordinal and len(interactions) >= t1 and
-                    interactions[0][0] + t2 <= max_interaction_time and
-                    interactions[t1-1][0] <= max_t2_time):
+
+            # item has existed long enough and has enough interactions fast enuf
+            if len(interactions) >= k and interactions[k-1][0] <= max_t2_time \
+                    and max_t2_time <= max_interaction_time \
+                    and (t1 is None or interactions[k-1][0] <= interactions[0][0] + t1):
                 adopters = []
-                if ordinal:
-                    max_t1_time = interactions[t1-1][0]
+                if t1 is None:
+                    max_t1_time = interactions[k-1][0]
                 else:
                     max_t1_time = interactions[0][0] + t1
 
@@ -298,21 +288,11 @@ def process_data_for_popularity_prediction(
                     i_time = i[0]
                     i_node = netdata.get_node_objs([i[1]])[0]
                     if i_time <= max_t1_time:
-                        if not ordinal or len(adopters) < t1:
+                        if t1 is not None or len(adopters) < k:
                             adopters.append((i_time, i_node))
-                if ordinal and len(adopters) > t1:
+                if t1 is None and len(adopters) > k:
                     print item
                     continue
-
-                # number of connections within the subgraph
-                # TODO: turn this into a list??
-                num_connections = 0
-
-                # list of number of friends for each early adopter
-                friend_counts = []
-
-                # list for number of "influencers for each adoption
-                friend_adoptions = []
 
                 # all adoptions before the kth adoption
                 prev_adoptions = []
@@ -320,54 +300,54 @@ def process_data_for_popularity_prediction(
                 # list of similarities between early adopters, ignores -1s
                 similarities = []
 
-                # list of number of interactions an early adopter has had
-                prev_num_interactions = []
-
                 early_popularity = len(adopters)
 
                 # Calculate features #######
                 root = adopters[0][1]
                 root_time = adopters[0][0]
 
-                if baseline:
-                    # construct subgraph of early adopters
-                    subgraph = nx.Graph()
-                    for a in adopters:
-                        node = a[1]
-                        friends = node.get_friend_ids()
-                        subgraph.add_node(node.uid)
-                        for a2 in adopters:
-                            node2 = a2[1]
-                            if node2.uid in friends:
-                                subgraph.add_edge(node.uid, node2.uid)
-                            pass
-                    # baseline features
-                    b_root_outdegree = None
-                    b_root_age = None
-                    b_root_activity = None
-                    b_outdegrees = []
-                    b_outdegrees_sub = []
-                    b_network_ages = []
-                    b_activities = []  # approximate days active, by amount of loves
-                    b_orig_connections = subgraph.degree(root.uid)
-                    b_border_nodes = set([])
-                    b_border_edges = 0
-                    b_subgraph = len(subgraph.edges())
-                    b_trees = len(list(nx.connected_component_subgraphs(subgraph)))
-                    b_depth = 0  # average distance from node to node for connected
-                    b_time = []
-                    b_time_first = None  # average time between reshares for 1st 1/2
-                    b_time_last = None  # average time between reshares for 2nd 1/2
+                # construct subgraph of early adopters
+                subgraph = nx.Graph()
+                for a in adopters:
+                    node = a[1]
+                    friends = node.get_friend_ids()
+                    subgraph.add_node(node.uid)
+                    for a2 in adopters:
+                        node2 = a2[1]
+                        if node2.uid in friends:
+                            subgraph.add_edge(node.uid, node2.uid)
+                        pass
+                # baseline features
+                b_root_outdegree = None
+                b_root_age = None
+                b_root_activity = None
+                b_outdegrees = []
+                b_outdegrees_sub = []
+                b_network_ages = []
+                b_activities = []  # approximate days active, by amount of loves
+                b_orig_connections = subgraph.degree(root.uid)
+                b_border_nodes = set([])
+                b_border_edges = 0
+                b_subgraph = len(subgraph.edges())
+                b_trees = len(list(nx.connected_component_subgraphs(subgraph)))
+                b_depth = 0  # average distance from node to node for connected
+                b_time = []
+                b_time_first = None  # average time between reshares for 1st 1/2
+                b_time_last = None  # average time between reshares for 2nd 1/2
 
-                    distances = 0
-                    num_ns = 0
-                    for g in nx.connected_component_subgraphs(subgraph):
-                        try:
-                            distances += nx.average_shortest_path_length(g) * \
-                                len(g.nodes())
-                        except:
-                            pass
-                    b_depth = distances / len(subgraph.nodes())
+                distances = 0
+                num_ns = 0
+                for g in nx.connected_component_subgraphs(subgraph):
+                    try:
+                        distances += nx.average_shortest_path_length(g) * \
+                            len(g.nodes())
+                    except:
+                        pass
+                b_depth = distances / len(subgraph.nodes())
+
+                if t1 is not None:
+                    # change this
+                    adoptions_by_day = np.zeros(t1.days).astype(int)
 
                 for adopter in adopters:
                     node = adopter[1]
@@ -383,9 +363,15 @@ def process_data_for_popularity_prediction(
                         ),
                         key=lambda x: x[1]
                     )
-
+                    if t1 is not None:
+                        # change this
+                        adoptions_by_day[(max_t1_time - adopt_time).days-1] += 1
                     # similarity
                     if use_similarity:
+                        # change this
+                        print "node", node.uid
+                        print "time", max_t1_time
+                        print "seconds", time.mktime(max_t1_time.timetuple())
                         node.create_training_test_sets_bytime(
                             1,
                             time.mktime(max_t1_time.timetuple()),
@@ -393,6 +379,7 @@ def process_data_for_popularity_prediction(
                         )
                         for pa in prev_adoptions:
                             pnode = pa[1]
+                            print "pa", pnode.uid
                             similarity = compute_node_similarity_pywrapper(
                                 node=node,
                                 other_node=pnode,
@@ -402,166 +389,97 @@ def process_data_for_popularity_prediction(
                                 time_diff=-1,
                                 time_scale=ord('w')
                             )
+                            # print "similarity computed"
                             if similarity >= 0:
+                                # print "similarity added"
                                 similarities.append(similarity)
-
-                    if False:
-                        prev_interactions_len = len(
-                            [
-                                i for i in adopter_interactions
-                                if (datetime.fromtimestamp(i[1])) <= max_t1_time
-                            ]
-                        )
-                        prev_num_interactions.append(prev_interactions_len)
-                        friend_counts.append(len(friends))
-                        if use_similarity:
-                            node.create_training_test_sets_bytime(
-                                1,
-                                time.mktime(max_t1_time.timetuple()),
-                                -1
-                            )
-                        friend_adopted = 0
-                        for pa in prev_adoptions:
-                            pnode = pa[1]
-                            if use_similarity:
-                                similarity = compute_node_similarity_pywrapper(
-                                    node=node,
-                                    other_node=pnode,
-                                    interact_type=interact_type,
-                                    data_type_code=ord('c'),
-                                    min_interactions_per_user=5,
-                                    time_diff=-1,
-                                    time_scale=ord('w')
-                                )
-                                if similarity >= 0:
-                                    similarities.append(similarity)
-                            if pa[1].uid in friends:
-                                num_connections += 1
-                                if pa[0] + timestep >= adopt_time:
-                                    friend_adopted += 1
-                        friend_adoptions.append(friend_adopted)
                     prev_adoptions.append(adopter)
 
-                    if baseline:
-                        # Baseline (Cheng et al. Features)
-                        last_month_interactions = len(
-                            [
-                                i for i in adopter_interactions
-                                if (adopt_time - timedelta(weeks=4)) <=
-                                (datetime.fromtimestamp(i[1])) <=
-                                max_t1_time
-                            ]
+                    # Baseline (Cheng et al. Features)
+                    # change this
+                    last_month_interactions = len(
+                        [
+                            i for i in adopter_interactions
+                            if (adopt_time - timedelta(weeks=4)) <=
+                            (datetime.fromtimestamp(i[1])) <=
+                            max_t1_time
+                        ]
+                    )
+                    # change this
+                    age = adopt_time - \
+                        datetime.fromtimestamp(adopter_interactions[0][1])
+
+                    b_border_edges += len(friends)
+                    b_border_nodes.update(friends)
+                    if node == root:
+                        b_root_age = age
+                        b_root_outdegree = len(friends)
+                        b_root_activity = last_month_interactions
+                    else:
+                        b_outdegrees.append(len(friends))
+                        b_outdegrees_sub.append(subgraph.degree(node.uid))
+                        # change this
+                        b_network_ages.append(age.total_seconds())
+                        b_activities.append(last_month_interactions)
+                        # change this
+                        b_time.append(
+                            (adopt_time-root_time).total_seconds()
                         )
-                        age = adopt_time - \
-                            datetime.fromtimestamp(adopter_interactions[0][1])
 
-                        b_border_edges += len(friends)
-                        b_border_nodes.update(friends)
-                        if adopter[1] == root:
-                            b_root_age = age
-                            b_root_outdegree = len(friends)
-                            b_root_activity = last_month_interactions
-                        else:
-                            b_outdegrees.append(len(friends))
-                            b_outdegrees_sub.append(subgraph.degree(node.uid))
-                            b_network_ages.append(age.total_seconds())
-                            b_activities.append(last_month_interactions)
-                            b_time.append(
-                                (adopt_time-root_time).total_seconds()
-                            )
-
-                if baseline:
-                    split = len(adopters) / 2
-                    b_time_first = (
-                        adopters[split-1][0] - adopters[0][0]
-                    ).total_seconds() / split
-                    b_time_last = (
-                        adopters[-1][0] - adopters[split][0]
-                    ).total_seconds() / split
+                split = len(adopters) / 2
+                div = split if split > 0 else 1
+                b_time_first = (
+                    adopters[split-1][0] - adopters[0][0]
+                ).total_seconds() / div
+                b_time_last = (
+                    adopters[-1][0] - adopters[split][0]
+                ).total_seconds() / div
 
                 if early_popularity > 1:
                     row = ()
-                    if ignore_early_pop:
-                        final_popularity = len(
-                            [
-                                i for i in interactions
-                                if max_t1_time < i[0] <= max_t2_time
-                            ]
-                        )
-                    else:
-                        final_popularity = len(
-                            [i for i in interactions if i[0] <= max_t2_time]
-                        )
+                    final_popularity = len(
+                        [i for i in interactions if i[0] <= max_t2_time]
+                    )
                     if use_similarity:
                         if len(similarities) == 0:
                             sim_attrs = (0, 0, 0, 0)
                         else:
                             sim_attrs = (
-                                len(similarities),
-                                np.mean(similarities),
-                                np.median(similarities),
-                                np.max(similarities)
+                                len(similarities),  # sim
+                                np.mean(similarities),  # sim
+                                np.median(similarities),  # sim
+                                np.max(similarities)  # sim
                             )
                         row = row + sim_attrs
-                    if False:
-                        # FEATURES #
-                        # proportion friend adoption
-                        alpha = len([f for f in friend_adoptions if f > 0]) / \
-                            float(early_popularity)
-                        # proportion friend adoption (weighted)
-                        alpha_weighted = np.mean(alpha)
-                        # connectedness early adopters within subgraph
-                        early_adopter_connectedness = num_connections / \
-                            float(early_popularity)
-                        # average number of friends for early adopters
-                        avg_early_adopter_popularity = np.mean(friend_counts)
-                        # average similarity of early adopters
-                        avg_similarity = np.mean(similarities) \
-                            if len(similarities) > 0 else 0
-                        # how long the early adoption period is in seconds
-                        early_adoption_length = (
-                            max_t1_time - interactions[0][0]
-                        ).total_seconds()
-                        # average # of items interacted with by early adopters
-                        avg_early_adopter_activity_level = np.mean(
-                            prev_num_interactions
-                        )
-                        # Compute y value (final popularity)
-                        row = row + (
-                            alpha,
-                            alpha_weighted,
-                            avg_similarity,
-                            early_popularity,
-                            avg_early_adopter_popularity,
-                            early_adopter_connectedness,
-                            early_adoption_length,
-                            avg_early_adopter_activity_level,
-                        )
-                    if baseline:
-                        row = row + (
-                            b_root_outdegree,  # outdeg v0
-                            b_root_age.total_seconds(),  # fb_age0
-                            b_root_activity,  # activity0
-                            np.mean(b_outdegrees),  # friends_avg
-                            np.mean(b_network_ages),  # fb_ages_avg
-                            np.mean(b_activities),  # activities_avg
-                        ) + \
-                            tuple(b_outdegrees) + \
-                            tuple(b_outdegrees_sub) + \
-                            (
-                                b_orig_connections,  # orig_connections
-                                len(b_border_nodes),  # border_nodes
-                                b_border_edges,  # border edges
-                                b_subgraph,  # subgraph'
-                                b_trees,  # approximate of depth
-                                b_depth  # approximate of depth
-                            ) + \
-                            tuple(b_time) + \
-                            (
-                                b_time_first,  # time'_1...k/2
-                                b_time_last,  # time'_k/2...k
-                            )
-                    row = row + (final_popularity,)
+
+                    row = row + (
+                        b_root_outdegree,  # outdeg v0 - root
+                        b_root_age.total_seconds(),  # fb_age0 - root
+                        b_root_activity,  # activity0 - root
+                        np.mean(b_outdegrees),  # friends_avg - reshare
+                        np.mean(b_network_ages),  # fb_ages_avg - reshare
+                        np.mean(b_activities),  # activities_avg - reshare
+                        np.mean(b_outdegrees_sub),  # avg on subgraph - struct
+                        b_orig_connections,  # orig_connections - struct
+                        len(b_border_nodes),  # border_nodes - struct
+                        b_border_edges,  # border edges - struct
+                        b_subgraph,  # subgraph' - struct
+                        b_trees,  # approximate of depth - struct
+                        b_depth,  # approximate of depth - struct
+                    )
+                    # if we are using k, then use these features
+                    if k > 1:
+                        row = row + tuple(b_outdegrees)[:k-1] + \
+                            tuple(b_outdegrees_sub)[:k-1] + \
+                            tuple(b_time)[:k-1]
+                    row = row + (
+                        b_time_first,  # time'_1...k/2 - temporal
+                        b_time_last,  # time'_k/2...k - temporal
+                    )
+                    if t1 is not None:
+                        row = row + tuple(adoptions_by_day)  # ordinal
+                    # ordinal and label
+                    row = row + (early_popularity, final_popularity, )
                     writer.writerow(row)
 
     print time.time() - start
