@@ -9,6 +9,7 @@ from threading import Thread
 from Queue import Queue
 import operator
 import time
+from pprint import pprint
 
 def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_type, 
                                             cutoff_rating, control_divider, min_interactions_per_user, 
@@ -58,7 +59,7 @@ def compute_susceptibility_randomselect_parallel(netdata, nodes_list, interact_t
                     final_influence[key] = None
     final_influence_arr = [tuple(val/num_rand_attempts for val in val_tuple) for (
             val_tuple) in final_influence.itervalues() if val_tuple is not None]
-
+    #pprint(influence_dict)
     #q.put(final_influence_arr)
     return final_influence_arr
 
@@ -962,7 +963,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
     
       #CAUTION:  assumes training test data already there
     def estimate_influencer_effect_parallel(self, interact_type, split_timestamp, time_diff,
-                                   time_scale, control_divider=0.1, min_interactions_per_user=0, 
+                                   time_scale, control_divider=0.1, min_interactions_beforeaftersplit_per_user=0, 
                                    selection_method="random", klim=None, 
                                    max_tries=10000, max_node_computes=10000, num_threads=1,
                                    max_interact_ratio_error=0.1,
@@ -1035,7 +1036,7 @@ class LocalityAnalyzer(BasicNetworkAnalyzer):
         q = Queue()
         influence_arr_all = compute_susceptibility_randomselect_parallel (
                 self.netdata, nodes_list, interact_type,
-                           cutoff_rating, control_divider, min_interactions_per_user, 
+                           cutoff_rating, control_divider, min_interactions_beforeaftersplit_per_user, 
                            time_diff, time_scale, max_tries,
                            max_node_computes, max_interact_ratio_error,
                            max_sim_ratio_error, min_friends_match_ratio,

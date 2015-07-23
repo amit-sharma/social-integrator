@@ -2,6 +2,7 @@ import random, heapq
 from collections import defaultdict
 from socintpy.networkcompute.basic_network_analyzer import BasicNetworkAnalyzer
 import socintpy.cythoncode.cnetwork_node as cycode
+import socintpy.util.adoption_timeseries as adopt_time
 import sys
 import operator
 
@@ -27,7 +28,7 @@ def select_item_from_neighbors(netdata, lastm_heaps, node, timestamp,
     global num_not_influence
     _,new_item_id = lastm_heaps[node.uid][random.randint(0, time_window-1)]
     if new_item_id == -1:
-        #print "WARN: Not assigned by influence", found, len(fids), tries
+        print "WARN: Not assigned by influence", found, len(fids), tries
         new_item_id = random.randint(1, netdata.total_num_items)
         #num_not_influence += 1
     if node.uid == 131:
@@ -153,111 +154,6 @@ def select_item_dueto_random(items_pop):
     return items_pop[rand_index]
 
 
-def get_interactions_stream(nodes_iterable, interact_type, split_timestamp,
-        min_interactions_per_user):
-    interactions_stream = []
-    items_pop = {}
-    for node in nodes_iterable: 
-        # check this so that friends etc. are compatible with the test we do later
-        # it is as if other nodes do not exist
-        if node.length_train_ids >=min_interactions_per_user and node.length_test_ids>=min_interactions_per_user:
-            node_interacts = node.get_interactions_after(interact_type,
-                    split_timestamp=split_timestamp, cutoff_rating=-1)
-            new_arr = [(node, item_id, timestamp, rating) for (
-                    item_id, timestamp, rating) in node_interacts] 
-            interactions_stream.extend(new_arr)
-    #print [(node, item_id, timestamp, rating) for node, item_id, timestamp, rating in interactions_stream[1:10]]
-    interactions_stream = sorted(interactions_stream, key=operator.itemgetter(2))
-    return interactions_stream
-
-def compute_globalk_neighbors3(netdata, all_nodes, interact_type, k, min_interactions_per_user):
-    if netdata.global_k_incoming is not None:
-        print "Got precomputed global k-nearest neighbors!"
-        return netdata.global_k_incoming
-    data_type="compare_train"
-    data_type_code = ord(data_type[0])
-    visited = {}
-    nodes_list = []
-    for node in all_nodes:
-        if node.uid not in visited:
-            nodes_list.append(node)
-            visited[node.uid] = True
-
-    globalk_neighbors_dict = cycode.compute_global_kbest_neighbors_wrapper(nodes_list, interact_type,
-            data_type_code, k)
-
-    incoming_neigh_dict = defaultdict(list)
-    temp_nodes_dict = {}
-    for node_id, neighs in globalk_neighbors_dict.iteritems():
-        count = 0
-        frids = netdata.get_node_from_id(node_id).get_friend_ids()
-        for neigh_id in neighs:
-            incoming_neigh_dict[neigh_id].append(node_id)
-            if neigh_id in frids:
-                count += 1
-        if node_id %100 ==0:
-            print count, len(frids), len(neighs), count/len(neighs)
-
-    netdata.global_k_incoming = incoming_neigh_dict
-    return incoming_neigh_dict
-
-def compute_globalk_neighbors2(netdata, all_nodes, interact_type, k, min_interactions_per_user):
-    if netdata.global_k_incoming is not None:
-        print "Got precomputed global k-nearest neighbors!"
-        return netdata.global_k_incoming
-    globalk_incoming_dict = defaultdict(list)
-    globalk_neighbors_dict = {}
-    data_type="compare_train"
-    counter = 0
-    counter_nodes = 0
-    #print "Number of nodes for which need to compute global_knearest", len(all_nodes)
-    for node in all_nodes:
-        counter += 1
-        if node.uid not in globalk_neighbors_dict:
-            global_candidates = netdata.get_othernodes_iterable(node, should_have_interactions=True)
-            globalk_neighbors = BasicNetworkAnalyzer.compute_knearest_neighbors(node, global_candidates, 
-                                                                interact_type, k, data_type=data_type, 
-                                                                cutoff_rating = -1,
-                                                                min_interactions_per_user=min_interactions_per_user,
-                                                                time_diff=-1, time_scale=ord('w'))
-            if len(globalk_neighbors) == 0:
-                print node.uid, node.get_num_interactions(interact_type), node.length_train_ids,  k
-            for sim,neighnode in globalk_neighbors:
-                globalk_incoming_dict[neighnode.uid].append(node.uid)
-            globalk_neighbors_dict[node.uid]= True
-            counter_nodes += 1
-            if counter_nodes % 100 == 0:
-                print "Done for computing k-similar global neighbors for node", counter_nodes, " at interaction ", counter
-    netdata.global_k_incoming = globalk_incoming_dict
-    return globalk_incoming_dict
-
-# warning: assumes that train data has been made beforehand
-def compute_globalk_neighbors(netdata, all_nodes, interact_type, k, min_interactions_per_user):
-    if netdata.global_k_neighbors is not None:
-        print "Got precomputed global k-nearest neighbors!"
-        return netdata.global_k_neighbors
-    globalk_neighbors_dict = {}
-    data_type="compare_train"
-    counter = 0
-    counter_nodes = 0
-    #print "Number of nodes for which need to compute global_knearest", len(all_nodes)
-    for node in all_nodes:
-        counter += 1
-        if node.uid not in globalk_neighbors_dict:
-            global_candidates = netdata.get_othernodes_iterable(node, should_have_interactions=True)
-            globalk_neighbors = BasicNetworkAnalyzer.compute_knearest_neighbors(node, global_candidates, 
-                                                                interact_type, k, data_type=data_type, 
-                                                                cutoff_rating = -1,
-                                                                min_interactions_per_user=min_interactions_per_user,
-                                                                time_diff=-1, time_scale=ord('w'))
-            if len(globalk_neighbors) == 0:
-                print node.uid, node.get_num_interactions(interact_type), node.length_train_ids,  k
-            globalk_neighbors_dict[node.uid] = globalk_neighbors
-            counter_nodes += 1
-            if counter_nodes % 100 == 0:
-                print "Done for computing k-similar global neighbors for node", counter_nodes, " at interaction ", counter
-    netdata.global_k_neighbors = globalk_neighbors_dict
-    return globalk_neighbors_dict
 
 def get_items_dup_array(netdata, interact_type):
     items_all = []
@@ -275,16 +171,6 @@ def get_items_dup_array2(nodes, interact_type):
             items_all.append(item_id)
     return items_all
 
-def compute_incoming_friends(nodes_iter):
-    incoming_fr_dict = defaultdict(list)
-    temp_nodes_dict = {}
-    for node in nodes_iter:
-        if node.uid not in temp_nodes_dict:
-            if node.has_friends():
-                for frid in node.get_friend_ids():
-                    incoming_fr_dict[frid].append(node.uid)
-            temp_nodes_dict[node.uid] = True
-    return incoming_fr_dict
 
 # three options: random, influence or homophily
 # Caution: This function, under method homophily, stores the k-best neighbors as a 
@@ -292,8 +178,10 @@ def compute_incoming_friends(nodes_iter):
 #            interact_type, min_interactions etc.  or method after that.           
 # Caution: this function, as written, also stores the prior friends interaction
 #            streams and reuses them. Dangerous!
+# Caution Dec 8: The generated fake prefs can have duplicates, e.g. if not enough
+#                    items liked by friends
 def generate_fake_preferences(netdata, interact_type, split_timestamp, 
-        min_interactions_per_user=1, time_window=None, time_scale=ord('o'), method="random"):
+        min_interactions_beforeaftersplit_per_user=1, time_window=None, time_scale=ord('o'), method="random"):
     global num_not_influence, num_not_homophily
     global friends_share, nonfriends_share
     num_not_homophily = 0
@@ -307,10 +195,9 @@ def generate_fake_preferences(netdata, interact_type, split_timestamp,
     """
     core_nodes2 = netdata.get_nodes_iterable(should_have_interactions=True)
     # caution: should do it for all users with interactions to be safe
-    interactions_stream  = get_interactions_stream(core_nodes2, interact_type, split_timestamp, min_interactions_per_user)
+    interactions_stream, eligible_nodes  = adopt_time.get_interactions_stream(core_nodes2, interact_type, split_timestamp, min_interactions_beforeaftersplit_per_user)
     print "Number of interactions to change", len(interactions_stream)
     counter = 0
-    all_future_nodes = [v[0] for v in interactions_stream]
     lastm_heaps = {}
     if method=="homophily":
         """
@@ -318,12 +205,16 @@ def generate_fake_preferences(netdata, interact_type, split_timestamp,
                 interact_type, k=10, min_interactions_per_user=min_interactions_per_user)
         print "Generated k-best neighbors for all"
         """
-        globalk_incoming_dict = compute_globalk_neighbors3(netdata, all_future_nodes, 
-                interact_type, k=10, min_interactions_per_user=min_interactions_per_user)
+        globalk_incoming_dict = adopt_time.compute_globalk_neighbors3(netdata,eligible_nodes, 
+                interact_type, k=10, min_interactions_per_user=min_interactions_beforeaftersplit_per_user) 
+        lastm_heaps = adopt_time.compute_initial_lastm_heaps(eligible_nodes,
+                globalk_incoming_dict, interact_type, split_timestamp, min_interactions_beforeaftersplit_per_user,
+                time_window)
+        """
         for node in netdata.get_nodes_iterable(should_have_interactions=True):
             lastm_heaps[node.uid] = [(0,-1)]*time_window
             heapq.heapify(lastm_heaps[node.uid])
-            
+        """    
     elif method=="random":
         items_pop = get_items_dup_array(netdata, interact_type)
         print "Generated items popularity dict"
@@ -331,12 +222,20 @@ def generate_fake_preferences(netdata, interact_type, split_timestamp,
         # we need friends_dict for only those that appear in the test set
         # and more importantly, in the interaction stream (i.e. >=min_interactions_per_user), 
         # since that is what is compared in the suscept test.
-        incoming_friends_dict = compute_incoming_friends(all_future_nodes)
+        incoming_friends_dict = adopt_time.compute_incoming_friends(eligible_nodes)
+    
+        lastm_heaps = adopt_time.compute_initial_lastm_heaps(eligible_nodes,
+                incoming_friends_dict, interact_type, split_timestamp, min_interactions_beforeaftersplit_per_user,
+                time_window)
+        """
         for node in netdata.get_nodes_iterable(should_have_interactions=True):
             lastm_heaps[node.uid] = [(0,-1)]*time_window
             heapq.heapify(lastm_heaps[node.uid])
+        """
         print len(lastm_heaps), "yoyo"
         #print(incoming_friends_dict)
+    else:
+        print "Invalid fake prefs method"; sys.exit(1)
 
     for node, item_id, timestamp, rating in interactions_stream:
         if method == "random":

@@ -153,7 +153,8 @@ class NetworkDataPreparser():
                 selected_nodes.insert(counter, node)
             else:
                 del node
-        
+        print len(selected_nodes)
+
         # now modifying the node-ids in the friends list of selected core nodes
         for node in selected_nodes[1:]:
             if node.should_have_friends:
@@ -270,14 +271,15 @@ class NetworkDataPreparser():
         print "-- Total number of items featuring in atleast one interaction", self.total_num_items
         return
 
-    def create_training_test_bytime(self, interact_type, split_timestamp):
+    def create_training_test_bytime(self, interact_type, split_timestamp, 
+            min_interactions_beforeaftersplit_per_user=1):
         cutoff_rating = self.cutoff_rating
         if cutoff_rating is None:
             cutoff_rating = -1
         # Create training, test sets for all users(core and non-core)
         for node in self.get_nodes_list(should_have_interactions=True):
             node.create_training_test_sets_bytime(interact_type, split_timestamp,
-                                                  cutoff_rating)
+                                                  cutoff_rating, min_interactions_beforeaftersplit_per_user)
         return
 
     def compute_allpairs_sim(self, interact_type, data_type):

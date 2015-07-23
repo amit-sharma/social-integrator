@@ -138,11 +138,11 @@ cdef twoints binary_search_closest_fsiminfo(fsiminfo *interactions, int length_i
         printf("%f", interactions[mid].sim)
     if item_index != -1:
         i = item_index - 1
-        while i >=0 and fabs(interactions[i].sim -sim)/interactions[i].sim <= max_sim_ratio_error:
+        while i >=0 and ( (interactions[i].sim <0.00001 and sim<0.00001) or (fabs(interactions[i].sim -sim)/interactions[i].sim <= max_sim_ratio_error) ):
             i -= 1
         ret.val1 = i+1
         i = item_index + 1
-        while i <length_interactions and fabs(interactions[i].sim -sim)/interactions[i].sim <= max_sim_ratio_error:
+        while i <length_interactions and ( (interactions[i].sim <0.00001 and sim<0.00001) or (fabs(interactions[i].sim -sim)/interactions[i].sim <= max_sim_ratio_error) ):
             i += 1
         ret.val2 = i-1
     return ret

@@ -13,20 +13,23 @@ from socintpy.networkdata.goodreads_preparser import GoodreadsDataPreparser
 from socintpy.networkdata.hashtag_data_preparser import HashtagDataPreparser
 from socintpy.networkdata.lastfm_data_preparser_csv import LastfmDataPreparserCSV
 from socintpy.networkdata.lastfm_data_preparser_simple import LastfmDataPreparserSimple
+from socintpy.networkdata.lastfm_data_preparser_lovelisten import LastfmDataPreparserLovelisten
 from socintpy.networkdata.flixster_preparser import FlixsterDataPreparser
 from socintpy.networkdata.flickr_preparser import FlickrDataPreparser
 import socintpy.util.plotter as plotter
 import socintpy.util.utils as utils
 import socintpy.util.compute_functions as compute
 import socintpy.networkdata.generate_fake_data as fake_data
+import socintpy.networkcompute.model_adoption as gen_adopt
 from scipy.stats import ttest_rel
 from pprint import pprint
+from time import strftime
 
-
-COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr', 'lastfm_simple']
+COMPATIBLE_DOMAINS = ['twitter', 'lastfm', 'goodreads', 'flixster', 'flickr', 'lastfm_simple', 'lastfm_lovelisten']
 AVAILABLE_COMPUTATIONS = ['basic_stats', 'random_similarity', 'knn_similarity', 'knn_recommender', 'circle_coverage',
                           'items_edge_coverage', 'network_draw', 'network_item_adopt', 'node_details', 'store_dataset',
-                          'compare_interact_types', 'influence_test', 'suscept_test']
+                          'compare_interact_types', 'influence_test', 'suscept_test', 
+                          'compute_split_date', 'gen_adopt_data']
 
 
 def usage():
@@ -41,7 +44,7 @@ def compare_sims(fr_sim, nonfr_sim):
 
 def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
                                   max_core_nodes, cutoff_rating, store_dataset, 
-                                  interact_type_val, min_interacts_per_user):
+                                  interact_type_val, min_interacts_beforeaftersplit_per_user):
     data = None
     #h = hpy()
     #h.setref()
@@ -54,19 +57,24 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
         data = LastfmDataPreparserSimple(dataset_path, impl_type, cutoff_rating,
                                    max_core_nodes, store_dataset, use_artists=False, 
                                    interact_type_val=interact_type_val,
-                                   min_interactions_per_user=min_interacts_per_user*2)
+                                   min_interactions_per_user=min_interacts_beforeaftersplit_per_user*2)
+    elif dataset_domain== "lastfm_lovelisten":
+        data = LastfmDataPreparserLovelisten(dataset_path, impl_type, cutoff_rating,
+                                   max_core_nodes, store_dataset, use_artists=False, 
+                                   interact_type_val=interact_type_val,
+                                   min_interactions_per_user=min_interacts_beforeaftersplit_per_user*2)
     elif dataset_domain=="goodreads":
         data = GoodreadsDataPreparser(dataset_path, impl_type, cutoff_rating,
                                       max_core_nodes, store_dataset, 
-                                      min_interactions_per_user = min_interacts_per_user*2)
+                                      min_interactions_per_user = min_interacts_beforeaftersplit_per_user*2)
     elif dataset_domain=="flixster":
         data = FlixsterDataPreparser(dataset_path, impl_type, cutoff_rating, 
                                      max_core_nodes, store_dataset, 
-                                     min_interactions_per_user=min_interacts_per_user*2)
+                                     min_interactions_per_user=min_interacts_beforeaftersplit_per_user*2)
     elif dataset_domain=="flickr":
         data = FlickrDataPreparser(dataset_path, impl_type, cutoff_rating, 
                                    max_core_nodes, store_dataset,
-                                   min_interactions_per_user=min_interacts_per_user*2)
+                                   min_interactions_per_user=min_interacts_beforeaftersplit_per_user*2)
     
     try:
         data.get_all_data()
@@ -77,7 +85,10 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
 
 
 def run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs,
-        allow_duplicates, split_date_str, dataset_domain, dataset_path):
+        allow_duplicates, split_date_str, dataset_domain, dataset_path,
+        min_interacts_beforeaftersplit_per_user,
+        max_interact_ratio_error, max_sim_ratio_error, min_friends_match_ratio, 
+        traindata_fraction):
     net_analyzer = BasicNetworkAnalyzer(data)
     interaction_types = data.interact_types_dict
     filename_prefix = computation_cmd if computation_cmd is not None else ""
@@ -212,7 +223,7 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         #   ta = TemporalAnalyzer(data)
         #interact_type = data.interact_types_dict["listen"
         # time_scale can be 'w':wallclock_time or 'o':ordinal_time
-        split_date_str = "2012/01/01"
+        split_date_str = "2008/01/01"
         t_window = -1
         t_scale = ord('w')
         max_tries_val = 10000
@@ -225,7 +236,7 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         if create_fake_prefs is not None:
             print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
             fake_data.generate_fake_preferences(data,interact_type, split_timestamp, 
-                        min_interactions_per_user=min_interactions_per_user,
+                        min_interactions_beforeaftersplit_per_user=min_interacts_beforeaftersplit_per_user,
                         time_window=t_window, time_scale=t_scale, method=create_fake_prefs)
             
             #fake_data.generate_random_preferences(data, interact_type, split_timestamp)
@@ -238,7 +249,7 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
                                time_diff=t_window, time_scale=ord('w'), split_timestamp=split_timestamp, 
                                #time_diff=100000, split_date_str="1970/06/23", 
                                control_divider=0.01,
-                               min_interactions_per_user = min_interactions_per_user,
+                               min_interactions_beforeaftersplit_per_user = min_interacts_beforeaftersplit_per_user,
                                max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_processes=4,
                                max_interact_ratio_error=max_interact_ratio_error,
                                klim=klim_val,
@@ -255,24 +266,29 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
         use_artists = "songs" if "songs" in dataset_path else "artists"
         interact_type_str = "listen" if interact_type==0 else "love"
         M = [10]#,20]#,30,40,50]
-        t_scale = ord('o')
-        NUM_NODES_TO_COMPUTE = 10000
-        num_threads=4
-        max_tries_val = None#30000
-        max_node_computes_val = NUM_NODES_TO_COMPUTE/num_threads
-        max_interact_ratio_error =0.1
-        max_sim_ratio_error = 0.1
-        min_friends_match_ratio = 1 # important to be 1 for simulation--because e.g. in influence, we use a person's all friends to compute his next like
+        t_scale = ord('o') # ordinal scale, this is the default used in paper.
+        NUM_NODES_TO_COMPUTE = 4000000 # maximum number nodes to compute?
+        num_threads=4 # the number of threads to spawn
+        max_tries_val = None#30000 # should we stop after max_tries?
+        max_node_computes_val = NUM_NODES_TO_COMPUTE/num_threads # number of nodes to compute at each node
+        #max_interact_ratio_error =0.2 # these are errors (defaults are 0.1,0.1)
+        #max_sim_ratio_error = 0.2
+        #min_friends_match_ratio = 0.5 # important to be 1 for simulation--because e.g. in influence, we use a person's all friends to compute his next like
         klim_val = None # not used for influence test
-        nonfr_match = "random" #random, serial, kbest
-        num_loop = 1
-        f = open("suscept_test_"+dataset_domain+ interact_type_str+str(
-                    use_artists)+str(allow_duplicates)+str(max_node_computes_val)+str(
-                        create_fake_prefs)+str(num_loop), "w")
-
+        nonfr_match = "random" #random, serial, kbest. Default is random.
+        num_loop = 1 # number of times we calculate this. For averaging results over multiple runs.
+        f = open("suscept_test_results/"+dataset_domain + dataset_path.split("/")[-1] + interact_type_str+ strftime("%Y-%m-%d_%H:%M:%S")+'.dat', 'w')
+        f.write("# use_artists=%r\tallow_duplicates=%r\tmax_node_computes_val=%d\tcreate_fake_prefs=%r\tnum_loop=%d\n" % (
+                    use_artists, allow_duplicates, max_node_computes_val,
+                        create_fake_prefs, num_loop))
+        f.write("# split_train_test_date=%s\ttime_scale=%d\tmin_interactions_beforeaftersplit_per_user=%d\tnum_threads=%d\n" % (
+                    split_date_str, t_scale, min_interacts_beforeaftersplit_per_user, num_threads))
+        f.write("# max_interact_ratio_error=%f\tmax_sim_ratio_error=%f\tmin_friends_match_ratio=%f\n" %(
+                    max_interact_ratio_error, max_sim_ratio_error, min_friends_match_ratio
+                    ))
         for t_window in M:
             for h in range(num_loop):
-                print "\n\n################### ALERTINFO: STARTING ITERATION", h, t_window
+                f.write("\n\n################### ALERTINFO: STARTING ITERATION %d  with M=%d\n" %( h, t_window))
                 if split_date_str=="test": split_timestamp = 2000
                 else:
                     split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
@@ -281,17 +297,17 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
                     data.create_training_test_bytime(interact_type, split_timestamp)
                     #print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
                     fake_data.generate_fake_preferences(data,interact_type, split_timestamp,
-                            min_interactions_per_user = min_interactions_per_user,
+                            min_interactions_beforeaftersplit_per_user = min_interacts_beforeaftersplit_per_user,
                             time_window=t_window, time_scale=t_scale, method=create_fake_prefs)
                     #print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
                 # Need to generate again because fake data changes test data           
-                data.create_training_test_bytime(interact_type, split_timestamp)
+                data.create_training_test_bytime(interact_type, split_timestamp, min_interactions_beforeafter_per_user=min_interacts_beforeaftersplit_per_user)
                 la = LocalityAnalyzer(data)
                 inf_tuple = compute.test_influence(la, interact_type=interact_type, 
                                        time_diff=t_window, time_scale=t_scale, split_timestamp=split_timestamp, 
                                        #time_diff=100000, split_date_str="1970/06/23", 
                                        control_divider=0.01, # not used anymore
-                                       min_interactions_per_user = min_interactions_per_user,
+                                       min_interactions_beforeafterspit_per_user = min_interacts_beforeaftersplit_per_user,
                                        max_tries = max_tries_val, max_node_computes=max_node_computes_val, num_threads=num_threads,
                                        max_interact_ratio_error = max_interact_ratio_error,
                                        max_sim_ratio_error = max_sim_ratio_error,
@@ -302,10 +318,32 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
                                        allow_duplicates=allow_duplicates)
                 print "t-test results", ttest_rel(inf_tuple[2], inf_tuple[3])
                 num_vals = len(inf_tuple[0])
+                f.write("TestSetSize\tFrSimilarity\tNonFrSimilarity\tFrOverlap\tNonFrOverlap\tRandom_run_no\tM\n")
                 for i in range(num_vals):
                     f.write("%d\t%f\t%f\t%f\t%f\t%d\t%d\n" % (inf_tuple[0][i], inf_tuple[1][i], 
                                 inf_tuple[2][i], inf_tuple[3][i], inf_tuple[4][i], h, t_window))
         f.close()
+    elif computation_cmd=="gen_adopt_data":
+        t_window = 100 
+        t_scale = ord('o')
+        if split_date_str=="test": split_timestamp = 2000
+        else:
+            split_timestamp = int(time.mktime(datetime.datetime.strptime(split_date_str, "%Y/%m/%d").timetuple()))
+        if create_fake_prefs is not None:
+            data.create_training_test_bytime(interact_type, split_timestamp)
+            #print data.get_nodes_list()[1].get_interactions(interact_type, cutoff_rating=-1)
+            fake_data.generate_fake_preferences(data,interact_type, split_timestamp,
+                    min_interactions_beforeaftersplit_per_user = min_interacts_beforeaftersplit_per_user,
+                    time_window=t_window, time_scale=t_scale, method=create_fake_prefs)
+        
+        data.create_training_test_bytime(interact_type, split_timestamp)
+        gen_adopt.generate_adoption_data(data, interact_type, split_timestamp, 
+            min_interactions_beforeaftersplit_per_user=min_interacts_beforeaftersplit_per_user, time_window=t_window, 
+            time_scale=t_scale)
+    elif computation_cmd=="compute_split_date":
+        ret_timestamp = compute.compute_cutoff_date(data, interact_type, traindata_fraction)
+        print ret_timestamp
+        print datetime.datetime.fromtimestamp(ret_timestamp*86400).strftime("%Y-%m-%d")
     """
     elif computation_cmd=="random_recommender":
         for curr_lim in KLIMITS:
@@ -385,9 +423,11 @@ if __name__ == "__main__":
         opts, args = getopt.getopt(sys.argv[1:], "d:c:p:", ["help", "cython", 
                                    "cutoffrating=", "output=", "max_core_nodes=",
                                    "store_dataset", "interact_type=", 
-                                   "min_interactions_per_user=", 
+                                   "min_interactions_beforeaftersplit_per_user=", 
                                    "create_fake_prefs=", "split_date=",
-                                   "no_duplicates"])
+                                   "no_duplicates", "max_numinteracts_ratio_error=",
+                                   "max_sim_ratio_error=", 
+                                   "min_numfriends_match_ratio=", "traindata_fraction="])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -409,10 +449,14 @@ if __name__ == "__main__":
     cutoff_rating = -1 
     store_dataset = False
     interact_type = 0
-    min_interactions_per_user = 1
+    min_interactions_beforeaftersplit_per_user = 1
     create_fake_prefs = None
     no_duplicates = False
     split_date_str = None
+    traindata_fraction = None
+    min_friends_match_error = None
+    max_interact_ratio_error = None
+    max_sim_ratio_error = None
     for o, a in opts: 
         if o =="-d":
             if a not in COMPATIBLE_DOMAINS:
@@ -437,14 +481,23 @@ if __name__ == "__main__":
             store_dataset = True
         if o=="--interact_type":
             interact_type = int(a)
-        if o=="--min_interactions_per_user":
-            min_interactions_per_user = int(a)
+        if o=="--min_interactions_beforeaftersplit_per_user":
+            min_interactions_beforeaftersplit_per_user = int(a)
         if o=="--create_fake_prefs":
             create_fake_prefs = a
         if o=="--no_duplicates":
             no_duplicates = True
         if o=="--split_date":
             split_date_str= a
+        if o=="--max_numinteracts_ratio_error":
+            max_interact_ratio_error = float(a)
+        if o == "--max_sim_ratio_error":
+            max_sim_ratio_error = float(a)
+        if o == "--min_numfriends_match_ratio":
+            min_friends_match_error = float(a)
+        if o == "--traindata_fraction":
+            traindata_fraction = float(a)
+
     allow_duplicates = not no_duplicates
     if dataset_domain is None or dataset_path is None:
         usage()
@@ -454,11 +507,13 @@ if __name__ == "__main__":
     # run of the script. 
     if 'data' not in globals():
         data = instantiate_networkdata_class(dataset_domain, dataset_path, impl_type, 
-                                        max_core_nodes, cutoff_rating, store_dataset, 
-                                        interact_type, min_interactions_per_user)
+                                       max_core_nodes, cutoff_rating, store_dataset, 
+                                        interact_type, min_interactions_beforeaftersplit_per_user)
     outf=open("current_run.dat", 'w')
     run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs,
-            allow_duplicates, split_date_str, dataset_domain, dataset_path)
+            allow_duplicates, split_date_str, dataset_domain, dataset_path,
+            max_interact_ratio_error, max_sim_ratio_error, min_friends_match_error,
+            traindata_fraction)
     outf.close()
 
 def get_data(from_raw_dataset=False):

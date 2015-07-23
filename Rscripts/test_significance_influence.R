@@ -61,9 +61,11 @@ plot_means <- function(dt){
     p = ggplot(x, aes(V6, Influence)) + geom_line() + geom_line(aes(y=InboundCorr), color="red") + xlab("M")
     print(p)
     
-    p1= ggplot(dt, aes(V3-V4)) + geom_histogram(binwidth=0.01, colour="black", fill="white") + xlab("influence")
-    p0= ggplot(dt, aes(V3)) + geom_histogram(binwidth=0.01, colour="black", fill="white") + xlab("Inbound-correlation")
-grid.arrange(p0,p1,ncol=2)
+    p1= ggplot(dt, aes(V3-V4)) + geom_histogram(binwidth=0.01, colour="black", fill="white") + xlab("Copy-influence") +
+        theme_bw()
+    p0= ggplot(dt, aes(V3)) + geom_histogram(binwidth=0.01, colour="black", fill="white") + xlab("Friends-Overlap") +
+        theme_bw()
+    grid.arrange(p0,p1,ncol=2)
 
     return(x)
 }
@@ -75,7 +77,8 @@ Main<- function() {
     path = "../examples/compute/"
     
     
-    inf_dt6 = as.data.table(read.table(paste(path, "suscept_test", sep=""), sep="\t", header=FALSE))
+    inf_dt6 = as.data.table(read.table(paste(path, "test_results/suscept_testNone_m2050", sep=""), sep="\t", header=FALSE))
+    ggplot(inf_dt6, aes(V6, V3)) + geom_line()
     test_sig(inf_dt6)
     sus_rand_dt = as.data.table(read.table(paste(path, "suscept_testrandom50", sep=""), sep="\t", header=FALSE))
     sus_inf_dt = as.data.table(read.table(paste(path, "suscept_testinfluence", sep=""), sep="\t", header=FALSE))
@@ -86,7 +89,7 @@ Main<- function() {
     p_inf = plot_distr(sus_inf_dt, bindwidth=0.005)
     grid.arrange(p_rand, p_homo, p_inf, ncol=3)
     
-    sus_love_songs_dt = as.data.table(read.table(paste(path, "suscept_testNone1loveFalse", sep=""), sep="\t", header=FALSE))
+    sus_love_songs_dt = as.data.table(read.table(paste(path, "suscept_test_lastfm_simplelovesongsTrue10000None1", sep=""), sep="\t", header=FALSE))
     pl_dt = sus_love_songs_dt
     pldt_by_m = pl_dt[,by=V]
     ggplot()
@@ -110,7 +113,7 @@ Main<- function() {
     plot_means(sus_love_songs_dt[V6==10])
     plot_means(sus_listen_artists_dt)
     
-    dt1  = as.data.table(read.table(paste(path, "final_results/suscept_test_lastfm_simplelovesongsFalse2000None1", sep=""), 
+    dt1  = as.data.table(read.table(paste(path, "fri_results/suscept_test_lastfm_simplelovesongsTrue12000None1", sep=""), 
                                     sep="\t", header=FALSE))
 }
 

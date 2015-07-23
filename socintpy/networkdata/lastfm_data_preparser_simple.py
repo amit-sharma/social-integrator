@@ -89,6 +89,7 @@ class LastfmDataPreparserSimple(NetworkDataPreparser):
         map(self.read_nodes, self.nodes_files)
         # filter users based on min_interaction
         print "filtering data based on min_interactions_per_user=", self.min_interactions_per_user
+        print "Number of nodes unfiltered is, like,", len(self.nodes)-1
         self.filter_min_interaction_nodes(self.interact_type_val, self.min_interactions_per_user)
 #        proc_pool.close()
 #        proc_pool.join()

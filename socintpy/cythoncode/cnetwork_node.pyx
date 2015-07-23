@@ -108,11 +108,6 @@ def compute_node_similarity_pywrapper(node, other_node, int interact_type,
             (<CNetworkNode>other_node).ndata, interact_type,
             data_type_code, min_interactions_per_user, time_diff, time_scale)
 
-def compute_allpairs_sim_mat_wrapper(nodes_list, interact_type, data_type_code):
-
-    sim_mat = compute_allpairs_sim_mat(nodes_list, interact_type, data_type_code)
-    return sim_mat
-
 def compute_global_kbest_neighbors_wrapper(nodes_list, interact_type, 
         data_type, k):
     """ Compute k-best neighbors for a list of users, among the same list of usrs.
@@ -132,9 +127,10 @@ def compute_global_kbest_neighbors_wrapper(nodes_list, interact_type,
                                     time_diff=-1, time_scale=ord('w'))
         print rsim, sim_mat[node1.uid, node2.uid]
     globalk_neighbors = {}
-    #TODO find topk and return indices, not actual sim values
+
+    # Creating globalk neighbors dict 
     for node in nodes_list:
-        
+        if node.uid >= sim_mat.shape[0]: continue 
         row_vals = sim_mat[node.uid,:].toarray().flatten()
         row_vals[node.uid] = 0 # this would have been 1, similarity with own prefs
         indices = np.argpartition(-row_vals, k)
@@ -162,9 +158,10 @@ def compute_allpairs_sim_mat(nodes, interact_type, data_type):
 
     print "Read all interacts into a sparse matrix of size", interactions_mat.shape
     sim_mat = compute_sim_mat(interactions_mat)
+    sim_mat_csr = sim_mat.tocsr()
     #sim_mat = sort_coo(sim_mat)
     print "computed similarity"
-    return sim_mat
+    return sim_mat_csr
 
 cdef create_allusers_interact_mat(nodes, int interact_type, int data_type,
      int num_all_interacts):
@@ -194,7 +191,7 @@ cdef compute_sim_mat(interactions_mat):
             and n is the number of items.
         Returns:
             sim_mat: a symmetric sparse matrix of size m*m where sim_mat[i,j] 
-            is the similarity between user i and j.
+            is the similarity between user i and j. Sparse format is COO.
     """
     cdef int i,j,k, nrows, ncols, idx
     cdef float t
@@ -220,7 +217,7 @@ cdef compute_sim_mat(interactions_mat):
         #new_V[index] = V[index]/union_size
         #common_elements_mat[I[index], J[index]] /= union_size
     print "Done size computations"
-    ret = common_elements_coo_mat.tocsr() 
+    ret = common_elements_coo_mat 
     print "ret is set"
     return ret
 
@@ -429,7 +426,8 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
                 cutoff_rating, data_type_code2, min_interactions_per_user, 
                 time_diff, time_scale, allow_duplicates, False)
         if inf1 != 1:
-            printf("%d: %f\n",c_node.c_uid, inf1)
+            #printf("%d: %f\n",c_node.c_uid, inf1)
+            pass
         #print inf1
         if inf1 > -1: #TODO check for none, remove default argument debug
             ptr_node_fnode_counter[0] += 1
@@ -444,7 +442,7 @@ cdef nodesusceptinfo process_one_node_susceptibility(netnodedata **allnodes, net
                 node_data.rsim = avg_rsim
                 node_data.fsusc = inf1
                 node_data.rsusc = inf2
-                printf("Valid node-id %d\n", c_node.c_uid)
+                #printf("Valid node-id %d\n", c_node.c_uid)
     #printf("Good node %d",node_rnode_counter) 
     
     free(control_nonfr_nodes)
@@ -520,8 +518,11 @@ cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_n
     cdef float ret = -1
     
     if data_type_code == <int>'i':
+        # Doing this for lovelisten only, remove soon. WARN CAUTION TODO
         my_interactions = my_node.c_test_data
         length_my_interactions = my_node.c_length_test_ids
+        #my_interactions = my_node.c_list[0]
+        #length_my_interactions = my_node.c_length_list[0]
         valid_flag = True
         for i in range(length_other_nodes):
             c_node_obj = other_nodes[i]
@@ -781,28 +782,35 @@ cdef float compute_node_susceptibility_ordinal_c(idata* my_interactions,
                 if index >= size_stream:
                     if debug:
                         printf("ERROR:Cython: Big Error, how can index of friend stream be %d", index)
+                """ amit: changing on july 9
                 if index <0:
                     if debug:
                         printf("WARN:This interaction is too early for others test set. Aborting...")
                     return -2 
-                if index+1 <time_diff:
+                if index+1 <time_diff: # there are not enough items in friends stream to compare with M size window.
                     if debug:
                         printf("WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting...")
                     return -3
-                j=index
-                #printf("my_inter:%d-%d ", my_interactions[i].item_id, my_interactions[i].timestamp)
-                while j >index-time_diff and j>=0:
+                """
+                if index <0 or index + 1 < time_diff:
+                    if debug:
+                        printf("WARN:Oh, cannot find enough nodes to compare. Too early for others test set. Aborting...")
+                else:
+
+                    j=index
+                    #printf("my_inter:%d-%d ", my_interactions[i].item_id, my_interactions[i].timestamp)
+                    while j >index-time_diff and j>=0:
                     #printf("%d-%d ",others_stream[j].item_id,  others_stream[j].timestamp)
-                    if others_stream[j].item_id == my_interactions[i].item_id:
-                        if others_stream[j].rating >= cutoff_rating:
-                            sim[i] += 1
-                    j -= 1
-                #printf("\n")
-                """
-                if sim[i] == 0:
-                    print "ONO!!!", my_interactions[i].item_id, my_interactions[i].timestamp
-                """
-                my_count += 1
+                        if others_stream[j].item_id == my_interactions[i].item_id:
+                            if others_stream[j].rating >= cutoff_rating:
+                                sim[i] += 1
+                        j -= 1
+                    #printf("\n")
+                    """
+                    if sim[i] == 0:
+                        print "ONO!!!", my_interactions[i].item_id, my_interactions[i].timestamp
+                    """
+                    my_count += 1
         prev_item_id = my_interactions[i].item_id
         i += 1
 
@@ -960,6 +968,20 @@ cdef class CNetworkNode:
             PyMem_Free(self.ndata.c_train_data)
             PyMem_Free(self.ndata.c_test_data)
     
+    cpdef int store_listens_special(self, int interact_type, ilist, do_sort=True) except -1:
+        self.ndata.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
+        if self.ndata.c_list is NULL:
+            raise MemoryError()
+        cdef int i
+        for i in range(len(ilist)):
+            self.ndata.c_list[interact_type][i].item_id = ilist[i].item_id
+            self.ndata.c_list[interact_type][i].rating = ilist[i].rating
+            self.ndata.c_list[interact_type][i].timestamp = ilist[i].timestamp
+        self.ndata.c_length_list[interact_type] = len(ilist)
+        if do_sort:
+            qsort(self.ndata.c_list[interact_type], self.ndata.c_length_list[interact_type], sizeof(idata), comp_interactions)
+        return self.ndata.c_length_list[interact_type]
+
     cpdef int store_interactions(self, int interact_type, ilist, do_sort=True) except -1:
         self.ndata.c_list[interact_type] = <idata *>PyMem_Malloc(len(ilist)*cython.sizeof(idata))
         if self.ndata.c_list is NULL:
@@ -1445,9 +1467,9 @@ cdef class CNetworkNode:
         self.ndata.c_length_test_ids = k2
         #print "train-test numbers", self.ndata.c_length_train_ids, self.ndata.c_length_test_ids, self.uid
     """
-    
+    # ideally, we would remove the ones without enough interactions in each period. But maybe for another day, will need to change the process_one_node code. 
     # by construction, train, test sets should be sorted by item_id too 
-    cpdef create_training_test_sets_bytime(self, int interact_type, int split_timestamp, float cutoff_rating):
+    cpdef create_training_test_sets_bytime(self, int interact_type, int split_timestamp, float cutoff_rating, int min_interactions_perperiod_peruser):
         #create train and test set based on a time split
         cdef int i
         cdef int k1 = 0, k2 = 0
