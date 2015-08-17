@@ -27,7 +27,7 @@ from data_types cimport netnodedata, idata,fdata,int_counter, nodesusceptinfo, f
 from data_types cimport loopvars, compfrnonfr, twoints
 from data_types cimport swap_elements, int_min
 from data_types cimport UT_hash_table, UT_hash_handle, HASH_FIND_INT, HASH_ADD_INT_CUSTOM,HASH_SORT, HASH_DEL, delete_hashtable
-from data_types cimport comp_interactions_temporal, comp_interactions, comp_friends, compare_int_counter,comp_fsiminfo
+from data_types cimport comp_interactions_temporal, comp_interactions_temporal_reverse, comp_interactions, comp_friends, compare_int_counter,comp_fsiminfo
 from binary_search cimport binary_search_standard, binary_search_closest_temporal, binary_search_closest, binary_search_timesensitive, binary_search_closest_fsiminfo
 from binary_search cimport exists, in_array
 
@@ -526,7 +526,12 @@ cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_n
         valid_flag = True
         for i in range(length_other_nodes):
             c_node_obj = other_nodes[i]
-            lengths_others_interactions[i] = c_node_obj.c_length_test_ids
+            # CAUTION WARN TODO changing it to 1 for last.fm loves
+            #lengths_others_interactions[i] = c_node_obj.c_length_test_ids
+            #others_interactions[i] = c_node_obj.c_test_data
+            lengths_others_interactions[i] = 1
+            with gil:
+                qsort(c_node_obj.c_test_data, c_node_obj.c_length_test_ids, cython.sizeof(idata), comp_interactions_temporal_reverse)
             others_interactions[i] = c_node_obj.c_test_data
             if lengths_others_interactions[i] < min_interactions_per_user:
                 valid_flag = False
@@ -545,6 +550,12 @@ cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_n
                         lengths_others_interactions, length_other_nodes, interact_type, 
                         data_type_code,
                         time_diff=time_diff, cutoff_rating=cutoff_rating, time_scale=time_scale)
+        # CAUTION WARN TODO changing it to 1 for last.fm loves
+        for i in range(length_other_nodes):
+            # CAUTION WARN TODO changing it to 1 for last.fm loves
+            c_node_obj = other_nodes[i]
+            with gil:
+                qsort(c_node_obj.c_test_data, c_node_obj.c_length_test_ids, cython.sizeof(idata), comp_interactions)
     else:
         printf("Error: data_type_code invalid for computing susceptibility")
     free(lengths_others_interactions)
@@ -634,8 +645,10 @@ cdef float compute_node_similarity_c(idata *my_interactions, idata *others_inter
     if my_count == 0 or others_count == 0:
         return -1
     union_sum = my_count + others_count - simscore
-
+    # CAUTION WARN changing to cosine similarity instead of Jaccard.
+    #product_counts =sqrt(my_count)*sqrt(others_count)
     return simscore/union_sum
+    #return simscore/product_counts
 
 cdef int get_num_interactions_between(idata *interactions, int length_interactions,
         int timestamp1, 

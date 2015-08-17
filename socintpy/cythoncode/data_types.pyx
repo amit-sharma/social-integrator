@@ -9,6 +9,15 @@ cdef int comp_interactions_temporal(const void *elem1, const void *elem2):
     if a[0].timestamp < b[0].timestamp: return -1
     return 0
 
+cdef int comp_interactions_temporal_reverse(const void *elem1, const void *elem2):
+    cdef idata *a
+    cdef idata *b
+    a = <idata *> elem1
+    b = <idata *> elem2
+    if a[0].timestamp > b[0].timestamp: return -1
+    if a[0].timestamp < b[0].timestamp: return 1
+    return 0
+
 cdef int comp_interactions(const void *elem1, const void *elem2):
     cdef idata *a
     cdef idata *b

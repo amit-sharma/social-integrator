@@ -76,6 +76,7 @@ cdef struct twoints:
     int val2
 
 cdef int comp_interactions_temporal(const void *, const void *)
+cdef int comp_interactions_temporal_reverse(const void *, const void *)
 cdef int comp_interactions(const void *, const void *)
 cdef int compare_int_counter(const void *, const void *)
 cdef int comp_friends(const void *, const void *)
