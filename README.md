@@ -1,7 +1,7 @@
 social-integrator
 =================
 
-A project to provide convenient API access to programmers and researchers for downloading data.
+A project to provide convenient API access to programmers and researchers for downloading and analyzing social data.
 Currently supports lastfm.
 
 socintpy contains all the library code, examples contains code examples that
@@ -11,4 +11,5 @@ A common way to access the library:
 1. Instantiate the API.
 2. Call a network crawler.
 3. Store the results.
+4. Analyze the results.
 
