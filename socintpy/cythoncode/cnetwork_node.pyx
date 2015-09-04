@@ -292,7 +292,7 @@ cpdef compute_susceptibility_randomselect_cfast(all_nodes_list, int interact_typ
                 
                 buf[0].counter2 += 1
                 tid = threadid()
-                if buf[0].counter2 %100==0:
+                if buf[0].counter2 %1000==0:
                     printf("Thread %d: Done counter %d\n", tid, buf[0].counter2)
                 if buf[0].counter2 > max_node_computes:
                     printf("%d, %d", buf[0].counter2, max_node_computes)
@@ -526,10 +526,10 @@ cdef float compute_node_susceptibility(netnodedata my_node, netnodedata *other_n
         valid_flag = True
         for i in range(length_other_nodes):
             c_node_obj = other_nodes[i]
-            # CAUTION WARN TODO changing it to 1 for last.fm loves
-            #lengths_others_interactions[i] = c_node_obj.c_length_test_ids
-            #others_interactions[i] = c_node_obj.c_test_data
-            lengths_others_interactions[i] = 1
+            # CAUTION WARN TODO changing it to 1 for last.fm loves/listen comparison
+            lengths_others_interactions[i] = c_node_obj.c_length_test_ids
+            others_interactions[i] = c_node_obj.c_test_data
+            #lengths_others_interactions[i] = 1
             with gil:
                 qsort(c_node_obj.c_test_data, c_node_obj.c_length_test_ids, cython.sizeof(idata), comp_interactions_temporal_reverse)
             others_interactions[i] = c_node_obj.c_test_data

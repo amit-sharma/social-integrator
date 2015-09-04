@@ -62,6 +62,7 @@ class BasicNetworkAnalyzer(object):
         print "Min., Max. timestamp of interactions", self.get_min_max_interact_times()
         return
 
+    
     def get_min_max_interact_times(self):
         min_time = None
         max_time = None

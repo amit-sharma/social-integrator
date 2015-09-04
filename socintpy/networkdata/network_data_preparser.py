@@ -216,7 +216,7 @@ class NetworkDataPreparser():
         with open(filename, 'wb') as outf:
           pickle.dump(self.nodes, outf, -1)
    
-    def store_ego_dataset(self, filepath):
+    def store_ego_dataset(self, filepath, write_maps=True):
         node_count = 0
         f = codecs.open(filepath+'egodata_'+str(node_count)+'.tsv', encoding="utf-8", mode='w')
         f.write("# Interacts:"+repr(self.interact_types_dict.items())+'\n')
@@ -247,16 +247,16 @@ class NetworkDataPreparser():
                 f = codecs.open(filepath+'egodata_'+str(node_count)+'.tsv', encoding="utf-8", mode='w')
                 f.write("# Interacts:"+repr(self.interact_types_dict.items())+'\n')
         f.close()
-
-        f_nodemap = codecs.open(filepath+'nodemap'+'.tsv', encoding="utf-8", mode='w')
-        for node_name, node_id in self.uid_dict.iteritems():
-            f_nodemap.write(unicode(node_name) + ' ' + unicode(node_id) + '\n')
-        f_nodemap.close()
-        
-        f_itemmap = codecs.open(filepath+'itemmap'+'.tsv', encoding="utf-8", mode='w')
-        for item_name, item_id in self.itemid_dict.iteritems():
-            f_itemmap.write(unicode(item_name) + ' ' + unicode(item_id) + '\n')
-        f_itemmap.close()
+        if write_maps:
+            f_nodemap = codecs.open(filepath+'nodemap'+'.tsv', encoding="utf-8", mode='w')
+            for node_name, node_id in self.uid_dict.iteritems():
+                f_nodemap.write(unicode(node_name) + ' ' + unicode(node_id) + '\n')
+            f_nodemap.close()
+            
+            f_itemmap = codecs.open(filepath+'itemmap'+'.tsv', encoding="utf-8", mode='w')
+            for item_name, item_id in self.itemid_dict.iteritems():
+                f_itemmap.write(unicode(item_name) + ' ' + unicode(item_id) + '\n')
+            f_itemmap.close()
         return
         
 

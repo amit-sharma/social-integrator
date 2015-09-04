@@ -83,7 +83,6 @@ def instantiate_networkdata_class(dataset_domain, dataset_path, impl_type,
         raise
     return data
 
-
 def run_computation(data, computation_cmd, outf, interact_type, create_fake_prefs,
         allow_duplicates, split_date_str, dataset_domain, dataset_path,
         min_interacts_beforeaftersplit_per_user,
@@ -95,6 +94,8 @@ def run_computation(data, computation_cmd, outf, interact_type, create_fake_pref
 
     if computation_cmd=="basic_stats" or computation_cmd is None:
         net_analyzer.show_basic_stats()
+        ## use below if you want to write a new dataset (e.g. after filtering)
+        data.store_ego_dataset("/home/amit/datasets/social_activity_data/lastfm_filtered_listen/", write_maps=False)
         #data.compute_allpairs_sim(interact_type, data_type=ord("a"))
 
     elif computation_cmd=="random_similarity":
